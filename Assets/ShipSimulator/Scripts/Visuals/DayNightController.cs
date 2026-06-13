@@ -14,6 +14,7 @@ namespace ShipSimulator.Visuals
         private readonly List<Material> navigationMaterials = new List<Material>();
         private readonly List<NavigationBeaconFlasher> navigationFlashers =
             new List<NavigationBeaconFlasher>();
+        private bool navigationAidsCreated;
 
         public bool IsNight => night;
         public string TimeLabel => night ? "NIGHT" : "DAY";
@@ -49,6 +50,7 @@ namespace ShipSimulator.Visuals
 
         public void Apply(bool useNight)
         {
+            if (!navigationAidsCreated) CreateNavigationAids();
             night = useNight;
             if (sun != null)
             {
@@ -105,6 +107,7 @@ namespace ShipSimulator.Visuals
         {
             GameObject navigation = GameObject.Find("Navigation");
             if (navigation == null) return;
+            navigationAidsCreated = true;
 
             int buoyIndex = 0;
             foreach (Transform marker in navigation.transform)
@@ -146,7 +149,7 @@ namespace ShipSimulator.Visuals
                 lens.transform.localScale = Vector3.one *
                     (isBuoy ? 0.42f : isLeadingMark ? 1.35f : 0.32f);
                 Collider collider = lens.GetComponent<Collider>();
-                if (collider != null) Destroy(collider);
+                DestroyGenerated(collider);
                 Material material = new Material(
                     Shader.Find("Universal Render Pipeline/Unlit"))
                 {
@@ -188,7 +191,7 @@ namespace ShipSimulator.Visuals
                 board.localScale.y * 1.12f,
                 0.08f);
             Collider boardCollider = glowBoard.GetComponent<Collider>();
-            if (boardCollider != null) Destroy(boardCollider);
+            DestroyGenerated(boardCollider);
 
             Material boardMaterial = CreateUnlitMaterial(
                 color * 4.5f, "Leading Mark Night Board");
@@ -208,7 +211,7 @@ namespace ShipSimulator.Visuals
                 board.localScale.y * 1.18f,
                 0.05f);
             Collider stripeCollider = stripe.GetComponent<Collider>();
-            if (stripeCollider != null) Destroy(stripeCollider);
+            DestroyGenerated(stripeCollider);
 
             Material stripeMaterial = CreateUnlitMaterial(
                 new Color(1f, 0.18f, 0.04f) * 5.5f,
@@ -232,11 +235,18 @@ namespace ShipSimulator.Visuals
             return material;
         }
 
+        private static void DestroyGenerated(Object instance)
+        {
+            if (instance == null) return;
+            if (Application.isPlaying) Destroy(instance);
+            else DestroyImmediate(instance);
+        }
+
         private void OnDestroy()
         {
-            if (runtimeSky != null) Destroy(runtimeSky);
+            DestroyGenerated(runtimeSky);
             for (int i = 0; i < navigationMaterials.Count; i++)
-                if (navigationMaterials[i] != null) Destroy(navigationMaterials[i]);
+                DestroyGenerated(navigationMaterials[i]);
         }
     }
 }

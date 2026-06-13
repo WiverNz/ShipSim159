@@ -26,6 +26,13 @@ C rudder midships, V camera cycle, and number keys 1-9 for direct camera views.
 
 ## Work Completed
 
+### Repository Documentation
+
+The repository root now contains a public-facing `README.md` covering the
+prototype scope, features, Unity version, startup steps, complete controls,
+radar legend, editor tools, test workflow, project structure, simulation model,
+known limitations, and links to the detailed project documentation.
+
 ### Detailed Vessel Model
 
 The vessel model was imported from the CRYENGINE project

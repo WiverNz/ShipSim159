@@ -1,0 +1,19 @@
+{
+  "name": "ShipSimulator.PlayModeTests",
+  "rootNamespace": "ShipSimulator.Tests",
+  "references": [
+    "ShipSimulator.Runtime"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ]
+}

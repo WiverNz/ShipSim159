@@ -1,0 +1,64 @@
+# Unity generated directories
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Unity generated files
+/*.csproj
+/*.sln
+/*.suo
+/*.user
+/*.userprefs
+/*.pidb
+/*.booproj
+/*.svd
+/*.pdb
+/*.mdb
+/*.opendb
+/*.VC.db
+
+# Unity crash and diagnostic output
+/sysinfo.txt
+/crashlytics-build.properties
+mono_crash.*
+*.stacktrace
+
+# Builds and exported packages
+/[Bb]uild/
+/[Bb]uilds/
+/[Oo]ut/
+/*.unitypackage
+
+# Test and coverage output
+/TestResults/
+/TestResults.xml
+/[Cc]ode[Cc]overage/
+/coverage/
+
+# Visual Studio
+/.vs/
+/.vscode/
+
+# JetBrains Rider
+/.idea/
+*.sln.iml
+
+# Local tooling configuration
+/.mcp.json
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary and backup files
+*~
+*.tmp
+*.temp
+*.bak
+*.orig
+*.swp

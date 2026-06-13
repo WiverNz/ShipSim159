@@ -1,0 +1,90 @@
+{
+  "identity": {
+    "displayName": "Volgo-Don Project 507B",
+    "project": "507B",
+    "vesselType": "Twin-screw river dry cargo motor vessel"
+  },
+  "dimensions": {
+    "lengthOverallM": 138.3,
+    "lengthBetweenPerpendicularsM": 135.0,
+    "beamOverallM": 16.7,
+    "beamMouldedM": 16.5,
+    "depthMouldedM": 5.5,
+    "loadedDraftM": 3.53
+  },
+  "massProperties": {
+    "loadedMassKg": 6750000.0,
+    "deadweightKg": 5000000.0,
+    "lightshipMassKg": 1750000.0,
+    "loadFraction": 1.0,
+    "loadingCondition": "fully loaded prototype condition",
+    "centerOfMassLocalM": { "x": 0.0, "y": -1.2, "z": -4.0 },
+    "inertiaTensorKgM2": { "x": 150000000.0, "y": 11000000000.0, "z": 10900000000.0 },
+    "estimated": true
+  },
+  "engine": {
+    "engineCount": 2,
+    "engineType": "6ChRN 36/45 (6ЧРН 36/45)",
+    "powerPerEngineW": 662000.0,
+    "aheadResponseSeconds": 18.0,
+    "asternResponseSeconds": 25.0,
+    "gearEfficiency": 0.92,
+    "estimatedDynamics": true
+  },
+  "propeller": {
+    "count": 2,
+    "diameterM": 2.1,
+    "maxAheadThrustN": 310000.0,
+    "maxAsternThrustN": 190000.0,
+    "longitudinalPositionsM": [-55.0, -55.0],
+    "lateralPositionsM": [-4.0, 4.0],
+    "estimated": true
+  },
+  "rudder": {
+    "count": 2,
+    "maxAngleDeg": 35.0,
+    "rateDegPerSecond": 2.5,
+    "areaPerRudderM2": 5.5,
+    "liftCoefficientSlopePerRad": 3.2,
+    "longitudinalPositionM": -57.0,
+    "estimated": true
+  },
+  "hydrodynamics": {
+    "waterDensityKgM3": 1000.0,
+    "blockCoefficient": 0.851,
+    "surgeLinearNPerMps": 5000.0,
+    "surgeQuadraticNPerMps2": 5000.0,
+    "swayLinearNPerMps": 850000.0,
+    "swayQuadraticNPerMps2": 1900000.0,
+    "yawLinearNmPerRadps": 220000000.0,
+    "yawQuadraticNmPerRadps2": 650000000.0,
+    "estimatedResistance": true
+  },
+  "buoyancy": {
+    "waterlineLocalY": 0.0,
+    "pointCount": 15,
+    "maxPointDepthM": 2.5,
+    "reserveBuoyancyFactor": 1.5,
+    "verticalDampingNPerMpsPerPoint": 420000.0,
+    "estimated": true
+  },
+  "controlLimits": {
+    "maxLoadedSpeedMps": 5.14444,
+    "throttleCommandRatePerSecond": 0.2,
+    "rudderCommandRatePerSecond": 0.35
+  },
+  "calibration": {
+    "thrustMultiplier": 1.0,
+    "resistanceMultiplier": 1.0,
+    "rudderMultiplier": 1.0,
+    "buoyancyMultiplier": 1.0,
+    "trainingValidated": false
+  },
+  "sourceReferences": [
+    "https://fleetphoto.ru/projects/1697",
+    "https://mebspb.com/dry/507B.html",
+    "https://www.korabel.ru/fleet/info/7075.html",
+    "https://vsuwt-perm.ru/wp-content/uploads/vypusk/2018/isaev_a.s..pdf",
+    "https://s.science-education.ru/pdf/2013/5/242.pdf"
+  ]
+}

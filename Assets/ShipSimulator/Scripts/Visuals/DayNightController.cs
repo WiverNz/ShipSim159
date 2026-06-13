@@ -96,6 +96,8 @@ namespace ShipSimulator.Visuals
             foreach (NavigationLightRig rig in FindObjectsByType<NavigationLightRig>(
                          FindObjectsInactive.Include, FindObjectsSortMode.None))
                 rig.SetNight(night);
+            WeatherController weather = FindAnyObjectByType<WeatherController>();
+            if (weather != null) weather.RefreshVisuals();
             DynamicGI.UpdateEnvironment();
         }
 
@@ -108,32 +110,47 @@ namespace ShipSimulator.Visuals
             foreach (Transform marker in navigation.transform)
             {
                 bool isBuoy = marker.name.Contains("Buoy");
+                bool isLeadingMark = marker.name.Contains("Front Mark") ||
+                    marker.name.Contains("Rear Mark");
+                if (!isBuoy && !isLeadingMark &&
+                    marker.name.Contains("Leading Line"))
+                    continue;
+
                 Color color = marker.name.Contains("Right Red")
                     ? new Color(1f, 0.03f, 0.01f)
                     : marker.name.Contains("Left White")
                         ? new Color(0.02f, 1f, 0.14f)
-                        : new Color(1f, 0.78f, 0.22f);
-                float height = isBuoy ? 3.1f : 9f;
-                GameObject beacon = new GameObject("Night Beacon");
+                        : isLeadingMark
+                            ? new Color(1f, 0.92f, 0.68f)
+                            : new Color(1f, 0.78f, 0.22f);
+                Transform board = isLeadingMark ? marker.Find("Board") : null;
+                if (isLeadingMark && board != null)
+                    CreateLeadingMarkNightBoard(marker, board, color);
+                float height = isBuoy
+                    ? 3.1f
+                    : board != null ? board.localPosition.y + 0.5f : 9f;
+                GameObject beacon = new GameObject(
+                    isLeadingMark ? "Leading Mark Night Light" : "Night Beacon");
                 beacon.transform.SetParent(marker, false);
                 beacon.transform.localPosition = new Vector3(0f, height, 0f);
                 Light light = beacon.AddComponent<Light>();
                 light.type = LightType.Point;
                 light.color = color;
-                light.intensity = isBuoy ? 7.2f : 6f;
-                light.range = isBuoy ? 58f : 55f;
+                light.intensity = isBuoy ? 7.2f : isLeadingMark ? 13f : 6f;
+                light.range = isBuoy ? 58f : isLeadingMark ? 420f : 55f;
                 light.shadows = LightShadows.None;
 
                 GameObject lens = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 lens.name = "Beacon Lens";
                 lens.transform.SetParent(beacon.transform, false);
-                lens.transform.localScale = Vector3.one * (isBuoy ? 0.42f : 0.32f);
+                lens.transform.localScale = Vector3.one *
+                    (isBuoy ? 0.42f : isLeadingMark ? 1.35f : 0.32f);
                 Collider collider = lens.GetComponent<Collider>();
                 if (collider != null) Destroy(collider);
                 Material material = new Material(
                     Shader.Find("Universal Render Pipeline/Unlit"))
                 {
-                    color = color * (isBuoy ? 3.2f : 2.4f)
+                    color = color * (isBuoy ? 3.2f : isLeadingMark ? 5f : 2.4f)
                 };
                 Renderer renderer = lens.GetComponent<Renderer>();
                 renderer.material = material;
@@ -155,6 +172,64 @@ namespace ShipSimulator.Visuals
                     navigationLenses.Add(renderer);
                 }
             }
+        }
+
+        private void CreateLeadingMarkNightBoard(
+            Transform marker, Transform board, Color color)
+        {
+            GameObject glowBoard = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            glowBoard.name = "Night Board Glow";
+            glowBoard.transform.SetParent(marker, false);
+            glowBoard.transform.localPosition =
+                board.localPosition + new Vector3(0f, 0f, -0.28f);
+            glowBoard.transform.localRotation = board.localRotation;
+            glowBoard.transform.localScale = new Vector3(
+                board.localScale.x * 1.12f,
+                board.localScale.y * 1.12f,
+                0.08f);
+            Collider boardCollider = glowBoard.GetComponent<Collider>();
+            if (boardCollider != null) Destroy(boardCollider);
+
+            Material boardMaterial = CreateUnlitMaterial(
+                color * 4.5f, "Leading Mark Night Board");
+            Renderer boardRenderer = glowBoard.GetComponent<Renderer>();
+            boardRenderer.material = boardMaterial;
+            navigationMaterials.Add(boardMaterial);
+            navigationLenses.Add(boardRenderer);
+
+            GameObject stripe = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            stripe.name = "Night Alignment Stripe";
+            stripe.transform.SetParent(marker, false);
+            stripe.transform.localPosition =
+                board.localPosition + new Vector3(0f, 0f, -0.34f);
+            stripe.transform.localRotation = board.localRotation;
+            stripe.transform.localScale = new Vector3(
+                Mathf.Max(1.1f, board.localScale.x * 0.24f),
+                board.localScale.y * 1.18f,
+                0.05f);
+            Collider stripeCollider = stripe.GetComponent<Collider>();
+            if (stripeCollider != null) Destroy(stripeCollider);
+
+            Material stripeMaterial = CreateUnlitMaterial(
+                new Color(1f, 0.18f, 0.04f) * 5.5f,
+                "Leading Mark Night Stripe");
+            Renderer stripeRenderer = stripe.GetComponent<Renderer>();
+            stripeRenderer.material = stripeMaterial;
+            navigationMaterials.Add(stripeMaterial);
+            navigationLenses.Add(stripeRenderer);
+        }
+
+        private static Material CreateUnlitMaterial(Color color, string name)
+        {
+            Material material = new Material(
+                Shader.Find("Universal Render Pipeline/Unlit"))
+            {
+                name = name,
+                color = color
+            };
+            if (material.HasProperty("_BaseColor"))
+                material.SetColor("_BaseColor", color);
+            return material;
         }
 
         private void OnDestroy()

@@ -77,6 +77,10 @@ Settings.
 | `N` | Toggle day/night mode |
 | `T` | Cycle simulation time through 1x, 2x, and 4x |
 | `Shift+T` | Return simulation time to 1x |
+| `F2` | Cycle wind force |
+| `F3` | Rotate wind direction |
+| `F4` | Cycle rain intensity |
+| `F5` | Cycle fog intensity |
 | `F1` | Toggle the full control reference |
 
 ### Camera Views

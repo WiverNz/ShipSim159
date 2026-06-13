@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using ShipSimulator.CameraSystem;
 using ShipSimulator.Physics;
 using ShipSimulator.UI;
+using ShipSimulator.Visuals;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -22,8 +23,13 @@ namespace ShipSimulator.Editor
         {
             Scene scene = EditorSceneManager.NewScene(
                 NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            Material water = LoadOrCreateMaterial(
-                "GorodetsWater", new Color(0.07f, 0.28f, 0.3f));
+            Material water = AssetDatabase.LoadAssetAtPath<Material>(
+                Root + "/Materials/RiverWater.mat");
+            Mesh waterMesh = AssetDatabase.LoadAssetAtPath<Mesh>(
+                Root + "/Settings/RiverWaterMesh.asset");
+            if (water == null || waterMesh == null)
+                throw new System.InvalidOperationException(
+                    "RiverWater material and mesh must exist before building Gorodets.");
             Material bank = LoadOrCreateMaterial(
                 "GorodetsBank", new Color(0.23f, 0.34f, 0.13f));
             Material rock = LoadOrCreateMaterial(
@@ -39,7 +45,7 @@ namespace ShipSimulator.Editor
             FairwayRoute route = routeObject.AddComponent<FairwayRoute>();
             route.Configure(CreateRouteSamples());
 
-            BuildEnvironment(route, water, bank, rock);
+            BuildEnvironment(route, waterMesh, water, bank, rock);
             LeadingMarkPair[] leadingLines = BuildNavigation(
                 route, red, white, black);
 
@@ -50,6 +56,9 @@ namespace ShipSimulator.Editor
             ScenarioBathymetry bathymetry =
                 physicsRoot.AddComponent<ScenarioBathymetry>();
             bathymetry.Configure(route, CreateHazards());
+
+            GameObject weatherObject = new GameObject("Weather System");
+            weatherObject.AddComponent<WeatherController>();
 
             ShipPhysicsController ship = CreateVessel();
             GroundingController grounding =
@@ -104,13 +113,17 @@ namespace ShipSimulator.Editor
             };
         }
 
-        private static void BuildEnvironment(FairwayRoute route, Material water,
-            Material bank, Material rock)
+        private static void BuildEnvironment(FairwayRoute route, Mesh waterMesh,
+            Material water, Material bank, Material rock)
         {
             Transform root = new GameObject("Environment").transform;
-            GameObject surface = Primitive("River Water", PrimitiveType.Cube, root,
-                new Vector3(0f, -0.8f, 950f), new Vector3(430f, 1.5f, 2500f), water);
-            Object.DestroyImmediate(surface.GetComponent<Collider>());
+            GameObject surface = new GameObject(
+                "RiverWater", typeof(MeshFilter), typeof(MeshRenderer));
+            surface.transform.SetParent(root, false);
+            surface.transform.localPosition = new Vector3(0f, 0f, 945f);
+            surface.transform.localScale = new Vector3(2.45f, 1f, 1.05f);
+            surface.GetComponent<MeshFilter>().sharedMesh = waterMesh;
+            surface.GetComponent<MeshRenderer>().sharedMaterial = water;
 
             for (float distance = 0f; distance <= route.LengthM; distance += 120f)
             {

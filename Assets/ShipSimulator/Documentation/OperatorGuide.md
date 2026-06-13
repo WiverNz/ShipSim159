@@ -23,6 +23,10 @@ the generated environment.
 | `H` | Sound horn |
 | `T` | Cycle simulation time through 1x, 2x, and 4x |
 | `Shift+T` | Return simulation time to 1x |
+| `F2` | Cycle wind force |
+| `F3` | Rotate wind direction by 45 degrees |
+| `F4` | Cycle rain intensity |
+| `F5` | Cycle fog intensity |
 | `R` | Reset vessel |
 
 Engine thrust and rudder angle change gradually. The selected command is not
@@ -46,6 +50,11 @@ emphasize the control shortcut strip.
 
 The time panel provides `1x`, `2x`, and `4x` buttons. Time scaling affects
 vessel physics, current response, mission timing, and visual simulation.
+
+The weather panel controls wind direction and force, rain intensity, and fog.
+Wind changes the force applied to the vessel and the procedural water surface.
+Rain and fog are visual prototype effects and are not validated visibility
+conditions.
 
 Depth, bathymetry, route geometry, RPM, and engine load are prototype
 estimates. They must not be treated as validated navigation or training data.

@@ -47,6 +47,7 @@ namespace ShipSimulator.Physics
         public float EstimatedSquatM => estimatedSquatM;
         public float EffectiveDraftM => EstimatedDraftM + estimatedSquatM;
         public GroundingController Grounding => grounding;
+        public Vector3 WindVelocityMps => windVelocityMps;
 
         private void Awake()
         {
@@ -146,6 +147,11 @@ namespace ShipSimulator.Physics
         public void CenterRudder()
         {
             rudderCommand = 0f;
+        }
+
+        public void SetWindVelocity(Vector3 velocityMps)
+        {
+            windVelocityMps = velocityMps;
         }
 
         public void ResetToStart()

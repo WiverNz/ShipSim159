@@ -37,6 +37,7 @@ namespace ShipSimulator.UI
         private Text depthRadarText;
         private Text timeOfDayText;
         private Text timeScaleText;
+        private Text weatherText;
         private RectTransform rudderNeedle;
         private RectTransform rudderCommandNeedle;
         private RectTransform mapVessel;
@@ -51,6 +52,7 @@ namespace ShipSimulator.UI
         private AudioSource hornSource;
         private DayNightController dayNight;
         private SimulationTimeController simulationTime;
+        private WeatherController weather;
         private FairwayRoute scenarioRoute;
         private ScenarioBathymetry scenarioBathymetry;
         private GorodetsScenarioController scenario;
@@ -107,6 +109,9 @@ namespace ShipSimulator.UI
             simulationTime = GetComponent<SimulationTimeController>();
             if (simulationTime == null)
                 simulationTime = gameObject.AddComponent<SimulationTimeController>();
+            weather = FindAnyObjectByType<WeatherController>();
+            if (weather == null)
+                weather = gameObject.AddComponent<WeatherController>();
             scenarioRoute = FindFirstObjectByType<FairwayRoute>();
             scenarioBathymetry = FindFirstObjectByType<ScenarioBathymetry>();
             scenario = FindFirstObjectByType<GorodetsScenarioController>();
@@ -202,6 +207,8 @@ namespace ShipSimulator.UI
             UpdateMiniMap();
             UpdateDepthRadar(channelDepth);
             UpdateWarnings(speedMps, underKeel, current.magnitude);
+            if (weatherText != null && weather != null)
+                weatherText.text = weather.StatusText;
         }
 
         private void BuildInterface()
@@ -241,6 +248,7 @@ namespace ShipSimulator.UI
             BuildTelegraph(transform as RectTransform);
             BuildCameraControls(transform as RectTransform);
             BuildTimeControls();
+            BuildWeatherControls();
 
             warningPanel = Panel("Warnings",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
@@ -261,7 +269,7 @@ namespace ShipSimulator.UI
                 new Vector2(320f, 12f), new Vector2(-320f, -1016f));
             helpText.text =
                 "A/D  RUDDER     W/S  TELEGRAPH     SPACE  STOP     1-9  CAMERAS\n" +
-                "RMB  ORBIT     WHEEL  ZOOM     H  HORN     M  MAP     N  DAY/NIGHT     T  TIME     F1  CLOSE";
+                "RMB ORBIT   H HORN   M MAP   N DAY/NIGHT   T TIME   F2 WIND   F3 DIR   F4 RAIN   F5 FOG";
             helpText.gameObject.SetActive(false);
             Text helpPrompt = Label(transform, "F1  CONTROLS", 16, TextAnchor.LowerCenter,
                 new Vector2(820f, 16f), new Vector2(-820f, -1034f));
@@ -351,6 +359,28 @@ namespace ShipSimulator.UI
                 () => SetTimeScale(2f));
             Button(block, "4x", new Vector2(110f, 0f), new Vector2(58f, 34f),
                 () => SetTimeScale(4f));
+        }
+
+        private void BuildWeatherControls()
+        {
+            RectTransform block = AnchoredPanel("WeatherBlock",
+                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f),
+                new Vector2(22f, 194f), new Vector2(520f, 94f));
+            block.GetComponent<Image>().color =
+                new Color(0.025f, 0.055f, 0.075f, 0.86f);
+            weatherText = Label(block, "WEATHER", 15, TextAnchor.UpperCenter,
+                new Vector2(10f, 54f), new Vector2(-10f, -6f));
+            weatherText.color = accentColor;
+            Button(block, "DIR -", new Vector2(-205f, -24f), new Vector2(80f, 32f),
+                () => ChangeWindDirection(-45f));
+            Button(block, "DIR +", new Vector2(-117f, -24f), new Vector2(80f, 32f),
+                () => ChangeWindDirection(45f));
+            Button(block, "WIND [F2]", new Vector2(-17f, -24f), new Vector2(105f, 32f),
+                CycleWind);
+            Button(block, "RAIN [F4]", new Vector2(100f, -24f), new Vector2(105f, 32f),
+                CycleRain);
+            Button(block, "FOG [F5]", new Vector2(217f, -24f), new Vector2(105f, 32f),
+                CycleFog);
         }
 
         private void BuildMiniMap()
@@ -680,6 +710,10 @@ namespace ShipSimulator.UI
                 if (miniMap != null) miniMap.gameObject.SetActive(mapVisible);
             }
             if (keyboard.nKey.wasPressedThisFrame) ToggleDayNight();
+            if (keyboard.f2Key.wasPressedThisFrame) CycleWind();
+            if (keyboard.f3Key.wasPressedThisFrame) ChangeWindDirection(45f);
+            if (keyboard.f4Key.wasPressedThisFrame) CycleRain();
+            if (keyboard.f5Key.wasPressedThisFrame) CycleFog();
             if (keyboard.tKey.wasPressedThisFrame)
             {
                 if (keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed)
@@ -743,6 +777,36 @@ namespace ShipSimulator.UI
         {
             if (timeScaleText != null && simulationTime != null)
                 timeScaleText.text = $"TIME {simulationTime.DisplayText}";
+        }
+
+        private void ChangeWindDirection(float degrees)
+        {
+            weather?.RotateWind(degrees);
+            UpdateWeatherText();
+        }
+
+        private void CycleWind()
+        {
+            weather?.CycleWindSpeed();
+            UpdateWeatherText();
+        }
+
+        private void CycleRain()
+        {
+            weather?.CycleRain();
+            UpdateWeatherText();
+        }
+
+        private void CycleFog()
+        {
+            weather?.CycleFog();
+            UpdateWeatherText();
+        }
+
+        private void UpdateWeatherText()
+        {
+            if (weatherText != null && weather != null)
+                weatherText.text = weather.StatusText;
         }
 
         private void UpdateDepthRadar(float currentDepth)

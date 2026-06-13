@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using ShipSimulator.Physics;
 using ShipSimulator.UI;
+using ShipSimulator.Visuals;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -36,6 +37,8 @@ namespace ShipSimulator.Tests
                 Object.FindAnyObjectByType<ScenarioBathymetry>();
             CurrentFieldProvider current =
                 Object.FindAnyObjectByType<CurrentFieldProvider>();
+            WeatherController weather =
+                Object.FindAnyObjectByType<WeatherController>();
             GorodetsScenarioController mission =
                 Object.FindAnyObjectByType<GorodetsScenarioController>();
             ShipPhysicsController ship =
@@ -47,10 +50,17 @@ namespace ShipSimulator.Tests
             Assert.That(route.LengthM, Is.InRange(2200f, 2350f));
             Assert.That(bathymetry, Is.Not.Null);
             Assert.That(current, Is.Not.Null);
+            Assert.That(weather, Is.Not.Null);
             Assert.That(mission, Is.Not.Null);
             Assert.That(ship, Is.Not.Null);
             Assert.That(ship.gameObject.name, Is.EqualTo("TrainingVessel"));
             Assert.That(ship.GetComponent<GroundingController>(), Is.Not.Null);
+            GameObject water = GameObject.Find("RiverWater");
+            Assert.That(water, Is.Not.Null);
+            Assert.That(water.GetComponent<MeshFilter>().sharedMesh, Is.Not.Null);
+            Assert.That(
+                water.GetComponent<Renderer>().sharedMaterial.shader.name,
+                Is.EqualTo("ShipSimulator/RiverWater"));
         }
 
         [Test]
@@ -189,6 +199,66 @@ namespace ShipSimulator.Tests
                 Object.DestroyImmediate(gameObject);
                 Time.timeScale = 1f;
             }
+        }
+
+        [Test]
+        public void DayNightController_CreatesLongRangeLeadingMarkLightsAtBoardHeight()
+        {
+            GameObject existingNavigation = GameObject.Find("Navigation");
+            if (existingNavigation != null)
+                existingNavigation.name = "Existing Navigation";
+            GameObject navigation = new GameObject("Navigation");
+            GameObject mark = new GameObject("Test Rear Mark");
+            mark.transform.SetParent(navigation.transform, false);
+            GameObject board = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            board.name = "Board";
+            board.transform.SetParent(mark.transform, false);
+            board.transform.localPosition = Vector3.up * 18f;
+            GameObject controllerObject = new GameObject("Day Night");
+
+            try
+            {
+                DayNightController controller =
+                    controllerObject.AddComponent<DayNightController>();
+                controller.Apply(true);
+
+                Transform lightTransform = mark.transform.Find(
+                    "Leading Mark Night Light");
+                Assert.That(lightTransform, Is.Not.Null);
+                Assert.That(lightTransform.localPosition.y,
+                    Is.EqualTo(18.5f).Within(0.01f));
+                Light light = lightTransform.GetComponent<Light>();
+                Assert.That(light.range, Is.GreaterThanOrEqualTo(400f));
+                Assert.That(light.enabled, Is.True);
+                Assert.That(lightTransform.Find("Beacon Lens"), Is.Not.Null);
+                Renderer glowBoard = mark.transform.Find("Night Board Glow")
+                    .GetComponent<Renderer>();
+                Renderer stripe = mark.transform.Find("Night Alignment Stripe")
+                    .GetComponent<Renderer>();
+                Assert.That(glowBoard.enabled, Is.True);
+                Assert.That(stripe.enabled, Is.True);
+                Assert.That(glowBoard.transform.localScale.x,
+                    Is.GreaterThan(board.transform.localScale.x));
+            }
+            finally
+            {
+                Object.DestroyImmediate(controllerObject);
+                Object.DestroyImmediate(navigation);
+                if (existingNavigation != null)
+                    existingNavigation.name = "Navigation";
+            }
+        }
+
+        [Test]
+        public void WeatherController_CalculatesConfiguredWindDirectionAndSpeed()
+        {
+            Vector3 westWind = WeatherController.CalculateWindVelocity(270f, 8f);
+            Vector3 northWind = WeatherController.CalculateWindVelocity(0f, 12f);
+
+            Assert.That(westWind.x, Is.EqualTo(-8f).Within(0.001f));
+            Assert.That(westWind.z, Is.EqualTo(0f).Within(0.001f));
+            Assert.That(northWind.x, Is.EqualTo(0f).Within(0.001f));
+            Assert.That(northWind.z, Is.EqualTo(12f).Within(0.001f));
         }
 
         private static FairwayRouteSample RouteSample(Vector3 position)

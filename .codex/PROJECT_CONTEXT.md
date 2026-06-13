@@ -1,6 +1,6 @@
 # ShipSim159 Project Context
 
-Last updated: 2026-06-13
+Last updated: 2026-06-14
 
 ## Purpose
 
@@ -275,8 +275,8 @@ and alignment stripes. These are created at runtime by `DayNightController`.
 Latest verification after this work:
 
 - Unity compilation: successful
-- EditMode: 16 passed, 0 failed
-- PlayMode: 4 passed, 0 failed
+- EditMode: 19 passed, 0 failed
+- PlayMode: 5 passed, 0 failed
 - Gorodets Play Mode smoke check: no runtime exceptions
 
 ## Known Limitations

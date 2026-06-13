@@ -18,6 +18,7 @@ namespace ShipSimulator.Visuals
         private Transform rainTransform;
         private Material rainMaterial;
         private Camera targetCamera;
+        private MaterialPropertyBlock waterProperties;
 
         public float WindDirectionDeg => windDirectionDeg;
         public float WindSpeedMps => windSpeedMps;
@@ -196,6 +197,8 @@ namespace ShipSimulator.Visuals
 
         private void ApplyWater()
         {
+            if (waterProperties == null)
+                waterProperties = new MaterialPropertyBlock();
             float wind01 = Mathf.Clamp01(windSpeedMps / 16f);
             foreach (Renderer renderer in
                      FindObjectsByType<Renderer>(FindObjectsInactive.Exclude))
@@ -204,15 +207,16 @@ namespace ShipSimulator.Visuals
                 if (material == null || material.shader == null ||
                     material.shader.name != "ShipSimulator/RiverWater")
                     continue;
-                material = renderer.material;
-                material.SetFloat("_RippleStrength",
+                renderer.GetPropertyBlock(waterProperties);
+                waterProperties.SetFloat("_RippleStrength",
                     Mathf.Lerp(0.14f, 0.34f, wind01));
-                material.SetFloat("_WaveHeight",
+                waterProperties.SetFloat("_WaveHeight",
                     Mathf.Lerp(0.025f, 0.075f, wind01));
-                material.SetFloat("_WaveSpeed",
+                waterProperties.SetFloat("_WaveSpeed",
                     Mathf.Lerp(0.35f, 0.8f, wind01));
-                material.SetFloat("_Turbidity",
+                waterProperties.SetFloat("_Turbidity",
                     Mathf.Lerp(0.62f, 0.76f, rainIntensity));
+                renderer.SetPropertyBlock(waterProperties);
             }
         }
 
@@ -231,7 +235,9 @@ namespace ShipSimulator.Visuals
 
         private void OnDestroy()
         {
-            if (rainMaterial != null) Destroy(rainMaterial);
+            if (rainMaterial == null) return;
+            if (Application.isPlaying) Destroy(rainMaterial);
+            else DestroyImmediate(rainMaterial);
         }
     }
 }

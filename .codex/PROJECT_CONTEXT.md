@@ -263,6 +263,15 @@ are estimated training-game values, not current navigation data.
 The HUD now provides simulation time controls at 1x, 2x, and 4x. `T` cycles
 the speed and `Shift+T` returns to 1x.
 
+The Gorodets scene now reuses the procedural `RiverWater` shader and subdivided
+water mesh instead of its former stretched URP Lit cube. `WeatherController`
+adds configurable wind direction/force, camera-following rain, and fog. Wind
+is passed to vessel physics and also adjusts water ripple strength. The HUD
+uses `F2` for wind force, `F3` for direction, `F4` for rain, and `F5` for fog.
+
+Leading marks now receive long-range lights plus large emissive night boards
+and alignment stripes. These are created at runtime by `DayNightController`.
+
 Latest verification after this work:
 
 - Unity compilation: successful

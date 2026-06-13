@@ -261,6 +261,33 @@ namespace ShipSimulator.Tests
             Assert.That(northWind.z, Is.EqualTo(12f).Within(0.001f));
         }
 
+        [Test]
+        public void WeatherController_ConfiguresRainAndFogWithoutDuplicateEmitter()
+        {
+            GameObject weatherObject = new GameObject("Weather Test");
+            try
+            {
+                WeatherController weather =
+                    weatherObject.AddComponent<WeatherController>();
+                weather.Configure(315f, 8f, 0.7f, 0.65f);
+                weather.Configure(315f, 8f, 0.7f, 0.65f);
+
+                ParticleSystem[] rain =
+                    weatherObject.GetComponentsInChildren<ParticleSystem>();
+                Assert.That(rain, Has.Length.EqualTo(1));
+                Assert.That(rain[0].emission.rateOverTime.constant,
+                    Is.GreaterThan(1000f));
+                Assert.That(RenderSettings.fogDensity, Is.GreaterThan(0.003f));
+                Assert.That(weather.WindVelocityMps.magnitude,
+                    Is.EqualTo(8f).Within(0.001f));
+            }
+            finally
+            {
+                Object.DestroyImmediate(weatherObject);
+                RenderSettings.fogDensity = 0.0011f;
+            }
+        }
+
         private static FairwayRouteSample RouteSample(Vector3 position)
         {
             return new FairwayRouteSample

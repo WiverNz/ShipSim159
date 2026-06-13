@@ -1,6 +1,7 @@
 using System.Collections;
 using NUnit.Framework;
 using ShipSimulator.Physics;
+using ShipSimulator.Visuals;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -50,6 +51,29 @@ namespace ShipSimulator.Tests
                 Is.EqualTo(baseline - 0.8f).Within(0.001f));
             Object.Destroy(routeObject);
             Object.Destroy(depthObject);
+        }
+
+        [UnityTest]
+        public IEnumerator WeatherController_EnablesRainFogAndConfiguredWind()
+        {
+            GameObject weatherObject = new GameObject("Weather Test");
+            WeatherController weather = weatherObject.AddComponent<WeatherController>();
+            weather.Configure(315f, 8f, 0.7f, 0.65f);
+
+            yield return null;
+
+            ParticleSystem rain =
+                weatherObject.GetComponentInChildren<ParticleSystem>();
+            Assert.That(rain, Is.Not.Null);
+            Assert.That(rain.isPlaying, Is.True);
+            Assert.That(rain.emission.rateOverTime.constant,
+                Is.GreaterThan(1000f));
+            Assert.That(RenderSettings.fogDensity, Is.GreaterThan(0.003f));
+            Assert.That(weather.WindVelocityMps.magnitude,
+                Is.EqualTo(8f).Within(0.001f));
+
+            Object.Destroy(weatherObject);
+            RenderSettings.fogDensity = 0.0011f;
         }
 
         private static FairwayRouteSample Sample(Vector3 position)

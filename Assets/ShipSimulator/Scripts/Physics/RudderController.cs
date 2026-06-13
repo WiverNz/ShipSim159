@@ -7,7 +7,8 @@ namespace ShipSimulator.Physics
         public float AngleDeg { get; private set; }
         public Vector3 LastForce { get; private set; }
 
-        public void Step(Rigidbody body, VesselData data, float command, Vector3 waterVelocity, float dt)
+        public void Step(Rigidbody body, VesselData data, float command,
+            Vector3 waterVelocity, float dt, float effectiveness = 1f)
         {
             float target = command * data.rudder.maxAngleDeg;
             AngleDeg = Mathf.MoveTowards(AngleDeg, target, data.rudder.rateDegPerSecond * dt);
@@ -17,11 +18,11 @@ namespace ShipSimulator.Physics
             // F = 0.5 rho V^2 A Cl, with a linear lift slope at small rudder angles.
             float lift = 0.5f * data.hydrodynamics.waterDensityKgM3 * axialSpeed * axialSpeed
                 * data.rudder.areaPerRudderM2 * data.rudder.count
-                * data.rudder.liftCoefficientSlopePerRad * angleRad * data.calibration.rudderMultiplier;
+                * data.rudder.liftCoefficientSlopePerRad * angleRad *
+                data.calibration.rudderMultiplier * Mathf.Clamp01(effectiveness);
             LastForce = transform.right * lift;
             body.AddForceAtPosition(LastForce, transform.position, ForceMode.Force);
             transform.localRotation = Quaternion.Euler(0f, AngleDeg, 0f);
         }
     }
 }
-

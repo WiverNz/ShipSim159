@@ -21,6 +21,8 @@ the generated environment.
 | `D` / `Right Arrow` | Command starboard rudder |
 | `C` / `Enter` | Rudder midships |
 | `H` | Sound horn |
+| `T` | Cycle simulation time through 1x, 2x, and 4x |
+| `Shift+T` | Return simulation time to 1x |
 | `R` | Reset vessel |
 
 Engine thrust and rudder angle change gradually. The selected command is not
@@ -42,11 +44,13 @@ The minimap displays an approximate fairway, route, vessel heading, buoys,
 shallow side zones, and training waypoint. Press `M` to hide it. Press `F1` to
 emphasize the control shortcut strip.
 
+The time panel provides `1x`, `2x`, and `4x` buttons. Time scaling affects
+vessel physics, current response, mission timing, and visual simulation.
+
 Depth, bathymetry, route geometry, RPM, and engine load are prototype
 estimates. They must not be treated as validated navigation or training data.
 
 ## Verification
 
 Run EditMode and PlayMode suites from `Window > General > Test Runner`.
-Latest verified result: EditMode `5/5`, PlayMode `2/2`.
-
+Latest verified result: EditMode `16/16`, PlayMode `4/4`.

@@ -19,3 +19,9 @@ approval_mode = "approve"
 
 [mcp_servers.mcp-unity.tools.get_material_info]
 approval_mode = "approve"
+
+[mcp_servers.mcp-unity.tools.get_console_logs]
+approval_mode = "approve"
+
+[mcp_servers.mcp-unity.tools.load_scene]
+approval_mode = "approve"

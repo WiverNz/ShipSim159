@@ -26,6 +26,10 @@ namespace ShipSimulator.Physics
         private float throttleCommand;
         private float rudderCommand;
         private readonly HashSet<RiverCurrentZone> activeCurrentZones = new HashSet<RiverCurrentZone>();
+        private CurrentFieldProvider currentField;
+        private ScenarioBathymetry bathymetry;
+        private GroundingController grounding;
+        private float estimatedSquatM;
 
         public Rigidbody Body => body;
         public VesselData Data => data;
@@ -40,6 +44,9 @@ namespace ShipSimulator.Physics
         public float EstimatedDraftM => data != null
             ? Mathf.Lerp(0.9f, data.dimensions.loadedDraftM, LoadFraction)
             : 0f;
+        public float EstimatedSquatM => estimatedSquatM;
+        public float EffectiveDraftM => EstimatedDraftM + estimatedSquatM;
+        public GroundingController Grounding => grounding;
 
         private void Awake()
         {
@@ -51,6 +58,9 @@ namespace ShipSimulator.Physics
             buoyancyPoints = GetComponentsInChildren<BuoyancyPoint>();
             startPosition = transform.position;
             startRotation = transform.rotation;
+            currentField = FindFirstObjectByType<CurrentFieldProvider>();
+            bathymetry = FindFirstObjectByType<ScenarioBathymetry>();
+            grounding = GetComponent<GroundingController>();
 
             if (data == null)
             {
@@ -94,9 +104,13 @@ namespace ShipSimulator.Physics
         {
             Vector3 current = CalculateEffectiveCurrent();
             Vector3 waterVelocity = body.linearVelocity - current;
-            resistance.Apply(body, data, current);
+            float shallowResistance = CalculateShallowWaterEffects(
+                out float rudderEffectiveness);
+            resistance.Apply(body, data, current, shallowResistance);
             propulsion.Step(body, data, throttleCommand, Time.fixedDeltaTime);
-            rudder.Step(body, data, rudderCommand, waterVelocity, Time.fixedDeltaTime);
+            rudder.Step(body, data, rudderCommand, waterVelocity,
+                Time.fixedDeltaTime, rudderEffectiveness);
+            ApplyCurrentShear();
 
             float totalWeight = body.mass * UnityEngine.Physics.gravity.magnitude;
             float pointForce = totalWeight * data.buoyancy.reserveBuoyancyFactor / Mathf.Max(1, buoyancyPoints.Length);
@@ -151,6 +165,8 @@ namespace ShipSimulator.Physics
 
         private Vector3 CalculateEffectiveCurrent()
         {
+            if (currentField != null && body != null)
+                return currentField.Sample(body.worldCenterOfMass);
             activeCurrentZones.RemoveWhere(zone => zone == null || !zone.isActiveAndEnabled);
             if (activeCurrentZones.Count == 0) return ambientCurrentMps;
 
@@ -158,6 +174,42 @@ namespace ShipSimulator.Physics
             foreach (RiverCurrentZone zone in activeCurrentZones)
                 total += zone.CurrentVelocityMps;
             return total / activeCurrentZones.Count;
+        }
+
+        private void ApplyCurrentShear()
+        {
+            if (currentField == null || data == null) return;
+            float sampleOffset = data.dimensions.lengthOverallM * 0.38f;
+            Vector3 bowCurrent = currentField.Sample(
+                transform.TransformPoint(0f, 0f, sampleOffset));
+            Vector3 sternCurrent = currentField.Sample(
+                transform.TransformPoint(0f, 0f, -sampleOffset));
+            Vector3 localDifference = transform.InverseTransformDirection(
+                bowCurrent - sternCurrent);
+            float yawMoment = Mathf.Clamp(
+                -localDifference.x * body.mass * 18f,
+                -18000000f, 18000000f);
+            body.AddTorque(Vector3.up * yawMoment, ForceMode.Force);
+        }
+
+        private float CalculateShallowWaterEffects(out float rudderEffectiveness)
+        {
+            estimatedSquatM = 0f;
+            rudderEffectiveness = 1f;
+            if (bathymetry == null || data == null) return 1f;
+            float depth = bathymetry.Sample(body.worldCenterOfMass).DepthM;
+            float draft = Mathf.Max(0.1f, EstimatedDraftM);
+            float ratio = depth / draft;
+            float speed = body.linearVelocity.magnitude;
+            if (ratio < 1.8f)
+            {
+                float severity = Mathf.Clamp01((1.8f - ratio) / 0.8f);
+                estimatedSquatM = Mathf.Min(0.55f,
+                    speed * speed * 0.018f * severity);
+                rudderEffectiveness = Mathf.Lerp(1f, 0.55f, severity);
+                return Mathf.Lerp(1f, 2.4f, severity);
+            }
+            return 1f;
         }
 
         private void OnDrawGizmosSelected()

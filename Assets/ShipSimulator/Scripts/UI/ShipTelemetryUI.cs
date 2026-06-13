@@ -36,6 +36,7 @@ namespace ShipSimulator.UI
         private Text helpText;
         private Text depthRadarText;
         private Text timeOfDayText;
+        private Text timeScaleText;
         private RectTransform rudderNeedle;
         private RectTransform rudderCommandNeedle;
         private RectTransform mapVessel;
@@ -49,6 +50,10 @@ namespace ShipSimulator.UI
         private RectTransform[] radarPredictionSegments;
         private AudioSource hornSource;
         private DayNightController dayNight;
+        private SimulationTimeController simulationTime;
+        private FairwayRoute scenarioRoute;
+        private ScenarioBathymetry scenarioBathymetry;
+        private GorodetsScenarioController scenario;
         private readonly List<MapContact> mapContacts = new List<MapContact>();
         private readonly List<MapLine> mapLines = new List<MapLine>();
         private readonly List<Vector3> radarTrack = new List<Vector3>();
@@ -99,6 +104,12 @@ namespace ShipSimulator.UI
             if (ship.GetComponent<NavigationLightRig>() == null)
                 ship.gameObject.AddComponent<NavigationLightRig>();
             dayNight = FindFirstObjectByType<DayNightController>();
+            simulationTime = GetComponent<SimulationTimeController>();
+            if (simulationTime == null)
+                simulationTime = gameObject.AddComponent<SimulationTimeController>();
+            scenarioRoute = FindFirstObjectByType<FairwayRoute>();
+            scenarioBathymetry = FindFirstObjectByType<ScenarioBathymetry>();
+            scenario = FindFirstObjectByType<GorodetsScenarioController>();
             if (dayNight == null)
                 dayNight = gameObject.AddComponent<DayNightController>();
             GameObject navigation = GameObject.Find("Navigation");
@@ -133,8 +144,10 @@ namespace ShipSimulator.UI
 
             float speedMps = ship.Body.linearVelocity.magnitude;
             float heading = ship.transform.eulerAngles.y;
-            float channelDepth = FairwayModel.DepthAt(ship.transform.position);
-            float underKeel = channelDepth - ship.EstimatedDraftM;
+            float channelDepth = scenarioBathymetry != null
+                ? scenarioBathymetry.Sample(ship.transform.position).DepthM
+                : FairwayModel.DepthAt(ship.transform.position);
+            float underKeel = channelDepth - ship.EffectiveDraftM;
             Vector3 localVelocity = ship.transform.InverseTransformDirection(ship.Body.linearVelocity);
             Vector3 current = ship.EffectiveCurrentMps;
 
@@ -150,7 +163,7 @@ namespace ShipSimulator.UI
                 $"<size=15>DRIFT {driftAngle:+0.0;-0.0;0.0} deg   SIDE {localVelocity.x:+0.0;-0.0;0.0} m/s</size>";
             depthText.text =
                 $"DEPTH  <size=24><b>{channelDepth:F1} m</b></size>\n" +
-                $"<size=15>UNDER KEEL {underKeel:F1} m</size>";
+                $"<size=15>UNDER KEEL {underKeel:F1} m  SQUAT {ship.EstimatedSquatM:F1} m</size>";
             rudderText.text =
                 $"RUDDER  <size=23><b>{ship.RudderAngleDeg:+0.0;-0.0;0.0} deg</b></size>\n" +
                 $"<size=14>COMMAND {ship.RudderCommand * 35f:+0;-0;0} deg</size>";
@@ -170,7 +183,11 @@ namespace ShipSimulator.UI
             float distance = Vector3.Distance(
                 new Vector3(ship.transform.position.x, 0f, ship.transform.position.z),
                 objectivePosition);
-            objectiveText.text = FormatObjectiveStatus(distance);
+            objectiveText.text = scenario != null
+                ? $"<b>{scenario.Phase}</b>\n{scenario.Instruction}\n" +
+                  $"Score <b>{scenario.Score:F0}/100</b>   " +
+                  $"Limit <b>{scenario.LocalSpeedLimitMps * 3.6f:F0} km/h</b>"
+                : FormatObjectiveStatus(distance);
             depthText.color = underKeel < 0.8f
                 ? new Color(1f, 0.28f, 0.2f)
                 : underKeel < 2f ? warningColor : Color.white;
@@ -223,6 +240,7 @@ namespace ShipSimulator.UI
             BuildRudderControls(transform as RectTransform);
             BuildTelegraph(transform as RectTransform);
             BuildCameraControls(transform as RectTransform);
+            BuildTimeControls();
 
             warningPanel = Panel("Warnings",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
@@ -243,7 +261,7 @@ namespace ShipSimulator.UI
                 new Vector2(320f, 12f), new Vector2(-320f, -1016f));
             helpText.text =
                 "A/D  RUDDER     W/S  TELEGRAPH     SPACE  STOP     1-9  CAMERAS\n" +
-                "RMB  ORBIT     WHEEL  ZOOM     H  HORN     M  MAP     N  DAY/NIGHT     F1  CLOSE";
+                "RMB  ORBIT     WHEEL  ZOOM     H  HORN     M  MAP     N  DAY/NIGHT     T  TIME     F1  CLOSE";
             helpText.gameObject.SetActive(false);
             Text helpPrompt = Label(transform, "F1  CONTROLS", 16, TextAnchor.LowerCenter,
                 new Vector2(820f, 16f), new Vector2(-820f, -1034f));
@@ -316,6 +334,23 @@ namespace ShipSimulator.UI
             timeOfDayText = Label(block, "DAY", 14, TextAnchor.MiddleCenter,
                 new Vector2(145f, 72f), new Vector2(-145f, -40f));
             timeOfDayText.color = accentColor;
+        }
+
+        private void BuildTimeControls()
+        {
+            RectTransform block = AnchoredPanel("TimeScaleBlock",
+                new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(1f, 0f),
+                new Vector2(-22f, 170f), new Vector2(350f, 58f));
+            block.GetComponent<Image>().color = new Color(0.025f, 0.055f, 0.075f, 0.82f);
+            timeScaleText = Label(block, "TIME 1x", 16, TextAnchor.MiddleLeft,
+                new Vector2(14f, 8f), new Vector2(-230f, -8f));
+            timeScaleText.color = accentColor;
+            Button(block, "1x", new Vector2(-30f, 0f), new Vector2(58f, 34f),
+                () => SetTimeScale(1f));
+            Button(block, "2x", new Vector2(40f, 0f), new Vector2(58f, 34f),
+                () => SetTimeScale(2f));
+            Button(block, "4x", new Vector2(110f, 0f), new Vector2(58f, 34f),
+                () => SetTimeScale(4f));
         }
 
         private void BuildMiniMap()
@@ -448,12 +483,34 @@ namespace ShipSimulator.UI
         {
             string warning = string.Empty;
             if (underKeel < 0.8f) warning += "SHALLOW WATER\n";
-            if (Mathf.Abs(FairwayModel.LateralOffset(
+            bool outsideFairway;
+            if (scenarioRoute != null)
+            {
+                FairwayQuery query = scenarioRoute.Query(ship.transform.position);
+                float width = query.LateralOffsetM >= 0f
+                    ? query.Sample.rightWidthM
+                    : query.Sample.leftWidthM;
+                outsideFairway = Mathf.Abs(query.LateralOffsetM) > width;
+            }
+            else
+            {
+                outsideFairway = Mathf.Abs(FairwayModel.LateralOffset(
                     ship.transform.position.x, ship.transform.position.z)) >
-                FairwayModel.MarkedHalfWidth(ship.transform.position.z))
-                warning += "OUTSIDE FAIRWAY\n";
-            if (ship.Data != null && speedMps > ship.Data.controlLimits.maxLoadedSpeedMps * 1.05f)
+                    FairwayModel.MarkedHalfWidth(ship.transform.position.z);
+            }
+            if (outsideFairway) warning += "OUTSIDE FAIRWAY\n";
+            float speedLimit = scenario != null
+                ? scenario.LocalSpeedLimitMps
+                : ship.Data != null ? ship.Data.controlLimits.maxLoadedSpeedMps : float.MaxValue;
+            if (speedMps > speedLimit * 1.05f)
                 warning += "OVERSPEED\n";
+            if (ship.Grounding != null)
+            {
+                if (ship.Grounding.State == GroundingState.Touching)
+                    warning += "BOTTOM CONTACT\n";
+                if (ship.Grounding.State == GroundingState.HardGrounding)
+                    warning += "HARD GROUNDING\n";
+            }
             if (currentSpeed > 1.2f) warning += "STRONG CURRENT\n";
             if (currentSpeed > 0.65f)
             {
@@ -623,6 +680,16 @@ namespace ShipSimulator.UI
                 if (miniMap != null) miniMap.gameObject.SetActive(mapVisible);
             }
             if (keyboard.nKey.wasPressedThisFrame) ToggleDayNight();
+            if (keyboard.tKey.wasPressedThisFrame)
+            {
+                if (keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed)
+                    SetTimeScale(1f);
+                else
+                {
+                    simulationTime?.Cycle();
+                    UpdateTimeScaleText();
+                }
+            }
             if (keyboard.f1Key.wasPressedThisFrame)
             {
                 helpVisible = !helpVisible;
@@ -664,6 +731,18 @@ namespace ShipSimulator.UI
             if (dayNight == null) return;
             dayNight.Toggle();
             if (timeOfDayText != null) timeOfDayText.text = dayNight.TimeLabel;
+        }
+
+        private void SetTimeScale(float scale)
+        {
+            simulationTime?.SetScale(scale);
+            UpdateTimeScaleText();
+        }
+
+        private void UpdateTimeScaleText()
+        {
+            if (timeScaleText != null && simulationTime != null)
+                timeScaleText.text = $"TIME {simulationTime.DisplayText}";
         }
 
         private void UpdateDepthRadar(float currentDepth)

@@ -75,6 +75,8 @@ Settings.
 | Mouse wheel | Adjust camera distance |
 | `M` | Toggle river radar |
 | `N` | Toggle day/night mode |
+| `T` | Cycle simulation time through 1x, 2x, and 4x |
+| `Shift+T` | Return simulation time to 1x |
 | `F1` | Toggle the full control reference |
 
 ### Camera Views

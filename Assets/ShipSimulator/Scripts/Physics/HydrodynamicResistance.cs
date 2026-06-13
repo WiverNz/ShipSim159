@@ -6,11 +6,13 @@ namespace ShipSimulator.Physics
     {
         public Vector3 RelativeWaterVelocity { get; private set; }
 
-        public void Apply(Rigidbody body, VesselData data, Vector3 currentVelocity)
+        public void Apply(Rigidbody body, VesselData data, Vector3 currentVelocity,
+            float resistanceMultiplier = 1f)
         {
             RelativeWaterVelocity = body.linearVelocity - currentVelocity;
             Vector3 local = transform.InverseTransformDirection(RelativeWaterVelocity);
-            float multiplier = data.calibration.resistanceMultiplier;
+            float multiplier = data.calibration.resistanceMultiplier *
+                Mathf.Max(0.1f, resistanceMultiplier);
             float surge = Oppose(local.z, data.hydrodynamics.surgeLinearNPerMps, data.hydrodynamics.surgeQuadraticNPerMps2);
             float sway = Oppose(local.x, data.hydrodynamics.swayLinearNPerMps, data.hydrodynamics.swayQuadraticNPerMps2);
             body.AddForce(transform.TransformDirection(new Vector3(sway, 0f, surge)) * multiplier);
@@ -26,4 +28,3 @@ namespace ShipSimulator.Physics
         }
     }
 }
-

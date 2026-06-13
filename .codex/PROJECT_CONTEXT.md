@@ -244,13 +244,41 @@ compiled the runtime and EditMode assemblies successfully. The focused HUD
 formatting regression test passed; the suite now contains 10 EditMode tests,
 but the MCP service timed out before completing a fresh full-suite run.
 
+## Gorodets Scenario
+
+`Assets/ShipSimulator/Scenes/GorodetsTrainingScene.unity` is a separate
+2.27 km high-difficulty scenario for the existing Project 507B vessel. It is
+enabled in Build Settings after the primary training scene.
+
+The scenario includes a sampled curved route, asymmetric procedural
+bathymetry, rocky shoal patches, paired lateral marks, three leading-mark
+pairs, six blended current regions, differential bow/stern current yaw,
+estimated squat and shallow-water resistance, keel-clearance grounding,
+mission phases, warnings, and scoring.
+
+Use `Ship Simulator/Build Gorodets Scenario` to regenerate its scene-owned
+content. The geometry, depth, current, squat, damage, and scoring parameters
+are estimated training-game values, not current navigation data.
+
+The HUD now provides simulation time controls at 1x, 2x, and 4x. `T` cycles
+the speed and `Shift+T` returns to 1x.
+
+Latest verification after this work:
+
+- Unity compilation: successful
+- EditMode: 16 passed, 0 failed
+- PlayMode: 4 passed, 0 failed
+- Gorodets Play Mode smoke check: no runtime exceptions
+
 ## Known Limitations
 
 - Hydrodynamic coefficients are estimates and are not training validated.
 - Buoyancy uses 15 points rather than sectional or volume hydrostatics.
 - Twin-screw propulsion is aggregated at one centerline force point.
-- No shallow-water hydrodynamic interaction, squat, cavitation, grounding
-  damage, or damage model. Wake is visual only and does not affect physics.
+- The Gorodets scenario has limited estimated shallow-water resistance, squat,
+  grounding drag, and abstract damage points. It does not model cavitation,
+  flooding, structural damage, or validated bottom interaction. Wake is visual
+  only and does not affect physics.
 - Static shore collisions use the generated bank slope meshes. The vessel uses
   three overlapping box colliders for bow, midship, and stern, with continuous
   dynamic collision detection.

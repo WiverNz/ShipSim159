@@ -52,15 +52,15 @@ namespace ShipSimulator.Tests
         }
 
         [Test]
-        public void TrainingScene_IsFirstAndEnabledInBuildSettings()
+        public void TrainingScene_IsSecondAndEnabledInBuildSettings()
         {
             EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
 
-            Assert.That(scenes, Is.Not.Empty);
+            Assert.That(scenes, Has.Length.GreaterThanOrEqualTo(2));
             Assert.That(
-                scenes[0].path,
+                scenes[1].path,
                 Is.EqualTo("Assets/ShipSimulator/Scenes/RiverTrainingScene.unity"));
-            Assert.That(scenes[0].enabled, Is.True);
+            Assert.That(scenes[1].enabled, Is.True);
         }
 
         [Test]

@@ -16,6 +16,8 @@ namespace ShipSimulator.Editor
     {
         private const string Root = "Assets/ShipSimulator";
         private const string ScenePath = Root + "/Scenes/RiverTrainingScene.unity";
+        private const string StartupScenePath =
+            Root + "/Scenes/GorodetsTrainingScene.unity";
         private const string ProfilePath = Root + "/Settings/RiverVisualProfile.asset";
         private const string WaterMeshPath = Root + "/Settings/RiverWaterMesh.asset";
         private const string LeftBankMeshPath = Root + "/Settings/LeftBankTerrain.asset";
@@ -28,7 +30,8 @@ namespace ShipSimulator.Editor
         {
             if (!EditorApplication.isPlaying)
             {
-                EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                EditorSceneManager.OpenScene(
+                    StartupScenePath, OpenSceneMode.Single);
                 EditorApplication.isPlaying = true;
             }
         }

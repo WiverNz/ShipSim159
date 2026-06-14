@@ -353,10 +353,7 @@ namespace ShipSimulator.Editor
             var scenes = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
             int existing = scenes.FindIndex(scene => scene.path == ScenePath);
             if (existing >= 0) scenes.RemoveAt(existing);
-            int primaryIndex = scenes.FindIndex(scene =>
-                scene.path == "Assets/ShipSimulator/Scenes/RiverTrainingScene.unity");
-            int insertIndex = primaryIndex >= 0 ? primaryIndex + 1 : 0;
-            scenes.Insert(insertIndex, new EditorBuildSettingsScene(ScenePath, true));
+            scenes.Insert(0, new EditorBuildSettingsScene(ScenePath, true));
             EditorBuildSettings.scenes = scenes.ToArray();
         }
     }

@@ -14,17 +14,15 @@ namespace ShipSimulator.Tests
             "Assets/ShipSimulator/Scenes/GorodetsTrainingScene.unity";
 
         [Test]
-        public void GorodetsScene_IsEnabledAfterPrimaryTrainingScene()
+        public void GorodetsScene_IsFirstAndEnabledInBuildSettings()
         {
             EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
 
             Assert.That(scenes, Has.Length.GreaterThanOrEqualTo(2));
-            Assert.That(scenes[0].path, Is.EqualTo(
+            Assert.That(scenes[0].path, Is.EqualTo(ScenePath));
+            Assert.That(scenes[0].enabled, Is.True);
+            Assert.That(scenes[1].path, Is.EqualTo(
                 "Assets/ShipSimulator/Scenes/RiverTrainingScene.unity"));
-            int scenarioIndex = System.Array.FindIndex(
-                scenes, scene => scene.path == ScenePath);
-            Assert.That(scenarioIndex, Is.GreaterThan(0));
-            Assert.That(scenes[scenarioIndex].enabled, Is.True);
         }
 
         [Test]
@@ -274,9 +272,30 @@ namespace ShipSimulator.Tests
 
                 ParticleSystem[] rain =
                     weatherObject.GetComponentsInChildren<ParticleSystem>();
-                Assert.That(rain, Has.Length.EqualTo(1));
-                Assert.That(rain[0].emission.rateOverTime.constant,
+                Assert.That(rain, Has.Length.EqualTo(2));
+
+                ParticleSystem drops = null;
+                ParticleSystem splashes = null;
+                foreach (ParticleSystem system in rain)
+                {
+                    if (system.name == "Rain Volume") drops = system;
+                    if (system.name == "Rain Surface Splashes")
+                        splashes = system;
+                }
+
+                Assert.That(drops, Is.Not.Null);
+                Assert.That(splashes, Is.Not.Null);
+                ParticleSystemRenderer dropsRenderer =
+                    drops.GetComponent<ParticleSystemRenderer>();
+                Assert.That(dropsRenderer.renderMode,
+                    Is.EqualTo(ParticleSystemRenderMode.Mesh));
+                Assert.That(dropsRenderer.mesh, Is.Not.Null);
+                Assert.That(drops.main.simulationSpace,
+                    Is.EqualTo(ParticleSystemSimulationSpace.World));
+                Assert.That(drops.emission.rateOverTime.constant,
                     Is.GreaterThan(1000f));
+                Assert.That(splashes.emission.rateOverTime.constant,
+                    Is.GreaterThan(100f));
                 Assert.That(RenderSettings.fogDensity, Is.GreaterThan(0.003f));
                 Assert.That(weather.WindVelocityMps.magnitude,
                     Is.EqualTo(8f).Within(0.001f));

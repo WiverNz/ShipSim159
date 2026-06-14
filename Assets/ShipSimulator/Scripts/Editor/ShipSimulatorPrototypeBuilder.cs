@@ -318,12 +318,16 @@ namespace ShipSimulator.Editor
         private static void AddSceneToBuildSettings()
         {
             EditorBuildSettingsScene[] existing = EditorBuildSettings.scenes;
-            var updated = new System.Collections.Generic.List<EditorBuildSettingsScene>
-            {
-                new EditorBuildSettingsScene(ScenePath, true)
-            };
+            var updated =
+                new System.Collections.Generic.List<EditorBuildSettingsScene>();
             foreach (EditorBuildSettingsScene item in existing)
                 if (item.path != ScenePath) updated.Add(item);
+            int gorodetsIndex = updated.FindIndex(item =>
+                item.path ==
+                "Assets/ShipSimulator/Scenes/GorodetsTrainingScene.unity");
+            int insertIndex = gorodetsIndex >= 0 ? gorodetsIndex + 1 : 0;
+            updated.Insert(
+                insertIndex, new EditorBuildSettingsScene(ScenePath, true));
             EditorBuildSettings.scenes = updated.ToArray();
         }
     }

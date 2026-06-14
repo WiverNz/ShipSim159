@@ -16,7 +16,11 @@ namespace ShipSimulator.Visuals
 
         private ParticleSystem rain;
         private Transform rainTransform;
+        private ParticleSystem rainSplashes;
+        private Transform splashTransform;
         private Material rainMaterial;
+        private Material splashMaterial;
+        private Mesh rainDropMesh;
         private Camera targetCamera;
         private MaterialPropertyBlock waterProperties;
 
@@ -45,8 +49,17 @@ namespace ShipSimulator.Visuals
         {
             if (targetCamera == null) targetCamera = Camera.main;
             if (targetCamera != null && rainTransform != null)
+            {
                 rainTransform.position = targetCamera.transform.position +
-                    Vector3.up * 22f;
+                    Vector3.up * 24f;
+                if (splashTransform != null)
+                {
+                    splashTransform.position = new Vector3(
+                        targetCamera.transform.position.x,
+                        0.08f,
+                        targetCamera.transform.position.z);
+                }
+            }
         }
 
         public void Configure(float directionDeg, float speedMps,
@@ -122,60 +135,176 @@ namespace ShipSimulator.Visuals
 
             ParticleSystem.MainModule main = rain.main;
             main.loop = true;
-            main.startLifetime = 2.4f;
-            main.startSpeed = 28f;
-            main.startSize = 0.055f;
-            main.maxParticles = 6500;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(1.7f, 2.5f);
+            main.startSpeed = 0f;
+            main.startSize = new ParticleSystem.MinMaxCurve(0.65f, 1.35f);
+            main.maxParticles = 5500;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
-            main.gravityModifier = 0.2f;
-            main.startColor = new Color(0.64f, 0.75f, 0.85f, 0.58f);
+            main.gravityModifier = 0f;
+            main.startColor = new ParticleSystem.MinMaxGradient(
+                new Color(0.58f, 0.69f, 0.78f, 0.28f),
+                new Color(0.78f, 0.86f, 0.92f, 0.62f));
 
             ParticleSystem.EmissionModule emission = rain.emission;
             emission.rateOverTime = 0f;
             ParticleSystem.ShapeModule shape = rain.shape;
             shape.shapeType = ParticleSystemShapeType.Box;
-            shape.scale = new Vector3(95f, 3f, 95f);
-            shape.rotation = new Vector3(90f, 0f, 0f);
+            shape.scale = new Vector3(100f, 5f, 100f);
 
             ParticleSystem.VelocityOverLifetimeModule velocity = rain.velocityOverLifetime;
             velocity.enabled = true;
             velocity.space = ParticleSystemSimulationSpace.World;
-            velocity.y = -28f;
+            velocity.y = -30f;
+
+            ParticleSystem.NoiseModule noise = rain.noise;
+            noise.enabled = true;
+            noise.quality = ParticleSystemNoiseQuality.Low;
+            noise.strength = 0.35f;
+            noise.frequency = 0.18f;
+            noise.scrollSpeed = 0.12f;
 
             ParticleSystemRenderer renderer =
                 rainObject.GetComponent<ParticleSystemRenderer>();
-            renderer.renderMode = ParticleSystemRenderMode.Stretch;
-            renderer.lengthScale = 18f;
-            renderer.velocityScale = 0.08f;
+            renderer.renderMode = ParticleSystemRenderMode.Mesh;
+            rainDropMesh = CreateRainDropMesh();
+            renderer.mesh = rainDropMesh;
+            renderer.shadowCastingMode =
+                UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
             Shader shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
             if (shader != null)
             {
                 rainMaterial = new Material(shader) { name = "Runtime Rain" };
                 rainMaterial.SetColor("_BaseColor",
-                    new Color(0.62f, 0.74f, 0.84f, 0.5f));
+                    new Color(0.64f, 0.76f, 0.84f, 0.52f));
+                rainMaterial.SetFloat("_Surface", 1f);
+                rainMaterial.SetFloat("_ZWrite", 0f);
+                rainMaterial.renderQueue = 3000;
                 renderer.material = rainMaterial;
             }
+
+            EnsureSplashSystem(shader);
         }
 
         private void ApplyRain()
         {
             EnsureRainSystem();
             ParticleSystem.EmissionModule emission = rain.emission;
-            emission.rateOverTime = Mathf.Lerp(0f, 2600f, rainIntensity);
+            emission.rateOverTime = Mathf.Lerp(0f, 1850f, rainIntensity);
             ParticleSystem.VelocityOverLifetimeModule velocity =
                 rain.velocityOverLifetime;
             Vector3 wind = WindVelocityMps;
-            velocity.x = wind.x * 0.45f;
-            velocity.y = -28f;
-            velocity.z = wind.z * 0.45f;
+            velocity.x = wind.x * 0.55f;
+            velocity.y = -30f;
+            velocity.z = wind.z * 0.55f;
+
+            ParticleSystem.EmissionModule splashEmission =
+                rainSplashes.emission;
+            splashEmission.rateOverTime = Mathf.Lerp(
+                0f, 420f, rainIntensity);
             if (rainIntensity > 0.01f)
             {
                 if (!rain.isPlaying) rain.Play();
+                if (!rainSplashes.isPlaying) rainSplashes.Play();
             }
             else
             {
                 rain.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                rainSplashes.Stop(
+                    true, ParticleSystemStopBehavior.StopEmittingAndClear);
             }
+        }
+
+        private void EnsureSplashSystem(Shader shader)
+        {
+            Transform existing = transform.Find("Rain Surface Splashes");
+            GameObject splashObject = existing != null
+                ? existing.gameObject
+                : new GameObject("Rain Surface Splashes");
+            if (existing == null)
+                splashObject.transform.SetParent(transform, false);
+            splashTransform = splashObject.transform;
+            rainSplashes = splashObject.GetComponent<ParticleSystem>();
+            if (rainSplashes == null)
+                rainSplashes = splashObject.AddComponent<ParticleSystem>();
+
+            ParticleSystem.MainModule main = rainSplashes.main;
+            main.loop = true;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(0.18f, 0.42f);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(0.35f, 1.3f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.025f, 0.075f);
+            main.startColor = new ParticleSystem.MinMaxGradient(
+                new Color(0.68f, 0.78f, 0.84f, 0.18f),
+                new Color(0.82f, 0.9f, 0.94f, 0.5f));
+            main.maxParticles = 900;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.gravityModifier = 1.3f;
+
+            ParticleSystem.EmissionModule emission = rainSplashes.emission;
+            emission.rateOverTime = 0f;
+            ParticleSystem.ShapeModule shape = rainSplashes.shape;
+            shape.shapeType = ParticleSystemShapeType.Box;
+            shape.scale = new Vector3(75f, 0.02f, 75f);
+
+            ParticleSystem.ColorOverLifetimeModule color =
+                rainSplashes.colorOverLifetime;
+            color.enabled = true;
+            Gradient fade = new Gradient();
+            fade.SetKeys(
+                new[]
+                {
+                    new GradientColorKey(Color.white, 0f),
+                    new GradientColorKey(Color.white, 1f)
+                },
+                new[]
+                {
+                    new GradientAlphaKey(0f, 0f),
+                    new GradientAlphaKey(0.65f, 0.18f),
+                    new GradientAlphaKey(0f, 1f)
+                });
+            color.color = fade;
+
+            ParticleSystemRenderer renderer =
+                splashObject.GetComponent<ParticleSystemRenderer>();
+            renderer.renderMode = ParticleSystemRenderMode.Billboard;
+            renderer.shadowCastingMode =
+                UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+            if (shader != null)
+            {
+                splashMaterial = new Material(shader)
+                {
+                    name = "Runtime Rain Splashes"
+                };
+                splashMaterial.SetColor("_BaseColor",
+                    new Color(0.72f, 0.83f, 0.88f, 0.42f));
+                splashMaterial.SetFloat("_Surface", 1f);
+                splashMaterial.SetFloat("_ZWrite", 0f);
+                splashMaterial.renderQueue = 3000;
+                renderer.material = splashMaterial;
+            }
+        }
+
+        private static Mesh CreateRainDropMesh()
+        {
+            Mesh mesh = new Mesh { name = "Runtime Rain Drop" };
+            mesh.vertices = new[]
+            {
+                new Vector3(0f, 0.09f, 0f),
+                new Vector3(-0.014f, 0f, 0f),
+                new Vector3(0f, 0f, 0.014f),
+                new Vector3(0.014f, 0f, 0f),
+                new Vector3(0f, 0f, -0.014f),
+                new Vector3(0f, -0.48f, 0f)
+            };
+            mesh.triangles = new[]
+            {
+                0, 2, 1, 0, 3, 2, 0, 4, 3, 0, 1, 4,
+                5, 1, 2, 5, 2, 3, 5, 3, 4, 5, 4, 1
+            };
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            return mesh;
         }
 
         private void ApplyFog()
@@ -235,9 +364,16 @@ namespace ShipSimulator.Visuals
 
         private void OnDestroy()
         {
-            if (rainMaterial == null) return;
-            if (Application.isPlaying) Destroy(rainMaterial);
-            else DestroyImmediate(rainMaterial);
+            DestroyGenerated(rainMaterial);
+            DestroyGenerated(splashMaterial);
+            DestroyGenerated(rainDropMesh);
+        }
+
+        private static void DestroyGenerated(Object generated)
+        {
+            if (generated == null) return;
+            if (Application.isPlaying) Destroy(generated);
+            else DestroyImmediate(generated);
         }
     }
 }

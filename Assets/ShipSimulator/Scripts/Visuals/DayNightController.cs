@@ -56,38 +56,38 @@ namespace ShipSimulator.Visuals
             {
                 sun.transform.rotation = night
                     ? Quaternion.Euler(18f, 145f, 0f)
-                    : Quaternion.Euler(34f, -42f, 0f);
+                    : Quaternion.Euler(38f, -48f, 0f);
                 sun.color = night
-                    ? new Color(0.52f, 0.63f, 0.9f)
-                    : new Color(1f, 0.94f, 0.84f);
-                sun.intensity = night ? 0.2f : 1.35f;
-                sun.shadowStrength = night ? 0.45f : 0.82f;
+                    ? new Color(0.55f, 0.66f, 0.92f)
+                    : new Color(1f, 0.95f, 0.86f);
+                sun.intensity = night ? 0.28f : 1.25f;
+                sun.shadowStrength = night ? 0.4f : 0.72f;
             }
 
             RenderSettings.ambientMode = AmbientMode.Trilight;
             RenderSettings.ambientSkyColor = night
-                ? new Color(0.045f, 0.07f, 0.13f)
-                : new Color(0.42f, 0.53f, 0.66f);
+                ? new Color(0.06f, 0.09f, 0.16f)
+                : new Color(0.46f, 0.57f, 0.70f);
             RenderSettings.ambientEquatorColor = night
-                ? new Color(0.055f, 0.075f, 0.11f)
-                : new Color(0.36f, 0.40f, 0.36f);
+                ? new Color(0.06f, 0.08f, 0.12f)
+                : new Color(0.40f, 0.43f, 0.39f);
             RenderSettings.ambientGroundColor = night
-                ? new Color(0.022f, 0.03f, 0.045f)
-                : new Color(0.18f, 0.16f, 0.12f);
+                ? new Color(0.03f, 0.04f, 0.06f)
+                : new Color(0.20f, 0.17f, 0.13f);
             RenderSettings.fogColor = night
-                ? new Color(0.04f, 0.075f, 0.12f)
-                : new Color(0.57f, 0.67f, 0.73f);
-            RenderSettings.fogDensity = night ? 0.00145f : 0.0011f;
+                ? new Color(0.05f, 0.085f, 0.13f)
+                : new Color(0.62f, 0.70f, 0.77f);
+            RenderSettings.fogDensity = night ? 0.0015f : 0.0013f;
 
             if (runtimeSky != null)
             {
                 runtimeSky.SetColor("_SkyTint", night
-                    ? new Color(0.03f, 0.06f, 0.13f)
-                    : new Color(0.32f, 0.48f, 0.68f));
+                    ? new Color(0.04f, 0.07f, 0.14f)
+                    : new Color(0.42f, 0.56f, 0.74f));
                 runtimeSky.SetColor("_GroundColor", night
                     ? new Color(0.02f, 0.03f, 0.05f)
-                    : new Color(0.30f, 0.32f, 0.25f));
-                runtimeSky.SetFloat("_Exposure", night ? 0.28f : 0.92f);
+                    : new Color(0.33f, 0.35f, 0.28f));
+                runtimeSky.SetFloat("_Exposure", night ? 0.32f : 1.02f);
             }
             for (int i = 0; i < navigationLights.Count; i++)
                 navigationLights[i].enabled = night;

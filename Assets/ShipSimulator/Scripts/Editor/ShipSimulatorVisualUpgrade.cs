@@ -118,15 +118,22 @@ namespace ShipSimulator.Editor
 
             Material water = CreateWaterMaterial();
             Material earth = CreateLitMaterial(
-                "RiverEarth", new Color(0.30f, 0.23f, 0.13f), 0f, 0.16f);
+                "RiverEarth", new Color(0.29f, 0.235f, 0.155f), 0f, 0.12f);
             Material grass = CreateLitMaterial(
-                "RiverGrass", new Color(0.24f, 0.43f, 0.14f), 0f, 0.2f);
+                "RiverGrass", new Color(0.21f, 0.34f, 0.15f), 0f, 0.16f);
             Material grassLight = CreateLitMaterial(
-                "RiverGrassLight", new Color(0.39f, 0.54f, 0.20f), 0f, 0.18f);
-            Material foliage = CreateLitMaterial(
-                "TreeFoliage", new Color(0.12f, 0.27f, 0.09f), 0f, 0.15f);
-            Material foliageLight = CreateLitMaterial(
-                "TreeFoliageLight", new Color(0.25f, 0.40f, 0.13f), 0f, 0.15f);
+                "RiverGrassLight", new Color(0.32f, 0.44f, 0.19f), 0f, 0.15f);
+            // Varied foliage palette so the tree line reads as a natural mix rather
+            // than one flat green. Materials are instanced and shared, so adding a few
+            // shades costs almost nothing.
+            Material[] foliagePalette =
+            {
+                CreateLitMaterial("TreeFoliageDeep", new Color(0.10f, 0.24f, 0.09f), 0f, 0.12f),
+                CreateLitMaterial("TreeFoliageMid", new Color(0.16f, 0.32f, 0.11f), 0f, 0.14f),
+                CreateLitMaterial("TreeFoliageLight", new Color(0.27f, 0.42f, 0.15f), 0f, 0.15f),
+                CreateLitMaterial("TreeFoliageOlive", new Color(0.34f, 0.40f, 0.16f), 0f, 0.13f),
+                CreateLitMaterial("TreeFoliageGold", new Color(0.46f, 0.42f, 0.16f), 0f, 0.16f),
+            };
             Material bark = CreateLitMaterial(
                 "TreeBark", new Color(0.18f, 0.10f, 0.055f), 0f, 0.12f);
             Material rock = CreateLitMaterial(
@@ -136,7 +143,7 @@ namespace ShipSimulator.Editor
 
             ConfigureExistingEnvironment(environment, water, earth);
             CreateBankLayers(visualRoot, earth, grass, grassLight);
-            CreateVegetation(visualRoot, bark, foliage, foliageLight, rock, reed);
+            CreateVegetation(visualRoot, bark, foliagePalette, rock, reed);
             ConfigureLighting(scene);
             ConfigurePostProcessing(scene);
             ConfigureCamera(scene);
@@ -201,7 +208,7 @@ namespace ShipSimulator.Editor
         }
 
         private static void CreateVegetation(
-            Transform root, Material bark, Material foliage, Material foliageLight,
+            Transform root, Material bark, Material[] foliagePalette,
             Material rock, Material reed)
         {
             var random = new System.Random(507);
@@ -211,13 +218,13 @@ namespace ShipSimulator.Editor
                 float leftX = RandomRange(random, -230f, -94f);
                 float rightX = RandomRange(random, 94f, 230f);
                 CreateTree(root, $"LeftTree_{i}", new Vector3(leftX, TerrainHeight(leftX, z), z),
-                    RandomRange(random, 0.8f, 1.55f), bark,
-                    i % 3 == 0 ? foliageLight : foliage);
+                    RandomRange(random, 0.8f, 1.6f), RandomRange(random, 0f, 360f), bark,
+                    foliagePalette[random.Next(foliagePalette.Length)], random.NextDouble() < 0.4);
                 if (i % 3 != 1)
                     CreateTree(root, $"RightTree_{i}",
                         new Vector3(rightX, TerrainHeight(rightX, z + 11f), z + 11f),
-                        RandomRange(random, 0.85f, 1.45f), bark,
-                        i % 4 == 0 ? foliageLight : foliage);
+                        RandomRange(random, 0.85f, 1.5f), RandomRange(random, 0f, 360f), bark,
+                        foliagePalette[random.Next(foliagePalette.Length)], random.NextDouble() < 0.4);
             }
 
             for (int i = 0; i < 62; i++)
@@ -246,35 +253,63 @@ namespace ShipSimulator.Editor
         }
 
         private static void CreateTree(
-            Transform root, string name, Vector3 position, float scale,
-            Material bark, Material foliage)
+            Transform root, string name, Vector3 position, float scale, float rotationY,
+            Material bark, Material foliage, bool conifer)
         {
             GameObject tree = new GameObject(name);
             tree.transform.SetParent(root, false);
             tree.transform.localPosition = position;
+            tree.transform.localRotation = Quaternion.Euler(0f, rotationY, 0f);
             tree.transform.localScale = Vector3.one * scale;
 
-            CreatePrimitive("Trunk", PrimitiveType.Cylinder, tree.transform,
-                new Vector3(0f, 2.4f, 0f), new Vector3(0.55f, 2.4f, 0.55f),
-                Quaternion.identity, bark, false);
-            CreatePrimitive("CrownLow", PrimitiveType.Sphere, tree.transform,
-                new Vector3(0f, 5.2f, 0f), new Vector3(3.2f, 2.4f, 3.2f),
-                Quaternion.identity, foliage, false);
-            CreatePrimitive("CrownHigh", PrimitiveType.Sphere, tree.transform,
-                new Vector3(0.5f, 7.1f, -0.2f), new Vector3(2.4f, 2.2f, 2.4f),
-                Quaternion.identity, foliage, false);
+            if (conifer)
+            {
+                // Tapered stack of crowns reads as a low-poly spruce.
+                CreatePrimitive("Trunk", PrimitiveType.Cylinder, tree.transform,
+                    new Vector3(0f, 2.2f, 0f), new Vector3(0.4f, 2.2f, 0.4f),
+                    Quaternion.identity, bark, false);
+                for (int layer = 0; layer < 4; layer++)
+                {
+                    float t = layer / 3f;
+                    float width = Mathf.Lerp(3.4f, 0.7f, t);
+                    float height = Mathf.Lerp(2.6f, 1.5f, t);
+                    CreatePrimitive($"Crown{layer}", PrimitiveType.Sphere, tree.transform,
+                        new Vector3(0f, 4.2f + layer * 1.7f, 0f),
+                        new Vector3(width, height, width), Quaternion.identity, foliage, false);
+                }
+            }
+            else
+            {
+                // Cluster of offset spheres reads as a full deciduous canopy.
+                CreatePrimitive("Trunk", PrimitiveType.Cylinder, tree.transform,
+                    new Vector3(0f, 2.4f, 0f), new Vector3(0.55f, 2.4f, 0.55f),
+                    Quaternion.identity, bark, false);
+                CreatePrimitive("CrownLow", PrimitiveType.Sphere, tree.transform,
+                    new Vector3(0f, 5.2f, 0f), new Vector3(3.4f, 2.7f, 3.4f),
+                    Quaternion.identity, foliage, false);
+                CreatePrimitive("CrownSide1", PrimitiveType.Sphere, tree.transform,
+                    new Vector3(1.3f, 5.9f, 0.4f), new Vector3(2.4f, 2.2f, 2.4f),
+                    Quaternion.identity, foliage, false);
+                CreatePrimitive("CrownSide2", PrimitiveType.Sphere, tree.transform,
+                    new Vector3(-1.1f, 5.7f, -0.6f), new Vector3(2.2f, 2.1f, 2.2f),
+                    Quaternion.identity, foliage, false);
+                CreatePrimitive("CrownHigh", PrimitiveType.Sphere, tree.transform,
+                    new Vector3(0.3f, 7.3f, -0.2f), new Vector3(2.5f, 2.3f, 2.5f),
+                    Quaternion.identity, foliage, false);
+            }
         }
 
-        private static void ConfigureLighting(Scene scene)
+        internal static void ConfigureLighting(Scene scene)
         {
             Light sun = FindComponentInScene<Light>(scene, "Directional Light");
             if (sun != null)
             {
-                sun.color = new Color(1f, 0.94f, 0.84f);
-                sun.intensity = 1.35f;
+                sun.color = new Color(1f, 0.95f, 0.86f);
+                sun.intensity = 1.25f;
                 sun.shadows = LightShadows.Soft;
-                sun.shadowStrength = 0.82f;
-                sun.transform.rotation = Quaternion.Euler(34f, -42f, 0f);
+                sun.shadowStrength = 0.72f;
+                // Lower, warmer afternoon angle gives longer, softer shadows and depth.
+                sun.transform.rotation = Quaternion.Euler(38f, -48f, 0f);
             }
 
             Material sky = AssetDatabase.LoadAssetAtPath<Material>(
@@ -284,25 +319,27 @@ namespace ShipSimulator.Editor
                 sky = new Material(Shader.Find("Skybox/Procedural")) { name = "RiverSky" };
                 AssetDatabase.CreateAsset(sky, Root + "/Materials/RiverSky.mat");
             }
-            sky.SetFloat("_SunSize", 0.025f);
-            sky.SetFloat("_AtmosphereThickness", 0.72f);
-            sky.SetColor("_SkyTint", new Color(0.32f, 0.48f, 0.68f));
-            sky.SetColor("_GroundColor", new Color(0.30f, 0.32f, 0.25f));
-            sky.SetFloat("_Exposure", 0.92f);
+            sky.SetFloat("_SunSize", 0.035f);
+            sky.SetFloat("_SunSizeConvergence", 5f);
+            sky.SetFloat("_AtmosphereThickness", 1.05f); // thicker air = horizon haze
+            sky.SetColor("_SkyTint", new Color(0.42f, 0.56f, 0.74f));
+            sky.SetColor("_GroundColor", new Color(0.33f, 0.35f, 0.28f));
+            sky.SetFloat("_Exposure", 1.02f);
             EditorUtility.SetDirty(sky);
 
             RenderSettings.skybox = sky;
             RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(0.42f, 0.53f, 0.66f);
-            RenderSettings.ambientEquatorColor = new Color(0.36f, 0.40f, 0.36f);
-            RenderSettings.ambientGroundColor = new Color(0.18f, 0.16f, 0.12f);
+            RenderSettings.ambientSkyColor = new Color(0.46f, 0.57f, 0.70f);
+            RenderSettings.ambientEquatorColor = new Color(0.40f, 0.43f, 0.39f);
+            RenderSettings.ambientGroundColor = new Color(0.20f, 0.17f, 0.13f);
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.ExponentialSquared;
-            RenderSettings.fogColor = new Color(0.57f, 0.67f, 0.73f);
-            RenderSettings.fogDensity = 0.0011f;
+            // Haze tint matches the horizon so distant banks dissolve into the sky.
+            RenderSettings.fogColor = new Color(0.62f, 0.70f, 0.77f);
+            RenderSettings.fogDensity = 0.0013f;
         }
 
-        private static void ConfigurePostProcessing(Scene scene)
+        internal static void ConfigurePostProcessing(Scene scene)
         {
             VolumeProfile profile = AssetDatabase.LoadAssetAtPath<VolumeProfile>(ProfilePath);
             if (profile == null)
@@ -313,25 +350,28 @@ namespace ShipSimulator.Editor
 
             ClearProfile(profile);
             ColorAdjustments color = profile.Add<ColorAdjustments>();
-            color.postExposure.Override(0.2f);
-            color.contrast.Override(8f);
-            color.saturation.Override(4f);
+            color.postExposure.Override(0.12f);
+            color.contrast.Override(6f);       // gentle, avoids crushed shadows
+            color.saturation.Override(5f);
             color.colorFilter.Override(new Color(1f, 0.99f, 0.96f));
 
             Tonemapping tonemapping = profile.Add<Tonemapping>();
             tonemapping.mode.Override(TonemappingMode.ACES);
 
+            // High threshold means only emissive navigation lights / sun glints bloom,
+            // not the whole scene.
             Bloom bloom = profile.Add<Bloom>();
-            bloom.intensity.Override(0.16f);
-            bloom.threshold.Override(1.1f);
-            bloom.scatter.Override(0.55f);
+            bloom.intensity.Override(0.22f);
+            bloom.threshold.Override(1.25f);
+            bloom.scatter.Override(0.62f);
+            bloom.tint.Override(new Color(0.92f, 0.96f, 1f));
 
             Vignette vignette = profile.Add<Vignette>();
-            vignette.intensity.Override(0.16f);
-            vignette.smoothness.Override(0.62f);
+            vignette.intensity.Override(0.18f);
+            vignette.smoothness.Override(0.65f);
 
             WhiteBalance balance = profile.Add<WhiteBalance>();
-            balance.temperature.Override(1f);
+            balance.temperature.Override(3f);
             balance.tint.Override(-2f);
             EditorUtility.SetDirty(profile);
 
@@ -533,15 +573,24 @@ namespace ShipSimulator.Editor
                 Material material =
                     AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(path));
                 if (material == null || material.name.Contains("proxy")) continue;
-                bool metal = material.name.Contains("hull") ||
-                    material.name.Contains("detali") ||
-                    material.name.Contains("deck");
-                material.SetFloat("_Metallic", metal ? 0.18f : 0.04f);
-                material.SetFloat("_Smoothness",
-                    material.name.Contains("hull") ? 0.42f :
-                    material.name.Contains("rubka") ? 0.32f : 0.26f);
-                material.EnableKeyword("_SPECULARHIGHLIGHTS_OFF");
-                material.DisableKeyword("_SPECULARHIGHLIGHTS_OFF");
+                string n = material.name.ToLowerInvariant();
+                // detali = fittings/railings/metal parts; hull = painted steel;
+                // deck = walked steel plate; rubka = wheelhouse paint.
+                bool fittings = n.Contains("detali") || n.Contains("metal") ||
+                    n.Contains("vint") || n.Contains("ankor") || n.Contains("anchor");
+                bool hull = n.Contains("hull") || n.Contains("korpus");
+                bool deck = n.Contains("deck") || n.Contains("paluba");
+                bool cabin = n.Contains("rubka") || n.Contains("cabin");
+
+                float metallic = fittings ? 0.65f : hull ? 0.12f : deck ? 0.10f : 0.05f;
+                float smoothness = fittings ? 0.55f : hull ? 0.46f :
+                    cabin ? 0.40f : deck ? 0.30f : 0.28f;
+                material.SetFloat("_Metallic", metallic);
+                material.SetFloat("_Smoothness", smoothness);
+                if (material.HasProperty("_EnvironmentReflections"))
+                    material.SetFloat("_EnvironmentReflections", 1f);
+                if (material.HasProperty("_SpecularHighlights"))
+                    material.SetFloat("_SpecularHighlights", 1f);
                 EditorUtility.SetDirty(material);
             }
         }
@@ -557,22 +606,22 @@ namespace ShipSimulator.Editor
                 AssetDatabase.CreateAsset(material, path);
             }
             material.shader = shader;
-            material.SetColor("_ShallowColor", new Color(0.16f, 0.31f, 0.28f, 0.9f));
-            material.SetColor("_DeepColor", new Color(0.035f, 0.12f, 0.13f, 0.96f));
-            material.SetColor("_ReflectionTint", new Color(0.48f, 0.58f, 0.62f, 1f));
-            material.SetColor("_FoamColor", new Color(0.68f, 0.73f, 0.67f, 1f));
-            material.SetFloat("_Smoothness", 0.7f);
-            material.SetFloat("_WaveScale", 0.055f);
-            material.SetFloat("_WaveHeight", 0.03f);
-            material.SetFloat("_WaveSpeed", 0.42f);
+            material.SetColor("_ShallowColor", new Color(0.20f, 0.35f, 0.31f, 0.9f));
+            material.SetColor("_DeepColor", new Color(0.045f, 0.13f, 0.16f, 0.97f));
+            material.SetColor("_ReflectionTint", new Color(0.56f, 0.67f, 0.73f, 1f));
+            material.SetColor("_FoamColor", new Color(0.74f, 0.80f, 0.76f, 1f));
+            material.SetFloat("_Smoothness", 0.80f);
+            material.SetFloat("_WaveScale", 0.05f);
+            material.SetFloat("_WaveHeight", 0.045f);
+            material.SetFloat("_WaveSpeed", 0.40f);
             material.SetVector("_FlowDirection", new Vector4(0.08f, -1f, 0f, 0f));
-            material.SetFloat("_RippleScale", 0.38f);
-            material.SetFloat("_RippleStrength", 0.16f);
+            material.SetFloat("_RippleScale", 0.40f);
+            material.SetFloat("_RippleStrength", 0.24f);
             material.SetFloat("_StreakScale", 0.075f);
-            material.SetFloat("_Turbidity", 0.62f);
-            material.SetFloat("_ReflectionStrength", 0.48f);
-            material.SetFloat("_FresnelPower", 4.2f);
-            material.SetFloat("_Opacity", 0.94f);
+            material.SetFloat("_Turbidity", 0.55f);
+            material.SetFloat("_ReflectionStrength", 0.62f);
+            material.SetFloat("_FresnelPower", 4.0f);
+            material.SetFloat("_Opacity", 0.95f);
             EditorUtility.SetDirty(material);
             return material;
         }

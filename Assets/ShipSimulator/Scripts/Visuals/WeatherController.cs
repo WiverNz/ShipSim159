@@ -20,7 +20,7 @@ namespace ShipSimulator.Visuals
         private Transform splashTransform;
         private Material rainMaterial;
         private Material splashMaterial;
-        private Mesh rainDropMesh;
+        private Texture2D rainTexture;
         private Camera targetCamera;
         private MaterialPropertyBlock waterProperties;
 
@@ -137,13 +137,13 @@ namespace ShipSimulator.Visuals
             main.loop = true;
             main.startLifetime = new ParticleSystem.MinMaxCurve(1.7f, 2.5f);
             main.startSpeed = 0f;
-            main.startSize = new ParticleSystem.MinMaxCurve(0.65f, 1.35f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.05f, 0.11f);
             main.maxParticles = 5500;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
             main.gravityModifier = 0f;
             main.startColor = new ParticleSystem.MinMaxGradient(
-                new Color(0.58f, 0.69f, 0.78f, 0.28f),
-                new Color(0.78f, 0.86f, 0.92f, 0.62f));
+                new Color(0.62f, 0.72f, 0.80f, 0.16f),
+                new Color(0.80f, 0.88f, 0.94f, 0.38f));
 
             ParticleSystem.EmissionModule emission = rain.emission;
             emission.rateOverTime = 0f;
@@ -165,18 +165,24 @@ namespace ShipSimulator.Visuals
 
             ParticleSystemRenderer renderer =
                 rainObject.GetComponent<ParticleSystemRenderer>();
-            renderer.renderMode = ParticleSystemRenderMode.Mesh;
-            rainDropMesh = CreateRainDropMesh();
-            renderer.mesh = rainDropMesh;
+            // Stretched billboards with a soft streak texture read as atmospheric
+            // rain rather than hard vertical lines, and stay camera-facing.
+            renderer.renderMode = ParticleSystemRenderMode.Stretch;
+            renderer.velocityScale = 0.045f;
+            renderer.lengthScale = 1.6f;
+            renderer.cameraVelocityScale = 0f;
             renderer.shadowCastingMode =
                 UnityEngine.Rendering.ShadowCastingMode.Off;
             renderer.receiveShadows = false;
             Shader shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
             if (shader != null)
             {
+                rainTexture = CreateRainStreakTexture();
                 rainMaterial = new Material(shader) { name = "Runtime Rain" };
                 rainMaterial.SetColor("_BaseColor",
-                    new Color(0.64f, 0.76f, 0.84f, 0.52f));
+                    new Color(0.70f, 0.80f, 0.88f, 0.38f));
+                if (rainMaterial.HasProperty("_BaseMap"))
+                    rainMaterial.SetTexture("_BaseMap", rainTexture);
                 rainMaterial.SetFloat("_Surface", 1f);
                 rainMaterial.SetFloat("_ZWrite", 0f);
                 rainMaterial.renderQueue = 3000;
@@ -285,26 +291,35 @@ namespace ShipSimulator.Visuals
             }
         }
 
-        private static Mesh CreateRainDropMesh()
+        // Soft vertical streak: opaque-ish core fading at the ends and across the
+        // width, so stretched billboards look like blurred raindrops, not solid bars.
+        private static Texture2D CreateRainStreakTexture()
         {
-            Mesh mesh = new Mesh { name = "Runtime Rain Drop" };
-            mesh.vertices = new[]
+            const int width = 8;
+            const int height = 32;
+            var texture = new Texture2D(width, height, TextureFormat.RGBA32, false)
             {
-                new Vector3(0f, 0.09f, 0f),
-                new Vector3(-0.014f, 0f, 0f),
-                new Vector3(0f, 0f, 0.014f),
-                new Vector3(0.014f, 0f, 0f),
-                new Vector3(0f, 0f, -0.014f),
-                new Vector3(0f, -0.48f, 0f)
+                name = "Runtime Rain Streak",
+                wrapMode = TextureWrapMode.Clamp,
+                filterMode = FilterMode.Bilinear
             };
-            mesh.triangles = new[]
+            var pixels = new Color32[width * height];
+            for (int y = 0; y < height; y++)
             {
-                0, 2, 1, 0, 3, 2, 0, 4, 3, 0, 1, 4,
-                5, 1, 2, 5, 2, 3, 5, 3, 4, 5, 4, 1
-            };
-            mesh.RecalculateNormals();
-            mesh.RecalculateBounds();
-            return mesh;
+                float v = y / (height - 1f);
+                float lengthFade = Mathf.Sin(v * Mathf.PI);          // fade both ends
+                for (int x = 0; x < width; x++)
+                {
+                    float u = x / (width - 1f);
+                    float across = 1f - Mathf.Abs(u * 2f - 1f);      // fade across width
+                    across = across * across;
+                    float a = Mathf.Clamp01(lengthFade * across);
+                    pixels[y * width + x] = new Color32(255, 255, 255, (byte)(a * 255f));
+                }
+            }
+            texture.SetPixels32(pixels);
+            texture.Apply();
+            return texture;
         }
 
         private void ApplyFog()
@@ -338,13 +353,18 @@ namespace ShipSimulator.Visuals
                     continue;
                 renderer.GetPropertyBlock(waterProperties);
                 waterProperties.SetFloat("_RippleStrength",
-                    Mathf.Lerp(0.14f, 0.34f, wind01));
+                    Mathf.Lerp(0.20f, 0.40f, wind01) + rainIntensity * 0.12f);
                 waterProperties.SetFloat("_WaveHeight",
-                    Mathf.Lerp(0.025f, 0.075f, wind01));
+                    Mathf.Lerp(0.03f, 0.08f, wind01));
                 waterProperties.SetFloat("_WaveSpeed",
                     Mathf.Lerp(0.35f, 0.8f, wind01));
                 waterProperties.SetFloat("_Turbidity",
-                    Mathf.Lerp(0.62f, 0.76f, rainIntensity));
+                    Mathf.Lerp(0.55f, 0.72f, rainIntensity));
+                // Wet surface: rain raises smoothness and reflectivity.
+                waterProperties.SetFloat("_Smoothness",
+                    Mathf.Lerp(0.80f, 0.90f, rainIntensity));
+                waterProperties.SetFloat("_ReflectionStrength",
+                    Mathf.Lerp(0.62f, 0.82f, rainIntensity));
                 renderer.SetPropertyBlock(waterProperties);
             }
         }
@@ -366,7 +386,7 @@ namespace ShipSimulator.Visuals
         {
             DestroyGenerated(rainMaterial);
             DestroyGenerated(splashMaterial);
-            DestroyGenerated(rainDropMesh);
+            DestroyGenerated(rainTexture);
         }
 
         private static void DestroyGenerated(Object generated)

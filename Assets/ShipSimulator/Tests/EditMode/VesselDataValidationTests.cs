@@ -177,7 +177,8 @@ namespace ShipSimulator.Tests
             string objective = ShipTelemetryUI.FormatObjectiveStatus(770f);
             string camera = ShipTelemetryUI.FormatCameraStatus("NAVIGATOR", 8, 9);
 
-            Assert.That(objective, Does.Contain("Speed limit: <b>max 8 km/h</b>"));
+            Assert.That(objective, Does.Contain("Speed limit"));
+            Assert.That(objective, Does.Contain("<b>8 km/h</b>"));
             Assert.That(objective, Does.Not.Contain("&lt;="));
             Assert.That(camera, Does.StartWith("CAMERA:"));
             Assert.That(camera, Does.Contain("NAVIGATOR"));

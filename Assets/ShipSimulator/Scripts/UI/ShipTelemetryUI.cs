@@ -16,11 +16,9 @@ namespace ShipSimulator.UI
         [SerializeField] private ShipPhysicsController ship;
         [SerializeField] private Text readout;
 
-        private readonly Color panelColor = new Color(0.025f, 0.055f, 0.075f, 0.92f);
-        private readonly Color accentColor = new Color(0.15f, 0.68f, 0.82f);
-        private readonly Color warningColor = new Color(1f, 0.62f, 0.12f);
-        private readonly Color activeColor = new Color(0.12f, 0.62f, 0.72f);
-        private readonly Color idleColor = new Color(0.055f, 0.18f, 0.22f);
+        private readonly Color panelColor = HudTheme.PanelFill;
+        private readonly Color accentColor = HudTheme.Accent;
+        private readonly Color warningColor = HudTheme.Warning;
         private Font font;
         private ShipFollowCamera followCamera;
         private Text speedText;
@@ -45,8 +43,10 @@ namespace ShipSimulator.UI
         private RectTransform miniMap;
         private RectTransform warningPanel;
         private RectTransform mapWorld;
-        private RectTransform[] radarDepthTiles;
-        private RectTransform radarSweep;
+        private RadarChannel radarChannel;
+        private readonly List<RadarChannel.Section> radarSections =
+            new List<RadarChannel.Section>();
+        private float radarMinAheadM;
         private RectTransform[] radarTrackSegments;
         private RectTransform[] radarPredictionSegments;
         private AudioSource hornSource;
@@ -59,17 +59,16 @@ namespace ShipSimulator.UI
         private readonly List<MapContact> mapContacts = new List<MapContact>();
         private readonly List<MapLine> mapLines = new List<MapLine>();
         private readonly List<Vector3> radarTrack = new List<Vector3>();
-        private readonly List<Image> telegraphButtons = new List<Image>();
-        private readonly List<Image> cameraButtons = new List<Image>();
-        private readonly List<Image> rudderButtons = new List<Image>();
+        private readonly List<HudButton> telegraphButtons = new List<HudButton>();
+        private readonly List<HudButton> cameraButtons = new List<HudButton>();
+        private readonly List<HudButton> rudderButtons = new List<HudButton>();
+        private RectTransform radarWarningRing;
         private int telegraphIndex = 3;
         private bool helpVisible;
         private bool mapVisible = true;
         private Vector3 objectivePosition = new Vector3(0f, 0f, 650f);
         private const float MapPixelsPerMeter = 0.82f;
         private const float RadarVesselOffsetY = -82f;
-        private const int RadarColumns = 13;
-        private const int RadarRows = 13;
         private const int RadarTrackPointCount = 18;
         private const int RadarPredictionPointCount = 11;
         private float nextTrackSampleTime;
@@ -135,8 +134,7 @@ namespace ShipSimulator.UI
                 BuildInterface();
                 return;
             }
-            if (radarDepthTiles == null ||
-                radarDepthTiles.Length != RadarColumns * RadarRows ||
+            if (radarChannel == null ||
                 radarTrackSegments == null ||
                 radarTrackSegments.Length != RadarTrackPointCount - 1 ||
                 radarPredictionSegments == null ||
@@ -161,14 +159,17 @@ namespace ShipSimulator.UI
             float engineLoad = Mathf.Abs(ship.ActualThrottle) * 100f;
             float rpm = engineLoad < 1f ? 0f : Mathf.Lerp(180f, 620f, engineLoad / 100f);
             speedText.text =
-                $"SPEED\n<size=26><b>{speedMps * 1.943844f:F1} kn</b></size>\n" +
-                $"<size=16>{speedMps * 3.6f:F1} km/h</size>";
+                $"<size=14><color=#8AA0AD>SPEED</color></size>\n" +
+                $"<size=30><b>{speedMps * 1.943844f:F1}</b></size><size=15> kn</size>\n" +
+                $"<size=14><color=#8AA0AD>{speedMps * 3.6f:F1} km/h</color></size>";
             headingText.text =
-                $"COURSE  <size=25><b>{heading:000} deg</b></size>\n" +
-                $"<size=15>DRIFT {driftAngle:+0.0;-0.0;0.0} deg   SIDE {localVelocity.x:+0.0;-0.0;0.0} m/s</size>";
+                $"<size=14><color=#8AA0AD>COURSE</color></size>\n" +
+                $"<size=30><b>{heading:000}°</b></size>\n" +
+                $"<size=14><color=#8AA0AD>drift {driftAngle:+0.0;-0.0;0.0}°</color></size>";
             depthText.text =
-                $"DEPTH  <size=24><b>{channelDepth:F1} m</b></size>\n" +
-                $"<size=15>UNDER KEEL {underKeel:F1} m  SQUAT {ship.EstimatedSquatM:F1} m</size>";
+                $"<size=14><color=#8AA0AD>DEPTH</color></size>\n" +
+                $"<size=30><b>{channelDepth:F1}</b></size><size=15> m</size>\n" +
+                $"<size=14><color=#8AA0AD>under keel {underKeel:F1} m</color></size>";
             rudderText.text =
                 $"RUDDER  <size=23><b>{ship.RudderAngleDeg:+0.0;-0.0;0.0} deg</b></size>\n" +
                 $"<size=14>COMMAND {ship.RudderCommand * 35f:+0;-0;0} deg</size>";
@@ -176,8 +177,9 @@ namespace ShipSimulator.UI
                 $"TELEGRAPH  <size=23><b>{TelegraphNames[telegraphIndex]}</b></size>\n" +
                 $"<size=15>RPM {rpm:F0}   ENGINE LOAD {engineLoad:F0}%</size>";
             currentText.text =
-                $"CURRENT  <size=22><b>{current.magnitude:F1} m/s {CurrentArrow(current)}</b></size>\n" +
-                $"<size=15>CARGO LOAD {ship.LoadFraction * 100f:F0}%</size>";
+                $"<size=14><color=#8AA0AD>CURRENT</color></size>\n" +
+                $"<size=28><b>{current.magnitude:F1}</b></size><size=15> m/s {CurrentArrow(current)}</size>\n" +
+                $"<size=14><color=#8AA0AD>cargo {ship.LoadFraction * 100f:F0}%</color></size>";
             cameraText.text = followCamera == null
                 ? "CAMERA"
                 : FormatCameraStatus(
@@ -189,13 +191,15 @@ namespace ShipSimulator.UI
                 new Vector3(ship.transform.position.x, 0f, ship.transform.position.z),
                 objectivePosition);
             objectiveText.text = scenario != null
-                ? $"<b>{scenario.Phase}</b>\n{scenario.Instruction}\n" +
-                  $"Score <b>{scenario.Score:F0}/100</b>   " +
-                  $"Limit <b>{scenario.LocalSpeedLimitMps * 3.6f:F0} km/h</b>"
+                ? $"<size=14><color=#56C7E6>OBJECTIVE</color></size>\n" +
+                  $"<size=23><b>{scenario.Phase}</b></size>\n" +
+                  $"<size=15>{scenario.Instruction}</size>\n\n" +
+                  $"<color=#8AA0AD>Score</color> <b>{scenario.Score:F0}/100</b>     " +
+                  $"<color=#8AA0AD>Limit</color> <b>{scenario.LocalSpeedLimitMps * 3.6f:F0} km/h</b>"
                 : FormatObjectiveStatus(distance);
             depthText.color = underKeel < 0.8f
-                ? new Color(1f, 0.28f, 0.2f)
-                : underKeel < 2f ? warningColor : Color.white;
+                ? HudTheme.Danger
+                : underKeel < 2f ? HudTheme.Warning : HudTheme.TextPrimary;
 
             if (rudderNeedle != null)
                 rudderNeedle.anchoredPosition = new Vector2(
@@ -228,15 +232,15 @@ namespace ShipSimulator.UI
 
             RectTransform instruments = Panel("TopStatusBar",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-                new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(1300f, 84f));
-            speedText = CompactInstrument(instruments, 0, 205f);
-            headingText = CompactInstrument(instruments, 1, 285f);
-            depthText = CompactInstrument(instruments, 2, 255f);
-            currentText = CompactInstrument(instruments, 3, 270f);
+                new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(1320f, 98f));
+            speedText = CompactInstrument(instruments, 0, 205f, HudIcon.Speed);
+            headingText = CompactInstrument(instruments, 1, 285f, HudIcon.Compass);
+            depthText = CompactInstrument(instruments, 2, 255f, HudIcon.Depth);
+            currentText = CompactInstrument(instruments, 3, 270f, HudIcon.Current);
 
             RectTransform tape = Panel("HeadingTape",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-                new Vector2(0.5f, 1f), new Vector2(0f, -108f), new Vector2(700f, 54f));
+                new Vector2(0.5f, 1f), new Vector2(0f, -122f), new Vector2(700f, 54f));
             headingTapeText = Label(tape, string.Empty, 20, TextAnchor.UpperCenter,
                 new Vector2(8f, 16f), new Vector2(-8f, -3f));
             ImageRect(tape, "CourseMarkerStem", warningColor,
@@ -252,17 +256,18 @@ namespace ShipSimulator.UI
 
             warningPanel = Panel("Warnings",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
-                new Vector2(0.5f, 1f), new Vector2(0f, -172f), new Vector2(620f, 54f));
-            warningText = Label(warningPanel, string.Empty, 20, TextAnchor.MiddleCenter,
+                new Vector2(0.5f, 1f), new Vector2(0f, -186f), new Vector2(640f, 50f));
+            warningText = Label(warningPanel, string.Empty, 19, TextAnchor.MiddleCenter,
                 new Vector2(12f, 4f), new Vector2(-12f, -4f));
             warningPanel.gameObject.SetActive(false);
 
             RectTransform objective = Panel("Objective",
                 new Vector2(0f, 1f), new Vector2(0f, 1f),
-                new Vector2(0f, 1f), new Vector2(22f, -116f), new Vector2(420f, 154f));
-            objectiveText = Label(objective, string.Empty, 17, TextAnchor.UpperLeft,
-                new Vector2(18f, 12f), new Vector2(-18f, -12f));
+                new Vector2(0f, 1f), new Vector2(22f, -124f), new Vector2(440f, 172f));
+            objectiveText = Label(objective, string.Empty, 18, TextAnchor.UpperLeft,
+                new Vector2(20f, 14f), new Vector2(-20f, -14f));
             objectiveText.supportRichText = true;
+            objectiveText.lineSpacing = 1.12f;
 
             BuildMiniMap();
             helpText = Label(transform, string.Empty, 18, TextAnchor.MiddleCenter,
@@ -280,24 +285,44 @@ namespace ShipSimulator.UI
         private void BuildRudderControls(RectTransform parent)
         {
             RectTransform block = AnchoredPanel("RudderBlock", new Vector2(0f, 0f),
-                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(22f, 28f),
-                new Vector2(460f, 154f));
+                new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(20f, 24f),
+                new Vector2(420f, 146f));
+            Icon(block, HudIcon.Rudder, new Vector2(-176f, 112f), 20f, HudTheme.Accent);
             rudderText = Label(block, "RUDDER  0.0 deg", 19, TextAnchor.UpperCenter,
                 new Vector2(8f, 108f), new Vector2(-8f, -8f));
-            RectTransform dial = ImageRect(block, "RudderScale", new Color(0.04f, 0.09f, 0.12f),
-                new Vector2(0f, 12f), new Vector2(350f, 32f));
-            Label(dial, "PORT 35     20     10      0      10     20     STBD 35",
-                14, TextAnchor.MiddleCenter, Vector2.zero, Vector2.zero);
-            rudderNeedle = ImageRect(dial, "Needle", warningColor,
-                new Vector2(0f, -4f), new Vector2(5f, 36f));
-            rudderCommandNeedle = ImageRect(dial, "CommandNeedle", accentColor,
-                new Vector2(0f, 9f), new Vector2(9f, 6f));
-            rudderButtons.Add(Button(block, "PORT  [A]", new Vector2(-118f, -43f),
-                new Vector2(108f, 38f), () => ship.SetRudderCommand(-1f)).image);
+            RectTransform dial = ImageRect(block, "RudderScale", new Color(0.03f, 0.07f, 0.10f, 0.95f),
+                new Vector2(0f, 12f), new Vector2(350f, 38f));
+            Image dialImage = dial.GetComponent<Image>();
+            dialImage.sprite = HudTheme.Rounded(10);
+            dialImage.type = Image.Type.Sliced;
+            // Scale tick marks: centre (0) emphasised, symmetrical port/stbd graduations.
+            for (int t = -3; t <= 3; t++)
+            {
+                bool centre = t == 0;
+                RectTransform tick = ImageRect(dial, $"Tick{t}",
+                    centre ? HudTheme.AccentSoft : new Color(0.4f, 0.6f, 0.72f, 0.5f),
+                    new Vector2(t * 48f, 0f), new Vector2(centre ? 2.4f : 1.6f, centre ? 26f : 16f));
+                tick.GetComponent<Image>().raycastTarget = false;
+            }
+            Label(dial, "P35    20    10    0    10    20    S35",
+                13, TextAnchor.MiddleCenter, Vector2.zero, Vector2.zero).color = HudTheme.TextSecondary;
+            rudderCommandNeedle = ImageRect(dial, "CommandNeedle", HudTheme.Accent,
+                new Vector2(0f, 11f), new Vector2(12f, 8f));
+            Image commandImage = rudderCommandNeedle.GetComponent<Image>();
+            commandImage.sprite = HudTheme.Disc();
+            commandImage.raycastTarget = false;
+            rudderNeedle = ImageRect(dial, "Needle", new Color(1f, 0.82f, 0.22f),
+                new Vector2(0f, -4f), new Vector2(5f, 34f));
+            Image needleImage = rudderNeedle.GetComponent<Image>();
+            needleImage.sprite = HudTheme.Rounded(2);
+            needleImage.type = Image.Type.Sliced;
+            needleImage.raycastTarget = false;
+            rudderButtons.Add(Button(block, "< PORT  [A]", new Vector2(-118f, -43f),
+                new Vector2(108f, 38f), () => ship.SetRudderCommand(-1f)));
             rudderButtons.Add(Button(block, "MIDSHIPS [C]", new Vector2(0f, -43f),
-                new Vector2(122f, 38f), ship.CenterRudder).image);
-            rudderButtons.Add(Button(block, "STBD  [D]", new Vector2(118f, -43f),
-                new Vector2(108f, 38f), () => ship.SetRudderCommand(1f)).image);
+                new Vector2(122f, 38f), ship.CenterRudder));
+            rudderButtons.Add(Button(block, "STBD [D] >", new Vector2(118f, -43f),
+                new Vector2(108f, 38f), () => ship.SetRudderCommand(1f)));
         }
 
         private void BuildTelegraph(RectTransform parent)
@@ -305,6 +330,7 @@ namespace ShipSimulator.UI
             RectTransform block = AnchoredPanel("TelegraphBlock", new Vector2(0.5f, 0f),
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 28f),
                 new Vector2(680f, 154f));
+            Icon(block, HudIcon.Speed, new Vector2(-300f, 118f), 22f, HudTheme.Accent);
             engineText = Label(block, "TELEGRAPH  STOP", 19, TextAnchor.UpperCenter,
                 new Vector2(8f, 103f), new Vector2(-8f, -8f));
             string[] labels =
@@ -315,9 +341,9 @@ namespace ShipSimulator.UI
             for (int i = 0; i < labels.Length; i++)
             {
                 int command = i;
-                Button button = Button(block, labels[i], new Vector2(-270f + i * 90f, -37f),
+                HudButton button = Button(block, labels[i], new Vector2(-270f + i * 90f, -37f),
                     new Vector2(84f, 48f), () => SetTelegraph(command));
-                telegraphButtons.Add(button.image);
+                telegraphButtons.Add(button);
             }
         }
 
@@ -326,13 +352,13 @@ namespace ShipSimulator.UI
             RectTransform block = AnchoredPanel("CameraBlock", new Vector2(1f, 0f),
                 new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-22f, 28f),
                 new Vector2(350f, 128f));
-            block.GetComponent<Image>().color = new Color(0.025f, 0.055f, 0.075f, 0.82f);
+            Icon(block, HudIcon.Camera, new Vector2(-150f, 50f), 22f, HudTheme.Accent);
             cameraText = Label(block, "CAMERA", 18, TextAnchor.UpperCenter,
                 new Vector2(8f, 70f), new Vector2(-8f, -8f));
             cameraButtons.Add(Button(block, "PREV  [V]", new Vector2(-112f, -38f),
-                new Vector2(104f, 38f), PreviousCamera).image);
+                new Vector2(104f, 38f), PreviousCamera));
             cameraButtons.Add(Button(block, "NEXT  [V]", new Vector2(0f, -38f),
-                new Vector2(104f, 38f), NextCamera).image);
+                new Vector2(104f, 38f), NextCamera));
             Button(block, "DOCK  [8]", new Vector2(112f, -38f),
                 new Vector2(104f, 38f), () => SetCamera(7));
             Button(block, "NAV  [9]", new Vector2(112f, 5f),
@@ -349,9 +375,9 @@ namespace ShipSimulator.UI
             RectTransform block = AnchoredPanel("TimeScaleBlock",
                 new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(1f, 0f),
                 new Vector2(-22f, 170f), new Vector2(350f, 58f));
-            block.GetComponent<Image>().color = new Color(0.025f, 0.055f, 0.075f, 0.82f);
+            Icon(block, HudIcon.Time, new Vector2(-150f, 0f), 20f, HudTheme.Accent);
             timeScaleText = Label(block, "TIME 1x", 16, TextAnchor.MiddleLeft,
-                new Vector2(14f, 8f), new Vector2(-230f, -8f));
+                new Vector2(30f, 8f), new Vector2(-230f, -8f));
             timeScaleText.color = accentColor;
             Button(block, "1x", new Vector2(-30f, 0f), new Vector2(58f, 34f),
                 () => SetTimeScale(1f));
@@ -365,21 +391,20 @@ namespace ShipSimulator.UI
         {
             RectTransform block = AnchoredPanel("WeatherBlock",
                 new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f),
-                new Vector2(22f, 194f), new Vector2(520f, 94f));
-            block.GetComponent<Image>().color =
-                new Color(0.025f, 0.055f, 0.075f, 0.86f);
-            weatherText = Label(block, "WEATHER", 15, TextAnchor.UpperCenter,
-                new Vector2(10f, 54f), new Vector2(-10f, -6f));
-            weatherText.color = accentColor;
-            Button(block, "DIR -", new Vector2(-205f, -24f), new Vector2(80f, 32f),
+                new Vector2(20f, 182f), new Vector2(330f, 132f));
+            Icon(block, HudIcon.Wind, new Vector2(-142f, 44f), 18f, HudTheme.Accent);
+            weatherText = Label(block, "WEATHER", 13, TextAnchor.UpperCenter,
+                new Vector2(26f, 56f), new Vector2(-10f, -6f));
+            weatherText.color = HudTheme.AccentSoft;
+            Button(block, "DIR -", new Vector2(-112f, -26f), new Vector2(92f, 32f),
                 () => ChangeWindDirection(-45f));
-            Button(block, "DIR +", new Vector2(-117f, -24f), new Vector2(80f, 32f),
+            Button(block, "DIR +", new Vector2(-8f, -26f), new Vector2(92f, 32f),
                 () => ChangeWindDirection(45f));
-            Button(block, "WIND [F2]", new Vector2(-17f, -24f), new Vector2(105f, 32f),
+            Button(block, "WIND [F2]", new Vector2(100f, -26f), new Vector2(104f, 32f),
                 CycleWind);
-            Button(block, "RAIN [F4]", new Vector2(100f, -24f), new Vector2(105f, 32f),
+            Button(block, "RAIN [F4]", new Vector2(-58f, -64f), new Vector2(112f, 32f),
                 CycleRain);
-            Button(block, "FOG [F5]", new Vector2(217f, -24f), new Vector2(105f, 32f),
+            Button(block, "FOG [F5]", new Vector2(64f, -64f), new Vector2(112f, 32f),
                 CycleFog);
         }
 
@@ -391,24 +416,33 @@ namespace ShipSimulator.UI
             miniMap = Panel("MiniMap",
                 new Vector2(1f, 1f), new Vector2(1f, 1f),
                 new Vector2(1f, 1f), new Vector2(-22f, -22f), new Vector2(420f, 420f));
-            Label(miniMap, "RIVER RADAR / DEPTH     HEAD UP     RANGE 200 m",
-                18, TextAnchor.UpperLeft, new Vector2(16f, 378f), new Vector2(-16f, -8f));
-            RectTransform viewport = ImageRect(miniMap, "Viewport", new Color(0.08f, 0.1f, 0.1f),
-                new Vector2(0f, -18f), new Vector2(382f, 332f));
+            Icon(miniMap, HudIcon.Compass, new Vector2(-178f, 181f), 20f, HudTheme.Accent);
+            Text radarTitle = Label(miniMap, "RIVER RADAR  ·  HEAD-UP  ·  200 m",
+                17, TextAnchor.UpperLeft, new Vector2(52f, 380f), new Vector2(-16f, -10f));
+            radarTitle.color = HudTheme.AccentSoft;
+            RectTransform viewport = ImageRect(miniMap, "Viewport",
+                new Color(0.035f, 0.058f, 0.094f, 0.98f), // calm dark navy
+                new Vector2(0f, 14f), new Vector2(384f, 300f));
+            Image viewportImage = viewport.GetComponent<Image>();
+            viewportImage.sprite = HudTheme.Rounded(12);
+            viewportImage.type = Image.Type.Sliced;
+            viewportImage.raycastTarget = false;
             viewport.gameObject.AddComponent<RectMask2D>();
             mapWorld = ImageRect(viewport, "MovingWorld", Color.clear, Vector2.zero,
                 new Vector2(382f, 332f));
 
-            radarDepthTiles = new RectTransform[RadarColumns * RadarRows];
-            for (int row = 0; row < RadarRows; row++)
-            for (int column = 0; column < RadarColumns; column++)
-            {
-                int index = row * RadarColumns + column;
-                radarDepthTiles[index] = ImageRect(mapWorld, $"DepthCell{index}",
-                    new Color(0.04f, 0.22f, 0.28f),
-                    new Vector2(-168f + column * 28f, -140f + row * 25f),
-                    new Vector2(29f, 26f));
-            }
+            // Filled navigable-channel ribbon (vertex-coloured mesh) is the first and
+            // lowest layer, so route lines, buoys and the ship draw on top of it.
+            GameObject channelObject = new GameObject("ChannelFill",
+                typeof(RectTransform), typeof(CanvasRenderer), typeof(RadarChannel));
+            channelObject.transform.SetParent(mapWorld, false);
+            radarChannel = channelObject.GetComponent<RadarChannel>();
+            radarChannel.raycastTarget = false;
+            RectTransform channelRect = radarChannel.rectTransform;
+            channelRect.anchorMin = Vector2.zero;
+            channelRect.anchorMax = Vector2.one;
+            channelRect.offsetMin = Vector2.zero;
+            channelRect.offsetMax = Vector2.zero;
 
             for (int i = 0; i < 21; i++)
             {
@@ -416,12 +450,13 @@ namespace ShipSimulator.UI
                 float endZ = startZ + 32f;
                 Vector3 routeStart = FairwayPoint(startZ, 0f);
                 Vector3 routeEnd = FairwayPoint(endZ, 0f);
-                AddMapLine($"FairwayRoute{i}", warningColor,
-                    routeStart, routeEnd, 3f);
-                AddMapLine($"PortEdge{i}", new Color(1f, 0.3f, 0.12f, 0.48f),
-                    FairwayPoint(startZ, -1f), FairwayPoint(endZ, -1f), 2f);
-                AddMapLine($"StarboardEdge{i}", new Color(0.2f, 1f, 0.35f, 0.48f),
-                    FairwayPoint(startZ, 1f), FairwayPoint(endZ, 1f), 2f);
+                if (i % 2 == 0)
+                    AddMapLine($"FairwayRoute{i}", new Color(0.85f, 0.68f, 0.32f, 0.55f),
+                        routeStart, routeEnd, 2.4f);
+                AddMapLine($"PortEdge{i}", new Color(0.84f, 0.28f, 0.22f, 0.75f),
+                    FairwayPoint(startZ, -1f), FairwayPoint(endZ, -1f), 3f);
+                AddMapLine($"StarboardEdge{i}", new Color(0.26f, 0.70f, 0.36f, 0.75f),
+                    FairwayPoint(startZ, 1f), FairwayPoint(endZ, 1f), 3f);
             }
             float[] stations = { -55f, 45f, 145f, 240f, 330f, 415f, 495f, 570f, 640f, 705f };
             for (int i = 0; i < stations.Length; i++)
@@ -432,45 +467,58 @@ namespace ShipSimulator.UI
                 Vector2 tangent = new Vector2(nextX - centerX, 4f).normalized;
                 Vector2 normal = new Vector2(-tangent.y, tangent.x);
                 float width = FairwayModel.MarkedHalfWidth(z);
-                AddMapContact($"LeftWhiteBuoy{i}", new Color(0.88f, 0.94f, 0.88f),
-                    new Vector3(centerX + normal.x * width, 0f, z + normal.y * width),
-                    new Vector2(10f, 10f));
-                AddMapContact($"RightRedBuoy{i}", new Color(1f, 0.12f, 0.08f),
-                    new Vector3(centerX - normal.x * width, 0f, z - normal.y * width),
-                    new Vector2(10f, 10f));
+                AddBuoy($"LeftGreenBuoy{i}", new Color(0.32f, 0.82f, 0.45f),
+                    new Vector3(centerX + normal.x * width, 0f, z + normal.y * width));
+                AddBuoy($"RightRedBuoy{i}", new Color(0.92f, 0.30f, 0.24f),
+                    new Vector3(centerX - normal.x * width, 0f, z - normal.y * width));
             }
             mapWaypoint = AddMapContact("Waypoint", warningColor,
-                objectivePosition, new Vector2(20f, 20f));
-            ImageRect(mapWaypoint, "WaypointCenter", new Color(0.08f, 0.1f, 0.1f),
-                Vector2.zero, new Vector2(8f, 8f));
-            mapVessel = ImageRect(viewport, "Vessel", new Color(1f, 0.78f, 0.18f),
-                new Vector2(0f, RadarVesselOffsetY), new Vector2(15f, 34f));
-            ImageRect(mapVessel, "Bow", Color.white,
-                new Vector2(0f, 13f), new Vector2(8f, 8f));
+                objectivePosition, new Vector2(22f, 22f));
+            RectTransform waypointRing = ImageRect(mapWaypoint, "WaypointRing",
+                warningColor, Vector2.zero, new Vector2(34f, 34f));
+            Image waypointRingImage = waypointRing.GetComponent<Image>();
+            waypointRingImage.sprite = HudTheme.Outline(14);
+            waypointRingImage.type = Image.Type.Sliced;
+            waypointRingImage.raycastTarget = false;
 
-            ImageRect(viewport, "HorizontalGrid", new Color(0.3f, 0.72f, 0.74f, 0.28f),
-                new Vector2(0f, RadarVesselOffsetY), new Vector2(382f, 2f));
-            for (int i = 0; i < 8; i++)
-                ImageRect(viewport, $"HeadingDash{i}", new Color(0.28f, 0.9f, 1f, 0.8f),
-                    new Vector2(0f, RadarVesselOffsetY + 20f + i * 24f),
-                    new Vector2(2f, 13f));
-            RadarFrame(viewport, "Range100m", new Vector2(0f, RadarVesselOffsetY + 82f),
-                new Vector2(164f, 164f), new Color(0.3f, 0.72f, 0.74f, 0.22f));
-            RadarFrame(viewport, "Range200m", new Vector2(0f, RadarVesselOffsetY + 164f),
-                new Vector2(328f, 328f), new Color(0.3f, 0.72f, 0.74f, 0.18f));
-            radarSweep = ImageRect(viewport, "RadarSweep",
-                new Color(0.3f, 1f, 0.66f, 0.38f),
-                new Vector2(0f, RadarVesselOffsetY + 74f), new Vector2(2f, 148f));
-            radarSweep.pivot = new Vector2(0.5f, 0f);
+            mapVessel = ImageRect(viewport, "Vessel", HudTheme.Accent,
+                new Vector2(0f, RadarVesselOffsetY), new Vector2(40f, 40f));
+            Image vesselGlow = mapVessel.GetComponent<Image>();
+            vesselGlow.sprite = HudTheme.Soft(10);
+            vesselGlow.color = new Color(0.26f, 0.78f, 0.95f, 0.30f);
+            vesselGlow.raycastTarget = false;
+            RectTransform vesselIcon = ImageRect(mapVessel, "Hull",
+                new Color(1f, 0.82f, 0.22f), Vector2.zero, new Vector2(22f, 30f));
+            Image vesselIconImage = vesselIcon.GetComponent<Image>();
+            vesselIconImage.sprite = HudTheme.Triangle();
+            vesselIconImage.raycastTarget = false;
+
+            // Concentric range rings (100 m / 200 m) centred on the ship.
+            RangeRing(viewport, "Range100m", 164f, new Color(0.34f, 0.62f, 0.78f, 0.22f));
+            RangeRing(viewport, "Range200m", 320f, new Color(0.34f, 0.62f, 0.78f, 0.16f));
+
+            // Clean thin cyan heading line straight up from the ship (head-up).
+            ImageRect(viewport, "HeadingLine", new Color(0.30f, 0.82f, 0.96f, 0.55f),
+                new Vector2(0f, RadarVesselOffsetY + 116f), new Vector2(2f, 232f))
+                .GetComponent<Image>().raycastTarget = false;
+
+            radarWarningRing = ImageRect(viewport, "WarningRing", HudTheme.Danger,
+                Vector2.zero, new Vector2(372f, 322f));
+            Image warningRingImage = radarWarningRing.GetComponent<Image>();
+            warningRingImage.sprite = HudTheme.Outline(12);
+            warningRingImage.type = Image.Type.Sliced;
+            warningRingImage.raycastTarget = false;
+            radarWarningRing.gameObject.SetActive(false);
 
             radarTrackSegments = BuildRadarSegments(viewport, "Track",
-                RadarTrackPointCount - 1, new Color(0.82f, 0.85f, 0.86f, 0.62f), 2f);
+                RadarTrackPointCount - 1, new Color(0.74f, 0.78f, 0.82f, 0.5f), 2f);
             radarPredictionSegments = BuildRadarSegments(viewport, "Prediction",
-                RadarPredictionPointCount - 1, new Color(0.93f, 0.96f, 1f, 0.82f), 2f);
+                RadarPredictionPointCount - 1, new Color(0.30f, 0.82f, 0.96f, 0.9f), 2.4f);
 
-            depthRadarText = Label(miniMap, string.Empty, 16, TextAnchor.LowerLeft,
-                new Vector2(16f, 10f), new Vector2(-16f, -385f));
+            depthRadarText = Label(miniMap, string.Empty, 15, TextAnchor.LowerLeft,
+                new Vector2(16f, 12f), new Vector2(-16f, -348f));
             depthRadarText.supportRichText = true;
+            depthRadarText.lineSpacing = 1.05f;
         }
 
         private void UpdateMiniMap()
@@ -500,13 +548,50 @@ namespace ShipSimulator.UI
                 Vector2 end = RadarPosition(line.WorldEnd, sin, cos);
                 SetRadarLine(line.Rect, start, end);
             }
+            UpdateRadarChannel(sin, cos);
             UpdateRadarTrack(sin, cos);
             UpdateRadarPrediction();
             mapVessel.anchoredPosition = new Vector2(0f, RadarVesselOffsetY);
             mapVessel.localRotation = Quaternion.identity;
-            if (radarSweep != null)
-                radarSweep.localRotation = Quaternion.Euler(
-                    0f, 0f, -Time.unscaledTime * 38f);
+        }
+
+        // Rebuilds the filled channel ribbon each frame from fairway cross-sections
+        // around the ship, coloured by under-keel clearance.
+        private void UpdateRadarChannel(float sin, float cos)
+        {
+            if (radarChannel == null) return;
+            radarSections.Clear();
+            float shipZ = ship.transform.position.z;
+            float draft = ship.EstimatedDraftM;
+            radarMinAheadM = float.MaxValue;
+
+            for (float z = shipZ - 120f; z <= shipZ + 320f; z += 11f)
+            {
+                Vector3 leftWorld = FairwayPoint(z, 1f);
+                Vector3 rightWorld = FairwayPoint(z, -1f);
+                Vector3 centerWorld = FairwayPoint(z, 0f);
+                float depth = scenarioBathymetry != null
+                    ? scenarioBathymetry.Sample(centerWorld).DepthM
+                    : FairwayModel.DepthAt(centerWorld);
+                float clearance = depth - draft;
+
+                Vector2 left = RadarPosition(leftWorld, sin, cos);
+                Vector2 right = RadarPosition(rightWorld, sin, cos);
+                radarSections.Add(new RadarChannel.Section
+                {
+                    Left = left,
+                    Right = right,
+                    Color = ChannelColor(clearance)
+                });
+
+                Vector2 center = RadarPosition(centerWorld, sin, cos);
+                if (center.y > RadarVesselOffsetY && center.y < 168f &&
+                    Mathf.Abs(center.x) < 150f)
+                    radarMinAheadM = Mathf.Min(radarMinAheadM, depth);
+            }
+
+            if (radarMinAheadM == float.MaxValue) radarMinAheadM = 0f;
+            radarChannel.SetSections(radarSections);
         }
 
         private void UpdateWarnings(float speedMps, float underKeel, float currentSpeed)
@@ -551,15 +636,37 @@ namespace ShipSimulator.UI
                         ? "CURRENT FROM PORT SIDE\n" : "CURRENT FROM STARBOARD SIDE\n";
             }
             bool hasWarning = !string.IsNullOrEmpty(warning);
+            bool danger = underKeel < 0.8f || outsideFairway ||
+                (ship.Grounding != null &&
+                 (ship.Grounding.State == GroundingState.Touching ||
+                  ship.Grounding.State == GroundingState.HardGrounding));
             if (warningPanel != null) warningPanel.gameObject.SetActive(hasWarning);
-            warningText.text = hasWarning ? "WARNING  |  " + warning.TrimEnd().Replace("\n", "  |  ") : string.Empty;
-            warningText.color = warningColor;
+            warningText.text = hasWarning
+                ? "WARNING    " + warning.TrimEnd().Replace("\n", "    ·    ")
+                : string.Empty;
+            warningText.color = danger ? HudTheme.Danger : HudTheme.Warning;
+
+            if (radarWarningRing != null)
+            {
+                radarWarningRing.gameObject.SetActive(danger);
+                if (danger)
+                {
+                    float pulse = 0.55f + 0.45f * Mathf.Sin(Time.unscaledTime * 6f);
+                    Image ringImage = radarWarningRing.GetComponent<Image>();
+                    Color ringColor = underKeel < 0.8f ? HudTheme.Danger : HudTheme.Warning;
+                    ringColor.a = pulse;
+                    ringImage.color = ringColor;
+                }
+            }
         }
 
         private RectTransform AddMapContact(
             string name, Color color, Vector3 worldPosition, Vector2 size)
         {
             RectTransform rect = ImageRect(mapWorld, name, color, Vector2.zero, size);
+            Image image = rect.GetComponent<Image>();
+            image.sprite = HudTheme.Disc();
+            image.raycastTarget = false;
             mapContacts.Add(new MapContact
             {
                 Rect = rect,
@@ -573,6 +680,10 @@ namespace ShipSimulator.UI
         {
             RectTransform rect = ImageRect(mapWorld, name, color, Vector2.zero,
                 new Vector2(width, 1f));
+            Image image = rect.GetComponent<Image>();
+            image.sprite = HudTheme.Soft(6);
+            image.type = Image.Type.Sliced;
+            image.raycastTarget = false;
             rect.pivot = new Vector2(0.5f, 0.5f);
             mapLines.Add(new MapLine
             {
@@ -624,6 +735,10 @@ namespace ShipSimulator.UI
             {
                 segments[i] = ImageRect(parent, $"{prefix}{i}", color,
                     Vector2.zero, new Vector2(width, 1f));
+                Image image = segments[i].GetComponent<Image>();
+                image.sprite = HudTheme.Soft(6);
+                image.type = Image.Type.Sliced;
+                image.raycastTarget = false;
                 segments[i].gameObject.SetActive(false);
             }
             return segments;
@@ -811,31 +926,20 @@ namespace ShipSimulator.UI
 
         private void UpdateDepthRadar(float currentDepth)
         {
-            if (depthRadarText == null || radarDepthTiles == null) return;
-            float minimumAhead = currentDepth;
-            for (int row = 0; row < RadarRows; row++)
-            for (int column = 0; column < RadarColumns; column++)
-            {
-                int index = row * RadarColumns + column;
-                float localX = (column - (RadarColumns - 1) * 0.5f) * 34f;
-                float localZ = (row - 3.3f) * 30.5f;
-                Vector3 samplePosition = ship.transform.position +
-                    ship.transform.right * localX + ship.transform.forward * localZ;
-                float depth = FairwayModel.DepthAt(samplePosition);
-                if (localZ >= 0f && Mathf.Abs(localX) < 22f)
-                    minimumAhead = Mathf.Min(minimumAhead, depth);
-                RectTransform tile = radarDepthTiles[index];
-                if (tile != null)
-                    tile.GetComponent<Image>().color = DepthChartColor(depth);
-            }
+            if (depthRadarText == null) return;
+            float minimumAhead = radarMinAheadM > 0f
+                ? Mathf.Min(currentDepth, radarMinAheadM)
+                : currentDepth;
             depthRadarText.text =
-                $"DEPTH <size=23><b>{currentDepth:F1} m</b></size>   " +
-                $"MIN AHEAD <b>{minimumAhead:F1} m</b>   DRAFT {ship.EstimatedDraftM:F1} m\n" +
-                "<size=12><color=#52DCEC>CYAN: HEADING</color>  " +
-                "<color=#FFB52E>YELLOW: ROUTE</color>  <color=#D0D6D8>GRAY: TRACK</color>\n" +
-                "<color=#EDF5FF>WHITE: PREDICTED PATH</color>  " +
-                "<color=#17343B>DEEP</color>  <color=#1F7180>SAFE</color>  " +
-                "<color=#C58B22>CAUTION</color>  <color=#C73522>SHALLOW</color></size>";
+                $"DEPTH <size=24><b>{currentDepth:F1} m</b></size>    " +
+                $"<color=#8AA0AD>MIN AHEAD</color> <b>{minimumAhead:F1} m</b>    " +
+                $"<color=#8AA0AD>DRAFT</color> {ship.EstimatedDraftM:F1} m\n" +
+                "<size=13><b><color=#46A6BC>SAFE</color>   " +
+                "<color=#D29B45>SHALLOW</color>   <color=#E04539>DANGER</color>   " +
+                "<color=#E8B24D>ROUTE</color></b></size>\n" +
+                "<size=12><color=#56C7E6>heading / predicted path</color>    " +
+                "<color=#E86054>red mark</color>   " +
+                "<color=#4DC76B>green mark</color></size>";
         }
 
         public static string FormatCameraStatus(string viewName, int viewIndex, int viewCount)
@@ -846,33 +950,42 @@ namespace ShipSimulator.UI
 
         public static string FormatObjectiveStatus(float distanceMeters)
         {
-            return "<size=15><color=#50CBE1>OBJECTIVE</color></size>\n" +
-                "<size=20><b>Proceed to training waypoint</b></size>\n\n" +
-                $"Distance: <b>{distanceMeters:F0} m</b>\n" +
-                "Speed limit: <b>max 8 km/h</b>";
+            return "<size=14><color=#56C7E6>OBJECTIVE</color></size>\n" +
+                "<size=23><b>Proceed to waypoint</b></size>\n\n" +
+                $"<color=#8AA0AD>Distance</color>  <b>{distanceMeters:F0} m</b>\n" +
+                "<color=#8AA0AD>Speed limit</color>  <b>8 km/h</b>";
         }
 
-        private Color DepthChartColor(float depth)
+        // Calm nautical depth shading: muted, low-alpha zones that blend over the
+        // dark chart instead of a saturated red grid. Danger reads clearly without
+        // shouting because the soft tiles overlap into smooth bands.
+        // Channel fill colour by under-keel clearance: calm teal where safe, amber
+        // for shallow caution, red ONLY where genuinely too shallow to pass.
+        private static Color32 ChannelColor(float clearance)
         {
-            float clearance = depth - ship.EstimatedDraftM;
-            if (clearance < 0.8f) return new Color(0.78f, 0.12f, 0.07f, 0.94f);
-            if (clearance < 2f) return new Color(0.72f, 0.43f, 0.08f, 0.92f);
-            if (depth < 6f) return new Color(0.07f, 0.36f, 0.42f, 0.9f);
-            return new Color(0.025f, 0.16f, 0.22f, 0.9f);
+            if (clearance < 0.8f) return new Color32(168, 54, 46, 168);   // danger
+            if (clearance < 2.0f) return new Color32(166, 120, 52, 150);  // shallow caution
+            return new Color32(32, 98, 112, 148);                         // safe water
         }
 
-        private void RadarFrame(
-            Transform parent, string name, Vector2 center, Vector2 size, Color color)
+        private void RangeRing(Transform parent, string name, float diameter, Color color)
         {
-            RectTransform frame = ImageRect(parent, name, Color.clear, center, size);
-            ImageRect(frame, "Top", color,
-                new Vector2(0f, size.y * 0.5f), new Vector2(size.x, 2f));
-            ImageRect(frame, "Bottom", color,
-                new Vector2(0f, -size.y * 0.5f), new Vector2(size.x, 2f));
-            ImageRect(frame, "Left", color,
-                new Vector2(-size.x * 0.5f, 0f), new Vector2(2f, size.y));
-            ImageRect(frame, "Right", color,
-                new Vector2(size.x * 0.5f, 0f), new Vector2(2f, size.y));
+            RectTransform rect = ImageRect(parent, name, color,
+                new Vector2(0f, RadarVesselOffsetY), new Vector2(diameter, diameter));
+            Image image = rect.GetComponent<Image>();
+            image.sprite = HudTheme.Ring();
+            image.raycastTarget = false;
+        }
+
+        // A buoy is a soft glow behind a crisp coloured dot; both are world-anchored
+        // contacts so they track and rotate with the head-up chart.
+        private void AddBuoy(string name, Color color, Vector3 worldPosition)
+        {
+            RectTransform glow = AddMapContact(name + "Glow",
+                new Color(color.r, color.g, color.b, 0.35f), worldPosition,
+                new Vector2(26f, 26f));
+            glow.GetComponent<Image>().sprite = HudTheme.Soft(8);
+            AddMapContact(name, color, worldPosition, new Vector2(12f, 12f));
         }
 
         private void CreateHorn()
@@ -909,25 +1022,26 @@ namespace ShipSimulator.UI
             eventSystem.AddComponent<InputSystemUIInputModule>();
         }
 
-        private Text Instrument(RectTransform parent, string name, int index)
-        {
-            float x = -337.5f + index * 225f;
-            RectTransform panel = SubPanel(parent, name, new Vector2(x, 0f), new Vector2(210f, 112f));
-            return Label(panel, name.ToUpperInvariant(), 21, TextAnchor.MiddleCenter,
-                new Vector2(6f, 6f), new Vector2(-6f, -6f));
-        }
-
-        private Text CompactInstrument(RectTransform parent, int index, float width)
+        private Text CompactInstrument(RectTransform parent, int index, float width, HudIcon icon)
         {
             float[] widths = { 205f, 285f, 255f, 270f };
             float start = -485f;
             float x = start;
             for (int i = 0; i < index; i++) x += widths[i];
             RectTransform panel = SubPanel(parent, $"Instrument{index}",
-                new Vector2(x + width * 0.5f, 0f), new Vector2(width - 5f, 72f));
-            Text text = Label(panel, string.Empty, 17, TextAnchor.MiddleCenter,
-                new Vector2(6f, 2f), new Vector2(-6f, -2f));
+                new Vector2(x + width * 0.5f, 0f), new Vector2(width - 6f, 86f));
+            Icon(panel, icon, new Vector2(-width * 0.5f + 26f, 20f), 22f, HudTheme.AccentSoft);
+            Text text = Label(panel, string.Empty, 16, TextAnchor.MiddleCenter,
+                new Vector2(40f, 2f), new Vector2(-10f, -2f));
             text.supportRichText = true;
+            text.lineSpacing = 0.92f;
+            if (index < 3)
+            {
+                RectTransform divider = ImageRect(parent, $"Divider{index}",
+                    new Color(0.40f, 0.60f, 0.72f, 0.16f),
+                    new Vector2(x + width, 0f), new Vector2(1.5f, 56f));
+                divider.GetComponent<Image>().raycastTarget = false;
+            }
             return text;
         }
 
@@ -940,24 +1054,16 @@ namespace ShipSimulator.UI
         private void UpdateActiveStates()
         {
             for (int i = 0; i < telegraphButtons.Count; i++)
-                SetButtonState(telegraphButtons[i], i == telegraphIndex);
+                telegraphButtons[i].SetActive(i == telegraphIndex);
 
             int rudderState = ship.RudderCommand < -0.1f ? 0 :
                 ship.RudderCommand > 0.1f ? 2 : 1;
             for (int i = 0; i < rudderButtons.Count; i++)
-                SetButtonState(rudderButtons[i], i == rudderState);
-        }
+                rudderButtons[i].SetActive(i == rudderState);
 
-        private void SetButtonState(Image image, bool active)
-        {
-            image.color = active ? activeColor : idleColor;
-            Text label = image.GetComponentInChildren<Text>();
-            if (label != null)
-            {
-                label.color = active ? Color.white : new Color(0.72f, 0.84f, 0.87f);
-                label.fontStyle = active ? FontStyle.Bold : FontStyle.Normal;
-            }
-            image.rectTransform.localScale = active ? Vector3.one * 1.06f : Vector3.one;
+            if (followCamera != null)
+                for (int i = 0; i < cameraButtons.Count; i++)
+                    cameraButtons[i].SetActive(false);
         }
 
         private static string BuildHeadingTape(float heading)
@@ -990,7 +1096,7 @@ namespace ShipSimulator.UI
         private RectTransform Panel(string name, Vector2 anchorMin, Vector2 anchorMax,
             Vector2 pivot, Vector2 position, Vector2 size)
         {
-            GameObject panel = new GameObject(name, typeof(RectTransform), typeof(Image));
+            GameObject panel = new GameObject(name, typeof(RectTransform));
             panel.transform.SetParent(transform, false);
             RectTransform rect = panel.GetComponent<RectTransform>();
             rect.anchorMin = anchorMin;
@@ -998,14 +1104,59 @@ namespace ShipSimulator.UI
             rect.pivot = pivot;
             rect.anchoredPosition = position;
             rect.sizeDelta = size;
-            panel.GetComponent<Image>().color = panelColor;
+            AddGlassBackground(rect, panelColor, true);
+            return rect;
+        }
+
+        // Builds a modern glass-panel backing: soft drop shadow, rounded translucent
+        // fill, and a subtle border. Content is added to the panel afterwards so it
+        // always renders on top of these background layers.
+        private void AddGlassBackground(RectTransform root, Color fill, bool border)
+        {
+            RectTransform shadow = Stretch(root, "Shadow", new Vector2(-10f, -16f),
+                new Vector2(10f, 4f));
+            Image shadowImage = shadow.gameObject.AddComponent<Image>();
+            shadowImage.sprite = HudTheme.Soft(HudTheme.PanelRadius);
+            shadowImage.type = Image.Type.Sliced;
+            shadowImage.color = HudTheme.PanelShadow;
+            shadowImage.raycastTarget = false;
+
+            RectTransform fillRect = Stretch(root, "Fill", Vector2.zero, Vector2.zero);
+            Image fillImage = fillRect.gameObject.AddComponent<Image>();
+            fillImage.sprite = HudTheme.Rounded(HudTheme.PanelRadius);
+            fillImage.type = Image.Type.Sliced;
+            fillImage.color = fill;
+            fillImage.raycastTarget = true;
+
+            if (!border) return;
+            RectTransform outline = Stretch(root, "Border", Vector2.zero, Vector2.zero);
+            Image outlineImage = outline.gameObject.AddComponent<Image>();
+            outlineImage.sprite = HudTheme.Outline(HudTheme.PanelRadius);
+            outlineImage.type = Image.Type.Sliced;
+            outlineImage.color = HudTheme.PanelBorder;
+            outlineImage.raycastTarget = false;
+        }
+
+        private RectTransform Stretch(Transform parent, string name,
+            Vector2 offsetMin, Vector2 offsetMax)
+        {
+            GameObject child = new GameObject(name, typeof(RectTransform));
+            child.transform.SetParent(parent, false);
+            RectTransform rect = child.GetComponent<RectTransform>();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = Vector2.one;
+            rect.offsetMin = offsetMin;
+            rect.offsetMax = offsetMax;
             return rect;
         }
 
         private RectTransform SubPanel(RectTransform parent, string name, Vector2 position, Vector2 size)
         {
-            RectTransform rect = ImageRect(parent, name, new Color(0.02f, 0.08f, 0.11f, 0.9f),
-                position, size);
+            RectTransform rect = ImageRect(parent, name, HudTheme.PanelFillSoft, position, size);
+            Image image = rect.GetComponent<Image>();
+            image.sprite = HudTheme.Rounded(12);
+            image.type = Image.Type.Sliced;
+            image.raycastTarget = false;
             return rect;
         }
 
@@ -1022,6 +1173,17 @@ namespace ShipSimulator.UI
             return rect;
         }
 
+        private Image Icon(Transform parent, HudIcon icon, Vector2 position,
+            float size, Color color)
+        {
+            RectTransform rect = ImageRect(parent, $"Icon_{icon}", color, position,
+                new Vector2(size, size));
+            Image image = rect.GetComponent<Image>();
+            image.sprite = HudTheme.Icon(icon);
+            image.raycastTarget = false;
+            return image;
+        }
+
         private Text Label(Transform parent, string value, int size, TextAnchor alignment,
             Vector2 offsetMin, Vector2 offsetMax)
         {
@@ -1035,29 +1197,63 @@ namespace ShipSimulator.UI
             Text label = labelObject.GetComponent<Text>();
             label.font = font;
             label.fontSize = size;
-            label.color = Color.white;
+            label.color = HudTheme.TextPrimary;
             label.alignment = alignment;
             label.text = value;
+            label.supportRichText = true;
+            Shadow shadow = labelObject.AddComponent<Shadow>();
+            shadow.effectColor = new Color(0f, 0.01f, 0.02f, 0.6f);
+            shadow.effectDistance = new Vector2(1f, -1f);
             return label;
         }
 
-        private Button Button(Transform parent, string caption, Vector2 position,
+        private HudButton Button(Transform parent, string caption, Vector2 position,
             Vector2 size, Action action)
         {
-            GameObject buttonObject = new GameObject(caption, typeof(RectTransform), typeof(Image), typeof(Button));
+            GameObject buttonObject = new GameObject(caption,
+                typeof(RectTransform), typeof(Image), typeof(HudButton));
             buttonObject.transform.SetParent(parent, false);
             RectTransform rect = buttonObject.GetComponent<RectTransform>();
             rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);
             rect.anchoredPosition = position;
             rect.sizeDelta = size;
-            Image image = buttonObject.GetComponent<Image>();
-            image.color = new Color(0.08f, 0.25f, 0.31f);
-            Button button = buttonObject.GetComponent<Button>();
-            button.targetGraphic = image;
-            button.onClick.AddListener(() => action());
-            Text text = Label(buttonObject.transform, caption, 17, TextAnchor.MiddleCenter,
+            // Root image is a transparent raycast catcher; visible layers are ordered
+            // children (glow behind fill behind border behind label).
+            Image raycastImage = buttonObject.GetComponent<Image>();
+            raycastImage.color = new Color(0f, 0f, 0f, 0f);
+            raycastImage.raycastTarget = true;
+
+            RectTransform glow = Stretch(buttonObject.transform, "Glow",
+                new Vector2(-9f, -9f), new Vector2(9f, 9f));
+            Image glowImage = glow.gameObject.AddComponent<Image>();
+            glowImage.sprite = HudTheme.Soft(HudTheme.ButtonRadius);
+            glowImage.type = Image.Type.Sliced;
+            glowImage.color = new Color(0f, 0f, 0f, 0f);
+            glowImage.raycastTarget = false;
+
+            RectTransform fill = Stretch(buttonObject.transform, "Fill",
                 Vector2.zero, Vector2.zero);
+            Image fillImage = fill.gameObject.AddComponent<Image>();
+            fillImage.sprite = HudTheme.Rounded(HudTheme.ButtonRadius);
+            fillImage.type = Image.Type.Sliced;
+            fillImage.color = HudTheme.ButtonIdle;
+            fillImage.raycastTarget = false;
+
+            RectTransform outline = Stretch(buttonObject.transform, "Border",
+                Vector2.zero, Vector2.zero);
+            Image outlineImage = outline.gameObject.AddComponent<Image>();
+            outlineImage.sprite = HudTheme.Outline(HudTheme.ButtonRadius);
+            outlineImage.type = Image.Type.Sliced;
+            outlineImage.color = HudTheme.PanelBorder;
+            outlineImage.raycastTarget = false;
+
+            Text text = Label(buttonObject.transform, caption, 16, TextAnchor.MiddleCenter,
+                new Vector2(4f, 2f), new Vector2(-4f, -2f));
+            text.color = HudTheme.ButtonText;
             text.raycastTarget = false;
+
+            HudButton button = buttonObject.GetComponent<HudButton>();
+            button.Initialise(fillImage, outlineImage, glowImage, text, action);
             return button;
         }
     }

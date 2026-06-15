@@ -74,8 +74,9 @@ namespace ShipSimulator.CameraSystem
                 IsNavigatorView ? navigatorLookOffset : lookOffset);
             Quaternion desiredRotation =
                 Quaternion.LookRotation(lookTarget - transform.position, Vector3.up);
+            // Softer rotation easing for smoother view changes and turns.
             transform.rotation = Quaternion.Slerp(
-                transform.rotation, desiredRotation, 1f - Mathf.Exp(-8f * Time.deltaTime));
+                transform.rotation, desiredRotation, 1f - Mathf.Exp(-5.5f * Time.deltaTime));
 
             if (controlledCamera != null && target.Body != null)
             {
@@ -83,7 +84,7 @@ namespace ShipSimulator.CameraSystem
                     ? navigatorFieldOfView
                     : baseFieldOfView + target.Body.linearVelocity.magnitude * speedFieldOfViewGain;
                 controlledCamera.fieldOfView = Mathf.Lerp(
-                    controlledCamera.fieldOfView, targetFov, 1f - Mathf.Exp(-2f * Time.deltaTime));
+                    controlledCamera.fieldOfView, targetFov, 1f - Mathf.Exp(-1.6f * Time.deltaTime));
             }
         }
 

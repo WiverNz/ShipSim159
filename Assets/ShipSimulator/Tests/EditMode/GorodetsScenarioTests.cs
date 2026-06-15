@@ -288,8 +288,8 @@ namespace ShipSimulator.Tests
                 ParticleSystemRenderer dropsRenderer =
                     drops.GetComponent<ParticleSystemRenderer>();
                 Assert.That(dropsRenderer.renderMode,
-                    Is.EqualTo(ParticleSystemRenderMode.Mesh));
-                Assert.That(dropsRenderer.mesh, Is.Not.Null);
+                    Is.EqualTo(ParticleSystemRenderMode.Stretch));
+                Assert.That(dropsRenderer.sharedMaterial, Is.Not.Null);
                 Assert.That(drops.main.simulationSpace,
                     Is.EqualTo(ParticleSystemSimulationSpace.World));
                 Assert.That(drops.emission.rateOverTime.constant,

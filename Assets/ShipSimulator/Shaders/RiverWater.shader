@@ -200,11 +200,16 @@ Shader "ShipSimulator/RiverWater"
                     reflect(-viewDirection, normalWS), perceptualRoughness, 1.0h);
                 reflection = lerp(reflection, reflection * _ReflectionTint.rgb, 0.48h);
 
+                // Sky reflection: present even at grazing-but-not-edge angles so the
+                // river reads as a reflective surface rather than a flat plane.
+                half3 skyReflection = reflection * lerp(0.55h, 1.0h, fresnel);
+                half sunGlitter = pow(specular, 1.4h);
+
                 half3 color = waterColor;
-                color += reflection * fresnel * _ReflectionStrength;
-                color += specular * mainLight.color * (0.22h + fresnel * 0.72h);
-                color += _FoamColor.rgb * narrowStreaks * 0.025h;
-                color += SampleSH(normalWS) * 0.08h;
+                color += skyReflection * (_ReflectionStrength + fresnel * 0.45h);
+                color += sunGlitter * mainLight.color * (0.45h + fresnel * 1.25h);
+                color += _FoamColor.rgb * narrowStreaks * 0.05h;
+                color += SampleSH(normalWS) * 0.14h;
                 color = MixFog(color, input.fogFactor);
 
                 half alpha = saturate(_Opacity + fresnel * 0.045h);

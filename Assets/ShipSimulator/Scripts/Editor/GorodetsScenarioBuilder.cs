@@ -6,6 +6,7 @@ using ShipSimulator.Visuals;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -73,6 +74,10 @@ namespace ShipSimulator.Editor
             CreateLighting();
             CreateCamera(ship);
             CreateTelemetry(ship);
+            // Reuse the shared upgraded atmosphere + post-processing so Gorodets
+            // matches the river training scene instead of looking flat.
+            ShipSimulatorVisualUpgrade.ConfigureLighting(scene);
+            ShipSimulatorVisualUpgrade.ConfigurePostProcessing(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);
             AddToBuildSettings();
             AssetDatabase.SaveAssets();
@@ -285,7 +290,16 @@ namespace ShipSimulator.Editor
             GameObject cameraObject = new GameObject("Main Camera");
             cameraObject.tag = "MainCamera";
             Camera camera = cameraObject.AddComponent<Camera>();
+            camera.clearFlags = CameraClearFlags.Skybox;
+            camera.fieldOfView = 52f;
+            camera.nearClipPlane = 0.3f;
             camera.farClipPlane = 2600f;
+            camera.allowHDR = true;
+            camera.allowMSAA = true;
+            UniversalAdditionalCameraData cameraData =
+                cameraObject.AddComponent<UniversalAdditionalCameraData>();
+            cameraData.renderPostProcessing = true;
+            cameraData.antialiasing = AntialiasingMode.FastApproximateAntialiasing;
             cameraObject.AddComponent<AudioListener>();
             ShipFollowCamera follow = cameraObject.AddComponent<ShipFollowCamera>();
             SerializedObject serialized = new SerializedObject(follow);

@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="preview.png" width="800"
+       alt="ShipSim159 river navigation simulator preview">
+</p>
+
 # ShipSim159
 
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator centered

@@ -50,6 +50,10 @@ mono_crash.*
 # Local tooling configuration
 /.mcp.json
 
+# Machine-specific agent notes: they describe a machine, not the project
+CLAUDE.local.md
+AGENTS.local.md
+
 # Operating system files
 .DS_Store
 Thumbs.db

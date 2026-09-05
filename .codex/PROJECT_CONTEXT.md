@@ -95,13 +95,49 @@ curved fairway depth profile, the compound vessel collision hull, and the
 runtime ship navigation-light rig, and the buoy beacon flash timing.
 PlayMode tests cover current-zone entry/exit and overlapping-zone averaging.
 
-The `mcp-unity` package frequently times out after completing a request. Verify
-test results in:
+Verify test results in:
 
 `C:\Users\User\AppData\LocalLow\DefaultCompany\ShipSim159\TestResults.xml`
 
-Timeouts and `TestRunnerService` exceptions observed so far belong to the MCP
-package, not the project tests.
+The `mcp-unity` package used to run these and frequently timed out after
+completing a request; timeouts and `TestRunnerService` exceptions observed then
+belonged to that package, not to the project tests.
+
+## Unity 6000.4 to 6000.6 upgrade, 2026-09-05
+
+The editor was upgraded from `6000.4.0f1` to `6000.6.0f1`, which rewrote
+`ProjectVersion.txt`, `Packages/manifest.json`, `packages-lock.json`,
+`QualitySettings.asset` and `UniversalRenderPipelineGlobalSettings.asset`, and
+added `PhysicsCoreProjectSettings2D.asset` and `ProjectAuditorSettings.asset`.
+Package bumps of note: URP 17.4.0 to 17.6.0, Input System 1.19.0 to 1.20.0,
+Test Framework 1.6.0 to 1.8.0, Timeline 1.8.11 to 6.6.0.
+
+The upgrade left the project unable to enter Play Mode. **No ShipSimulator code
+was affected**: all 75 logged `error CS` lines came from the third-party
+`com.gamelovers.mcp-unity` package, which used two APIs that Unity 6.6 made
+hard-obsolete, `EditorUtility.InstanceIDToObject(int)` and
+`Object.GetInstanceID()`, reported as CS0619 at 25 call sites.
+
+Resolved by removing `com.gamelovers.mcp-unity` from `Packages/manifest.json`.
+It was a dev-only editor bridge; no code under `Assets/` referenced it. The
+package had been declared as an unpinned git URL, so the resolved revision was
+whatever it last fetched (`cce8b57de9cb`).
+
+That cleared all 75 `CS` errors but Play Mode was still blocked, by a second
+incompatible package that the first pass had missed: `com.unity.ai.assistant`,
+pinned to the stale pre-release `2.12.0-pre.2`, failing Unity 6.6's own analyzer
+with `error UAC0020` in `DynamicAssemblyBuilder.cs(191,20)`, because
+`System.Reflection.Assembly.Load(byte[])` loads into a non-Unity
+`AssemblyLoadContext`. It was a direct manifest entry (`depth: 0`) with no
+reverse dependencies and nothing under `Assets/` referencing it, so it was
+removed the same way.
+
+The lesson worth keeping: **grep for `error [A-Z]`, not `error CS`.** Unity 6.6
+analyzers report blocking errors under prefixes like `UAC`, so a `CS`-only
+search reported this project as clean while it could not enter Play Mode.
+
+Not yet verified: a clean compile and the EditMode/PlayMode suites have not been
+run since either removal. That is the next thing to confirm.
 
 ## Visual Upgrade
 

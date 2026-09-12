@@ -2,6 +2,62 @@
 
 Last updated: 2026-09-12
 
+## Empty Editor Startup Fix, 2026-09-12
+
+The user editor log showed Play entered an `untitled` scene, with no voyage camera
+or menu, and `Library/LastSceneManagerSetup.txt` contained an empty scene list.
+`TrainingSceneStartup` now opens Gorodets on interactive startup when only a clean
+untitled scene is open. From other non-voyage scenes, Play uses `playModeStartScene`
+to launch Gorodets while preserving editor work. Either selected training scene
+still plays directly. Automatic setup is disabled in batch mode for test/build isolation.
+The explicit Play Training Scene command now offers to save modified scenes.
+
+Verified: 33 EditMode tests passed (`TestResults/startup-editmode.xml`), including
+unsaved-work preservation and both selected scenarios. The dedicated
+`LandscapeRuntimeCheck.RunFromEmptyScene` passed empty-scene startup through the
+menu into daylight, rain/fog and night rendering (`Logs/startup-runtime.log`).
+Interactive verification also opened Gorodets successfully (`Logs/startup-editor.log`).
+Startup waits for Unity to restore its scene setup before selecting the default scene;
+the first editor delay callback can run too early.
+
+## Water and Natural Landscape, 2026-09-12
+
+Both scenes now use continuous riverbank meshes, alluvial soil and meadow shading,
+branched foliage meshes, bushes, reeds and deeper woodland. RiverTrainingScene has
+782 trees and 255 bushes; Gorodets has 1,036 trees and 361 bushes, plus reed clumps.
+Plant roots interpolate the actual bank triangles, avoiding floating trees on hills.
+Six tree variants, three bush variants and a reed prefab share generated mesh assets
+with three LOD levels. Leaves use procedural cutouts, colour variation, translucency
+and wind motion. No external vegetation packages or texture downloads were added.
+
+`RiverLandscapeBuilder.ApplyBoth` updates existing scenes, and both original scene
+builders call `Apply` so the upgrade survives regeneration. Assets are under
+`Settings/NaturalLandscape/`; existing generated asset GUIDs are preserved on rebuild.
+The Gorodets box-bank renderers are hidden while their existing colliders remain.
+The familiarisation scene uses the new bank meshes for shore collision. Fairway,
+bathymetry and vessel physics parameters are unchanged.
+
+Water now uses scene-depth shoreline shading, distance-filtered ripple normals,
+shadowed sun highlights and planar reflections of the vessel, banks and vegetation.
+`RiverPlanarReflection` renders a 768-pixel HDR reflection with a 1,400 m far limit,
+excludes water/UI layers and guards recursive rendering. It adds one scene render per
+visible camera, so it has a GPU cost; tree LODs and reflection mipmaps limit detail.
+DirectX reflection UVs require a vertical flip. Runtime assembly references now include
+URP/Core to submit the reflection render request. The PC shadow distance is 180 m and
+daylight sky tint is neutral to remove the previous green horizon cast.
+
+Verification:
+
+- Unity compilation and rendered shaders: no blocking errors.
+- EditMode: 30 passed, 0 failed (`TestResults/landscape-editmode.xml`).
+- PlayMode: 8 passed, 0 failed (`TestResults/landscape-playmode.xml`).
+- `LandscapeRuntimeCheck.Run` passed daylight, rain/fog and night captures with planar
+  reflections active (`Logs/landscape-runtime.log`).
+- Both scenarios' rendered previews and in-game captures inspected in `Logs/Landscape/`.
+
+Rendering was checked on this Windows machine's desktop URP configuration. This is
+an improved procedural environment, not scanned terrain or validated geography.
+
 ## Maritime Menu and Saved Voyages, 2026-09-12
 
 Both training scenes now open a runtime maritime start menu with a procedural river

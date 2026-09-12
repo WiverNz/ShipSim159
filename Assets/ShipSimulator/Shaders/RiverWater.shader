@@ -42,10 +42,16 @@ Shader "ShipSimulator/RiverWater"
             #pragma fragment Frag
             #pragma multi_compile_fog
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
-            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+            TEXTURE2D(_RiverPlanarReflection);
+            SAMPLER(sampler_RiverPlanarReflection);
+            float4x4 _RiverReflectionVP;
+            float _RiverReflectionAvailable;
 
             CBUFFER_START(UnityPerMaterial)
                 half4 _ShallowColor;
@@ -165,12 +171,14 @@ Shader "ShipSimulator/RiverWater"
                     -(fineX - fine) * _RippleStrength,
                     epsilon,
                     -(fineZ - fine) * _RippleStrength));
-                half3 normalWS = normalize(input.normalWS + half3(fineNormal.x, 0, fineNormal.z));
+                float distanceToCamera = distance(_WorldSpaceCameraPos, input.positionWS);
+                float rippleFade = lerp(1.0, 0.18, saturate(distanceToCamera / 650));
+                half3 normalWS = normalize(input.normalWS + half3(fineNormal.x, 0, fineNormal.z) * rippleFade);
                 half3 viewDirection = SafeNormalize(GetWorldSpaceViewDir(input.positionWS));
                 Light mainLight = GetMainLight(TransformWorldToShadowCoord(input.positionWS));
 
                 half fresnel = pow(1.0h - saturate(dot(normalWS, viewDirection)), _FresnelPower);
-                half diffuse = saturate(dot(normalWS, mainLight.direction)) * 0.28h + 0.72h;
+                half diffuse = saturate(dot(normalWS, mainLight.direction)) * mainLight.shadowAttenuation;
                 half3 halfDirection = SafeNormalize(mainLight.direction + viewDirection);
                 half specular = pow(
                     saturate(dot(normalWS, halfDirection)),
@@ -186,30 +194,40 @@ Shader "ShipSimulator/RiverWater"
                 half narrowStreaks = smoothstep(0.84h, 0.97h,
                     streakNoise + fine * 0.06h);
 
-                half depthVariation = saturate(
-                    0.42h + input.broadWave * 0.08h + streakNoise * 0.17h);
+                float2 screenUV = GetNormalizedScreenSpaceUV(input.positionCS);
+                float sceneDepth = LinearEyeDepth(SampleSceneDepth(screenUV), _ZBufferParams);
+                float waterDepth = -TransformWorldToView(input.positionWS).z;
+                float depth = max(0, sceneDepth - waterDepth);
+                half depthVariation = exp(-depth * 0.45);
+                half shoreline = 1 - saturate(depth / 0.65);
                 half3 muddyShallow = lerp(
                     _ShallowColor.rgb,
                     half3(0.22h, 0.27h, 0.19h),
                     _Turbidity * 0.38h);
                 half3 waterColor = lerp(_DeepColor.rgb, muddyShallow, depthVariation);
-                waterColor *= diffuse * mainLight.color;
+                waterColor *= SampleSH(normalWS) * 0.65 + diffuse * mainLight.color * 0.55;
 
                 half perceptualRoughness = 1.0h - _Smoothness;
                 half3 reflection = GlossyEnvironmentReflection(
                     reflect(-viewDirection, normalWS), perceptualRoughness, 1.0h);
                 reflection = lerp(reflection, reflection * _ReflectionTint.rgb, 0.48h);
 
-                // Sky reflection: present even at grazing-but-not-edge angles so the
-                // river reads as a reflective surface rather than a flat plane.
-                half3 skyReflection = reflection * lerp(0.55h, 1.0h, fresnel);
-                half sunGlitter = pow(specular, 1.4h);
-
-                half3 color = waterColor;
-                color += skyReflection * (_ReflectionStrength + fresnel * 0.45h);
-                color += sunGlitter * mainLight.color * (0.45h + fresnel * 1.25h);
-                color += _FoamColor.rgb * narrowStreaks * 0.05h;
-                color += SampleSH(normalWS) * 0.14h;
+                float4 reflected = mul(_RiverReflectionVP, float4(input.positionWS, 1));
+                float2 reflectionUV = reflected.xy / max(reflected.w, 0.001) * 0.5 + 0.5;
+                #if UNITY_UV_STARTS_AT_TOP
+                    reflectionUV.y = 1 - reflectionUV.y;
+                #endif
+                reflectionUV += normalWS.xz * 0.022 * saturate(35 / max(distanceToCamera, 1));
+                half3 banks = SAMPLE_TEXTURE2D_LOD(_RiverPlanarReflection, sampler_RiverPlanarReflection,
+                    saturate(reflectionUV), lerp(0.4, 2.2, perceptualRoughness)).rgb;
+                float valid = step(0, reflectionUV.x) * step(reflectionUV.x, 1) * step(0, reflectionUV.y) * step(reflectionUV.y, 1);
+                reflection = lerp(reflection, banks, _RiverReflectionAvailable * valid);
+                half reflectance = saturate(0.025 + fresnel * _ReflectionStrength);
+                half3 color = lerp(waterColor, reflection, reflectance);
+                half sunGlitter = specular * mainLight.shadowAttenuation;
+                color += sunGlitter * mainLight.color * (0.18 + fresnel * 0.85);
+                half foam = shoreline * smoothstep(0.42, 0.7, fine * 0.5 + streakNoise * 0.5);
+                color = lerp(color, _FoamColor.rgb * (SampleSH(normalWS) + mainLight.color * 0.35), foam * 0.24);
                 color = MixFog(color, input.fogFactor);
 
                 half alpha = saturate(_Opacity + fresnel * 0.045h);

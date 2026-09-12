@@ -83,7 +83,7 @@ namespace ShipSimulator.Visuals
             {
                 runtimeSky.SetColor("_SkyTint", night
                     ? new Color(0.04f, 0.07f, 0.14f)
-                    : new Color(0.42f, 0.56f, 0.74f));
+                    : new Color(0.5f, 0.5f, 0.5f));
                 runtimeSky.SetColor("_GroundColor", night
                     ? new Color(0.02f, 0.03f, 0.05f)
                     : new Color(0.33f, 0.35f, 0.28f));

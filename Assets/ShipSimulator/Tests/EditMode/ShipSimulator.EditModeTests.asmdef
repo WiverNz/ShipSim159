@@ -2,7 +2,8 @@
   "name": "ShipSimulator.EditModeTests",
   "rootNamespace": "ShipSimulator.Tests",
   "references": [
-    "ShipSimulator.Runtime"
+    "ShipSimulator.Runtime",
+    "ShipSimulator.Editor"
   ],
   "includePlatforms": [
     "Editor"

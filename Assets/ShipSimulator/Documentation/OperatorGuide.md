@@ -88,8 +88,26 @@ conditions.
 Depth, bathymetry, route geometry, RPM, and engine load are prototype
 estimates. They must not be treated as validated navigation or training data.
 
+## Landscape and Water Graphics
+
+Both passages have continuous natural banks with meadow and wet-soil detail, varied
+trees, bushes and reed clumps. Vegetation uses three levels of detail, with smaller
+meshes at longer distances. The river reflects the vessel and banks, with animated
+ripples, shoreline depth shading and sun highlights. Day/night and weather controls
+continue to affect the scene.
+
+Use `Ship Simulator > Upgrade Water And Landscape` to regenerate these visuals in
+both scenes. The normal scene builders also include the upgrade. Generated assets
+are shared under `Assets/ShipSimulator/Settings/NaturalLandscape/`; edit the builder
+to make lasting changes to placement or plant shapes.
+
+Planar water reflections require an extra scene render. The default reflection is
+768 pixels with reduced distant detail. This is procedural scenery, not surveyed
+landscape or validated navigation geography.
+
 ## Verification
 
 Run EditMode and PlayMode suites from `Window > General > Test Runner`.
-Latest verified result (2026-09-12): EditMode `25/25`, PlayMode `8/8`.
+Latest verified result (2026-09-12): EditMode `30/30`, PlayMode `8/8`.
 The dedicated menu smoke check also passed save/load across both scenarios.
+The landscape smoke check passed daylight, rain/fog and night rendering with reflections.

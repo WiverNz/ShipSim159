@@ -16,8 +16,6 @@ namespace ShipSimulator.Editor
     {
         private const string Root = "Assets/ShipSimulator";
         private const string ScenePath = Root + "/Scenes/RiverTrainingScene.unity";
-        private const string StartupScenePath =
-            Root + "/Scenes/GorodetsTrainingScene.unity";
         private const string ProfilePath = Root + "/Settings/RiverVisualProfile.asset";
         private const string WaterMeshPath = Root + "/Settings/RiverWaterMesh.asset";
         private const string LeftBankMeshPath = Root + "/Settings/LeftBankTerrain.asset";
@@ -30,8 +28,9 @@ namespace ShipSimulator.Editor
         {
             if (!EditorApplication.isPlaying)
             {
+                if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
                 EditorSceneManager.OpenScene(
-                    StartupScenePath, OpenSceneMode.Single);
+                    TrainingSceneStartup.ScenePath, OpenSceneMode.Single);
                 EditorApplication.isPlaying = true;
             }
         }
@@ -150,6 +149,7 @@ namespace ShipSimulator.Editor
             ConfigureNavigation(scene);
             ConfigureVesselFeedback(scene);
             TuneVesselMaterials();
+            RiverLandscapeBuilder.Apply(scene);
             EditorSceneManager.MarkSceneDirty(scene);
         }
 
@@ -322,7 +322,7 @@ namespace ShipSimulator.Editor
             sky.SetFloat("_SunSize", 0.035f);
             sky.SetFloat("_SunSizeConvergence", 5f);
             sky.SetFloat("_AtmosphereThickness", 1.05f); // thicker air = horizon haze
-            sky.SetColor("_SkyTint", new Color(0.42f, 0.56f, 0.74f));
+            sky.SetColor("_SkyTint", new Color(0.5f, 0.5f, 0.5f));
             sky.SetColor("_GroundColor", new Color(0.33f, 0.35f, 0.28f));
             sky.SetFloat("_Exposure", 1.02f);
             EditorUtility.SetDirty(sky);

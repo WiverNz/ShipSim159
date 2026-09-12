@@ -56,8 +56,8 @@ missing you are on a different machine and should write your own.
 - `Assets/ShipSimulator/Tests/PlayMode/`: runtime physics and trigger interaction tests.
 - `Assets/ShipSimulator/Models/VolgoDon507/`: imported vessel FBX, textures, URP materials.
 - `Assets/ShipSimulator/Prefabs/`: vessel, navigation and environment prefabs.
-- `Assets/ShipSimulator/Scenes/`: `RiverTrainingScene.unity` (primary, build entry point) and
-  `GorodetsTrainingScene.unity` (second scenario).
+- `Assets/ShipSimulator/Scenes/`: `GorodetsTrainingScene.unity` (default startup and build entry point) and
+  `RiverTrainingScene.unity` (river familiarisation).
 - `Assets/ShipSimulator/Data/Vessels/`: JSON vessel specifications.
 - `ProjectSettings/`, `Packages/`: Unity configuration and package dependencies.
 
@@ -75,9 +75,12 @@ the editor by its absolute path rather than relying on PATH, so the version alwa
 
 ### Run
 
-Open `Assets/ShipSimulator/Scenes/RiverTrainingScene.unity` and enter Play Mode.
-Both training scenes are enabled in Build Settings. `Ship Simulator > Play Training Scene`
-opens the river scene from the menu.
+Open the project and enter Play Mode. `TrainingSceneStartup` opens Gorodets when the
+editor starts with a clean untitled scene. Play from a non-voyage scene launches Gorodets
+through `EditorSceneManager.playModeStartScene`, preserving unsaved editor work. An open
+training scene plays directly, so River familiarisation remains selectable. Batch automation
+keeps control of its own scene setup. Both training scenes are enabled in Build Settings.
+`Ship Simulator > Play Training Scene` opens Gorodets, after offering to save modified scenes.
 
 Both training scenes open the runtime maritime start menu. Choose a new passage or continue
 the saved voyage. Escape opens the pause menu with save/load and persistent settings.
@@ -152,6 +155,7 @@ One thing about results that has already cost time here:
 | `Arrange Navigation Buoys` | Places the fairway buoy line |
 | `Build Gorodets Scenario` | Regenerates `GorodetsTrainingScene` |
 | `Render Visual Preview` | Renders a still of the scene |
+| `Upgrade Water And Landscape` | Applies natural banks, vegetation LODs and reflective water to both scenes |
 | `Play Training Scene` / `Stop Play Mode` | Enter and leave Play Mode |
 
 These commands **regenerate scene-owned content**. A manual scene edit they overwrite must
@@ -260,7 +264,7 @@ include:
 - **Commit the `.meta` file Unity generates for every new asset and folder**, or the GUID is
   unstable for everyone else.
 - **Editor commands overwrite scene content.** See the menu table above: put the change in the
-  builder script, not in the scene.
+builder script, not in the scene.
 - **A compile error in any package blocks Play Mode for the whole project**, even when every line
   under `Assets/` is fine. The 6000.4 to 6000.6 upgrade hit exactly this: Unity 6.6 made
   `EditorUtility.InstanceIDToObject(int)` and `Object.GetInstanceID()` hard-obsolete

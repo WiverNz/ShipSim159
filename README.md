@@ -37,7 +37,8 @@ instrumentation.
 - Day/night switching with illuminated navigation environment.
 - Flashing red and green buoy lights.
 - Mounted vessel navigation lights.
-- Procedural river water, riverbanks, vegetation, fog, wake, bow waves, and
+- Reflective river water, natural banks, branched trees, bushes and shoreline reeds
+  with distance-based detail, plus fog, wake, bow waves, and
   propeller wash.
 - Runtime vessel-data validation and Unity EditMode/PlayMode tests.
 
@@ -135,6 +136,7 @@ The `Ship Simulator` Unity menu contains project automation commands:
 | `Build Prototype` | Regenerate the prototype scene and generated assets |
 | `Integrate Detailed Vessel Model` | Rebuild vessel materials and prefab integration |
 | `Apply Visual Upgrade` | Regenerate procedural environment visuals |
+| `Upgrade Water And Landscape` | Update natural banks, vegetation and water reflections in both scenarios |
 | `Arrange Navigation Buoys` | Rebuild the curved paired-buoy layout |
 | `Render Visual Preview` | Render project preview images |
 | `Play Training Scene` | Open and run the main scene |

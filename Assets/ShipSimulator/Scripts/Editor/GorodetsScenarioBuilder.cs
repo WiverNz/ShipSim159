@@ -78,6 +78,7 @@ namespace ShipSimulator.Editor
             // matches the river training scene instead of looking flat.
             ShipSimulatorVisualUpgrade.ConfigureLighting(scene);
             ShipSimulatorVisualUpgrade.ConfigurePostProcessing(scene);
+            RiverLandscapeBuilder.Apply(scene);
             EditorSceneManager.SaveScene(scene, ScenePath);
             AddToBuildSettings();
             AssetDatabase.SaveAssets();

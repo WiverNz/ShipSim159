@@ -18,6 +18,7 @@ namespace ShipSimulator.UI
     public sealed class VoyageMenu : MonoBehaviour
     {
         private static VoyageMenu instance;
+        private static bool warnedAboutScene;
         public static bool IsOpen => instance != null && instance.open;
         public bool HasVoyage => hasVoyage;
         public bool IsReady => !loading;
@@ -49,6 +50,7 @@ namespace ShipSimulator.UI
         private static void ResetStatics()
         {
             instance = null;
+            warnedAboutScene = false;
             SceneManager.sceneLoaded -= Bootstrap;
         }
 
@@ -63,7 +65,21 @@ namespace ShipSimulator.UI
 
         private static void Bootstrap(Scene scene, LoadSceneMode mode)
         {
-            if (mode != LoadSceneMode.Single || !VoyageSave.IsVoyageScene(scene.name)) return;
+            if (mode != LoadSceneMode.Single) return;
+            if (!VoyageSave.IsVoyageScene(scene.name))
+            {
+                // Silence here reads as a broken build: no menu, no vessel, no HUD, just a black screen.
+                if (!warnedAboutScene)
+                {
+                    warnedAboutScene = true;
+                    Debug.LogWarning("VoyageMenu: active scene '" +
+                        (string.IsNullOrEmpty(scene.name) ? "untitled" : scene.name) +
+                        "' is not a voyage scene, so the menu stays closed. Open RiverTrainingScene or " +
+                        "GorodetsTrainingScene before entering Play Mode.");
+                }
+                return;
+            }
+            warnedAboutScene = false;
             if (instance == null) new GameObject("Voyage Menu").AddComponent<VoyageMenu>();
             instance.BindScene();
         }

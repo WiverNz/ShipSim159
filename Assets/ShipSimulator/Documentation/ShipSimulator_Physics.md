@@ -33,8 +33,12 @@ channel profile, not scene bathymetry.
 rudder inputs set targets; response rates remain controlled by vessel data.
 Normal motion is always produced through Rigidbody forces and torque.
 
-`ShipWakeController` creates visual hull and propeller trails. These trails do
-not apply hydrodynamic forces and are not a wake interaction model.
+`ShipWakeController` publishes the vessel's track, drifted with the current, to
+`RiverWater.shader`, which draws a deep-water Kelvin wake, a bow wave, midship
+drawdown and propeller wash. The pattern uses speed through the water, but its
+amplitudes and hull wave shape are estimated visual values, not a validated
+wave height or wash model. The waves apply no forces to the vessel or other
+objects, ignore depth and banks, and are not a wake interaction model.
 
 ## Reality status
 

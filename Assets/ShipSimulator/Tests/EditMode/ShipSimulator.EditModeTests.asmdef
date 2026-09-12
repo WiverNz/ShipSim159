@@ -3,7 +3,8 @@
   "rootNamespace": "ShipSimulator.Tests",
   "references": [
     "ShipSimulator.Runtime",
-    "ShipSimulator.Editor"
+    "ShipSimulator.Editor",
+    "Unity.RenderPipelines.Universal.Runtime"
   ],
   "includePlatforms": [
     "Editor"

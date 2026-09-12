@@ -300,7 +300,8 @@ namespace ShipSimulator.Editor
             UniversalAdditionalCameraData cameraData =
                 cameraObject.AddComponent<UniversalAdditionalCameraData>();
             cameraData.renderPostProcessing = true;
-            cameraData.antialiasing = AntialiasingMode.FastApproximateAntialiasing;
+            cameraData.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+            cameraData.antialiasingQuality = AntialiasingQuality.High;
             cameraObject.AddComponent<AudioListener>();
             ShipFollowCamera follow = cameraObject.AddComponent<ShipFollowCamera>();
             SerializedObject serialized = new SerializedObject(follow);

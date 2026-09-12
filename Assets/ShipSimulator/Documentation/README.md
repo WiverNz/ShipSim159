@@ -19,7 +19,7 @@ vessel. It is not a validated maritime training product.
 
 The main scene contains the detailed Volgo-Don model, procedural river and
 terrain, current trigger zones, compact bridge HUD, eight camera views,
-simulator controls, fairway minimap, warnings, and visual wake trails.
+simulator controls, fairway minimap, warnings, and shader-drawn ship waves.
 
 Latest verified tests: EditMode `5/5`, PlayMode `2/2`.
 

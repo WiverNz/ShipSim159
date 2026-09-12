@@ -9803,7 +9803,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a854d597e8afbe145bcbddae7b346ace, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.UI.ShipTelemetryUI
   ship: {fileID: 1591016101}
   readout: {fileID: 0}
@@ -9817,7 +9817,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
   m_IgnoreReversedGraphics: 1
   m_BlockingObjects: 0
@@ -9834,7 +9834,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
@@ -13227,7 +13227,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0a2ac4504117164883c4ac86c0c0bcb, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.LeadingMarkPair
   frontMark: {fileID: 637293429}
   rearMark: {fileID: 2018990830}
@@ -13669,7 +13669,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72b1499c3c508ca438787199191656b1, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.WeatherController
   windDirectionDeg: 270
   windSpeedMps: 4
@@ -59913,7 +59913,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 067a7667891f9f5438e6a103adb941c6, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.ScenarioBathymetry
   route: {fileID: 1655743501}
   waterLevelOffsetM: 0
@@ -59949,7 +59949,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b555c59d51937d4d8a5451fc12b05d7, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.CurrentFieldProvider
   baseCurrentMps: {x: 0, y: 0, z: 0.22}
   regions:
@@ -70007,7 +70007,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0a2ac4504117164883c4ac86c0c0bcb, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.LeadingMarkPair
   frontMark: {fileID: 1519294067}
   rearMark: {fileID: 825402386}
@@ -71317,7 +71317,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bafa5eafb7e1d6540a7435833b395963, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.UI.GorodetsScenarioController
   ship: {fileID: 1591016101}
   route: {fileID: 1655743501}
@@ -86356,7 +86356,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d3c589ddbda95345861760bf2edc3c3, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.CameraSystem.ShipFollowCamera
   target: {fileID: 1591016101}
   localViews:
@@ -86399,7 +86399,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
@@ -86413,7 +86413,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 1
+  m_Antialiasing: 2
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -87929,7 +87929,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dccf34a1de814f4e8f1d98e2c0fcee17, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.RiverPlanarReflection
   resolution: 768
 --- !u!1001 &1233732238
@@ -112211,7 +112211,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fc0f77ea359fb8498ce3d44ad6eeb68, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipSimulator.Physics.ShipPhysicsController
 --- !u!1 &1591016102 stripped
 GameObject:
@@ -112228,7 +112228,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 675885d5450daba4bbfec2a2e12a67c6, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.GroundingController
   ship: {fileID: 1591016101}
   bathymetry: {fileID: 823154028}
@@ -115039,7 +115039,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9085f7af9c600e4087fd316f15f1a04, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.FairwayRoute
   samples:
   - position: {x: 0, y: 0, z: -180}
@@ -123607,7 +123607,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
   m_IsGlobal: 1
   priority: 10
@@ -136350,7 +136350,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0a2ac4504117164883c4ac86c0c0bcb, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.LeadingMarkPair
   frontMark: {fileID: 23328955}
   rearMark: {fileID: 951207970}

@@ -32,6 +32,14 @@ Shader "ShipSimulator/RiverGround"
                 float4 v=frac(sin(float4(dot(i,float2(127.1,311.7)),dot(i+float2(1,0),float2(127.1,311.7)),dot(i+float2(0,1),float2(127.1,311.7)),dot(i+1,float2(127.1,311.7))))*43758.5453);
                 return lerp(lerp(v.x,v.y,f.x),lerp(v.z,v.w,f.x),f.y);
             }
+            // Rotated octaves hide the square lattice that a single octave shows from altitude.
+            float Fbm(float2 p)
+            {
+                const float2x2 rotation=float2x2(0.8,-0.6,0.6,0.8);
+                float sum=0, amplitude=0.5;
+                for(int octave=0;octave<3;octave++){ sum+=Noise(p)*amplitude; p=mul(rotation,p)*2.1+17.3; amplitude*=0.5; }
+                return sum/0.875;
+            }
             Varyings Vert(Attributes input)
             {
                 UNITY_SETUP_INSTANCE_ID(input);
@@ -45,13 +53,18 @@ Shader "ShipSimulator/RiverGround"
             half4 Frag(Varyings i):SV_Target
             {
                 float2 p=i.world.xz;
-                float broad=Noise(p*0.033), detail=Noise(p*0.7), grit=Noise(p*13.0);
+                // Fine layers fade to their mean once a pixel spans their cells, instead of aliasing.
+                float footprint=length(fwidth(p));
+                float broad=Fbm(p*0.033);
+                float detail=lerp(0.5,Noise(p*0.7),saturate(1.5-footprint*1.2));
+                float grit=lerp(0.5,Noise(p*13.0),saturate(1-footprint*20));
                 float grass=saturate(i.color.r+(broad-0.5)*0.65);
                 half3 albedo=lerp(_SoilColor.rgb,_GrassColor.rgb,grass);
-                albedo=lerp(albedo,_DryColor.rgb,smoothstep(0.46,0.8,Noise(p*0.11+19))*grass*0.65);
+                albedo=lerp(albedo,_DryColor.rgb,smoothstep(0.46,0.8,Fbm(p*0.11+19))*grass*0.65);
                 albedo*=lerp(0.66,1.24,detail)*lerp(0.83,1.1,grit);
                 albedo*=lerp(0.52,1,saturate(i.color.g));
-                half3 n=normalize(i.normal+half3((Noise(p*2+float2(0.05,0))-Noise(p*2))*1.2,0,(Noise(p*2+float2(0,0.05))-Noise(p*2))*1.2));
+                half bump=1.2*saturate(1-footprint*4);
+                half3 n=normalize(i.normal+half3((Noise(p*2+float2(0.05,0))-Noise(p*2))*bump,0,(Noise(p*2+float2(0,0.05))-Noise(p*2))*bump));
                 Light sun=GetMainLight(TransformWorldToShadowCoord(i.world));
                 half3 light=SampleSH(n)+sun.color*saturate(dot(n,sun.direction))*sun.shadowAttenuation;
                 half3 color=albedo*light;

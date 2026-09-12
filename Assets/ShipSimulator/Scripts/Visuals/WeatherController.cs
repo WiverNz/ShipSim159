@@ -337,10 +337,15 @@ namespace ShipSimulator.Visuals
                 ? new Color(0.075f, 0.09f, 0.11f)
                 : new Color(0.56f, 0.59f, 0.60f);
             RenderSettings.fogColor = Color.Lerp(clearColor, denseColor, fogIntensity);
+            // A global rather than a skybox material property, so the sky asset is never edited
+            // before DayNightController swaps in its runtime copy.
+            Shader.SetGlobalFloat("_RiverCloudWeather",
+                Mathf.Clamp01(Mathf.Max(rainIntensity, fogIntensity * 0.8f)));
         }
 
         private void ApplyWater()
         {
+            Shader.SetGlobalVector("_RiverWind", WindVelocityMps);
             if (waterProperties == null)
                 waterProperties = new MaterialPropertyBlock();
             float wind01 = Mathf.Clamp01(windSpeedMps / 16f);
@@ -384,6 +389,9 @@ namespace ShipSimulator.Visuals
 
         private void OnDestroy()
         {
+            // Shader globals outlive Play Mode in the editor.
+            Shader.SetGlobalFloat("_RiverCloudWeather", 0f);
+            Shader.SetGlobalVector("_RiverWind", Vector4.zero);
             DestroyGenerated(rainMaterial);
             DestroyGenerated(splashMaterial);
             DestroyGenerated(rainTexture);

@@ -67,15 +67,6 @@ namespace ShipSimulator.Editor
             water.localRotation = Quaternion.identity;
             water.gameObject.layer = 4;
             water.GetComponent<MeshFilter>().sharedMesh = WaterMesh(scene.name, route, start, end);
-            Material waterMaterial = water.GetComponent<Renderer>().sharedMaterial;
-            waterMaterial.SetColor("_ShallowColor", new Color(0.16f, 0.23f, 0.16f, 1));
-            waterMaterial.SetColor("_DeepColor", new Color(0.055f, 0.105f, 0.095f, 1));
-            waterMaterial.SetFloat("_Smoothness", 0.86f);
-            waterMaterial.SetFloat("_ReflectionStrength", 0.85f);
-            waterMaterial.SetFloat("_RippleStrength", 0.20f);
-            waterMaterial.SetFloat("_WaveHeight", 0.035f);
-            waterMaterial.SetFloat("_Opacity", 1f);
-            EditorUtility.SetDirty(waterMaterial);
             if (water.GetComponent<RiverPlanarReflection>() == null) water.gameObject.AddComponent<RiverPlanarReflection>();
 
             GameObject[] trees = new GameObject[6];
@@ -124,6 +115,7 @@ namespace ShipSimulator.Editor
                 camera.depthTextureMode |= DepthTextureMode.Depth;
                 camera.farClipPlane = 2400;
             }
+            RiverWaterAndSkyBuilder.Apply(scene);
             EditorSceneManager.MarkSceneDirty(scene);
             Debug.Log($"LANDSCAPE|{scene.name}: {treeCount} trees, {bushCount} bushes, shoreline reeds and continuous banks");
         }

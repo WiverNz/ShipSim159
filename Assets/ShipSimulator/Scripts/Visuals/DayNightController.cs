@@ -88,6 +88,8 @@ namespace ShipSimulator.Visuals
                     ? new Color(0.02f, 0.03f, 0.05f)
                     : new Color(0.33f, 0.35f, 0.28f));
                 runtimeSky.SetFloat("_Exposure", night ? 0.32f : 1.02f);
+                if (runtimeSky.HasProperty("_StarIntensity"))
+                    runtimeSky.SetFloat("_StarIntensity", night ? 1f : 0f);
             }
             for (int i = 0; i < navigationLights.Count; i++)
                 navigationLights[i].enabled = night;

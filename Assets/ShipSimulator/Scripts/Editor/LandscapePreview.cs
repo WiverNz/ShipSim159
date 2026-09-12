@@ -28,7 +28,7 @@ namespace ShipSimulator.Editor
                 var data = cameraObject.AddComponent<UniversalAdditionalCameraData>();
                 data.renderPostProcessing = true;
                 data.requiresDepthTexture = true;
-                data.antialiasing = AntialiasingMode.FastApproximateAntialiasing;
+                data.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
                 camera.transform.position = ship.transform.position + new Vector3(36, 19, -85);
                 camera.transform.LookAt(ship.transform.position + new Vector3(0, 3, 50));
                 Render(camera, $"Logs/Landscape/{name}-{stage}.png");

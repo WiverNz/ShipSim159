@@ -1,100 +1,103 @@
+using System.Collections.Generic;
 using ShipSimulator.Physics;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace ShipSimulator.Visuals
 {
+    // Publishes the vessel track to RiverWater.shader, which draws the Kelvin wake, bow wave
+    // and propeller wash. Presentation only: nothing here feeds back into the physics.
     [RequireComponent(typeof(ShipPhysicsController))]
     public sealed class ShipWakeController : MonoBehaviour
     {
-        [SerializeField] private float waterLevel = 0.08f;
-        [SerializeField] private float wakeTime = 13f;
-        [SerializeField] private float emissionSpeedMps = 0.12f;
+        // Estimated visual scale, not a validated wave height model.
+        [SerializeField, Range(0f, 0.2f)] private float waveAmplitude = 0.07f;
+        [SerializeField, Range(1, 4)] private int waterMeshDivisions = 3;
 
+        private static readonly int PointsId = Shader.PropertyToID("_WakePoints");
+        private static readonly int InfoId = Shader.PropertyToID("_WakeInfo");
+        private static readonly int CountId = Shader.PropertyToID("_WakeCount");
+        private static readonly int BoundsId = Shader.PropertyToID("_WakeBounds");
+        private static readonly int ShipId = Shader.PropertyToID("_WakeShip");
+        private static readonly int HullId = Shader.PropertyToID("_WakeHull");
+        private static readonly int AmplitudeId = Shader.PropertyToID("_WakeAmplitude");
+
+        private readonly ShipWakeTrack track = new ShipWakeTrack();
+        private readonly Vector4[] points = new Vector4[ShipWakeTrack.Capacity];
+        private readonly Vector4[] info = new Vector4[ShipWakeTrack.Capacity];
+        private readonly List<(MeshFilter filter, Mesh original, Mesh refined)> refinedWater =
+            new List<(MeshFilter, Mesh, Mesh)>();
         private ShipPhysicsController ship;
-        private TrailRenderer[] trails;
-        private Material wakeMaterial;
-        private float[] baseWidths;
 
         private void Awake()
         {
             ship = GetComponent<ShipPhysicsController>();
-            wakeMaterial = CreateWakeMaterial();
-            trails = new[]
-            {
-                CreateTrail("Port Propeller Wash", new Vector3(-4.2f, 0f, -58f)),
-                CreateTrail("Starboard Propeller Wash", new Vector3(4.2f, 0f, -58f)),
-                CreateTrail("Port Hull Wake", new Vector3(-8.5f, 0f, -38f), 1.35f),
-                CreateTrail("Starboard Hull Wake", new Vector3(8.5f, 0f, -38f), 1.35f),
-                CreateTrail("Port Bow Wave", new Vector3(-6.8f, 0f, 55f), 0.85f),
-                CreateTrail("Starboard Bow Wave", new Vector3(6.8f, 0f, 55f), 0.85f)
-            };
-            baseWidths = new float[trails.Length];
-            for (int i = 0; i < trails.Length; i++)
-                baseWidths[i] = trails[i].startWidth;
+        }
+
+        private void Start()
+        {
+            RefineWaterMeshes();
         }
 
         private void LateUpdate()
         {
-            if (ship == null || ship.Body == null || trails == null) return;
+            if (ship == null || ship.Data == null) return;
 
-            float speed = ship.Body.linearVelocity.magnitude;
-            float throttle = Mathf.Abs(ship.ActualThrottle);
-            for (int i = 0; i < trails.Length; i++)
+            Vector3 heading = transform.forward;
+            Vector2 forward = new Vector2(heading.x, heading.z);
+            if (forward.sqrMagnitude < 0.0001f) return;
+            forward.Normalize();
+
+            float length = ship.Data.dimensions.lengthOverallM;
+            float beam = ship.Data.dimensions.beamOverallM;
+            Vector2 center = new Vector2(transform.position.x, transform.position.z);
+            Vector3 water = ship.RelativeWaterVelocity;
+            float speed = Vector2.Dot(new Vector2(water.x, water.z), forward);
+            float wash = Mathf.Abs(ship.ActualThrottle);
+            Vector3 current = ship.EffectiveCurrentMps;
+
+            track.Record(center + forward * (length * 0.5f), center - forward * (length * 0.5f),
+                speed, wash, new Vector2(current.x, current.z), Time.deltaTime);
+            int count = track.Write(length, points, info, out Vector4 bounds);
+
+            Shader.SetGlobalVectorArray(PointsId, points);
+            Shader.SetGlobalVectorArray(InfoId, info);
+            Shader.SetGlobalFloat(CountId, count);
+            Shader.SetGlobalVector(BoundsId, bounds);
+            Shader.SetGlobalVector(ShipId, new Vector4(center.x, center.y, forward.x, forward.y));
+            Shader.SetGlobalVector(HullId, new Vector4(length * 0.5f, beam * 0.5f, speed, wash));
+            Shader.SetGlobalFloat(AmplitudeId, waveAmplitude);
+        }
+
+        // The stored river meshes are too coarse to displace waves a few metres long, so the
+        // vertex density is raised for this session only.
+        private void RefineWaterMeshes()
+        {
+            if (waterMeshDivisions <= 1) return;
+            foreach (RiverPlanarReflection water in FindObjectsByType<RiverPlanarReflection>())
             {
-                TrailRenderer trail = trails[i];
-                Vector3 position = trail.transform.position;
-                position.y = waterLevel;
-                trail.transform.position = position;
-                bool propellerWash = i < 2;
-                trail.emitting = propellerWash
-                    ? speed > emissionSpeedMps || throttle > 0.08f
-                    : speed > emissionSpeedMps;
-                float intensity = propellerWash
-                    ? Mathf.Clamp01(Mathf.Max(speed / 4f, throttle))
-                    : Mathf.Clamp01(speed / 5f);
-                trail.startWidth = baseWidths[i] * Mathf.Lerp(0.8f, 1.6f, intensity);
-                trail.startColor = new Color(0.78f, 0.94f, 1f,
-                    Mathf.Lerp(0.2f, 0.88f, intensity));
+                MeshFilter filter = water.GetComponent<MeshFilter>();
+                if (filter == null || filter.sharedMesh == null) continue;
+                Mesh refined = WaterMeshRefiner.Subdivide(filter.sharedMesh, waterMeshDivisions);
+                if (refined == null) continue;
+                refinedWater.Add((filter, filter.sharedMesh, refined));
+                filter.sharedMesh = refined;
             }
         }
 
-        private TrailRenderer CreateTrail(string trailName, Vector3 localPosition,
-            float widthMultiplier = 1f)
+        private void OnDisable()
         {
-            GameObject trailObject = new GameObject(trailName);
-            trailObject.transform.SetParent(transform, false);
-            trailObject.transform.localPosition = localPosition;
-            TrailRenderer trail = trailObject.AddComponent<TrailRenderer>();
-            trail.material = wakeMaterial;
-            trail.time = wakeTime;
-            trail.minVertexDistance = 0.45f;
-            trail.startWidth = 3.2f * widthMultiplier;
-            trail.endWidth = 0.15f;
-            trail.startColor = new Color(0.78f, 0.94f, 1f, 0.68f);
-            trail.endColor = new Color(0.48f, 0.76f, 0.84f, 0f);
-            trail.textureMode = LineTextureMode.Stretch;
-            trail.alignment = LineAlignment.View;
-            trail.shadowCastingMode = ShadowCastingMode.Off;
-            trail.receiveShadows = false;
-            return trail;
-        }
-
-        private static Material CreateWakeMaterial()
-        {
-            Shader shader = Shader.Find("Universal Render Pipeline/Unlit");
-            if (shader == null) shader = Shader.Find("Sprites/Default");
-            Material material = new Material(shader)
-            {
-                name = "Runtime Wake Material",
-                color = Color.white
-            };
-            return material;
+            track.Clear();
+            Shader.SetGlobalFloat(CountId, 0f);
         }
 
         private void OnDestroy()
         {
-            if (wakeMaterial != null) Destroy(wakeMaterial);
+            foreach ((MeshFilter filter, Mesh original, Mesh refined) in refinedWater)
+            {
+                if (filter != null && filter.sharedMesh == refined) filter.sharedMesh = original;
+                Destroy(refined);
+            }
+            refinedWater.Clear();
         }
     }
 }

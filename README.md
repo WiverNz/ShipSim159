@@ -38,8 +38,9 @@ instrumentation.
 - Flashing red and green buoy lights.
 - Mounted vessel navigation lights.
 - Reflective river water, natural banks, branched trees, bushes and shoreline reeds
-  with distance-based detail, plus fog, wake, bow waves, and
-  propeller wash.
+  with distance-based detail, plus fog and a cloud sky that follows weather and night.
+- Ship-generated waves: a Kelvin wake that follows the vessel's track, a bow wave and
+  propeller wash with foam. Wave amplitudes are estimated visual values.
 - Runtime vessel-data validation and Unity EditMode/PlayMode tests.
 
 ## Requirements
@@ -137,6 +138,7 @@ The `Ship Simulator` Unity menu contains project automation commands:
 | `Integrate Detailed Vessel Model` | Rebuild vessel materials and prefab integration |
 | `Apply Visual Upgrade` | Regenerate procedural environment visuals |
 | `Upgrade Water And Landscape` | Update natural banks, vegetation and water reflections in both scenarios |
+| `Apply Realistic Water And Sky` | Update the cloud sky, ripple normals, water tuning and antialiasing in both scenarios |
 | `Arrange Navigation Buoys` | Rebuild the curved paired-buoy layout |
 | `Render Visual Preview` | Render project preview images |
 | `Play Training Scene` | Open and run the main scene |

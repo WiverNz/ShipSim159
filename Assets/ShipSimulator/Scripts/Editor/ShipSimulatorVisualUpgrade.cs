@@ -312,19 +312,23 @@ namespace ShipSimulator.Editor
                 sun.transform.rotation = Quaternion.Euler(38f, -48f, 0f);
             }
 
+            Shader skyShader = Shader.Find("ShipSimulator/RiverSky");
             Material sky = AssetDatabase.LoadAssetAtPath<Material>(
                 Root + "/Materials/RiverSky.mat");
             if (sky == null)
             {
-                sky = new Material(Shader.Find("Skybox/Procedural")) { name = "RiverSky" };
+                sky = new Material(skyShader) { name = "RiverSky" };
                 AssetDatabase.CreateAsset(sky, Root + "/Materials/RiverSky.mat");
             }
+            sky.shader = skyShader;
             sky.SetFloat("_SunSize", 0.035f);
-            sky.SetFloat("_SunSizeConvergence", 5f);
             sky.SetFloat("_AtmosphereThickness", 1.05f); // thicker air = horizon haze
             sky.SetColor("_SkyTint", new Color(0.5f, 0.5f, 0.5f));
             sky.SetColor("_GroundColor", new Color(0.33f, 0.35f, 0.28f));
             sky.SetFloat("_Exposure", 1.02f);
+            sky.SetFloat("_CloudCoverage", 0.46f);
+            sky.SetFloat("_CloudScale", 1f);
+            sky.SetFloat("_StarIntensity", 0f);
             EditorUtility.SetDirty(sky);
 
             RenderSettings.skybox = sky;
@@ -399,7 +403,8 @@ namespace ShipSimulator.Editor
             if (cameraData == null)
                 cameraData = camera.gameObject.AddComponent<UniversalAdditionalCameraData>();
             cameraData.renderPostProcessing = true;
-            cameraData.antialiasing = AntialiasingMode.FastApproximateAntialiasing;
+            cameraData.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+            cameraData.antialiasingQuality = AntialiasingQuality.High;
 
             ShipFollowCamera follow = camera.GetComponent<ShipFollowCamera>();
             if (follow != null)

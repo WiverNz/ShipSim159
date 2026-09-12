@@ -1,6 +1,59 @@
 # ShipSim159 Project Context
 
-Last updated: 2026-09-12
+Last updated: 2026-09-13
+
+## Ship Waves, Cloud Sky and Realistic Water, 2026-09-13
+
+Shader-drawn ship waves replace the old trail-renderer wake. `ShipWakeController` feeds
+`ShipWakeTrack`, which records the stern track in the water frame (drifted by the
+effective current, cleared when the vessel jumps more than 40 m, as on reset or load) and
+publishes bow, stern and 46 history samples to `RiverWater.shader`. The shader draws:
+
+- a deep-water Kelvin wake by stationary phase: transverse and diverging waves inside the
+  19.47 degree wedge, build-up at the cusp, spreading loss and age decay;
+- a bow pressure crest, midship drawdown and stern rise around a stadium-shaped hull;
+- propeller wash as a long pale aerated band with shorter-lived streaky foam, plus hull,
+  crest and shoreline foam.
+
+Waves displace the surface and tilt normals, follow the curved track in turns, and keep
+spreading after the vessel stops. The track search runs per pixel, because interpolating it
+from vertices left jagged seams. For displacement the water mesh is subdivided three times
+per edge at runtime only; stored scene meshes are unchanged.
+
+All wake amplitudes are **estimated visual values** (amplitude 0.07 x U^2/g, slope gain
+1.9, hull wave shape tuned by eye), not a validated wave height, wash or bank-erosion model.
+Nothing feeds back into physics: no wave forces on the vessel or buoys, no shallow-water
+or bank reflection of waves, and the Kelvin pattern assumes deep water.
+
+Water: a generated seamless ripple normal map (`Settings/Water/RiverRippleNormal.png`,
+integer wave numbers per tile) replaces per-pixel value noise; Schlick Fresnel,
+distance-widened sun glint, view-aligned reflection distortion and an olive turbid colour.
+`RiverSky.shader` replaces the procedural skybox with a fog-matched horizon, sun glow and
+disc, drifting lit clouds that close to overcast under rain or fog, wind drift and night
+stars. The ground shader uses rotated fBm and fades aliasing detail. Cameras use SMAA High,
+the PC URP asset grades in HDR, and SSAO uses a 0.9 m radius at 0.6 intensity.
+
+`RiverWaterAndSkyBuilder.ApplyBoth` (menu `Apply Realistic Water And Sky`) updates both
+scenes; `RiverLandscapeBuilder.Apply` calls it, so scene rebuilds keep the result.
+`WeatherController` drives the sky through the `_RiverCloudWeather` and `_RiverWind` shader
+globals instead of editing the sky material.
+
+Cost: up to 47 segment tests per water pixel inside the wake bounds, and about 0.6 million
+water vertices in Gorodets after subdivision. Not profiled on low-end hardware.
+
+Verified with Windows Unity 6000.6.0f1:
+
+- Compilation: exit 0, no blocking errors.
+- EditMode: 43 passed, 0 failed (`TestResults/wake-editmode.xml`).
+- PlayMode: 9 passed, 0 failed (`TestResults/wake-playmode.xml`).
+- `ShipWakeRuntimeCheck.Run` passed (`Logs/wake-runtime.log`); captures in `Logs/Wake/`
+  inspected. The straight run reached 4.0 m/s through the water. Under helm the vessel
+  slowed to 0.42 m/s near a bank, so the turning captures show a slow curved wake.
+- `LandscapeRuntimeCheck.Run` passed with the cloud sky in daylight, rain/fog and night.
+
+Known limitations: the environment reflection probe was not rebaked for the new sky, so
+water reflections are clamped to the planar image at screen edges; a visible seam can
+remain on the inner side of very tight turns; vegetation and vessel materials are unchanged.
 
 ## Empty Editor Startup Fix, 2026-09-12
 

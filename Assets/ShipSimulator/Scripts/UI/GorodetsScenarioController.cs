@@ -72,6 +72,7 @@ namespace ShipSimulator.UI
 
         private void Update()
         {
+            if (VoyageMenu.IsOpen) return;
             if (ship == null || ship.Body == null || route == null ||
                 Phase == GorodetsMissionPhase.Completed ||
                 Phase == GorodetsMissionPhase.Failed)
@@ -122,6 +123,25 @@ namespace ShipSimulator.UI
                  grounding.State == GroundingState.HardGrounding &&
                  ship.Body.linearVelocity.magnitude < 0.1f))
                 Phase = GorodetsMissionPhase.Failed;
+        }
+
+        public ShipSimulator.Persistence.MissionSave CaptureState() =>
+            new ShipSimulator.Persistence.MissionSave
+            {
+                phase = (int)Phase, score = Score, outsideSeconds = outsideFairwaySeconds,
+                overspeedSeconds = overspeedSeconds, leadingIntegral = leadingErrorIntegral,
+                previousRudder = previousRudder, controlPenalty = controlPenalty
+            };
+
+        public void RestoreState(ShipSimulator.Persistence.MissionSave save)
+        {
+            Phase = (GorodetsMissionPhase)save.phase;
+            Score = save.score;
+            outsideFairwaySeconds = save.outsideSeconds;
+            overspeedSeconds = save.overspeedSeconds;
+            leadingErrorIntegral = save.leadingIntegral;
+            previousRudder = save.previousRudder;
+            controlPenalty = save.controlPenalty;
         }
 
         public void ResetMission()

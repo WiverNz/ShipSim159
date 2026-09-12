@@ -82,6 +82,16 @@ namespace ShipSimulator.Physics
             }
         }
 
+        public ShipSimulator.Persistence.GroundingSave CaptureState() =>
+            new ShipSimulator.Persistence.GroundingSave { state = (int)State, damage = DamagePoints };
+
+        public void RestoreState(ShipSimulator.Persistence.GroundingSave save)
+        {
+            State = (GroundingState)save.state;
+            previousState = State;
+            DamagePoints = save.damage;
+        }
+
         public void ResetState()
         {
             State = GroundingState.Clear;

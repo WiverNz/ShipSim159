@@ -57,7 +57,13 @@ input.
 3. Use Unity Editor `6000.4.0f1`.
 4. Open:
    `Assets/ShipSimulator/Scenes/RiverTrainingScene.unity`
-5. Enter Play Mode.
+5. Enter Play Mode, then choose **New voyage** in the maritime start menu or
+   **Continue voyage** to restore your saved passage.
+
+Press **Escape** while sailing to pause, save/load a voyage, change settings, or leave
+the bridge. Settings include volume, camera sensitivity, graphics quality, VSync and
+standalone fullscreen mode. See the [operator guide](Assets/ShipSimulator/Documentation/OperatorGuide.md)
+for save contents and storage details.
 
 The training scene is already configured as the first enabled scene in Build
 Settings.

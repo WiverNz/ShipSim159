@@ -1,6 +1,45 @@
 # ShipSim159 Project Context
 
-Last updated: 2026-06-14
+Last updated: 2026-09-12
+
+## Maritime Menu and Saved Voyages, 2026-09-12
+
+Both training scenes now open a runtime maritime start menu with a procedural river
+chart, compass and vessel motif, navy panels and brass accents. New voyage selects
+River familiarisation or Gorodets; Continue restores the saved passage. Escape opens
+the pause menu and returns from submenus before resuming. Menu pause blocks gameplay
+input, hides the HUD, pauses simulation audio and restores the prior time scale.
+
+`Scripts/UI/VoyageMenu.cs` bootstraps without scene edits, so builders preserve the
+feature. `VoyageSettings` persists volume, camera sensitivity, quality, VSync and
+standalone display mode. `Scripts/Persistence/VoyageSave.cs` provides versioned JSON,
+validation and atomic replacement with a previous-save backup. The default save is
+`Application.persistentDataPath/voyage.json`; saving is manual, with one slot.
+
+Save state includes scene, Rigidbody pose and velocities, commanded and actual engine
+and rudder state, camera orbit/view, weather and day/night, simulation speed, current
+and water-level multipliers, grounding damage, Gorodets phase, score and penalties.
+Particles and radar trails restart. Normalize Unity's Rigidbody quaternion when
+capturing: floating-point drift can otherwise fail validation on a valid rotation.
+
+Verified with Windows Unity 6000.6.0f1 from WSL:
+
+- Compilation successful; no blocking compiler errors.
+- EditMode: 25 passed, 0 failed (`TestResults/menu-editmode.xml`).
+- PlayMode: 8 passed, 0 failed (`TestResults/menu-playmode.xml`), including actual
+  injected Escape input, blocked gameplay keys, pause speed and state restoration.
+- Dedicated `VoyageMenuSmokeCheck.Run`: passed start, save, switch to Gorodets,
+  load the river save, pause and resume at the saved speed (`Logs/menu-smoke.log`).
+- Menu screenshots inspected at `Logs/MenuScreenshots/`: start, settings and pause.
+
+The smoke check enables background execution and queues editor player-loop updates;
+a batch editor without a focused Game view otherwise stalls. PlayMode input tests use
+Unity's isolated `InputTestFixture` to avoid the editor consuming injected keyboard
+events. Screenshot tests render the menu through an offscreen camera because a batch
+editor does not produce normal `ScreenCapture` output without a Game view.
+
+Standalone fullscreen switching has not been exercised in a built player. Historical
+verification notes below describe earlier work; the counts above are the latest runs.
 
 ## Purpose
 

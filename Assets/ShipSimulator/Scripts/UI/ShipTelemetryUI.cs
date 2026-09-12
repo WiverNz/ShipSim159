@@ -127,6 +127,7 @@ namespace ShipSimulator.UI
 
         private void Update()
         {
+            if (VoyageMenu.IsOpen) return;
             if (ship == null || ship.Body == null) return;
             if (speedText == null || headingTapeText == null || objectiveText == null)
             {
@@ -848,6 +849,21 @@ namespace ShipSimulator.UI
                 Key.Digit5, Key.Digit6, Key.Digit7, Key.Digit8, Key.Digit9 };
             for (int i = 0; i < viewKeys.Length; i++)
                 if (keyboard[viewKeys[i]].wasPressedThisFrame) SetCamera(i);
+        }
+
+        public void RefreshAfterVoyageLoad()
+        {
+            if (ship == null) return;
+            float nearest = float.PositiveInfinity;
+            for (int i = 0; i < TelegraphValues.Length; i++)
+            {
+                float difference = Mathf.Abs(TelegraphValues[i] - ship.ThrottleCommand);
+                if (difference >= nearest) continue;
+                nearest = difference;
+                telegraphIndex = i;
+            }
+            radarTrack.Clear();
+            nextTrackSampleTime = Time.time;
         }
 
         private void TelegraphUp() => SetTelegraph(Mathf.Min(6, telegraphIndex + 1));

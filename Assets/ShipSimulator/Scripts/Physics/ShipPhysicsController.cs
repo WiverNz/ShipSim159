@@ -91,6 +91,7 @@ namespace ShipSimulator.Physics
 
         private void Update()
         {
+            if (ShipSimulator.UI.VoyageMenu.IsOpen) return;
             Keyboard keyboard = Keyboard.current;
             if (keyboard == null) return;
             float throttleInput = (keyboard.wKey.isPressed ? 1f : 0f) - (keyboard.sKey.isPressed ? 1f : 0f);
@@ -132,6 +133,35 @@ namespace ShipSimulator.Physics
             body.angularVelocity = Vector3.zero;
             throttleCommand = 0f;
             rudderCommand = 0f;
+        }
+
+        public void RestoreVoyage(ShipSimulator.Persistence.VoyageSave save)
+        {
+            body.position = save.position;
+            body.rotation = save.rotation;
+            body.linearVelocity = save.velocity;
+            body.angularVelocity = save.angularVelocity;
+            throttleCommand = save.throttle;
+            rudderCommand = save.rudder;
+            propulsion.RestoreThrottle(save.actualThrottle);
+            rudder.RestoreAngle(save.rudderAngle);
+            activeCurrentZones.Clear();
+            UnityEngine.Physics.SyncTransforms();
+            foreach (RiverCurrentZone zone in FindObjectsByType<RiverCurrentZone>())
+            {
+                if (!zone.isActiveAndEnabled) continue;
+                BoxCollider trigger = zone.GetComponent<BoxCollider>();
+                foreach (Collider hull in GetComponentsInChildren<Collider>())
+                {
+                    if (!hull.enabled || hull.isTrigger) continue;
+                    if (UnityEngine.Physics.ComputePenetration(hull, hull.transform.position, hull.transform.rotation,
+                        trigger, trigger.transform.position, trigger.transform.rotation, out _, out _))
+                    {
+                        activeCurrentZones.Add(zone);
+                        break;
+                    }
+                }
+            }
         }
 
         public void SetThrottleCommand(float value)

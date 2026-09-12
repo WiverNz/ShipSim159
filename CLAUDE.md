@@ -75,8 +75,19 @@ the editor by its absolute path rather than relying on PATH, so the version alwa
 
 ### Run
 
-Open `Assets/ShipSimulator/Scenes/RiverTrainingScene.unity` and enter Play Mode; it is already
-first in Build Settings. `Ship Simulator > Play Training Scene` does the same from the menu.
+Open `Assets/ShipSimulator/Scenes/RiverTrainingScene.unity` and enter Play Mode.
+Both training scenes are enabled in Build Settings. `Ship Simulator > Play Training Scene`
+opens the river scene from the menu.
+
+Both training scenes open the runtime maritime start menu. Choose a new passage or continue
+the saved voyage. Escape opens the pause menu with save/load and persistent settings.
+`VoyageMenu` bootstraps at runtime, so scene rebuilds do not remove it. Its overlay blocks
+the HUD and gameplay input, and preserves simulation speed across pause/resume.
+
+Save DTOs and atomic file replacement live under `Scripts/Persistence/`. Keep component
+capture/restore methods and save validation in sync when adding persistent state.
+PlayerPrefs holds user settings; `Application.persistentDataPath/voyage.json` holds the
+single saved passage, with the previous version retained as `.bak` after replacement.
 
 ### Compile check
 
@@ -109,6 +120,14 @@ Unity.exe -batchmode -buildTarget Win64 -projectPath <abs> -runTests -testPlatfo
 Swap `EditMode` for `PlayMode`, and **drop `-nographics` for PlayMode**: rendering has to stay
 on. `-buildTarget Win64` is worth passing explicitly so the editor does not spend the run polling
 for devices on whatever the active build target happens to be.
+
+`VoyageMenuTests` loads its scenario additively to preserve the test-runner scene, verifies
+Escape input and save restoration, and renders menu previews into `Logs/MenuScreenshots/`.
+For the full start/save/change-scenario/load flow, run a dedicated editor with
+`-batchmode -buildTarget Win64 -projectPath <abs> -executeMethod
+ShipSimulator.Editor.VoyageMenuSmokeCheck.Run -logFile <abs>`, without `-quit` or
+`-nographics`. This check uses `Logs/menu-smoke-voyage.json`, never the user's save, and
+exits with 0 and a `MENU_SMOKE|PASS` log entry on success.
 
 One thing about results that has already cost time here:
 

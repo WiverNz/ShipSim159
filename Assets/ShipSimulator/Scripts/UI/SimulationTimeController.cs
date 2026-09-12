@@ -43,7 +43,7 @@ namespace ShipSimulator.UI
 
         private void Apply()
         {
-            Time.timeScale = Scales[scaleIndex];
+            Time.timeScale = VoyageMenu.IsOpen ? 0f : Scales[scaleIndex];
         }
     }
 }

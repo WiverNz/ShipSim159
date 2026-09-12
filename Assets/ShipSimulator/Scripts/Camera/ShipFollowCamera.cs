@@ -61,6 +61,7 @@ namespace ShipSimulator.CameraSystem
 
         private void LateUpdate()
         {
+            if (ShipSimulator.UI.VoyageMenu.IsOpen) return;
             if (target == null) return;
             if (Keyboard.current != null && Keyboard.current.vKey.wasPressedThisFrame)
                 NextView();
@@ -107,9 +108,9 @@ namespace ShipSimulator.CameraSystem
             if (mouse.rightButton.isPressed)
             {
                 Vector2 delta = mouse.delta.ReadValue();
-                orbitYaw += delta.x * orbitSensitivity;
+                orbitYaw += delta.x * orbitSensitivity * ShipSimulator.UI.VoyageSettings.CameraSensitivity;
                 orbitPitch = Mathf.Clamp(
-                    orbitPitch - delta.y * orbitSensitivity, minPitch, maxPitch);
+                    orbitPitch - delta.y * orbitSensitivity * ShipSimulator.UI.VoyageSettings.CameraSensitivity, minPitch, maxPitch);
             }
 
             float scroll = mouse.scroll.ReadValue().y;
@@ -133,6 +134,22 @@ namespace ShipSimulator.CameraSystem
                 Mathf.Asin(offset.y / Mathf.Max(offset.magnitude, 0.001f)) * Mathf.Rad2Deg,
                 minPitch,
                 maxPitch);
+        }
+
+        public ShipSimulator.Persistence.CameraSave CaptureState() =>
+            new ShipSimulator.Persistence.CameraSave
+            { view = viewIndex, yaw = orbitYaw, pitch = orbitPitch, distance = orbitDistance };
+
+        public void RestoreState(ShipSimulator.Persistence.CameraSave save)
+        {
+            SetView(save.view);
+            orbitYaw = save.yaw;
+            orbitPitch = save.pitch;
+            orbitDistance = save.distance;
+            velocity = Vector3.zero;
+            if (target == null) return;
+            transform.position = target.transform.TransformPoint(IsNavigatorView ? navigatorPosition : GetOrbitOffset());
+            transform.LookAt(target.transform.TransformPoint(IsNavigatorView ? navigatorLookOffset : lookOffset));
         }
 
         public void NextView()

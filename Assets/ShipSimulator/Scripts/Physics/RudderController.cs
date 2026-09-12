@@ -7,6 +7,13 @@ namespace ShipSimulator.Physics
         public float AngleDeg { get; private set; }
         public Vector3 LastForce { get; private set; }
 
+        public void RestoreAngle(float value)
+        {
+            AngleDeg = value;
+            LastForce = Vector3.zero;
+            transform.localRotation = Quaternion.Euler(0f, AngleDeg, 0f);
+        }
+
         public void Step(Rigidbody body, VesselData data, float command,
             Vector3 waterVelocity, float dt, float effectiveness = 1f)
         {

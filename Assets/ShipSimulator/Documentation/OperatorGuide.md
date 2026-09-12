@@ -2,9 +2,37 @@
 
 ## Running the Prototype
 
-Open the project with Unity `6000.4.0f1`, load
+Open the project with the Unity version in `ProjectSettings/ProjectVersion.txt`, load
 `Assets/ShipSimulator/Scenes/RiverTrainingScene.unity`, and enter Play Mode.
-The same scene is the first enabled scene in Build Settings.
+The maritime start menu appears when either training scene starts, including in a
+standalone player. Choose **New voyage** for River familiarisation or Gorodets passage,
+or **Continue voyage** to restore the saved passage.
+
+## Menu, Settings and Saved Voyages
+
+Press **Escape** underway to pause the vessel, mission timing and simulation audio.
+Choose **Resume voyage**, or press Escape again, to continue at the previous simulation
+speed. Escape from a settings or confirmation page returns to the main menu first.
+Menu buttons support mouse and keyboard navigation with arrow keys and Enter.
+
+**Settings** provides master volume, camera orbit sensitivity, graphics quality, VSync
+and fullscreen/windowed display. Settings persist between launches. Display mode is
+available in standalone players; the editor controls its own Game view.
+
+Use **Save voyage** in the pause menu to record one passage. Replacing a save, loading
+over an active voyage, starting a new passage and quitting require confirmation.
+There is no autosave: save before leaving if you want to keep your progress.
+
+The save restores the scenario, vessel position and rotation, linear/angular velocity,
+commanded and actual engine/rudder state, camera view and orbit, day/night, weather,
+simulation speed, water-level/current multipliers, grounding damage and Gorodets mission
+phase, score and penalty accumulators. Transient visual effects and radar trails restart.
+
+Saves use `voyage.json` in Unity's `Application.persistentDataPath`. On this Windows
+machine the default location is `%USERPROFILE%\AppData\LocalLow\DefaultCompany\ShipSim159`.
+A successful overwrite retains the previous save as `voyage.json.bak`. Invalid or
+unsupported saves are rejected without applying their data. The menu reports read/write
+failures; settings are stored separately in Unity PlayerPrefs.
 
 Use `Ship Simulator > Build Prototype` to regenerate the prototype scene and
 prefabs. Use `Ship Simulator > Apply Visual Upgrade` after manually changing
@@ -14,6 +42,7 @@ the generated environment.
 
 | Input | Action |
 |---|---|
+| `Escape` | Open pause menu; return from a submenu; resume voyage |
 | `W` / `Up Arrow` | Increase engine telegraph command |
 | `S` / `Down Arrow` | Decrease engine telegraph command |
 | `Space` | Set telegraph to Stop |
@@ -62,4 +91,5 @@ estimates. They must not be treated as validated navigation or training data.
 ## Verification
 
 Run EditMode and PlayMode suites from `Window > General > Test Runner`.
-Latest verified result: EditMode `16/16`, PlayMode `4/4`.
+Latest verified result (2026-09-12): EditMode `25/25`, PlayMode `8/8`.
+The dedicated menu smoke check also passed save/load across both scenarios.

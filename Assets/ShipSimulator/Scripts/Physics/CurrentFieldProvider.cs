@@ -27,6 +27,8 @@ namespace ShipSimulator.Physics
         [SerializeField] private CurrentRegionData[] regions = Array.Empty<CurrentRegionData>();
         [SerializeField, Range(0f, 1.5f)] private float dischargeMultiplier = 1f;
 
+        public float DischargeMultiplier => dischargeMultiplier;
+
         public void Configure(Vector3 baseVelocity, CurrentRegionData[] currentRegions)
         {
             baseCurrentMps = baseVelocity;

@@ -2,7 +2,10 @@
   "name": "ShipSimulator.PlayModeTests",
   "rootNamespace": "ShipSimulator.Tests",
   "references": [
-    "ShipSimulator.Runtime"
+    "ShipSimulator.Runtime",
+    "Unity.InputSystem",
+    "Unity.InputSystem.TestFramework",
+    "Unity.ugui"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

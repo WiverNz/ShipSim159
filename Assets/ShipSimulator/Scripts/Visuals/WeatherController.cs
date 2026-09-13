@@ -38,8 +38,9 @@ namespace ShipSimulator.Visuals
         public float FogIntensity => fogIntensity;
         public Vector3 WindVelocityMps =>
             CalculateWindVelocity(windDirectionDeg, windSpeedMps);
-        // Gusting wind seen by water, clouds and trees; the vessel uses WindVelocityMps.
+        // Gusting wind: the vessel's wind loads, water, clouds and trees all use it.
         public Vector3 VisualWindMps => visualWindMps;
+        private ShipPhysicsController[] ships;
         public string StatusText =>
             $"WIND {windDirectionDeg:000} deg  {windSpeedMps:0} m/s   " +
             $"RAIN {rainIntensity * 100f:0}%   FOG {fogIntensity * 100f:0}%";
@@ -59,6 +60,9 @@ namespace ShipSimulator.Visuals
         private void LateUpdate()
         {
             UpdateVisualWind();
+            if (ships != null)
+                foreach (ShipPhysicsController ship in ships)
+                    if (ship != null) ship.SetWindVelocity(visualWindMps);
             if (targetCamera == null) targetCamera = Camera.main;
             if (targetCamera != null && rainTransform != null)
             {
@@ -145,10 +149,9 @@ namespace ShipSimulator.Visuals
 
         private void ApplyWeather()
         {
-            Vector3 velocity = WindVelocityMps;
-            foreach (ShipPhysicsController ship in
-                     FindObjectsByType<ShipPhysicsController>(FindObjectsInactive.Include))
-                ship.SetWindVelocity(velocity);
+            ships = FindObjectsByType<ShipPhysicsController>(FindObjectsInactive.Include);
+            foreach (ShipPhysicsController ship in ships)
+                ship.SetWindVelocity(WindVelocityMps);
             ApplyRain();
             ApplyFog();
             ApplyWater();

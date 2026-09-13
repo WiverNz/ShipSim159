@@ -43,9 +43,11 @@ the generated environment.
 | Input | Action |
 |---|---|
 | `Escape` | Open pause menu; return from a submenu; resume voyage |
-| `W` / `Up Arrow` | Increase engine telegraph command |
-| `S` / `Down Arrow` | Decrease engine telegraph command |
-| `Space` | Set telegraph to Stop |
+| `W` / `Up Arrow` | Increase both engine telegraphs |
+| `S` / `Down Arrow` | Decrease both engine telegraphs |
+| `Q` / `Z` | Increase / decrease the port engine telegraph |
+| `E` / `X` | Increase / decrease the starboard engine telegraph |
+| `Space` | Set both telegraphs to Stop |
 | `A` / `Left Arrow` | Command port rudder |
 | `D` / `Right Arrow` | Command starboard rudder |
 | `C` / `Enter` | Rudder midships |
@@ -61,6 +63,16 @@ the generated environment.
 Engine thrust and rudder angle change gradually. The selected command is not
 the same as the current physical response.
 
+The two engines and propellers are separate. A split telegraph (one ahead, one
+astern) turns the ship slowly on the spot; the rudders work best in the
+propeller slipstream, so a short burst ahead with the helm over steers even at
+low speed. Ordering astern while the shaft turns ahead cuts fuel, brakes the
+shaft and restarts the engine astern after a delay of several seconds, so crash
+stops take time and distance. In shallow water the ship is slower, turns wider
+and sinks by the bow (squat); near a bank it is pulled toward the bank and its
+bow is pushed away. Wind gusts push and heel the ship, more so when it is
+lightly loaded. All of these follow an estimated model, not trial data.
+
 ## Cameras
 
 Use number keys `1` through `8` for Chase, Bridge, Top, Port, Starboard, Bow,
@@ -70,7 +82,9 @@ move the mouse to orbit; use the wheel to zoom.
 ## HUD
 
 The top bar shows speed, course, drift, side slip, estimated depth,
-under-keel clearance, current direction, cargo load, RPM, and engine load.
+under-keel clearance, current direction, cargo load, and each shaft's RPM and
+engine load. A split telegraph is shown as separate port (P) and starboard (S)
+orders.
 Depth changes from normal to warning or critical colors as clearance reduces.
 
 The minimap displays an approximate fairway, route, vessel heading, buoys,

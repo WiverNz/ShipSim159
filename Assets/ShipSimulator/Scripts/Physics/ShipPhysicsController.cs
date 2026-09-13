@@ -1,84 +1,117 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace ShipSimulator.Physics
 {
-    [RequireComponent(typeof(Rigidbody), typeof(VesselDataLoader), typeof(HydrodynamicResistance))]
+    // Drives the vessel Rigidbody from the manoeuvring model. Surge, sway and yaw come from the MMG solve with
+    // added mass and are applied as accelerations, so the Rigidbody's single scalar mass does not replace the
+    // per-axis added mass. Heave, roll and pitch come from station hydrostatics applied as forces.
+    [RequireComponent(typeof(Rigidbody), typeof(VesselDataLoader))]
     public sealed class ShipPhysicsController : MonoBehaviour
     {
+        private const int BankSamplesPerSide = 8;
+
         [Header("Environment")]
         [SerializeField] private float waterLevel;
         [SerializeField] private Vector3 ambientCurrentMps = new Vector3(0f, 0f, 0.35f);
         [SerializeField] private Vector3 windVelocityMps;
-        [SerializeField] private float windForceCoefficient = 800f;
         [Header("Debug")]
         [SerializeField] private bool drawDebugForces = true;
 
         private Rigidbody body;
         private VesselData data;
-        private PropulsionController propulsion;
-        private RudderController rudder;
-        private HydrodynamicResistance resistance;
-        private BuoyancyPoint[] buoyancyPoints;
+        private VesselParameters parameters;
+        private ManoeuvringModel model;
+        private HydrostaticsModel hydrostatics;
+        private float[] engineCommands = Array.Empty<float>();
+        private float[] stationCurrent;
+        private float rudderCommand;
         private Vector3 startPosition;
         private Quaternion startRotation;
-        private float throttleCommand;
-        private float rudderCommand;
         private readonly HashSet<RiverCurrentZone> activeCurrentZones = new HashSet<RiverCurrentZone>();
         private CurrentFieldProvider currentField;
         private ScenarioBathymetry bathymetry;
         private GroundingController grounding;
-        private float estimatedSquatM;
+        private Func<Vector3, float> depthProvider;
+        private float externalX;
+        private float externalY;
+        private float externalN;
+        private ManoeuvringOutput diagnostics;
+        private Vector3 relativeWaterVelocity;
+        private float effectiveDraft;
 
         public Rigidbody Body => body;
         public VesselData Data => data;
-        public float ThrottleCommand => throttleCommand;
+        public VesselParameters Parameters => parameters;
+        public ManoeuvringModel Model => model;
+        public HydrostaticsModel Hydrostatics => hydrostatics;
+        public ManoeuvringOutput Diagnostics => diagnostics;
+        // Test and trial harnesses step the vessel themselves with Simulate.
+        public bool ManualStepping { get; set; }
+        public int EngineCount => engineCommands.Length;
+        public float ThrottleCommand => Mean(engineCommands);
         public float RudderCommand => rudderCommand;
-        public float ActualThrottle => propulsion != null ? propulsion.ActualThrottle : 0f;
-        public float RudderAngleDeg => rudder != null ? rudder.AngleDeg : 0f;
-        public Vector3 RelativeWaterVelocity => resistance != null ? resistance.RelativeWaterVelocity : Vector3.zero;
-        public Vector3 EffectiveCurrentMps => CalculateEffectiveCurrent();
-        public float LoadFraction => data != null ? Mathf.Clamp01(data.massProperties.loadFraction) : 0f;
+        public float ActualThrottle
+        {
+            get
+            {
+                if (model == null || model.Shafts.Length == 0) return 0f;
+                float sum = 0f;
+                foreach (EngineShaft shaft in model.Shafts) sum += shaft.Rps / shaft.RatedRps;
+                return Mathf.Clamp(sum / model.Shafts.Length, -1f, 1f);
+            }
+        }
+        public float RudderAngleDeg => model != null ? model.RudderAngleRad * Mathf.Rad2Deg : 0f;
+        public Vector3 RelativeWaterVelocity => relativeWaterVelocity;
+        public Vector3 EffectiveCurrentMps => CalculateEffectiveCurrent(transform.position);
+        public float LoadFraction => parameters != null ? parameters.LoadFraction : 0f;
         public float CurrentMassKg => body != null ? body.mass : 0f;
-        public float EstimatedDraftM => data != null
-            ? Mathf.Lerp(0.9f, data.dimensions.loadedDraftM, LoadFraction)
-            : 0f;
-        public float EstimatedSquatM => estimatedSquatM;
-        public float EffectiveDraftM => EstimatedDraftM + estimatedSquatM;
+        // Still-water draft for the loading condition.
+        public float EstimatedDraftM => parameters != null ? parameters.Draft : 0f;
+        public float EstimatedSquatM => Mathf.Max(diagnostics.BowSquatM, diagnostics.SternSquatM);
+        // Deepest keel point below the still water surface, including squat, trim and heel.
+        public float EffectiveDraftM => effectiveDraft;
         public GroundingController Grounding => grounding;
         public Vector3 WindVelocityMps => windVelocityMps;
+        public float WaterLevel => waterLevel;
+
+        public float EngineCommand(int index) => engineCommands[index];
+        public float ShaftRpm(int index) => model != null ? model.Shafts[index].Rps * 60f : 0f;
+        public float EngineLoadFraction(int index) => model != null ? model.Shafts[index].LoadFraction : 0f;
 
         private void Awake()
         {
             body = GetComponent<Rigidbody>();
             data = GetComponent<VesselDataLoader>().Load();
-            resistance = GetComponent<HydrodynamicResistance>();
-            propulsion = GetComponentInChildren<PropulsionController>();
-            rudder = GetComponentInChildren<RudderController>();
-            buoyancyPoints = GetComponentsInChildren<BuoyancyPoint>();
             startPosition = transform.position;
             startRotation = transform.rotation;
-            currentField = FindFirstObjectByType<CurrentFieldProvider>();
-            bathymetry = FindFirstObjectByType<ScenarioBathymetry>();
+            currentField = FindAnyObjectByType<CurrentFieldProvider>();
+            bathymetry = FindAnyObjectByType<ScenarioBathymetry>();
             grounding = GetComponent<GroundingController>();
-
             if (data == null)
             {
                 enabled = false;
                 return;
             }
-            if (propulsion == null || rudder == null || buoyancyPoints.Length == 0)
-            {
-                Debug.LogError(
-                    "Ship requires propulsion, rudder and at least one buoyancy point.", this);
-                enabled = false;
-                return;
-            }
+            ConfigureLoading(data.massProperties.loadFraction);
+        }
 
-            body.mass = Mathf.Lerp(data.massProperties.lightshipMassKg, data.massProperties.loadedMassKg, LoadFraction);
+        public void ConfigureLoading(float loadFraction)
+        {
+            parameters = VesselParameters.Create(data, loadFraction);
+            model = new ManoeuvringModel(parameters);
+            hydrostatics = new HydrostaticsModel(parameters);
+            engineCommands = new float[parameters.Data.propeller.count];
+            stationCurrent = new float[model.Hull.StationCount];
+            effectiveDraft = parameters.Draft;
+
+            body.mass = parameters.Mass;
             body.centerOfMass = data.massProperties.centerOfMassLocalM;
-            body.inertiaTensor = data.massProperties.inertiaTensorKgM2;
+            // Unity body axes: x pitches, y yaws, z rolls.
+            body.inertiaTensor = new Vector3(parameters.PitchInertia, parameters.YawInertiaAtG, parameters.RollInertia);
+            body.inertiaTensorRotation = Quaternion.identity;
             body.useGravity = true;
             body.linearDamping = 0f;
             body.angularDamping = 0f;
@@ -91,38 +124,133 @@ namespace ShipSimulator.Physics
 
         private void Update()
         {
-            if (ShipSimulator.UI.VoyageMenu.IsOpen) return;
+            if (ShipSimulator.UI.VoyageMenu.IsOpen || data == null) return;
             Keyboard keyboard = Keyboard.current;
             if (keyboard == null) return;
             float throttleInput = (keyboard.wKey.isPressed ? 1f : 0f) - (keyboard.sKey.isPressed ? 1f : 0f);
             float rudderInput = (keyboard.dKey.isPressed ? 1f : 0f) - (keyboard.aKey.isPressed ? 1f : 0f);
-            throttleCommand = Mathf.Clamp(throttleCommand + throttleInput * data.controlLimits.throttleCommandRatePerSecond * Time.deltaTime, -1f, 1f);
+            float step = throttleInput * data.controlLimits.throttleCommandRatePerSecond * Time.deltaTime;
+            for (int i = 0; i < engineCommands.Length; i++)
+                engineCommands[i] = Mathf.Clamp(engineCommands[i] + step, -1f, 1f);
             rudderCommand = Mathf.MoveTowards(rudderCommand, rudderInput, data.controlLimits.rudderCommandRatePerSecond * Time.deltaTime);
-            if (keyboard.spaceKey.wasPressedThisFrame) throttleCommand = 0f;
+            if (keyboard.spaceKey.wasPressedThisFrame) SetThrottleCommand(0f);
             if (keyboard.rKey.wasPressedThisFrame) ResetVessel();
         }
 
         private void FixedUpdate()
         {
-            Vector3 current = CalculateEffectiveCurrent();
-            Vector3 waterVelocity = body.linearVelocity - current;
-            float shallowResistance = CalculateShallowWaterEffects(
-                out float rudderEffectiveness);
-            resistance.Apply(body, data, current, shallowResistance);
-            propulsion.Step(body, data, throttleCommand, Time.fixedDeltaTime);
-            rudder.Step(body, data, rudderCommand, waterVelocity,
-                Time.fixedDeltaTime, rudderEffectiveness);
-            ApplyCurrentShear();
+            if (!ManualStepping) Simulate(Time.fixedDeltaTime);
+        }
 
-            float totalWeight = body.mass * UnityEngine.Physics.gravity.magnitude;
-            float pointForce = totalWeight * data.buoyancy.reserveBuoyancyFactor / Mathf.Max(1, buoyancyPoints.Length);
-            foreach (BuoyancyPoint point in buoyancyPoints)
-                point.Apply(body, waterLevel + data.buoyancy.waterlineLocalY,
-                    pointForce * data.calibration.buoyancyMultiplier,
-                    data.buoyancy.maxPointDepthM, data.buoyancy.verticalDampingNPerMpsPerPoint);
+        public void Simulate(float dt)
+        {
+            if (model == null) return;
+            if (grounding != null && grounding.isActiveAndEnabled) grounding.Step(dt);
+            Vector3 forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+            forward = forward.sqrMagnitude > 1e-6f ? forward.normalized : Vector3.forward;
+            Vector3 right = Vector3.Cross(Vector3.up, forward);
+            Vector3 midship = transform.position;
 
-            Vector3 relativeWind = windVelocityMps - body.linearVelocity;
-            body.AddForce(relativeWind * relativeWind.magnitude * windForceCoefficient);
+            Vector3 current = CalculateEffectiveCurrent(midship);
+            Vector3 shipVelocity = body.GetPointVelocity(midship);
+            relativeWaterVelocity = shipVelocity - current;
+            relativeWaterVelocity.y = 0f;
+            float depth = SampleDepth(midship);
+            SampleBankFlowAreas(midship, right, depth, out float portArea, out float starboardArea);
+            Vector3 air = windVelocityMps - shipVelocity;
+
+            var input = new ManoeuvringInput
+            {
+                SurgeSpeed = Vector3.Dot(relativeWaterVelocity, forward),
+                SwaySpeed = Vector3.Dot(relativeWaterVelocity, right),
+                YawRate = body.angularVelocity.y,
+                EngineCommands = engineCommands,
+                RudderCommand = rudderCommand,
+                RelativeWind = new Vector2(Vector3.Dot(air, forward), Vector3.Dot(air, right)),
+                DepthM = depth,
+                PortFlowAreaM2 = portArea,
+                StarboardFlowAreaM2 = starboardArea,
+                StationSwayCurrent = SampleCurrentShear(midship, forward, right, current),
+                ExternalX = externalX,
+                ExternalY = externalY,
+                ExternalN = externalN
+            };
+            externalX = externalY = externalN = 0f;
+            diagnostics = model.Step(input, dt);
+
+            body.AddForce(forward * diagnostics.GravityCentreAccelerationX + right * diagnostics.GravityCentreAccelerationY,
+                ForceMode.Acceleration);
+            body.AddTorque(Vector3.up * diagnostics.YawAcceleration, ForceMode.Acceleration);
+
+            // Roll moment about G: lateral hull forces act near half draft, wind at its centroid height.
+            // Positive torque about forward heels to port in Unity's frame.
+            float turningLever = parameters.CentreOfGravityAboveKeel - 0.5f * parameters.Draft;
+            float windLever = parameters.WindCentroidHeight + 0.5f * parameters.Draft;
+            float heel = parameters.Mass * diagnostics.GravityCentreAccelerationY * turningLever - diagnostics.WindY * windLever;
+            body.AddTorque(forward * heel, ForceMode.Force);
+
+            hydrostatics.Apply(body, transform, waterLevel, diagnostics.BowSquatM, diagnostics.SternSquatM);
+            effectiveDraft = Mathf.Max(KeelDepth(0.5f * parameters.Lpp), KeelDepth(0f), KeelDepth(-0.5f * parameters.Lpp));
+        }
+
+        public float SampleDepth(Vector3 worldPosition)
+        {
+            if (depthProvider != null) return depthProvider(worldPosition);
+            return bathymetry != null ? bathymetry.Sample(worldPosition).DepthM : FairwayModel.DepthAt(worldPosition);
+        }
+
+        public void SetDepthProvider(Func<Vector3, float> provider)
+        {
+            depthProvider = provider;
+        }
+
+        // Horizontal force from contact or lines, accumulated into the next manoeuvring solve.
+        public void AddExternalForce(Vector3 worldForce, Vector3 worldPoint)
+        {
+            Vector3 forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+            Vector3 right = Vector3.Cross(Vector3.up, forward);
+            float fx = Vector3.Dot(worldForce, forward);
+            float fy = Vector3.Dot(worldForce, right);
+            Vector3 offset = worldPoint - transform.position;
+            externalX += fx;
+            externalY += fy;
+            externalN += Vector3.Dot(offset, forward) * fy - Vector3.Dot(offset, right) * fx;
+        }
+
+        private float KeelDepth(float localZ)
+        {
+            return waterLevel - transform.TransformPoint(0f, parameters.KeelLocalY, localZ).y;
+        }
+
+        private void SampleBankFlowAreas(Vector3 midship, Vector3 right, float depth, out float port, out float starboard)
+        {
+            port = starboard = float.PositiveInfinity;
+            if (float.IsInfinity(depth)) return;
+            float width = data.restrictedWater.bankSamplingWidthBeams * parameters.Beam;
+            float step = width / BankSamplesPerSide;
+            float portSum = 0f, starboardSum = 0f;
+            for (int k = 0; k < BankSamplesPerSide; k++)
+            {
+                float offset = 0.5f * parameters.Beam + (k + 0.5f) * step;
+                float starboardDepth = SampleDepth(midship + right * offset);
+                float portDepth = SampleDepth(midship - right * offset);
+                if (float.IsInfinity(starboardDepth) || float.IsInfinity(portDepth)) return;
+                starboardSum += Mathf.Max(0f, starboardDepth) * step;
+                portSum += Mathf.Max(0f, portDepth) * step;
+            }
+            port = portSum;
+            starboard = starboardSum;
+        }
+
+        private float[] SampleCurrentShear(Vector3 midship, Vector3 forward, Vector3 right, Vector3 current)
+        {
+            if (currentField == null) return null;
+            for (int i = 0; i < stationCurrent.Length; i++)
+            {
+                Vector3 local = currentField.Sample(midship + forward * model.Hull.StationPosition(i));
+                stationCurrent[i] = Vector3.Dot(local - current, right);
+            }
+            return stationCurrent;
         }
 
         private void ResetVessel()
@@ -131,8 +259,10 @@ namespace ShipSimulator.Physics
             body.rotation = startRotation;
             body.linearVelocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
-            throttleCommand = 0f;
+            SetThrottleCommand(0f);
             rudderCommand = 0f;
+            externalX = externalY = externalN = 0f;
+            model?.RestoreActuators(0f, null);
         }
 
         public void RestoreVoyage(ShipSimulator.Persistence.VoyageSave save)
@@ -141,10 +271,16 @@ namespace ShipSimulator.Physics
             body.rotation = save.rotation;
             body.linearVelocity = save.velocity;
             body.angularVelocity = save.angularVelocity;
-            throttleCommand = save.throttle;
             rudderCommand = save.rudder;
-            propulsion.RestoreThrottle(save.actualThrottle);
-            rudder.RestoreAngle(save.rudderAngle);
+            var rps = new float[engineCommands.Length];
+            for (int i = 0; i < engineCommands.Length; i++)
+            {
+                bool perEngine = save.engineCommands != null && save.engineCommands.Length == engineCommands.Length;
+                engineCommands[i] = perEngine ? save.engineCommands[i] : save.throttle;
+                bool perShaft = save.shaftRps != null && save.shaftRps.Length == engineCommands.Length;
+                rps[i] = perShaft ? save.shaftRps[i] : save.actualThrottle * parameters.RatedRps;
+            }
+            model.RestoreActuators(save.rudderAngle * Mathf.Deg2Rad, rps);
             activeCurrentZones.Clear();
             UnityEngine.Physics.SyncTransforms();
             foreach (RiverCurrentZone zone in FindObjectsByType<RiverCurrentZone>())
@@ -164,9 +300,24 @@ namespace ShipSimulator.Physics
             }
         }
 
+        public float[] CaptureEngineCommands() => (float[])engineCommands.Clone();
+
+        public float[] CaptureShaftRps()
+        {
+            if (model == null) return Array.Empty<float>();
+            var rps = new float[model.Shafts.Length];
+            for (int i = 0; i < rps.Length; i++) rps[i] = model.Shafts[i].Rps;
+            return rps;
+        }
+
         public void SetThrottleCommand(float value)
         {
-            throttleCommand = Mathf.Clamp(value, -1f, 1f);
+            for (int i = 0; i < engineCommands.Length; i++) engineCommands[i] = Mathf.Clamp(value, -1f, 1f);
+        }
+
+        public void SetEngineCommand(int index, float value)
+        {
+            engineCommands[index] = Mathf.Clamp(value, -1f, 1f);
         }
 
         public void SetRudderCommand(float value)
@@ -184,6 +335,12 @@ namespace ShipSimulator.Physics
             windVelocityMps = velocityMps;
         }
 
+        // Used where no current zone or field applies.
+        public void SetAmbientCurrent(Vector3 velocityMps)
+        {
+            ambientCurrentMps = velocityMps;
+        }
+
         public void ResetToStart()
         {
             ResetVessel();
@@ -199,66 +356,45 @@ namespace ShipSimulator.Physics
             if (zone != null) activeCurrentZones.Remove(zone);
         }
 
-        private Vector3 CalculateEffectiveCurrent()
+        private Vector3 CalculateEffectiveCurrent(Vector3 position)
         {
-            if (currentField != null && body != null)
-                return currentField.Sample(body.worldCenterOfMass);
+            if (currentField != null) return currentField.Sample(position);
             activeCurrentZones.RemoveWhere(zone => zone == null || !zone.isActiveAndEnabled);
             if (activeCurrentZones.Count == 0) return ambientCurrentMps;
-
             Vector3 total = Vector3.zero;
             foreach (RiverCurrentZone zone in activeCurrentZones)
                 total += zone.CurrentVelocityMps;
             return total / activeCurrentZones.Count;
         }
 
-        private void ApplyCurrentShear()
+        private static float Mean(float[] values)
         {
-            if (currentField == null || data == null) return;
-            float sampleOffset = data.dimensions.lengthOverallM * 0.38f;
-            Vector3 bowCurrent = currentField.Sample(
-                transform.TransformPoint(0f, 0f, sampleOffset));
-            Vector3 sternCurrent = currentField.Sample(
-                transform.TransformPoint(0f, 0f, -sampleOffset));
-            Vector3 localDifference = transform.InverseTransformDirection(
-                bowCurrent - sternCurrent);
-            float yawMoment = Mathf.Clamp(
-                -localDifference.x * body.mass * 18f,
-                -18000000f, 18000000f);
-            body.AddTorque(Vector3.up * yawMoment, ForceMode.Force);
-        }
-
-        private float CalculateShallowWaterEffects(out float rudderEffectiveness)
-        {
-            estimatedSquatM = 0f;
-            rudderEffectiveness = 1f;
-            if (bathymetry == null || data == null) return 1f;
-            float depth = bathymetry.Sample(body.worldCenterOfMass).DepthM;
-            float draft = Mathf.Max(0.1f, EstimatedDraftM);
-            float ratio = depth / draft;
-            float speed = body.linearVelocity.magnitude;
-            if (ratio < 1.8f)
-            {
-                float severity = Mathf.Clamp01((1.8f - ratio) / 0.8f);
-                estimatedSquatM = Mathf.Min(0.55f,
-                    speed * speed * 0.018f * severity);
-                rudderEffectiveness = Mathf.Lerp(1f, 0.55f, severity);
-                return Mathf.Lerp(1f, 2.4f, severity);
-            }
-            return 1f;
+            if (values.Length == 0) return 0f;
+            float sum = 0f;
+            foreach (float value in values) sum += value;
+            return sum / values.Length;
         }
 
         private void OnDrawGizmosSelected()
         {
-            if (!drawDebugForces || body == null) return;
+            if (!drawDebugForces || body == null || model == null) return;
             Gizmos.color = Color.green;
-            Gizmos.DrawRay(body.worldCenterOfMass, body.linearVelocity * 5f);
+            Gizmos.DrawRay(transform.position, relativeWaterVelocity * 5f);
+            VesselPropeller propeller = data.propeller;
             Gizmos.color = Color.red;
-            if (propulsion != null) Gizmos.DrawRay(propulsion.transform.position, propulsion.LastForce / 50000f);
+            for (int i = 0; i < propeller.count; i++)
+            {
+                Vector3 position = transform.TransformPoint(propeller.lateralPositionsM[i], parameters.KeelLocalY + 1f,
+                    propeller.longitudinalPositionsM[i]);
+                Gizmos.DrawRay(position, transform.forward * model.PropellerThrustN[i] / 50000f);
+            }
             Gizmos.color = Color.yellow;
-            if (rudder != null) Gizmos.DrawRay(rudder.transform.position, rudder.LastForce / 50000f);
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(body.worldCenterOfMass, 0.8f);
+            for (int j = 0; j < data.rudder.count; j++)
+            {
+                Vector3 position = transform.TransformPoint(data.rudder.lateralPositionsM[j], parameters.KeelLocalY + 1f,
+                    data.rudder.longitudinalPositionM);
+                Gizmos.DrawRay(position, -transform.right * model.RudderNormalForceN[j] / 50000f);
+            }
         }
     }
 }

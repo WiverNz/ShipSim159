@@ -1,0 +1,161 @@
+{
+  "identity": {
+    "displayName": "KVLCC2 MMG benchmark",
+    "project": "KVLCC2",
+    "vesselType": "Benchmark tanker for testing the manoeuvring model, not a simulator vessel"
+  },
+  "dimensions": {
+    "lengthOverallM": 325.5,
+    "lengthBetweenPerpendicularsM": 320.0,
+    "beamOverallM": 58.0,
+    "beamMouldedM": 58.0,
+    "depthMouldedM": 30.0,
+    "loadedDraftM": 20.8
+  },
+  "massProperties": {
+    "loadedMassKg": 320415000.0,
+    "deadweightKg": 278000000.0,
+    "lightshipMassKg": 42000000.0,
+    "loadFraction": 1.0,
+    "loadingCondition": "full load, MMG benchmark",
+    "centerOfMassLocalM": { "x": 0.0, "y": -2.2, "z": 11.2 },
+    "rollGyrationRadiusM": 20.9,
+    "pitchGyrationRadiusM": 80.0,
+    "yawGyrationRadiusM": 80.0,
+    "estimated": true
+  },
+  "hydrostatics": {
+    "waterDensityKgM3": 1025.0,
+    "waterlineLocalY": 0.0,
+    "blockCoefficient": 0.81,
+    "midshipCoefficient": 0.998,
+    "waterplaneCoefficient": 0.90,
+    "longitudinalCentreOfBuoyancyM": 11.2,
+    "stationCount": 24,
+    "stripsAcross": 4,
+    "heaveDampingRatio": 0.3,
+    "heaveAddedMassFraction": 1.0,
+    "rollDampingRatio": 0.08,
+    "estimated": true
+  },
+  "resistance": {
+    "kinematicViscosityM2PerS": 0.00000114,
+    "wettedSurfaceM2": 27194.0,
+    "formFactor": 1.20,
+    "correlationAllowance": 0.0,
+    "residualResistanceCoefficient": 0.003719,
+    "estimated": true
+  },
+  "hull": {
+    "surgeAddedMassPrime": 0.022,
+    "swayAddedMassPrime": 0.223,
+    "yawAddedInertiaPrime": 0.011,
+    "xVV": -0.040,
+    "xVR": 0.002,
+    "xRR": 0.011,
+    "xVVVV": 0.771,
+    "yV": -0.315,
+    "yR": 0.083,
+    "yVVV": -1.607,
+    "yVVR": 0.379,
+    "yVRR": -0.391,
+    "yRRR": 0.008,
+    "nV": -0.137,
+    "nR": -0.049,
+    "nVVV": -0.030,
+    "nVVR": -0.294,
+    "nVRR": 0.055,
+    "nRRR": -0.013,
+    "maxYawRatePrime": 1.2,
+    "lowSpeedBlendStartMps": 0.3,
+    "lowSpeedBlendEndMps": 1.2,
+    "crossFlowStations": 16,
+    "estimated": false,
+    "derivation": "Yasukawa and Yoshimura (2015) KVLCC2 full-scale coefficient set. Resistance, engine, torque coefficients and windage are chosen so the model self-propels at the published 15.5 kn approach speed; they are not KVLCC2 design data."
+  },
+  "engine": {
+    "engineCount": 1,
+    "engineType": "Benchmark rating for self-propulsion at 15.5 kn",
+    "powerPerEngineW": 85000000.0,
+    "gearEfficiency": 1.0,
+    "shaftEfficiency": 0.98,
+    "ratedPropellerRpm": 107.2,
+    "shaftInertiaKgM2": 1200000.0,
+    "governorBandFraction": 0.01,
+    "rpmRampSecondsFullRange": 60.0,
+    "reversalRpmFraction": 0.25,
+    "reversalDelaySeconds": 15.0,
+    "reversalBrakeTorqueFraction": 0.5,
+    "estimatedDynamics": true
+  },
+  "propeller": {
+    "count": 1,
+    "diameterM": 9.86,
+    "longitudinalPositionsM": [-160.0],
+    "lateralPositionsM": [0.0],
+    "aheadThrustCoefficients": [0.2931, -0.2753, -0.1385],
+    "aheadTorqueCoefficients": [0.030, -0.018, -0.008],
+    "asternThrustCoefficients": [0.20, -0.20, -0.10],
+    "asternTorqueCoefficients": [0.026, -0.016, -0.008],
+    "wakeFraction": 0.35,
+    "thrustDeduction": 0.22,
+    "wakeDriftC1": 2.0,
+    "wakeDriftC2": 1.35,
+    "estimated": true
+  },
+  "rudder": {
+    "count": 1,
+    "maxAngleDeg": 35.0,
+    "rateDegPerSecond": 2.34,
+    "areaPerRudderM2": 112.5,
+    "spanM": 15.8,
+    "longitudinalPositionM": -160.0,
+    "lateralPositionsM": [0.0],
+    "normalForceSlope": 2.747,
+    "stallAngleDeg": 40.0,
+    "postStallNormalCoefficient": 1.1,
+    "steeringResistanceDeduction": 0.387,
+    "hullInteractionFactor": 0.312,
+    "hullInteractionPositionPrime": -0.464,
+    "wakeRatio": 1.09,
+    "slipstreamFactor": 0.5,
+    "flowStraightening": 0.5175,
+    "flowStraighteningLeverPrime": -0.710,
+    "estimated": false
+  },
+  "windage": {
+    "airDensityKgM3": 1.225,
+    "frontalAreaM2": 1200.0,
+    "lateralAreaM2": 3600.0,
+    "lateralCentroidLongitudinalM": 0.0,
+    "lateralCentroidHeightM": 10.0,
+    "transverseDragCoefficient": 0.70,
+    "longitudinalDragBow": 0.90,
+    "longitudinalDragStern": 0.55,
+    "crossForceParameter": 0.40,
+    "estimated": true
+  },
+  "restrictedWater": {
+    "shallowWaterCorrections": true,
+    "squatCoefficient": 0.0,
+    "bankSamplingWidthBeams": 4.0,
+    "bankSuctionCoefficient": 0.5,
+    "bankMomentLeverPrime": -0.25,
+    "estimated": true
+  },
+  "controlLimits": {
+    "maxLoadedSpeedMps": 7.97,
+    "throttleCommandRatePerSecond": 0.2,
+    "rudderCommandRatePerSecond": 0.35
+  },
+  "calibration": {
+    "thrustMultiplier": 1.0,
+    "resistanceMultiplier": 1.0,
+    "rudderMultiplier": 1.0,
+    "trainingValidated": false
+  },
+  "sourceReferences": [
+    "https://link.springer.com/article/10.1007/s00773-014-0293-y",
+    "https://github.com/nikpau/pymaneuvering"
+  ]
+}

@@ -284,6 +284,7 @@ namespace ShipSimulator.UI
                 velocity = ship.Body.linearVelocity, angularVelocity = ship.Body.angularVelocity,
                 throttle = ship.ThrottleCommand, actualThrottle = ship.ActualThrottle,
                 rudder = ship.RudderCommand, rudderAngle = ship.RudderAngleDeg,
+                engineCommands = ship.CaptureEngineCommands(), shaftRps = ship.CaptureShaftRps(),
                 simulationScale = open ? resumeScale : Time.timeScale,
                 night = FindAnyObjectByType<DayNightController>()?.IsNight ?? false,
                 windDirection = weather?.WindDirectionDeg ?? 0f, windSpeed = weather?.WindSpeedMps ?? 0f,

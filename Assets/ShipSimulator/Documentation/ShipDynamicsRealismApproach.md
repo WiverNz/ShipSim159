@@ -1,6 +1,9 @@
 # Ship Dynamics Realism: Research and Implementation Approach
 
-Status: research document, written 2026-09-13. Nothing in it is implemented yet.
+Status: research written 2026-09-13; phases 1 to 6 of the roadmap (section 17) implemented the
+same day. Phase 7 (ship-ship interaction, locks, mooring, anchors) is not implemented. See
+"Implementation status" at the end of section 17 for deviations from this proposal, and
+`ShipSimulator_Physics.md` for the model as built.
 
 It explains how a real ship's motion depends on its mass and loading, the water, the wind,
 the current and restricted depth, collects the standard formulas used in manoeuvring
@@ -787,6 +790,30 @@ right range.
 | 5 | Station-based hydrostatics, loading conditions, heel in turns and wind; shaft and engine dynamics with astern reversal; four-quadrant propeller | Loading-dependent behaviour and realistic crash stops |
 | 6 | Virtual sea trials runner; calibration against 507B data; documented tolerances | Model quality measurable against reality |
 | 7 | Ship-ship interaction, locks, mooring and anchors | Advanced training scenarios |
+
+### Implementation status (2026-09-13)
+
+Phases 1 to 6 are implemented as the classes listed in `ShipSimulator_Physics.md`, with EditMode
+tests for each force model, PlayMode tests for the Rigidbody integration and the
+`VirtualSeaTrials` report. Deviations from the proposal above:
+
+- Propeller curves are quadratic open-water K_T and K_Q fits, separate for ahead and astern, not
+  four-quadrant data (none is available for 507B).
+- The bank effect is an estimated Bernoulli suction model from the side flow areas. The Lataire
+  papers were not accessible, so their formulation is not used.
+- Kijima and Taimuri depth factors use the B/T <= 4 branch for every hull, because the other branch
+  gives unphysical factors for the very beamy 507B hull. Factors are clamped to at least 1.
+- Lackenby shallow-water speed loss is capped at 45 %.
+- Hydrostatics use wall-sided station prisms rather than a lines plan; the centre of buoyancy is
+  placed by a linear area weighting.
+- Collision contacts from Unity colliders still act directly on the Rigidbody; only grounding
+  friction goes through the added-mass solve.
+- Resistance C_R and rated propeller speed are calibrated to the published 10 kn at full power.
+  Everything else that is not in the published particulars is estimated.
+- The previous vessel JSON had roll and pitch inertia swapped relative to Unity's body axes; the
+  new controller maps pitch to x, yaw to y and roll to z.
+- Spiral and pull-out manoeuvres, calibration against 507B trial data and documented tolerances
+  (the remaining parts of phase 6) wait for real data.
 
 ## 18. References
 

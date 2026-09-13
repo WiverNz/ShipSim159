@@ -21,10 +21,11 @@ instrumentation.
 ## Features
 
 - Detailed 138.3 m Volgo-Don vessel model integrated into Unity URP.
-- Rigidbody-based vessel simulation with point buoyancy.
-- Linear and quadratic water resistance.
-- Engine telegraph with gradual propulsion response.
-- Rudder lift based on water-relative velocity.
+- Literature-based manoeuvring model: MMG equations with added mass, ITTC resistance,
+  twin engines, shafts and propellers, MMG rudders in the propeller slipstream,
+  Blendermann wind loads, shallow-water corrections, squat and bank suction.
+- Station buoyancy with loading-dependent draft, trim and heel; grounding with bottom friction.
+- Virtual sea trials (turning circle, zig-zag, crash stop) against the IMO envelope.
 - Ambient and trigger-based river currents.
 - Curved river fairway with estimated bathymetry and under-keel clearance.
 - Compound bow, midship, and stern collision hull.
@@ -74,9 +75,11 @@ Settings.
 
 | Input | Action |
 |---|---|
-| `W` / `Up Arrow` | Increase telegraph command |
-| `S` / `Down Arrow` | Decrease telegraph command |
-| `Space` | Set telegraph to Stop |
+| `W` / `Up Arrow` | Increase both engine telegraphs |
+| `S` / `Down Arrow` | Decrease both engine telegraphs |
+| `Q` / `Z` | Port engine telegraph up / down |
+| `E` / `X` | Starboard engine telegraph up / down |
+| `Space` | Set both telegraphs to Stop |
 | `A` / `Left Arrow` | Command port rudder |
 | `D` / `Right Arrow` | Command starboard rudder |
 | `C` / `Enter` | Rudder midships |
@@ -120,7 +123,7 @@ the surrounding fairway and contacts move relative to it.
 | Cyan dashed line | Current ship heading |
 | Yellow route | Curved fairway centerline |
 | Gray line | Recent vessel track |
-| White dashed curve | Predicted path from speed, drift, and rudder |
+| White dashed curve | Predicted path from speed, drift, and rate of turn |
 | Red bathymetry | Shallow water or bank |
 | Amber bathymetry | Caution depth |
 | Blue/green bathymetry | Safer water |
@@ -190,12 +193,13 @@ Assets/ShipSimulator/
 The vessel uses a Unity `Rigidbody` and is moved through forces and torques
 rather than direct transform changes. The current implementation includes:
 
-- 15-point buoyancy;
-- aggregate twin-engine/twin-propeller propulsion;
-- rudder force from local water velocity;
-- longitudinal and lateral resistance;
-- wind and river-current forces;
-- configurable response times and calibration multipliers from vessel JSON.
+- a three-degree-of-freedom MMG manoeuvring model with added mass, solved each fixed step and
+  applied as Rigidbody accelerations;
+- Clarke hull derivatives, low-speed cross-flow drag and current shear;
+- two engines with shaft dynamics and astern reversal, two propellers and two rudders;
+- Blendermann wind loads with gusts, shallow-water corrections, squat and bank suction;
+- station buoyancy, heel in turns and wind, and grounding friction;
+- vessel coefficients from JSON, most of them estimated.
 
 See
 [ShipSimulator_Physics.md](Assets/ShipSimulator/Documentation/ShipSimulator_Physics.md)
@@ -205,9 +209,9 @@ for implementation details.
 
 - Hydrodynamic coefficients are estimated and not trial-calibrated.
 - Bathymetry is procedural and not based on surveyed river data.
-- Twin propulsion is currently represented by one aggregate centerline force.
-- The simulation does not yet model squat, cavitation, grounding damage,
-  anchors, mooring lines, fuel, damage, or autopilot.
+- Propeller curves are not four-quadrant data, and the bank model is estimated.
+- The simulation does not yet model ship-ship interaction, locks, cavitation,
+  anchors, mooring lines, fuel, flooding, or autopilot.
 - Wake and propeller wash are visual effects only.
 - Keyboard input is polled directly and is not yet rebindable.
 - The HUD currently uses legacy `UnityEngine.UI.Text`.

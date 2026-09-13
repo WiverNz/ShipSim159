@@ -63,7 +63,8 @@ namespace ShipSimulator.UI
         private readonly List<HudButton> cameraButtons = new List<HudButton>();
         private readonly List<HudButton> rudderButtons = new List<HudButton>();
         private RectTransform radarWarningRing;
-        private int telegraphIndex = 3;
+        // One telegraph lever per engine: port first, then starboard.
+        private readonly int[] telegraphIndices = { 3, 3 };
         private bool helpVisible;
         private bool mapVisible = true;
         private Vector3 objectivePosition = new Vector3(0f, 0f, 650f);
@@ -157,8 +158,6 @@ namespace ShipSimulator.UI
 
             float driftAngle = Mathf.Atan2(localVelocity.x,
                 Mathf.Max(Mathf.Abs(localVelocity.z), 0.05f)) * Mathf.Rad2Deg;
-            float engineLoad = Mathf.Abs(ship.ActualThrottle) * 100f;
-            float rpm = engineLoad < 1f ? 0f : Mathf.Lerp(180f, 620f, engineLoad / 100f);
             speedText.text =
                 $"<size=14><color=#8AA0AD>SPEED</color></size>\n" +
                 $"<size=30><b>{speedMps * 1.943844f:F1}</b></size><size=15> kn</size>\n" +
@@ -174,9 +173,7 @@ namespace ShipSimulator.UI
             rudderText.text =
                 $"RUDDER  <size=23><b>{ship.RudderAngleDeg:+0.0;-0.0;0.0} deg</b></size>\n" +
                 $"<size=14>COMMAND {ship.RudderCommand * 35f:+0;-0;0} deg</size>";
-            engineText.text =
-                $"TELEGRAPH  <size=23><b>{TelegraphNames[telegraphIndex]}</b></size>\n" +
-                $"<size=15>RPM {rpm:F0}   ENGINE LOAD {engineLoad:F0}%</size>";
+            engineText.text = FormatEngineStatus();
             currentText.text =
                 $"<size=14><color=#8AA0AD>CURRENT</color></size>\n" +
                 $"<size=28><b>{current.magnitude:F1}</b></size><size=15> m/s {CurrentArrow(current)}</size>\n" +
@@ -274,7 +271,7 @@ namespace ShipSimulator.UI
             helpText = Label(transform, string.Empty, 18, TextAnchor.MiddleCenter,
                 new Vector2(320f, 12f), new Vector2(-320f, -1016f));
             helpText.text =
-                "A/D  RUDDER     W/S  TELEGRAPH     SPACE  STOP     1-9  CAMERAS\n" +
+                "A/D  RUDDER   W/S  ENGINES   Q/Z  PORT   E/X  STBD   SPACE  STOP   1-9  CAMERAS\n" +
                 "RMB ORBIT   H HORN   M MAP   N DAY/NIGHT   T TIME   F2 WIND   F3 DIR   F4 RAIN   F5 FOG";
             helpText.gameObject.SetActive(false);
             Text helpPrompt = Label(transform, "F1  CONTROLS", 16, TextAnchor.LowerCenter,
@@ -779,10 +776,7 @@ namespace ShipSimulator.UI
                 ship.Body.linearVelocity);
             float speed = Mathf.Max(0f, localVelocity.z);
             float sideSpeed = localVelocity.x;
-            float rudderRadians = ship.RudderAngleDeg * Mathf.Deg2Rad;
-            float yawRate = speed < 0.2f
-                ? 0f
-                : speed / 230f * Mathf.Tan(rudderRadians);
+            float yawRate = ship.Body.angularVelocity.y;
             Vector2 previous = new Vector2(0f, RadarVesselOffsetY);
             float predictedHeading = 0f;
             Vector2 predictedMeters = Vector2.zero;
@@ -812,6 +806,10 @@ namespace ShipSimulator.UI
             if (keyboard.downArrowKey.wasPressedThisFrame) TelegraphDown();
             if (keyboard.wKey.wasPressedThisFrame) TelegraphUp();
             if (keyboard.sKey.wasPressedThisFrame) TelegraphDown();
+            if (keyboard.qKey.wasPressedThisFrame) SetEngineTelegraph(0, telegraphIndices[0] + 1);
+            if (keyboard.zKey.wasPressedThisFrame) SetEngineTelegraph(0, telegraphIndices[0] - 1);
+            if (keyboard.eKey.wasPressedThisFrame) SetEngineTelegraph(1, telegraphIndices[1] + 1);
+            if (keyboard.xKey.wasPressedThisFrame) SetEngineTelegraph(1, telegraphIndices[1] - 1);
             if (keyboard.leftArrowKey.wasPressedThisFrame || keyboard.aKey.wasPressedThisFrame)
                 ship.SetRudderCommand(-1f);
             if (keyboard.rightArrowKey.wasPressedThisFrame || keyboard.dKey.wasPressedThisFrame)
@@ -854,25 +852,56 @@ namespace ShipSimulator.UI
         public void RefreshAfterVoyageLoad()
         {
             if (ship == null) return;
-            float nearest = float.PositiveInfinity;
-            for (int i = 0; i < TelegraphValues.Length; i++)
+            for (int engine = 0; engine < telegraphIndices.Length; engine++)
             {
-                float difference = Mathf.Abs(TelegraphValues[i] - ship.ThrottleCommand);
-                if (difference >= nearest) continue;
-                nearest = difference;
-                telegraphIndex = i;
+                float command = ship.EngineCommand(Mathf.Min(engine, ship.EngineCount - 1));
+                float nearest = float.PositiveInfinity;
+                for (int i = 0; i < TelegraphValues.Length; i++)
+                {
+                    float difference = Mathf.Abs(TelegraphValues[i] - command);
+                    if (difference >= nearest) continue;
+                    nearest = difference;
+                    telegraphIndices[engine] = i;
+                }
             }
             radarTrack.Clear();
             nextTrackSampleTime = Time.time;
         }
 
-        private void TelegraphUp() => SetTelegraph(Mathf.Min(6, telegraphIndex + 1));
-        private void TelegraphDown() => SetTelegraph(Mathf.Max(0, telegraphIndex - 1));
+        private void TelegraphUp() => SetTelegraph(Mathf.Max(telegraphIndices[0], telegraphIndices[1]) + 1);
+        private void TelegraphDown() => SetTelegraph(Mathf.Min(telegraphIndices[0], telegraphIndices[1]) - 1);
 
         private void SetTelegraph(int index)
         {
-            telegraphIndex = Mathf.Clamp(index, 0, TelegraphValues.Length - 1);
-            ship.SetThrottleCommand(TelegraphValues[telegraphIndex]);
+            SetEngineTelegraph(0, index);
+            SetEngineTelegraph(1, index);
+        }
+
+        private void SetEngineTelegraph(int engine, int index)
+        {
+            int clamped = Mathf.Clamp(index, 0, TelegraphValues.Length - 1);
+            if (ship.EngineCount < 2)
+            {
+                telegraphIndices[0] = telegraphIndices[1] = clamped;
+                ship.SetThrottleCommand(TelegraphValues[clamped]);
+                return;
+            }
+            telegraphIndices[engine] = clamped;
+            ship.SetEngineCommand(engine, TelegraphValues[clamped]);
+        }
+
+        private string FormatEngineStatus()
+        {
+            string order = telegraphIndices[0] == telegraphIndices[1]
+                ? TelegraphNames[telegraphIndices[0]]
+                : $"P {TelegraphNames[telegraphIndices[0]]}  S {TelegraphNames[telegraphIndices[1]]}";
+            var shafts = new System.Text.StringBuilder();
+            for (int i = 0; i < ship.EngineCount; i++)
+            {
+                string side = ship.EngineCount < 2 ? string.Empty : i == 0 ? "P " : "S ";
+                shafts.Append($"{side}RPM {ship.ShaftRpm(i):+0;-0;0} LOAD {ship.EngineLoadFraction(i) * 100f:F0}%   ");
+            }
+            return $"TELEGRAPH  <size=23><b>{order}</b></size>\n<size=15>{shafts.ToString().TrimEnd()}</size>";
         }
 
         private void SetCamera(int index)
@@ -1070,7 +1099,7 @@ namespace ShipSimulator.UI
         private void UpdateActiveStates()
         {
             for (int i = 0; i < telegraphButtons.Count; i++)
-                telegraphButtons[i].SetActive(i == telegraphIndex);
+                telegraphButtons[i].SetActive(i == telegraphIndices[0] || i == telegraphIndices[1]);
 
             int rudderState = ship.RudderCommand < -0.1f ? 0 :
                 ship.RudderCommand > 0.1f ? 2 : 1;

@@ -42,7 +42,8 @@ Read these before changing the project, in the order they are usually needed:
   - `VolgoDon507B_Sources.md`: where each vessel parameter came from, and how confident it is.
   - `GorodetsScenarioTechnicalPlan.md`, `NextSteps.md`: scenario plan and roadmap.
   - `GraphicsRealismApproach.md`, `ShipDynamicsRealismApproach.md`: research and proposed
-    approaches for realistic rendering and for literature-based ship dynamics (not implemented).
+    approaches for realistic rendering and for literature-based ship dynamics (dynamics phases 1
+    to 6 implemented).
 - `AGENTS.md`: the entry point that AGENTS.md-seeking tools look for. It only points back here.
 
 There may also be a `CLAUDE.local.md` and `AGENTS.local.md` in the working tree. Those are
@@ -190,12 +191,19 @@ They compile independently: an error in `ShipSimulator.Editor` does not stop
 ## Architecture
 
 `ShipPhysicsController` (`Scripts/Physics/`) is the hub. On `Awake` it loads JSON via
-`VesselDataLoader`, then coordinates sibling and child components found by `GetComponent*`:
+`VesselDataLoader` and builds plain C# models (no MonoBehaviours) from `VesselParameters`:
 
-- `PropulsionController`: engine telegraph to gradual aggregate centerline thrust.
-- `RudderController`: lift from local water-relative velocity.
-- `HydrodynamicResistance`: linear plus quadratic drag.
-- `BuoyancyPoint[]`: 15-point buoyancy.
+- `ManoeuvringModel`: three-degree-of-freedom MMG solve with added mass, combining
+  `HullForceModel`, `ResistanceModel`, `EngineShaft` and `PropellerModel` per shaft,
+  `RudderModel` per rudder, `WindLoadModel` and `RestrictedWaterModel`. It returns
+  accelerations, which the controller applies with `ForceMode.Acceleration`.
+- `HydrostaticsModel`: station prism buoyancy, heave and roll damping, squat as a lowered
+  water surface.
+
+`ManoeuvringSimulator` and `ManoeuvringTrials` run the same model without Unity physics for tests
+and `VirtualSeaTrials` (`Ship Simulator > Run Virtual Sea Trials`, report in `Logs/SeaTrials/`).
+Sign convention: Unity z forward, x starboard, positive yaw rate and positive rudder turn to
+starboard. See `ShipSimulator_Physics.md`.
 
 Environment inputs:
 
@@ -203,7 +211,8 @@ Environment inputs:
   trigger-zone-averaged current while the vessel is inside a zone.
 - `ScenarioBathymetry` plus `FairwayModel` / `FairwayRoute`: depth, channel geometry, squat
   estimate.
-- `GroundingController`: keel-clearance interaction.
+- `GroundingController`: keel contact springs and bottom friction, stepped by the controller.
+- `WeatherController`: pushes its gusting wind to every vessel each frame.
 
 **Key invariant: the vessel is driven entirely by forces and torques on its `Rigidbody` inside
 `FixedUpdate`.** Never move a simulated vessel by writing `transform` directly.

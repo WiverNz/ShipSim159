@@ -45,3 +45,41 @@ Values for these fields in the JSON are marked `estimated: true` and exist only
 to make the prototype executable. They require calibration against trials,
 drawings, manoeuvring booklets, or class documentation before training use.
 
+## Estimated manoeuvring parameters
+
+All values below are estimates for the manoeuvring model described in
+`ShipSimulator_Physics.md`. None is measured on a Project 507B vessel.
+
+| Parameter | Value | Basis |
+|---|---:|---|
+| Centre of gravity, local (x, y, z) | (0, -1.2, 2.0) m | estimated, loaded cargo |
+| Radii of gyration roll / pitch / yaw | 5.9 / 33.75 / 33.75 m | typical fractions 0.36 B and 0.25 L |
+| Midship / waterplane coefficient | 0.98 / 0.90 | typical for a full river hull |
+| Longitudinal centre of buoyancy | 2.0 m forward of midship | estimated, matches the centre of gravity |
+| Heave / roll damping ratio | 0.30 / 0.08 | typical critical-damping fractions |
+| Form factor, correlation allowance | 1.30, 0.0004 | Holtrop-range estimates |
+| Residual resistance coefficient C_R | 0.000516 | calibrated to 10 kn at full power in deep water |
+| Surge added mass m'_x | 0.011104 | Söding formula |
+| Sway / yaw added mass m'_y, J'_z | 0.12817 / 0.009087 | Clarke et al. (1983) at the loaded draft |
+| Y'_v, Y'_r, N'_v, N'_r | -0.21285, 0.04970, -0.04623, -0.02989 | Clarke et al. (1983) |
+| Nonlinear hull derivatives | KVLCC2 set | Yasukawa and Yoshimura (2015), assumed to transfer |
+| Gear / shaft efficiency | 0.92 / 0.98 | typical reduction gear and shaft line |
+| Rated propeller speed | 257.4 rpm | calibrated with C_R to the published speed |
+| Shaft inertia, governor band, ramp | 2500 kg m², 1 %, 15 s | estimated |
+| Reversal speed / delay / brake | 25 % rated, 8 s, 50 % torque | estimated for an air-start reversible diesel |
+| Propeller diameter, positions | 2.1 m at x = ±4 m, 55 m aft of midship | estimated from draft and stern shape |
+| K_T, K_Q ahead | [0.33, -0.25, -0.12], [0.042, -0.022, -0.012] | quadratic fits in the Wageningen B-series range |
+| K_T, K_Q astern | [0.23, -0.20, -0.10], [0.036, -0.018, -0.010] | estimated |
+| Wake fraction / thrust deduction | 0.20 / 0.20 | typical twin-screw full hull |
+| Rudders | 2 x 5.5 m², span 2.6 m, behind each propeller | estimated; total about 2.3 % of L T, typical for river vessels |
+| Rudder interaction t_R, a_H, x'_H, ε, κ, γ_R, l'_R | 0.39, 0.31, -0.46, 1.05, 0.5, 0.5, -0.8 | KVLCC2 values, estimated |
+| Rudder stall / post-stall normal coefficient | 32 deg / 1.1 | estimated |
+| Windage frontal / lateral area (loaded) | 190 / 650 m² | estimated from superstructure and freeboard |
+| Wind centroid (x, height) | -15 m, 3.0 m | estimated, aft superstructure |
+| Blendermann coefficients C_Dt, C_Dl bow, C_Dl stern, δ | 0.85, 0.65, 0.55, 0.40 | general cargo ship range from Blendermann (1994) |
+| Bank suction coefficient, moment lever | 0.5, -0.25 L | estimated; no published model for this hull was accessible |
+
+The KVLCC2 benchmark file (`KVLCC2_MMG_Benchmark.json`) holds the published MMG coefficient set
+used to check the implementation, not Project 507B data. Its resistance C_R, propeller K_Q fit and
+engine power are chosen so the benchmark reaches its 15.5 kn design speed.
+

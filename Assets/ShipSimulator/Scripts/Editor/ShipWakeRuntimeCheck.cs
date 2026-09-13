@@ -73,7 +73,8 @@ namespace ShipSimulator.Editor
                 }
                 else if (stage == 3)
                 {
-                    if (speed < 4f && now - stageStart < 200) return;
+                    // Full ahead in the 4.6 m Gorodets reach settles near 3.5 m/s through the water (shallow-water loss).
+                    if (speed < 3f && now - stageStart < 200) return;
                     Capture(ship, "straight", speed);
                     ship.SetRudderCommand(0.5f);
                     Advance(4, now);
@@ -130,7 +131,14 @@ namespace ShipSimulator.Editor
                     center - forward * 260f, Vector3.up, label + "-aft");
                 Shoot(camera, center - forward * 150f + Vector3.up * 360f,
                     center - forward * 150f, forward, label + "-overhead");
-                Debug.Log($"WAKE_RUNTIME|{label}: {speed:0.00} m/s through water at {center}");
+                GroundingController grounding = ship.Grounding;
+                string contact = grounding != null ? $", {grounding.State}, clearance {grounding.MinimumClearanceM:0.00} m" : string.Empty;
+                Debug.Log($"WAKE_RUNTIME|{label}: {speed:0.00} m/s through water at {center}{contact}");
+                if (speed < 1f)
+                    throw new InvalidOperationException($"The vessel is not under way for the {label} capture.");
+                if (grounding != null &&
+                    (grounding.State == GroundingState.Touching || grounding.State == GroundingState.HardGrounding))
+                    throw new InvalidOperationException($"The vessel is aground during the {label} capture.");
             }
             finally
             {

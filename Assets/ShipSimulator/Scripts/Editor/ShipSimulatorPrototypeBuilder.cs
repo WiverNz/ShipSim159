@@ -122,7 +122,6 @@ namespace ShipSimulator.Editor
             Rigidbody body = root.AddComponent<Rigidbody>();
             body.interpolation = RigidbodyInterpolation.Interpolate;
             root.AddComponent<VesselDataLoader>();
-            root.AddComponent<HydrodynamicResistance>();
             root.AddComponent<ShipPhysicsController>();
 
             if (!VolgoDonModelIntegrator.AddDetailedVisual(root))
@@ -137,10 +136,6 @@ namespace ShipSimulator.Editor
             }
             VolgoDonModelIntegrator.EnsureCollisionHull(root);
 
-            Transform propulsionPoint = new GameObject("PropulsionPoint").transform;
-            propulsionPoint.SetParent(root.transform, false);
-            propulsionPoint.localPosition = new Vector3(0f, -1.5f, -57f);
-            propulsionPoint.gameObject.AddComponent<PropulsionController>();
             GameObject portPropeller = Primitive("PortPropellerDebugMarker", PrimitiveType.Cylinder, root.transform,
                 new Vector3(-4f, -1.5f, -57f), new Vector3(1.8f, 0.2f, 1.8f), marker);
             portPropeller.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
@@ -150,23 +145,9 @@ namespace ShipSimulator.Editor
             starboardPropeller.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
             Object.DestroyImmediate(starboardPropeller.GetComponent<Collider>());
 
-            Transform rudderPoint = Primitive("RudderDebugMarker", PrimitiveType.Cube, root.transform,
-                new Vector3(0f, -1.2f, -59f), new Vector3(3f, 2f, 0.35f), marker).transform;
-            rudderPoint.gameObject.AddComponent<RudderController>();
+            Primitive("RudderDebugMarker", PrimitiveType.Cube, root.transform,
+                new Vector3(0f, -1.2f, -59f), new Vector3(3f, 2f, 0.35f), marker);
             VolgoDonModelIntegrator.HideControlMarkers(root);
-
-            float[] zPositions = { -48f, -24f, 0f, 24f, 48f };
-            float[] xPositions = { -5.5f, 0f, 5.5f };
-            Transform buoyancyRoot = new GameObject("BuoyancyPoints").transform;
-            buoyancyRoot.SetParent(root.transform, false);
-            foreach (float z in zPositions)
-            foreach (float x in xPositions)
-            {
-                GameObject point = new GameObject($"Buoyancy_{x}_{z}");
-                point.transform.SetParent(buoyancyRoot, false);
-                point.transform.localPosition = new Vector3(x, -1.8f, z);
-                point.AddComponent<BuoyancyPoint>();
-            }
 
             TextAsset json = AssetDatabase.LoadAssetAtPath<TextAsset>(Root + "/Data/Vessels/VolgoDon507B.json");
             SerializedObject loader = new SerializedObject(root.GetComponent<VesselDataLoader>());

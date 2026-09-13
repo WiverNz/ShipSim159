@@ -7,8 +7,11 @@ vessel. It is not a validated maritime training product.
 
 - [OperatorGuide.md](OperatorGuide.md): startup, controls, cameras, HUD, minimap,
   and test execution.
-- [ShipSimulator_Physics.md](ShipSimulator_Physics.md): Rigidbody model,
-  current zones, command response, tuning, and simulation limitations.
+- [ShipSimulator_Physics.md](ShipSimulator_Physics.md): MMG manoeuvring model,
+  propulsion, rudders, wind, restricted water, hydrostatics, grounding, virtual
+  sea trials, and simulation limitations.
+- [ShipDynamicsRealismApproach.md](ShipDynamicsRealismApproach.md): the research
+  and roadmap behind the physics model, with implementation status.
 - [VolgoDon507B_Sources.md](VolgoDon507B_Sources.md): published vessel
   particulars, sources, confidence, and estimated parameters.
 - [NextSteps.md](NextSteps.md): prioritized engineering and simulation work.

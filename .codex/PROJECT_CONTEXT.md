@@ -2,6 +2,52 @@
 
 Last updated: 2026-09-13
 
+## Literature-Based Ship Dynamics, 2026-09-13
+
+Phases 1 to 6 of `ShipDynamicsRealismApproach.md` are implemented; phase 7 (ship-ship
+interaction, locks, mooring, anchors) is not. `ShipSimulator_Physics.md` describes the model.
+
+- `PropulsionController`, `RudderController`, `HydrodynamicResistance` and `BuoyancyPoint` were
+  deleted. The vessel prefab was cleaned of their components, the `PropulsionPoint` object and the
+  `BuoyancyPoints` hierarchy; `ShipSimulatorPrototypeBuilder` no longer creates them.
+- New plain C# models under `Scripts/Physics/`: `VesselParameters`, `HullDerivativeEstimate`,
+  `ManoeuvringModel` (3-DOF MMG with the full added-mass matrix), `HullForceModel` (cross-flow drag
+  blend, current shear), `ResistanceModel` (ITTC-1957, Lackenby), `EngineShaft`, `PropellerModel`,
+  `RudderModel`, `WindLoadModel` (Blendermann), `RestrictedWaterModel` (depth factors, ICORELS
+  squat with blockage, estimated bank suction), `HydrostaticsModel` (station prisms),
+  `ManoeuvringSimulator` and `ManoeuvringTrials`.
+- `ShipPhysicsController` applies the MMG accelerations with `ForceMode.Acceleration`, station
+  buoyancy and heel moments, and steps `GroundingController` (keel springs plus bottom friction
+  through the added-mass solve). `ManualStepping` and `SetDepthProvider` support tests.
+- The vessel JSON schema was rewritten (`VolgoDon507B.json`), and `KVLCC2_MMG_Benchmark.json`
+  holds the published KVLCC2 MMG set for verification. Most 507B values are estimated; see
+  `VolgoDon507B_Sources.md`. The old JSON had roll and pitch inertia swapped on Unity's axes.
+- Twin engines are independent: HUD `Q`/`Z` port and `E`/`X` starboard telegraphs, `W`/`S` both;
+  the HUD shows real shaft RPM and load per engine, and the radar prediction uses the actual rate
+  of turn. `VoyageSave` stores `engineCommands` and `shaftRps` (older saves fall back to the shared
+  throttle). `WeatherController` now pushes its gusting wind to the vessel.
+- Reversing a running engine cuts fuel at once, brakes the shaft and restarts astern after a delay
+  (regression test `EngineReversal_BrakesBeforeDrivingAstern`).
+- `ShipWakeRuntimeCheck` waited for 4 m/s through the water, which the new model cannot reach in
+  the 4.6 m Gorodets reach (about 3.5 m/s at full ahead), so the ship ran on until it grounded and
+  the check still passed. It now triggers at 3 m/s and fails if the vessel is not under way or is
+  aground at a capture. `VoyageMenuSmokeCheck` clears the per-engine save arrays so it keeps
+  testing the shared-throttle fallback.
+
+Virtual sea trials (`Logs/SeaTrials/sea-trials.md`, `SEA_TRIALS|PASS`), all simulated with
+estimated coefficients: 507B loaded deep water slow/half/full 3.0/6.3/9.8 kn, advance 3.22 L,
+tactical diameter 3.70 L, 10/10 overshoots 3.6/4.2 deg, 20/20 8.2 deg, crash stop 4.48 L in 263 s.
+Gorodets 4.6 m: full ahead 6.9 kn, tactical diameter 6.59 L, bow squat 0.29 m. KVLCC2 benchmark:
+15.4 kn, advance 3.00 L, tactical diameter 3.09 L, 10/10 overshoots 5.7/10.3 deg.
+
+Verified: compile clean (`Logs/dyn-compile.log`); EditMode 105 passed
+(`TestResults/EditMode.xml`); PlayMode 15 passed (`TestResults/PlayMode.xml`).
+
+Known limits: quadratic, not four-quadrant, propeller curves; estimated bank model (the Lataire
+papers were not accessible); B/T <= 4 depth factor branch used for all hulls; wall-sided
+hydrostatics; Unity collider contacts bypass the added-mass solve. Calibration against 507B trial
+data is the next step and needs real documentation.
+
 ## Water Weather, Bank Wake and Running Lights, 2026-09-13
 
 - Water fog was missing because shared HLSL contained the fog variant pragmas but was loaded

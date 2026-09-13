@@ -18,6 +18,9 @@ namespace ShipSimulator.Persistence
         public float actualThrottle;
         public float rudder;
         public float rudderAngle;
+        // Per-engine state; older saves without it restore throttle and actualThrottle on every engine.
+        public float[] engineCommands;
+        public float[] shaftRps;
         public float simulationScale = 1f;
         public bool night;
         public float windDirection;
@@ -48,6 +51,16 @@ namespace ShipSimulator.Persistence
             Check(norm, 0.99f, 1.01f);
             Check(throttle, -1f, 1f); Check(actualThrottle, -1f, 1f);
             Check(rudder, -1f, 1f); Check(rudderAngle, -90f, 90f);
+            if (engineCommands != null)
+            {
+                Check(engineCommands.Length, 0f, 8f);
+                foreach (float command in engineCommands) Check(command, -1f, 1f);
+            }
+            if (shaftRps != null)
+            {
+                Check(shaftRps.Length, 0f, 8f);
+                foreach (float rps in shaftRps) Check(rps, -100f, 100f);
+            }
             if (simulationScale != 1f && simulationScale != 2f && simulationScale != 4f)
                 throw new InvalidDataException("Invalid simulation speed.");
             Check(windDirection, 0f, 360f); Check(windSpeed, 0f, 100f);

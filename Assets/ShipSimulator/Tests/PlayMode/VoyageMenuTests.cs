@@ -129,7 +129,11 @@ namespace ShipSimulator.Tests
             state.position += new Vector3(3, 0, 12);
             state.velocity = new Vector3(0.1f, 0, 1.4f);
             state.angularVelocity = new Vector3(0, 0.01f, 0);
+            var shipBeforeSave = Object.FindAnyObjectByType<ShipPhysicsController>();
+            float ratedRps = shipBeforeSave.Model.Shafts[0].RatedRps;
             state.throttle = 0.6f; state.actualThrottle = 0.4f;
+            state.engineCommands = new[] { 0.8f, 0.4f };
+            state.shaftRps = new[] { 0.5f * ratedRps, 0.3f * ratedRps };
             state.rudder = -0.3f; state.rudderAngle = -8;
             state.night = true; state.windSpeed = 8; state.rain = 0.7f;
             state.simulationScale = 2;
@@ -146,9 +150,11 @@ namespace ShipSimulator.Tests
             yield return null;
             Assert.That(Vector3.Distance(ship.Body.position, state.position), Is.LessThan(0.001f));
             Assert.That(Vector3.Distance(ship.Body.linearVelocity, state.velocity), Is.LessThan(0.0001f));
-            Assert.That(ship.ActualThrottle, Is.EqualTo(0.4f));
-            Assert.That(ship.RudderAngleDeg, Is.EqualTo(-8));
-            Assert.That(ship.ThrottleCommand, Is.EqualTo(0.6f));
+            Assert.That(ship.ActualThrottle, Is.EqualTo(0.4f).Within(1e-5f));
+            Assert.That(ship.RudderAngleDeg, Is.EqualTo(-8).Within(1e-4f));
+            Assert.That(ship.EngineCommand(0), Is.EqualTo(0.8f));
+            Assert.That(ship.EngineCommand(1), Is.EqualTo(0.4f));
+            Assert.That(ship.ShaftRpm(1), Is.EqualTo(18f * ratedRps).Within(1e-3f));
             Assert.That(ship.Grounding.DamagePoints, Is.EqualTo(3));
             Assert.That(Object.FindAnyObjectByType<DayNightController>().IsNight, Is.True);
             Assert.That(Object.FindAnyObjectByType<WeatherController>().RainIntensity, Is.EqualTo(0.7f));

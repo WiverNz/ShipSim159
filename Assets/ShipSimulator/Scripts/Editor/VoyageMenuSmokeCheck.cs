@@ -62,6 +62,9 @@ namespace ShipSimulator.Editor
                         save.position = new Vector3(2, save.position.y, 35);
                         save.throttle = 0.5f;
                         save.actualThrottle = 0.35f;
+                        // Exercises the shared-throttle fallback used by saves older than per-engine state.
+                        save.engineCommands = null;
+                        save.shaftRps = null;
                         save.simulationScale = 2;
                         menu.ApplySave(save);
                         menu.SaveVoyage();

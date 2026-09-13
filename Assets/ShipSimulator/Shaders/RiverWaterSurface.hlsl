@@ -1,5 +1,9 @@
             #pragma target 3.5
             #pragma multi_compile_fog
+            #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_ATLAS
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
             #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
 
@@ -25,6 +29,9 @@
             SAMPLER(sampler_RiverPlanarReflection);
             float4x4 _RiverReflectionVP;
             float _RiverReflectionAvailable;
+            TEXTURECUBE(_RiverSkyReflection);
+            SAMPLER(sampler_RiverSkyReflection);
+            float _RiverSkyAvailable;
             TEXTURE2D(_RippleNormal);
             SAMPLER(sampler_RippleNormal);
 
@@ -617,7 +624,12 @@
                 half baseRoughness = saturate(1.0h - _Smoothness + _RiverRain * 0.15h);
                 half perceptualRoughness = saturate(sqrt(baseRoughness * baseRoughness + normalVariance));
                 half3 reflection = GlossyEnvironmentReflection(
-                    reflect(-viewDirection, normalWS), perceptualRoughness, 1.0h);
+                    reflect(-viewDirection, normalWS), positionWS, perceptualRoughness, 1.0h, screenUV);
+                // The captured HDR sky is also bound explicitly: per-renderer probe binding can
+                // remain black for this large transparent mesh in the active renderer.
+                if (_RiverSkyAvailable > 0.5)
+                    reflection = SAMPLE_TEXTURECUBE_LOD(_RiverSkyReflection, sampler_RiverSkyReflection,
+                        reflect(-viewDirection, normalWS), PerceptualRoughnessToMipmapLevel(perceptualRoughness)).rgb;
                 if (_RiverOpticsProbe > 0.5) return half4(reflection, 1);
                 reflection = lerp(reflection, reflection * _ReflectionTint.rgb, 0.48h);
 

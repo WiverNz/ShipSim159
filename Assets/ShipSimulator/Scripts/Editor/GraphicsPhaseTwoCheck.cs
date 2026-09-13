@@ -71,6 +71,7 @@ namespace ShipSimulator.Editor
                     Application.targetFrameRate = -1;
                     Time.captureDeltaTime = 1f / 60;
                     UnityEngine.Random.InitState(159);
+                    Shader.SetGlobalFloat("_RiverOpticsProbe", 0);
                     ship = Object.FindAnyObjectByType<ShipPhysicsController>();
                     ship.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                     camera = Camera.main;
@@ -122,6 +123,7 @@ namespace ShipSimulator.Editor
                 Debug.Log("PHASE_TWO_CAPTURE|" + condition + "|" + pose + "|CPU=" + Percentile(cpu, 0.5) + "|GPU=" + Percentile(gpu, 0.5));
                 if (directory.EndsWith("sky-probe")) stage = 25;
                 if (++stage < 25) { SetStage(stage); return; }
+                if (directory.EndsWith("after")) GraphicsPhaseTwoComparison.Run();
                 SessionState.SetInt(Key, 0);
                 Debug.Log("GRAPHICS_PHASE_TWO|" + (failed ? "FAIL" : "PASS") + "|" + directory);
                 EditorApplication.Exit(failed ? 1 : 0);
@@ -202,6 +204,13 @@ namespace ShipSimulator.Editor
             var image = new Texture2D(target.width, target.height, TextureFormat.RGB24, false);
             image.ReadPixels(new Rect(0, 0, target.width, target.height), 0, 0); image.Apply();
             File.WriteAllBytes(directory + "/" + name + ".png", image.EncodeToPNG());
+            if (directory.EndsWith("sky-probe"))
+            {
+                double light = 0;
+                for (int y = 100; y < 250; y += 5)
+                for (int x = 720; x < 1200; x += 5) light += image.GetPixel(x, y).grayscale;
+                if (light / (30 * 96) < 0.05) throw new InvalidOperationException("Live sky reflection is black on water.");
+            }
             Object.DestroyImmediate(image); RenderTexture.active = previous; RenderTexture.ReleaseTemporary(ldr);
         }
     }

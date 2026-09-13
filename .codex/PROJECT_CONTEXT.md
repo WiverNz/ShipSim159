@@ -2,6 +2,40 @@
 
 Last updated: 2026-09-13
 
+## Graphics Phase 2, Steps 0 and 1, 2026-09-13
+
+Target: RTX 3060 at 1920x1080, selected by the user. Step 0 baseline and Step 1 water optics are
+implemented. Height fog, flow-map authoring and the Crest decision remain for later steps.
+
+`GraphicsPhaseTwoCheck` preserves separate `before` and `after` captures in
+`Logs/GraphicsPhaseTwo/`. Each has 25 poses/conditions, 7,500 measured frames, and temporal
+crops; CPU/GPU/editor intervals are distinguished. The before set was captured before optics
+edits. The tests run in a dedicated editor; they do not modify the user's saves.
+
+Water now refracts scene colour with foreground-depth rejection, composes RGB Beer-Lambert
+transmission and green-brown scattering using estimated Secchi depth (default 1.2 m), and
+reduces visibility slightly in rain. Planar mips use separable Gaussian filtering with a
+roughness-dependent width; night sampling stretches light reflections vertically. Normal
+variance broadens specular highlights without removing the sun path. The contact alpha fade
+remains; submerged colour is composed in the shader rather than alpha blended over the bed.
+
+The existing sky capture was valid, but the water's per-renderer environment lookup returned
+black. `RiverLighting` explicitly binds that HDR cubemap to water; the edge fade uses it.
+The `RunSkyProbe` capture shows the cloud sky on water with planar rendering disabled.
+The material setup lives in `RiverWaterAndSkyBuilder.ConfigureOptics` / `ApplyOpticsBoth`.
+No renderer migration or physical current changes were made.
+
+Comparison: clear toward-sun temporal variance -16%, eight of ten crops improved; dawn toward
+sun +0.7%, rain toward sun +10.2%. See `temporal-comparison.csv`. CPU median delta across cases
+-0.116 ms (largest increase +0.091 ms), RTX 4090/D3D12. GPU timing unavailable, so the RTX 3060
++1 ms acceptance gate is still open. Concurrent vessel-catalogue edits landed between runs;
+these are whole-scene comparisons, not isolated shader-cost measurements. Fine normal motion
+and exposure still affect the temporal metric. Optical coefficients are visual estimates.
+
+Verification: before, after and sky-probe captures passed; `WaterWeatherCheck` passed with
+water fog detail contrast 0.0059 clear / 0.0001 fog. Remaining suite results are recorded below
+when completed.
+
 ## Volgo-Balt and Volgoneft Vessels, Vessel Selection, 2026-09-13
 
 Two more vessels are playable, chosen in the start menu (**New voyage**, then vessel, then passage).

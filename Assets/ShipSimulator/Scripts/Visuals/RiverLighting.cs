@@ -198,6 +198,8 @@ namespace ShipSimulator.Visuals
             nextRefresh = Time.unscaledTime + 8;
             if (!skyCamera.RenderToCubemap(skyTexture)) return;
             skyTexture.GenerateMips();
+            Shader.SetGlobalTexture("_RiverSkyReflection", skyTexture);
+            Shader.SetGlobalFloat("_RiverSkyAvailable", 1);
             RenderSettings.defaultReflectionMode = DefaultReflectionMode.Custom;
             RenderSettings.customReflectionTexture = skyTexture;
             ProbeUpdates++;
@@ -334,6 +336,7 @@ namespace ShipSimulator.Visuals
         {
             if (Active == this) Active = null;
             Shader.SetGlobalVector(CloudSettingsId, Vector4.zero);
+            Shader.SetGlobalFloat("_RiverSkyAvailable", 0);
             RenderSettings.customReflectionTexture = originalReflection;
             RenderSettings.defaultReflectionMode = originalReflectionMode;
             RenderSettings.ambientMode = originalAmbientMode;

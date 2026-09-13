@@ -151,6 +151,12 @@ steady ship running lights from four directions, writes `Logs/WaterWeather/` and
 `WATER_WEATHER|PASS`. Launch it with the same rendering-enabled batch flags.
 `BuoyGraphicsCheck.Run` captures detailed buoys by day and night, including near and distant
 flash on/off states, to `Logs/Buoys/` and ends with `BUOY_GRAPHICS|PASS`.
+`GraphicsPhaseTwoCheck.RunBefore` / `RunAfter` capture five views in five weather conditions at
+1920x1080 and write frame timing CSVs and temporal crops under `Logs/GraphicsPhaseTwo/`.
+They refuse to overwrite an existing before/after directory. `RunSkyProbe` checks the live sky
+reflection directly. Use the same graphics-enabled dedicated batch flags; success ends with
+`GRAPHICS_PHASE_TWO|PASS`. GPU timing can be unavailable and is recorded as `NA`; editor/CPU
+measurements on development hardware do not establish the RTX 3060 performance budget.
 
 One thing about results that has already cost time here:
 

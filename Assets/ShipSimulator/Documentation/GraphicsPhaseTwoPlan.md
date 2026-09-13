@@ -1,6 +1,41 @@
 # Graphics Phase 2: Work Plan
 
-Status: plan, written 2026-09-13. Nothing in it is implemented yet.
+Status: Steps 0 and 1 implemented on 2026-09-13. Target-hardware performance acceptance remains
+open. Steps 2 and 3 are not implemented. The sections below retain the original plan and criteria.
+
+Minimum target agreed with the user: **GeForce RTX 3060, 1920 x 1080**.
+
+## Step 0 and Step 1 results
+
+- `GraphicsPhaseTwoCheck.RunBefore` and `RunAfter` preserve separate, non-overwriting sets in
+  `Logs/GraphicsPhaseTwo/{before,after}/`: 25 screenshots (five poses in five conditions), 300
+  timing samples per pose after 120 warmup frames, and 16 temporal crops per long-view condition.
+  A fifth pose isolates the bank bed. `frame-times.csv` records CPU, GPU and editor intervals
+  separately; unavailable measurements are `NA`. Simulation uses a fixed 1/60 s step.
+- Scene colour refraction rejects foreground depth at the offset and its neighbours. RGB
+  extinction uses estimated visibility depth 1.2 m, with rain reducing it by up to 25 percent.
+  The shader composes transmission and scattering, retaining alpha only for the contact fade.
+- `RiverPlanarReflection` filters successive mips with a separable Gaussian of increasing width;
+  this approximates GGX roughness, not an exact GGX convolution. Devices without compute retain
+  generated mips. Night reflection sampling is elongated vertically by ripple variance.
+- Screen edges fade to the live HDR sky. Direct inspection found Unity's per-renderer probe
+  lookup still returned black for water even with reflection variants enabled. `RiverLighting`
+  now also binds its existing captured cubemap explicitly. `RunSkyProbe` renders this fallback
+  directly with planar reflection disabled; it shows clouds and rejects a black result.
+- Normal derivatives increase reflection roughness and reduce the glint exponent. The clear
+  toward-sun crop's temporal variance decreased 16%, with the sun path retained. Eight of ten
+  crops improved; dawn toward sun was effectively flat (+0.7%), and rain toward sun increased
+  10.2%. The temporal comparison includes all visible motion and exposure, not only aliasing.
+- The CPU median delta across the 25 cases was -0.116 ms, with largest increase +0.091 ms, on
+  RTX 4090 / Direct3D12. GPU timings were unavailable. **This does not pass the RTX 3060 +1 ms
+  GPU gate.** Additional vessel-catalogue work landed in the shared checkout between runs, so
+  these timings describe the tested whole scenes rather than an isolated shader benchmark.
+
+Optics settings are applied by `RiverWaterAndSkyBuilder.ConfigureOptics` and `ApplyOpticsBoth`,
+which only updates the water material. The baseline captures precede all optics changes;
+initial diagnostic attempts are retained in separately named directories. See the project
+context for final regression results. Future baseline runs must preserve or rename existing
+capture directories deliberately; the check refuses to overwrite them.
 
 Phase 2 of the roadmap in `GraphicsRealismApproach.md` (section 10) covers three things:
 

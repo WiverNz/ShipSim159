@@ -2,6 +2,33 @@
 
 Last updated: 2026-09-13
 
+## Buoy Visuals and Lantern Flashes, 2026-09-13
+
+`DayNightController` now creates an idempotent `BuoyVisualRig` for each existing buoy.
+The runtime rig replaces the old cylinder/sphere renderers with a shaped steel float,
+a dark waterline belt, weathered paint, a braced tower and ribbed lantern housing.
+It combines the body into three material meshes. Small visual heave and roll move the
+body and lantern together; existing buoy positions and collision geometry stay fixed.
+This path also applies after scene builders regenerate the original buoy layout.
+
+Buoy lights reuse the fog-aware all-round navigation lens with a surface offset so the
+opaque lantern glass does not hide the flash. The physical housing stays visible when the
+light is off. Local point-light intensity/range are reduced to 1.8/12 m, while the emissive
+lens remains readable at distance. Ship lights keep their default zero surface offset.
+
+Flashes repeat every 2.5 s with a 0.35 s light interval and stable position-based phase.
+Night activation evaluates the current phase immediately. Timing follows simulation time,
+including pause and acceleration. Existing red-right/white-left paint and red/green light
+assignments are preserved. These are estimated prototype characteristics, not charted
+Gorodets timings; no claim of local navigation certification is made. The reference for
+clear light/dark intervals is [IALA's flashing-light definition](https://www.iala.int/wiki/dictionary/index.php/Flashing_Light).
+
+Verification: 118 EditMode tests passed (`TestResults/buoy-editmode.xml`), including repeatable
+flash timing, daylight shutdown, idempotent visual creation and preserved colliders.
+`BuoyGraphicsCheck.Run` captures daylight, nearby flash on/off and distant flash on/off to
+`Logs/Buoys/`, with runtime errors treated as failure. Run it using the same dedicated,
+rendering-enabled batch command as the other graphics checks.
+
 ## Literature-Based Ship Dynamics, 2026-09-13
 
 Phases 1 to 6 of `ShipDynamicsRealismApproach.md` are implemented; phase 7 (ship-ship

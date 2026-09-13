@@ -141,6 +141,8 @@ writes captures to `Logs/GraphicsPhaseOne/` and ends with `GRAPHICS_PHASE_ONE|PA
 `WaterWeatherCheck.Run` checks fog attenuation on water, rain impacts, bank-wave rendering and
 steady ship running lights from four directions, writes `Logs/WaterWeather/` and ends with
 `WATER_WEATHER|PASS`. Launch it with the same rendering-enabled batch flags.
+`BuoyGraphicsCheck.Run` captures detailed buoys by day and night, including near and distant
+flash on/off states, to `Logs/Buoys/` and ends with `BUOY_GRAPHICS|PASS`.
 
 One thing about results that has already cost time here:
 

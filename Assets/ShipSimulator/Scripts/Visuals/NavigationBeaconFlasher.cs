@@ -45,7 +45,7 @@ namespace ShipSimulator.Visuals
         public void SetNight(bool enabled)
         {
             nightEnabled = enabled;
-            if (!enabled) ApplyState(false);
+            ApplyState(EvaluateLit(Time.time));
         }
 
         public bool EvaluateLit(float time)

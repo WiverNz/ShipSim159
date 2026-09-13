@@ -102,7 +102,6 @@ namespace ShipSimulator.Visuals
             if (navigation == null) return;
             navigationAidsCreated = true;
 
-            int buoyIndex = 0;
             foreach (Transform marker in navigation.transform)
             {
                 bool isBuoy = marker.name.Contains("Buoy");
@@ -122,33 +121,46 @@ namespace ShipSimulator.Visuals
                 Transform board = isLeadingMark ? marker.Find("Board") : null;
                 if (isLeadingMark && board != null)
                     CreateLeadingMarkNightBoard(marker, board, color);
+                BuoyVisualRig buoy = null;
+                if (isBuoy)
+                {
+                    buoy = marker.GetComponent<BuoyVisualRig>();
+                    if (buoy == null) buoy = marker.gameObject.AddComponent<BuoyVisualRig>();
+                    buoy.Build(marker.name.Contains("Right Red"));
+                }
                 float height = isBuoy
-                    ? 3.1f
+                    ? 3.04f
                     : board != null ? board.localPosition.y + 0.5f : 9f;
                 GameObject beacon = new GameObject(
                     isLeadingMark ? "Leading Mark Night Light" : "Night Beacon");
-                beacon.transform.SetParent(marker, false);
+                beacon.transform.SetParent(isBuoy ? buoy.Floating : marker, false);
                 beacon.transform.localPosition = new Vector3(0f, height, 0f);
                 Light light = beacon.AddComponent<Light>();
                 light.type = LightType.Point;
                 light.color = color;
-                light.intensity = isBuoy ? 7.2f : isLeadingMark ? 13f : 6f;
-                light.range = isBuoy ? 58f : isLeadingMark ? 420f : 55f;
+                light.intensity = isBuoy ? 1.8f : isLeadingMark ? 13f : 6f;
+                light.range = isBuoy ? 12f : isLeadingMark ? 420f : 55f;
                 light.shadows = LightShadows.None;
 
-                GameObject lens = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                GameObject lens = GameObject.CreatePrimitive(isBuoy ? PrimitiveType.Quad : PrimitiveType.Sphere);
                 lens.name = "Beacon Lens";
                 lens.transform.SetParent(beacon.transform, false);
                 lens.transform.localScale = Vector3.one *
-                    (isBuoy ? 0.42f : isLeadingMark ? 1.35f : 0.32f);
+                    (isBuoy ? 0.32f : isLeadingMark ? 1.35f : 0.32f);
                 Collider collider = lens.GetComponent<Collider>();
                 DestroyGenerated(collider);
                 Material material = new Material(
-                    Shader.Find("Universal Render Pipeline/Unlit"))
+                    isBuoy ? Resources.Load<Shader>("NavigationSectorLight") : Shader.Find("Universal Render Pipeline/Unlit"))
                 {
-                    color = color * (isBuoy ? 3.2f : isLeadingMark ? 5f : 2.4f)
+                    color = color * (isBuoy ? 6f : isLeadingMark ? 5f : 2.4f)
                 };
+                if (isBuoy)
+                {
+                    material.SetFloat("_SectorArc", 360);
+                    material.SetFloat("_LensOffset", 0.7f);
+                }
                 Renderer renderer = lens.GetComponent<Renderer>();
+                renderer.shadowCastingMode = ShadowCastingMode.Off;
                 renderer.material = material;
                 navigationMaterials.Add(material);
 
@@ -156,11 +168,10 @@ namespace ShipSimulator.Visuals
                 {
                     NavigationBeaconFlasher flasher =
                         beacon.AddComponent<NavigationBeaconFlasher>();
-                    float phase = (buoyIndex % 5) * 0.21f +
-                        (marker.name.Contains("Left White") ? 0.55f : 0f);
-                    flasher.Configure(light, renderer, 1.5f, 0.32f, phase);
+                    // Estimated Fl 2.5 s, not a charted Gorodets light characteristic.
+                    float phase = Mathf.Repeat(marker.position.x * 0.137f + marker.position.z * 0.071f, 2.5f);
+                    flasher.Configure(light, renderer, 2.5f, 0.35f, phase);
                     navigationFlashers.Add(flasher);
-                    buoyIndex++;
                 }
                 else
                 {

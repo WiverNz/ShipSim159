@@ -221,6 +221,7 @@ for implementation details.
 
 ## Documentation
 
+- [Project status](Assets/ShipSimulator/Documentation/ProjectStatus.md)
 - [Documentation index](Assets/ShipSimulator/Documentation/README.md)
 - [Operator guide](Assets/ShipSimulator/Documentation/OperatorGuide.md)
 - [Physics model](Assets/ShipSimulator/Documentation/ShipSimulator_Physics.md)

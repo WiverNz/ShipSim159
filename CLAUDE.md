@@ -37,6 +37,7 @@ Read these before changing the project, in the order they are usually needed:
 - `.codex/PROJECT_CONTEXT.md`: the living log of completed work, verification status, known
   limitations and next priorities. Keep it current when you finish meaningful work.
 - `Assets/ShipSimulator/Documentation/`:
+  - `ProjectStatus.md`: what is implemented and verified, screenshots, limits and next work.
   - `OperatorGuide.md`: controls and how the scenario is meant to be flown.
   - `ShipSimulator_Physics.md`: the force model and its assumptions.
   - `VolgoDon507B_Sources.md`: where each vessel parameter came from, and how confident it is.

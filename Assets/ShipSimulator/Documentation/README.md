@@ -5,6 +5,8 @@ vessel. It is not a validated maritime training product.
 
 ## Documents
 
+- [ProjectStatus.md](ProjectStatus.md): what is implemented, what is verified,
+  screenshots, known limits and prioritised next work. Start here.
 - [OperatorGuide.md](OperatorGuide.md): startup, controls, cameras, HUD, minimap,
   and test execution.
 - [ShipSimulator_Physics.md](ShipSimulator_Physics.md): MMG manoeuvring model,

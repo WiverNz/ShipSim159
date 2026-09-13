@@ -205,7 +205,7 @@ In priority order:
    hydrostatics, collisions through the added-mass solve.
 7. **Controls and UI.** Input Actions with rebinding and gamepad support; move the HUD to TextMesh Pro
    or UI Toolkit.
-8. **Graphics phase 2.** Height fog with sun in-scattering, water refraction and depth absorption,
-   current-driven flow maps.
+8. **Graphics phase 2.** Water refraction and depth absorption, height fog with sun in-scattering,
+   current-driven flow maps. Steps, acceptance criteria and checks are in `GraphicsPhaseTwoPlan.md`.
 9. **Engineering hygiene.** Fix the `RiverLighting.CaptureSky` exception; add loader parse-error and
    missing-component tests; record a frame-time budget.

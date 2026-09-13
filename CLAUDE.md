@@ -45,6 +45,7 @@ Read these before changing the project, in the order they are usually needed:
   - `VolgoDon507B_Sources.md`: where each 507B parameter came from, and how confident it is.
     Each future vessel needs its own sources file.
   - `GorodetsScenarioTechnicalPlan.md`, `NextSteps.md`: scenario plan and roadmap.
+  - `GraphicsPhaseTwoPlan.md`: the next graphics work (water optics, height fog, flow map).
   - `GraphicsRealismApproach.md`, `ShipDynamicsRealismApproach.md`: research and proposed
     approaches for realistic rendering and for literature-based ship dynamics (dynamics phases 1
     to 6 implemented).

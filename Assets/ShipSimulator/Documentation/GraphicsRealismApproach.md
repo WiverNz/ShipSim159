@@ -395,7 +395,8 @@ Ordered by impact per effort. Each step should be verified with fixed-camera cap
 frame-time log before and after.
 
 Status, 2026-09-13: phase 1 is implemented and verified, using TAA rather than STP. Details and
-known limits are in `.codex/PROJECT_CONTEXT.md`.
+known limits are in `.codex/PROJECT_CONTEXT.md`. Phase 2 is planned step by step in
+`GraphicsPhaseTwoPlan.md`.
 
 | Phase | Work | Impact | Effort |
 |---|---|---|---|

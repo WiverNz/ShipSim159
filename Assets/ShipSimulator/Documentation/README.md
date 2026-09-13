@@ -7,6 +7,8 @@ vessel. It is not a validated maritime training product.
 
 - [ProjectStatus.md](ProjectStatus.md): what is implemented, what is verified,
   screenshots, known limits and prioritised next work. Start here.
+- [GraphicsPhaseTwoPlan.md](GraphicsPhaseTwoPlan.md): step-by-step plan for the
+  next graphics work: water optics, height fog and a current flow map.
 - [OperatorGuide.md](OperatorGuide.md): startup, controls, cameras, HUD, minimap,
   and test execution.
 - [ShipSimulator_Physics.md](ShipSimulator_Physics.md): MMG manoeuvring model,

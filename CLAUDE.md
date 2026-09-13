@@ -29,8 +29,10 @@ navigation values as training-validated data. Label estimated parameters as esti
 
 ## Orientation
 
-ShipSim159 is a Unity 6 URP prototype of a river navigation simulator built around a
-Project 507B Volgo-Don cargo vessel.
+ShipSim159 is a Unity 6 URP prototype of a river navigation simulator designed for several ship
+models, which the player will choose in the start menu. The first vessel, and the only playable
+one so far, is a Project 507B Volgo-Don cargo ship. Treat the 507B as one catalogue entry, not as
+the project's identity.
 
 Read these before changing the project, in the order they are usually needed:
 
@@ -40,7 +42,8 @@ Read these before changing the project, in the order they are usually needed:
   - `ProjectStatus.md`: what is implemented and verified, screenshots, limits and next work.
   - `OperatorGuide.md`: controls and how the scenario is meant to be flown.
   - `ShipSimulator_Physics.md`: the force model and its assumptions.
-  - `VolgoDon507B_Sources.md`: where each vessel parameter came from, and how confident it is.
+  - `VolgoDon507B_Sources.md`: where each 507B parameter came from, and how confident it is.
+    Each future vessel needs its own sources file.
   - `GorodetsScenarioTechnicalPlan.md`, `NextSteps.md`: scenario plan and roadmap.
   - `GraphicsRealismApproach.md`, `ShipDynamicsRealismApproach.md`: research and proposed
     approaches for realistic rendering and for literature-based ship dynamics (dynamics phases 1
@@ -58,7 +61,8 @@ missing you are on a different machine and should write your own.
 - `Assets/ShipSimulator/Scripts/Editor/`: editor-only builders and the model integrator.
 - `Assets/ShipSimulator/Tests/EditMode/`: data validation and project configuration tests.
 - `Assets/ShipSimulator/Tests/PlayMode/`: runtime physics and trigger interaction tests.
-- `Assets/ShipSimulator/Models/VolgoDon507/`: imported vessel FBX, textures, URP materials.
+- `Assets/ShipSimulator/Models/VolgoDon507/`: the first vessel's imported FBX, textures, URP
+  materials. Further vessel models belong in sibling folders.
 - `Assets/ShipSimulator/Prefabs/`: vessel, navigation and environment prefabs.
 - `Assets/ShipSimulator/Scenes/`: `GorodetsTrainingScene.unity` (default startup and build entry point) and
   `RiverTrainingScene.unity` (river familiarisation).
@@ -223,10 +227,17 @@ Environment inputs:
 
 ### Data-driven vessel
 
-Vessel behavior comes from `Assets/ShipSimulator/Data/Vessels/VolgoDon507B.json`.
+Vessel behavior comes from a JSON specification per ship in `Assets/ShipSimulator/Data/Vessels/`:
+`VolgoDon507B.json` for the playable vessel and `KVLCC2_MMG_Benchmark.json` for model checks.
 `VesselDataValidator` validates every required section before physics runs; invalid data
 disables `ShipPhysicsController` and logs a specific error. When adding a JSON field, extend
-both the `VesselData` schema and `VesselDataValidator`.
+both the `VesselData` schema and `VesselDataValidator`, and make it optional or give every
+existing vessel file a value.
+
+Keep ship-specific numbers out of code. Anything that differs between vessels (dimensions, rudder
+limits, engine count, camera and light positions) should come from vessel data or the vessel
+prefab, because more vessels will be selectable. Some presentation code still assumes the 507B;
+`ProjectStatus.md` lists those places.
 
 ### UI and visuals
 
@@ -242,8 +253,9 @@ track `ShipWakeController` publishes; its wave amplitudes are estimated visual v
 
 ### Model provenance
 
-The vessel mesh was imported from a CRYENGINE source and re-axised (CRYENGINE X-forward/Z-up to
-Unity Z-forward/Y-up) by `VolgoDonModelIntegrator`. Do not replace the dynamic collision hull
+The 507B mesh was imported from a CRYENGINE source and re-axised (CRYENGINE X-forward/Z-up to
+Unity Z-forward/Y-up) by `VolgoDonModelIntegrator`, which is specific to that model; a new vessel
+needs its own import step or a generalised one. Do not replace a vessel's dynamic collision hull
 (overlapping bow, midship and stern box colliders) with a non-convex `MeshCollider`.
 
 ## Conventions

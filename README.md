@@ -5,8 +5,10 @@
 
 # ShipSim159
 
-ShipSim159 is a Unity 6 URP prototype of a river navigation simulator centered
-on a Project 507B Volgo-Don cargo vessel.
+ShipSim159 is a Unity 6 URP prototype of a river navigation simulator. It is
+built to carry several ship models, chosen in the start menu before a passage.
+The first vessel, and the only playable one so far, is a Project 507B Volgo-Don
+cargo ship.
 
 The project explores large-vessel handling in a constrained river fairway,
 including delayed engine and rudder response, current-relative motion,
@@ -20,10 +22,12 @@ instrumentation.
 
 ## Features
 
-- Detailed 138.3 m Volgo-Don vessel model integrated into Unity URP.
+- Data-driven vessels: each ship is a JSON specification plus a model prefab, so the same
+  simulation runs any hull.
+- Detailed 138.3 m Volgo-Don 507B model integrated into Unity URP as the first vessel.
 - Literature-based manoeuvring model: MMG equations with added mass, ITTC resistance,
-  twin engines, shafts and propellers, MMG rudders in the propeller slipstream,
-  Blendermann wind loads, shallow-water corrections, squat and bank suction.
+  engines, shafts and propellers, MMG rudders in the propeller slipstream, optional bow
+  thruster, Blendermann wind loads, shallow-water corrections, squat and bank suction.
 - Station buoyancy with loading-dependent draft, trim and heel; grounding with bottom friction.
 - Virtual sea trials (turning circle, zig-zag, crash stop) against the IMO envelope.
 - Ambient and trigger-based river currents.
@@ -44,11 +48,23 @@ instrumentation.
   propeller wash with foam. Wave amplitudes are estimated visual values.
 - Runtime vessel-data validation and Unity EditMode/PlayMode tests.
 
+## Vessels
+
+| Vessel | Status |
+|---|---|
+| Project 507B Volgo-Don, 138.3 m twin-screw river cargo ship | Playable; published particulars with estimated manoeuvring coefficients |
+| KVLCC2 MMG benchmark | Data only, used by tests and virtual sea trials to check the model |
+
+Choosing a vessel in the start menu is planned. The physics already reads everything from
+vessel data; the scenes, menu text, camera views and running-light positions still assume
+the 507B. See [Project status](Assets/ShipSimulator/Documentation/ProjectStatus.md) for what
+adding a vessel requires.
+
 ## Requirements
 
-- Unity `6000.4.0f1`
-- Universal Render Pipeline `17.4.0`
-- Unity Input System `1.19.0`
+- Unity `6000.6.0f1`
+- Universal Render Pipeline `17.6.0`
+- Unity Input System `1.20.0`
 
 The project currently targets desktop development and uses keyboard and mouse
 input.
@@ -57,11 +73,11 @@ input.
 
 1. Clone or download the repository.
 2. Open the project folder in Unity Hub.
-3. Use Unity Editor `6000.4.0f1`.
-4. Open:
-   `Assets/ShipSimulator/Scenes/RiverTrainingScene.unity`
-5. Enter Play Mode, then choose **New voyage** in the maritime start menu or
-   **Continue voyage** to restore your saved passage.
+3. Use Unity Editor `6000.6.0f1`.
+4. Enter Play Mode. The editor opens `GorodetsTrainingScene` by default; open
+   `Assets/ShipSimulator/Scenes/RiverTrainingScene.unity` first for river familiarisation.
+5. Choose **New voyage** in the maritime start menu, or **Continue voyage** to restore
+   your saved passage.
 
 Press **Escape** while sailing to pause, save/load a voyage, change settings, or leave
 the bridge. Settings include volume, camera sensitivity, graphics quality, VSync and
@@ -177,9 +193,9 @@ Replace `EditMode` with `PlayMode` for the runtime suite.
 Assets/ShipSimulator/
 |-- Data/Vessels/          Vessel JSON specifications
 |-- Documentation/         Operator, physics, source, and roadmap documents
-|-- Models/VolgoDon507/    Imported vessel model and materials
+|-- Models/VolgoDon507/    First vessel: imported model and materials
 |-- Prefabs/               Vessel, navigation, and environment prefabs
-|-- Scenes/                Main river training scene
+|-- Scenes/                Gorodets and river familiarisation passages
 |-- Scripts/
 |   |-- Camera/            Camera views and tracking
 |   |-- Editor/            Project builders and model integration
@@ -192,14 +208,15 @@ Assets/ShipSimulator/
 
 ## Simulation Model
 
-The vessel uses a Unity `Rigidbody` and is moved through forces and torques
-rather than direct transform changes. The current implementation includes:
+Each vessel uses a Unity `Rigidbody` and is moved through forces and torques
+rather than direct transform changes. The model is the same for every vessel; only its
+JSON data changes. The current implementation includes:
 
 - a three-degree-of-freedom MMG manoeuvring model with added mass, solved each fixed step and
   applied as Rigidbody accelerations;
 - Clarke hull derivatives, low-speed cross-flow drag and current shear;
-- two engines with shaft dynamics and astern reversal, two propellers, two rudders and a bow
-  thruster;
+- any number of engines with shaft dynamics and astern reversal, propellers and rudders, and an
+  optional bow thruster (the 507B has two of each and a bow thruster);
 - Blendermann wind loads with gusts, shallow-water corrections, squat and bank suction;
 - station buoyancy, heel in turns and wind, and grounding friction;
 - vessel coefficients from JSON, most of them estimated.
@@ -225,7 +242,7 @@ for implementation details.
 - [Documentation index](Assets/ShipSimulator/Documentation/README.md)
 - [Operator guide](Assets/ShipSimulator/Documentation/OperatorGuide.md)
 - [Physics model](Assets/ShipSimulator/Documentation/ShipSimulator_Physics.md)
-- [Vessel sources and parameter confidence](Assets/ShipSimulator/Documentation/VolgoDon507B_Sources.md)
+- [Project 507B sources and parameter confidence](Assets/ShipSimulator/Documentation/VolgoDon507B_Sources.md)
 - [Engineering roadmap](Assets/ShipSimulator/Documentation/NextSteps.md)
 - [Contributor guidelines](AGENTS.md)
 

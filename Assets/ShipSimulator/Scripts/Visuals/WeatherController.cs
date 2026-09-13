@@ -23,6 +23,12 @@ namespace ShipSimulator.Visuals
         private Texture2D rainTexture;
         private Camera targetCamera;
         private MaterialPropertyBlock waterProperties;
+        private Vector3 visualWindMps;
+        private Vector2 windTravelM;
+        private static readonly int WindId = Shader.PropertyToID("_RiverWind");
+        private static readonly int WindTravelId = Shader.PropertyToID("_RiverWindTravel");
+        private static readonly int PreviousWindId = Shader.PropertyToID("_RiverPreviousWind");
+        private static readonly int PreviousWindTravelId = Shader.PropertyToID("_RiverPreviousWindTravel");
 
         public float WindDirectionDeg => windDirectionDeg;
         public float WindSpeedMps => windSpeedMps;
@@ -30,6 +36,8 @@ namespace ShipSimulator.Visuals
         public float FogIntensity => fogIntensity;
         public Vector3 WindVelocityMps =>
             CalculateWindVelocity(windDirectionDeg, windSpeedMps);
+        // Gusting wind seen by water, clouds and trees; the vessel uses WindVelocityMps.
+        public Vector3 VisualWindMps => visualWindMps;
         public string StatusText =>
             $"WIND {windDirectionDeg:000} deg  {windSpeedMps:0} m/s   " +
             $"RAIN {rainIntensity * 100f:0}%   FOG {fogIntensity * 100f:0}%";
@@ -48,6 +56,7 @@ namespace ShipSimulator.Visuals
 
         private void LateUpdate()
         {
+            UpdateVisualWind();
             if (targetCamera == null) targetCamera = Camera.main;
             if (targetCamera != null && rainTransform != null)
             {
@@ -346,9 +355,21 @@ namespace ShipSimulator.Visuals
                 Mathf.Clamp01(Mathf.Max(rainIntensity, fogIntensity * 0.8f)));
         }
 
+        // Shaders move ripples and clouds by the accumulated travel rather than wind times time,
+        // so a gust or shift changes their speed without making them jump.
+        private void UpdateVisualWind()
+        {
+            // Last frame's values let swaying vegetation write exact motion vectors.
+            Shader.SetGlobalVector(PreviousWindId, new Vector4(visualWindMps.x, 0f, visualWindMps.z, visualWindMps.magnitude));
+            Shader.SetGlobalVector(PreviousWindTravelId, new Vector4(windTravelM.x, 0f, windTravelM.y, 0f));
+            visualWindMps = WindGustModel.VisualWind(Time.timeAsDouble, windDirectionDeg, windSpeedMps);
+            windTravelM += new Vector2(visualWindMps.x, visualWindMps.z) * Time.deltaTime;
+            Shader.SetGlobalVector(WindId, new Vector4(visualWindMps.x, 0f, visualWindMps.z, visualWindMps.magnitude));
+            Shader.SetGlobalVector(WindTravelId, new Vector4(windTravelM.x, 0f, windTravelM.y, 0f));
+        }
+
         private void ApplyWater()
         {
-            Shader.SetGlobalVector("_RiverWind", WindVelocityMps);
             if (waterProperties == null)
                 waterProperties = new MaterialPropertyBlock();
             float wind01 = Mathf.Clamp01(windSpeedMps / 16f);
@@ -394,7 +415,10 @@ namespace ShipSimulator.Visuals
         {
             // Shader globals outlive Play Mode in the editor.
             Shader.SetGlobalFloat("_RiverCloudWeather", 0f);
-            Shader.SetGlobalVector("_RiverWind", Vector4.zero);
+            Shader.SetGlobalVector(WindId, Vector4.zero);
+            Shader.SetGlobalVector(WindTravelId, Vector4.zero);
+            Shader.SetGlobalVector(PreviousWindId, Vector4.zero);
+            Shader.SetGlobalVector(PreviousWindTravelId, Vector4.zero);
             DestroyGenerated(rainMaterial);
             DestroyGenerated(splashMaterial);
             DestroyGenerated(rainTexture);

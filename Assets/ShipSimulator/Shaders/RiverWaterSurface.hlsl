@@ -151,7 +151,7 @@
             {
                 float2 flow = FlowDirection();
                 float2 across = FlowBasisX();
-                float2 wind = _RiverWind.xz * (_Time.y * 0.003);
+                float2 wind = _RiverWindTravel.xz * 0.003;
                 float2 rotated = float2(
                     dot(positionXZ, float2(0.8, 0.6)), dot(positionXZ, float2(-0.6, 0.8)));
                 float2 uvA = positionXZ / _RippleTileM + flow * time * 0.05 + wind;
@@ -163,6 +163,48 @@
                 // Layer B was sampled in rotated space, so rotate its slope back to world axes.
                 b = half2(0.8h * b.x - 0.6h * b.y, 0.6h * b.x + 0.8h * b.y);
                 return a * 0.6h + b * 0.55h + c * 0.3h;
+            }
+
+            // Cat's paws: patches where a gust roughens the water, carried downwind with the gust.
+            half GustPatches(float2 positionXZ)
+            {
+                return lerp(0.45h, 1.55h, RiverGust(positionXZ, _RiverWindTravel.xz, _Time.y));
+            }
+
+            static const float WindWavelengths[2] = { 2.3, 5.1 };
+
+            // Short wind waves on six headings per band. Headings are fixed and weighted toward the
+            // wind (the weights sum to 1 for any direction), so a wind shift turns the waves smoothly
+            // instead of swinging world-space coordinates. Deep-water dispersion sets their speed.
+            // Slopes are estimated visual values for a short river fetch.
+            half2 WindWaveNormal(float2 positionXZ, float footprint)
+            {
+                float speed = _RiverWind.w;
+                if (speed < 0.01) return 0;
+                float2 wind = _RiverWind.xz / speed;
+                half steepness = lerp(0.012h, 0.08h, saturate(speed / 10));
+                half2 slope = 0;
+                for (int band = 0; band < 2; band++)
+                {
+                    float wavelength = WindWavelengths[band];
+                    half filter = saturate(wavelength / (footprint * 4) - 0.5);
+                    if (filter <= 0) continue;
+                    float k = TWO_PI / wavelength;
+                    float omega = sqrt(Gravity * k);
+                    // Wave groups: amplitude varies in patches that drift downwind.
+                    half groups = 0.35h + 1.3h * ValueNoise((positionXZ - _RiverWindTravel.xz * 0.35) / (wavelength * 5) + band * 13.1);
+                    for (int heading = 0; heading < 6; heading++)
+                    {
+                        float angle = (heading + band * 0.5) * PI / 3;
+                        float2 direction = float2(cos(angle), sin(angle));
+                        half weight = saturate(dot(direction, wind));
+                        weight = weight * weight / 1.5;
+                        if (weight <= 0) continue;
+                        float phase = k * dot(positionXZ, direction) - omega * _Time.y + heading * 1.7 + band * 4.1;
+                        slope -= direction * (cos(phase) * weight * filter * groups);
+                    }
+                }
+                return slope * steepness;
             }
 
             // Nearest point on the published track, with values interpolated between samples.
@@ -402,8 +444,10 @@
                 float2 flow = FlowDirection();
                 float2 across = FlowBasisX();
 
-                half2 ripple = RippleNormal(positionWS.xz, time) * _RippleStrength *
-                    lerp(1.0h, 0.5h, saturate(distanceToCamera / 900));
+                half gust = GustPatches(positionWS.xz);
+                half2 ripple = (RippleNormal(positionWS.xz, time) * _RippleStrength *
+                    lerp(1.0h, 0.5h, saturate(distanceToCamera / 900)) +
+                    WindWaveNormal(positionWS.xz, footprint)) * gust;
 
                 float3 shipWave = 0;
                 half aeration = 0;

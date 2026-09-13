@@ -25,6 +25,7 @@ namespace ShipSimulator.Visuals
         private static readonly int CookieResolutionId = Shader.PropertyToID("_CookieResolution");
         private static readonly int TimeId = Shader.PropertyToID("_Time");
         private static readonly int WindId = Shader.PropertyToID("_RiverWind");
+        private static readonly int WindTravelId = Shader.PropertyToID("_RiverWindTravel");
         private static readonly int CloudWeatherId = Shader.PropertyToID("_RiverCloudWeather");
         private static readonly int CloudSettingsId = Shader.PropertyToID("_RiverCloudSettings");
         private static readonly int CloudShadowDisableId = Shader.PropertyToID("_RiverCloudShadowDisable");
@@ -287,6 +288,7 @@ namespace ShipSimulator.Visuals
             lightingShader.SetFloat(CookieResolutionId, CookieResolution);
             lightingShader.SetVector(TimeId, new Vector4(time / 20, time, time * 2, time * 3));
             lightingShader.SetVector(WindId, Shader.GetGlobalVector(WindId));
+            lightingShader.SetVector(WindTravelId, Shader.GetGlobalVector(WindTravelId));
             lightingShader.SetFloat(CloudWeatherId, Shader.GetGlobalFloat(CloudWeatherId));
             lightingShader.SetVector(CloudSettingsId, Shader.GetGlobalVector(CloudSettingsId));
             lightingShader.SetFloat(CloudShadowDisableId, Shader.GetGlobalFloat(CloudShadowDisableId));

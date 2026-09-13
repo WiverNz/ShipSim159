@@ -40,6 +40,10 @@ amplitudes and hull wave shape are estimated visual values, not a validated
 wave height or wash model. The waves apply no forces to the vessel or other
 objects, ignore depth and banks, and are not a wake interaction model.
 
+`WindGustModel` varies the wind seen by water, clouds and trees: speed gusts, a slow
+meander and an occasional shift of up to 20 degrees. These gusts are visual only. The
+vessel's wind force uses the configured mean wind from `WeatherController`.
+
 ## Reality status
 
 Published dimensions, loaded displacement, engine count/type/power, twin-screw

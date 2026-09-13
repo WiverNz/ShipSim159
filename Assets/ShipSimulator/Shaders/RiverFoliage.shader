@@ -13,18 +13,18 @@ Shader "ShipSimulator/RiverFoliage"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
         #include "RiverClouds.hlsl"
+        #include "RiverVegetationWind.hlsl"
         CBUFFER_START(UnityPerMaterial)
             half4 _BaseColor;
             half _WindStrength;
         CBUFFER_END
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/MotionVectorsCommon.hlsl"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
-        float _RiverPreviousTime;
-        float3 LeafPosition(float3 world, half4 color, float2 uv, float time)
+        // Vertex alpha is height within the crown and uv.y runs from leaf base to tip, so tips
+        // high in the crown flutter most. The default wind strength of 0.2 gives full flutter.
+        float3 LeafPosition(float3 world, float3 root, half4 color, float2 uv, float4 wind, float2 travel, float time)
         {
-            float phase=dot(world.xz,float2(0.12,0.19))+time*1.2;
-            world.xz+=float2(sin(phase),cos(phase*0.77))*_WindStrength*color.a*uv.y;
-            return world;
+            return RiverVegetationSway(world, root, _WindStrength*5*color.a*uv.y, wind, travel, time);
         }
         struct Attributes { float4 positionOS:POSITION; float3 normalOS:NORMAL; float2 uv:TEXCOORD0; half4 color:COLOR; UNITY_VERTEX_INPUT_INSTANCE_ID };
         struct Varyings { float4 positionCS:SV_POSITION; float3 world:TEXCOORD0; half3 normal:TEXCOORD1; float2 uv:TEXCOORD2; half4 color:COLOR; half fog:TEXCOORD3; };
@@ -32,8 +32,8 @@ Shader "ShipSimulator/RiverFoliage"
         {
             UNITY_SETUP_INSTANCE_ID(input);
             Varyings o;
-            o.world=TransformObjectToWorld(input.positionOS.xyz);
-            o.world=LeafPosition(o.world,input.color,input.uv,_Time.y);
+            o.world=LeafPosition(TransformObjectToWorld(input.positionOS.xyz),TransformObjectToWorld(float3(0,0,0)),
+                input.color,input.uv,_RiverWind,_RiverWindTravel.xz,_Time.y);
             o.positionCS=TransformWorldToHClip(o.world);
             o.normal=TransformObjectToWorldNormal(input.normalOS);
             o.uv=input.uv; o.color=input.color; o.fog=ComputeFogFactor(o.positionCS.z);
@@ -133,8 +133,10 @@ Shader "ShipSimulator/RiverFoliage"
             {
                 UNITY_SETUP_INSTANCE_ID(input);
                 MotionOutput o;
-                float3 current=LeafPosition(TransformObjectToWorld(input.positionOS.xyz),input.color,input.uv,_Time.y);
-                float3 previous=LeafPosition(mul(UNITY_PREV_MATRIX_M,input.positionOS).xyz,input.color,input.uv,_RiverPreviousTime);
+                float3 current=LeafPosition(TransformObjectToWorld(input.positionOS.xyz),TransformObjectToWorld(float3(0,0,0)),
+                    input.color,input.uv,_RiverWind,_RiverWindTravel.xz,_Time.y);
+                float3 previous=LeafPosition(mul(UNITY_PREV_MATRIX_M,input.positionOS).xyz,mul(UNITY_PREV_MATRIX_M,float4(0,0,0,1)).xyz,
+                    input.color,input.uv,_RiverPreviousWind,_RiverPreviousWindTravel.xz,_RiverPreviousTime);
                 o.positionCS=TransformWorldToHClip(current);
                 o.current=mul(_NonJitteredViewProjMatrix,float4(current,1));
                 o.previous=mul(_PrevViewProjMatrix,float4(previous,1));

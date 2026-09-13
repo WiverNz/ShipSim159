@@ -2,7 +2,9 @@
 #define RIVER_CLOUDS_INCLUDED
 float _RiverCloudWeather;
 float _RiverCloudShadowDisable;
+// Gusting wind (xz in m/s, w speed) and its accumulated travel in metres, from WeatherController.
 float4 _RiverWind;
+float4 _RiverWindTravel;
 float4 _RiverCloudSettings;
             float RiverCloudHash(float2 position)
             {
@@ -38,10 +40,20 @@ float4 _RiverCloudSettings;
             }
 
 
+// Gust field near the water: 0 in lulls, 1 inside a gust. It rides downwind with the accumulated
+// wind travel, so a gust that roughens the water goes on to bend the trees beyond it.
+float RiverGust(float2 positionXZ, float2 travel, float time)
+{
+    float2 drift = positionXZ - travel * 0.9;
+    float broad = RiverCloudNoise(drift / 90 + float2(time * 0.011, 0));
+    float detail = RiverCloudNoise(drift / 28 + float2(3.7, -time * 0.019));
+    return smoothstep(0.3, 0.8, broad * 0.65 + detail * 0.35);
+}
+
 float2 RiverCloudCoordinates(float3 origin, float3 ray, float scale, float speed)
 {
     float2 deck = (origin.xz + ray.xz * max(900 - origin.y, 0) / max(ray.y, 0.06)) * (0.92 / 900) * scale;
-    return deck + (_RiverWind.xz * 0.0015 + float2(0.0008,0.0003)) * _Time.y * speed;
+    return deck + (_RiverWindTravel.xz * 0.0015 + float2(0.0008,0.0003) * _Time.y) * speed;
 }
 float RiverCloudDensity(float2 p, float coverage)
 {

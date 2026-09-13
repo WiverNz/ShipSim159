@@ -51,8 +51,8 @@ namespace ShipSimulator.Editor
             var root = new GameObject("Natural Landscape").transform;
             root.SetParent(environment, false);
             Material ground = MaterialAsset("AlluvialGround", "ShipSimulator/RiverGround", Color.white);
-            Material bark = MaterialAsset("WillowBark", "Universal Render Pipeline/Lit", new Color(0.22f, 0.18f, 0.13f));
-            Material birch = MaterialAsset("BirchBark", "Universal Render Pipeline/Lit", new Color(0.64f, 0.62f, 0.53f));
+            Material bark = MaterialAsset("WillowBark", "ShipSimulator/RiverBark", new Color(0.22f, 0.18f, 0.13f));
+            Material birch = MaterialAsset("BirchBark", "ShipSimulator/RiverBark", new Color(0.64f, 0.62f, 0.53f));
             Material foliage = MaterialAsset("RiverLeaves", "ShipSimulator/RiverFoliage", new Color(0.32f, 0.43f, 0.16f));
             Material silver = MaterialAsset("WillowLeaves", "ShipSimulator/RiverFoliage", new Color(0.40f, 0.48f, 0.24f));
             Material reeds = MaterialAsset("ReedLeaves", "ShipSimulator/RiverFoliage", new Color(0.43f, 0.43f, 0.20f));
@@ -369,6 +369,9 @@ namespace ShipSimulator.Editor
             if (material.HasProperty("_BaseColor")) material.SetColor("_BaseColor", color);
             if (material.HasProperty("_Smoothness")) material.SetFloat("_Smoothness", 0.18f);
             material.enableInstancing = true;
+            // Materials converted from URP Lit keep its disabled motion pass, which would leave
+            // swaying wood without motion vectors under TAA.
+            material.SetShaderPassEnabled("MotionVectors", true);
             EditorUtility.SetDirty(material);
             return material;
         }

@@ -2,6 +2,29 @@
 
 Last updated: 2026-09-13
 
+## Wind-Driven Water and Vegetation, 2026-09-13
+
+A stationary scene no longer looks frozen. `WindGustModel` varies the configured wind for
+visuals only: speed gusts with occasional bursts, a slow direction meander and a shift of up to
+20 degrees roughly every two minutes, eased over 25 s, with a 0.8 m/s light-air floor.
+`WeatherController` publishes the gusting wind, its accumulated travel and the previous frame's
+values; ripples, clouds and cloud shadows move by travel, so gusts change speed without jumps.
+The vessel's wind force still uses the configured mean wind.
+
+- Water: short wind waves (2.3 m and 5.1 m) on six fixed headings weighted toward the wind,
+  moving at deep-water phase speed, with drifting wave groups; gust patches (cat's paws) roughen
+  the surface. Both are normal-only, so water motion vectors are unchanged.
+- Vegetation: `RiverVegetationWind.hlsl` bends whole plants downwind with height, rocks them on
+  individual timing and flutters leaves, driven by `RiverGust`, the same gust field as the water.
+  Plants mostly stand in lulls and bend when a gust passes. `RiverBark.shader` gives branches the
+  same motion (with shadow, depth and motion vector passes); the bark materials were switched from
+  URP Lit and their inherited disabled motion pass removed.
+
+Amplitudes are estimated visual values. Verified: EditMode 64 passed (`TestResults/wind-editmode.xml`),
+PlayMode 10 passed (`TestResults/wind-playmode.xml`); `GraphicsPhaseOneCheck.Run` passed with a new
+still-water stage (mean image change 0.0245 over 80 frames with vessel and camera still) and motion
+vectors on 94.7 % of open water and 23 % of the tree line (`Logs/wind-check.log`).
+
 ## Graphics Roadmap Phase 1 and Review Fixes, 2026-09-13
 
 Phase 1 of `GraphicsRealismApproach.md` (commit f959559) added `RiverLighting` (sky ambient,

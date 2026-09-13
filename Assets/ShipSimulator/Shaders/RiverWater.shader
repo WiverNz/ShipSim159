@@ -234,7 +234,9 @@ Shader "ShipSimulator/RiverWater"
             {
                 MotionOutput o;
                 Varyings surface=Vert(input);
-                float3 previous=mul(UNITY_PREV_MATRIX_M,input.positionOS).xyz;
+                // The water renderer never moves and is drawn without per-object motion data,
+                // so its current model matrix is also the previous one.
+                float3 previous=TransformObjectToWorld(input.positionOS.xyz);
                 previous.y+=BroadSurface(previous.xz,_RiverPreviousTime*_WaveSpeed)*_WaveHeight;
                 if (_PreviousWakeCount>=2)
                 {
@@ -247,9 +249,18 @@ Shader "ShipSimulator/RiverWater"
                 o.previous=mul(_PrevViewProjMatrix,float4(previous,1));
                 return o;
             }
+            // Verification hook: GraphicsPhaseOneCheck sets it to prove the pass reaches the texture.
+            float _RiverMotionProbe;
             half4 WaterMotionFrag(MotionOutput i):SV_Target
             {
-                return half4(CalcNdcMotionVectorFromCsPositions(i.current,i.previous),0,0);
+                if (_RiverMotionProbe > 0.5) return half4(0.001, 0.001, 0, 0);
+                // CalcNdcMotionVectorFromCsPositions returns zero unless per-object motion data is
+                // bound, and requesting that data filters out this stationary renderer.
+                float2 velocity = i.current.xy / i.current.w - i.previous.xy / i.previous.w;
+                #if UNITY_UV_STARTS_AT_TOP
+                    velocity.y = -velocity.y;
+                #endif
+                return half4(velocity * 0.5, 0, 0);
             }
             ENDHLSL
         }

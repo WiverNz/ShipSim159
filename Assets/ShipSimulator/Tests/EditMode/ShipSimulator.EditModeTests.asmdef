@@ -4,6 +4,7 @@
   "references": [
     "ShipSimulator.Runtime",
     "ShipSimulator.Editor",
+    "Unity.RenderPipelines.Core.Runtime",
     "Unity.RenderPipelines.Universal.Runtime"
   ],
   "includePlatforms": [

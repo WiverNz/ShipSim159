@@ -1,0 +1,47 @@
+#pragma kernel CloudCookie
+#pragma kernel SkySamples
+
+// Surface shaders get _Time from the pipeline; RiverLighting passes the same value here.
+float4 _Time;
+#include "../Shaders/RiverClouds.hlsl"
+
+RWTexture2D<float> _Cookie;
+float4x4 _CookieToWorld;
+float4 _SunDirection;
+float _CookieResolution;
+
+// Cloud transmittance for URP's main light cookie, from the same cloud function the river
+// shaders evaluate per pixel, so shadows on standard Lit objects line up with the terrain.
+[numthreads(8, 8, 1)]
+void CloudCookie(uint3 id : SV_DispatchThreadID)
+{
+    uint resolution = (uint)_CookieResolution;
+    if (id.x >= resolution || id.y >= resolution) return;
+    float2 uv = (id.xy + 0.5) / _CookieResolution;
+    float3 onLightPlane = mul(_CookieToWorld, float4(uv, 0, 1)).xyz;
+    // Slide along the sun ray to the water level; the cloud deck lookup is constant along the ray
+    // only below the deck, and the light plane can pass far above it.
+    float3 sun = _SunDirection.xyz;
+    float3 ground = onLightPlane - sun * (onLightPlane.y / max(sun.y, 0.05));
+    _Cookie[id.xy] = RiverCloudShadow(ground, sun);
+}
+
+TextureCube<float4> _Sky;
+SamplerState sampler_linear_clamp;
+RWStructuredBuffer<float4> _Samples;
+float _SkyMip;
+// Must match RiverLighting.SkyColumns and SkyRows.
+static const uint SkyColumns = 32;
+static const uint SkyRows = 16;
+
+// Latitude-longitude radiance samples; RiverLighting.ProjectSkyToAmbient uses the same layout.
+[numthreads(8, 8, 1)]
+void SkySamples(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= SkyColumns || id.y >= SkyRows) return;
+    float latitude = ((id.y + 0.5) / SkyRows - 0.5) * 3.14159265;
+    float longitude = (id.x + 0.5) / SkyColumns * 6.28318531;
+    float3 direction = float3(
+        cos(latitude) * cos(longitude), sin(latitude), cos(latitude) * sin(longitude));
+    _Samples[id.y * SkyColumns + id.x] = _Sky.SampleLevel(sampler_linear_clamp, direction, _SkyMip);
+}

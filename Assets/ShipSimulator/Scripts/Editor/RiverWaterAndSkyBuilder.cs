@@ -77,7 +77,9 @@ namespace ShipSimulator.Editor
             {
                 camera.antialiasing = AntialiasingMode.TemporalAntiAliasing;
                 camera.taaSettings.quality = TemporalAAQuality.High;
-                camera.taaSettings.baseBlendFactor = 0.2f;
+                // Share of history kept each frame. URP stores 1 - this as frame influence;
+                // lower values leave the jittered current frame visible as shimmer.
+                camera.taaSettings.baseBlendFactor = 0.85f;
                 camera.GetComponent<Camera>().allowMSAA = false;
                 camera.antialiasingQuality = AntialiasingQuality.High;
                 EditorUtility.SetDirty(camera);

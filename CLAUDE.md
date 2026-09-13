@@ -134,7 +134,9 @@ ShipSimulator.Editor.VoyageMenuSmokeCheck.Run -logFile <abs>`, without `-quit` o
 `-nographics`. This check uses `Logs/menu-smoke-voyage.json`, never the user's save, and
 exits with 0 and a `MENU_SMOKE|PASS` log entry on success. `ShipWakeRuntimeCheck.Run`, launched
 the same way, sails Gorodets at full ahead and under helm, renders wake captures into
-`Logs/Wake/` and ends with `WAKE_RUNTIME|PASS`.
+`Logs/Wake/` and ends with `WAKE_RUNTIME|PASS`. `GraphicsPhaseOneCheck.Run`, launched the same way,
+checks exposure, sky ambient, the cloud cookie, motion vectors, TAA, rain and night in Gorodets,
+writes captures to `Logs/GraphicsPhaseOne/` and ends with `GRAPHICS_PHASE_ONE|PASS`.
 
 One thing about results that has already cost time here:
 
@@ -160,7 +162,8 @@ One thing about results that has already cost time here:
 | `Build Gorodets Scenario` | Regenerates `GorodetsTrainingScene` |
 | `Render Visual Preview` | Renders a still of the scene |
 | `Upgrade Water And Landscape` | Applies natural banks, vegetation LODs and reflective water to both scenes |
-| `Apply Realistic Water And Sky` | Applies the cloud sky, ripple normal map, water tuning and SMAA to both scenes |
+| `Apply Realistic Water And Sky` | Applies the cloud sky, ripple normal map, water tuning and temporal AA camera settings to both scenes |
+| `Apply Graphics Phase One` | Configures desktop renderer features, vegetation LOD cross-fade, the post-processing profile and cameras for both scenes |
 | `Play Training Scene` / `Stop Play Mode` | Enter and leave Play Mode |
 
 These commands **regenerate scene-owned content**. A manual scene edit they overwrite must

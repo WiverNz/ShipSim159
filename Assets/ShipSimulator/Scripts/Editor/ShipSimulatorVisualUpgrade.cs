@@ -353,28 +353,28 @@ namespace ShipSimulator.Editor
             }
 
             ClearProfile(profile);
-            ColorAdjustments color = profile.Add<ColorAdjustments>();
+            ColorAdjustments color = AddToProfile<ColorAdjustments>(profile);
             color.postExposure.Override(0.12f);
             color.contrast.Override(6f);       // gentle, avoids crushed shadows
             color.saturation.Override(0f);
             color.colorFilter.Override(Color.white);
 
-            Tonemapping tonemapping = profile.Add<Tonemapping>();
+            Tonemapping tonemapping = AddToProfile<Tonemapping>(profile);
             tonemapping.mode.Override(TonemappingMode.ACES);
 
             // High threshold means only emissive navigation lights / sun glints bloom,
             // not the whole scene.
-            Bloom bloom = profile.Add<Bloom>();
+            Bloom bloom = AddToProfile<Bloom>(profile);
             bloom.intensity.Override(0.22f);
             bloom.threshold.Override(1.25f);
             bloom.scatter.Override(0.62f);
             bloom.tint.Override(new Color(0.92f, 0.96f, 1f));
 
-            Vignette vignette = profile.Add<Vignette>();
+            Vignette vignette = AddToProfile<Vignette>(profile);
             vignette.intensity.Override(0.18f);
             vignette.smoothness.Override(0.65f);
 
-            WhiteBalance balance = profile.Add<WhiteBalance>();
+            WhiteBalance balance = AddToProfile<WhiteBalance>(profile);
             balance.temperature.Override(3f);
             balance.tint.Override(-2f);
             EditorUtility.SetDirty(profile);
@@ -839,10 +839,22 @@ namespace ShipSimulator.Editor
             return primitive;
         }
 
+        // Volume components must be sub-assets of the profile file: components that are only
+        // added to the list are dropped on save and the profile reloads with null entries.
         private static void ClearProfile(VolumeProfile profile)
         {
-            while (profile.components.Count > 0)
-                profile.Remove(profile.components[0].GetType());
+            foreach (UnityEngine.Object asset in AssetDatabase.LoadAllAssetsAtPath(ProfilePath))
+                if (asset is VolumeComponent) UnityEngine.Object.DestroyImmediate(asset, true);
+            profile.components.Clear();
+        }
+
+        private static T AddToProfile<T>(VolumeProfile profile) where T : VolumeComponent
+        {
+            T component = profile.Add<T>();
+            component.name = typeof(T).Name;
+            component.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy;
+            AssetDatabase.AddObjectToAsset(component, profile);
+            return component;
         }
 
         private static Transform ReplaceChild(Transform parent, string name)

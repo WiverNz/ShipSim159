@@ -2,6 +2,54 @@
 
 Last updated: 2026-09-13
 
+## Graphics Roadmap Phase 1 and Review Fixes, 2026-09-13
+
+Phase 1 of `GraphicsRealismApproach.md` (commit f959559) added `RiverLighting` (sky ambient,
+live sky reflection probe, histogram auto exposure through `RiverExposureFeature`), cloud
+shadows, temporal AA with foliage and water motion vectors (`RiverTemporalFeature`), LOD
+cross-fade on vegetation, and removed the saturation boost. Menu: `Apply Graphics Phase One`.
+
+A review of that commit found six problems, all now fixed:
+
+- **Post-processing never reached the screen.** `ConfigurePostProcessing` added volume components
+  without making them sub-assets, so `RiverVisualProfile.asset` reloaded with five null entries:
+  no tonemapping, bloom, vignette, white balance or colour adjustments. Components are now saved
+  as sub-assets; ACES and zero saturation apply.
+- **Night was never detected in Gorodets.** `RiverLighting` looked for the clock on its own
+  object, but Gorodets serializes the weather system while the HUD adds the clock to itself.
+  Controllers are now found scene-wide and `DayNightController` refreshes the active instance.
+- **TAA kept 20 % history** (`m_FrameInfluence` 0.8). The builder now sets `baseBlendFactor` 0.85.
+- **Cloud shadows skipped URP Lit objects.** `Resources/RiverSkyLighting.compute` renders the
+  same cloud function into a 512 px main light cookie spanning 6 km around the camera, so the
+  vessel, buoys and marks darken with the terrain and water.
+- **Water motion vectors were never written.** Requesting per-object motion data filtered out
+  the stationary water renderer, and URP's `CalcNdcMotionVectorFromCsPositions` returns zero
+  without that data. The water pass now draws without it and computes the vector itself.
+  `_RiverMotionProbe` is a verification hook.
+- **Sky ambient duplicated the sky gradient in C#** and its weighting was about 1.9 times too
+  bright. Ambient is now projected from the live sky cubemap through the compute shader, scaled
+  so a uniform sky of radiance L evaluates to L. Temporal AA is selected by whether the active
+  renderer carries `RiverTemporalFeature`, not by asset name.
+
+`GraphicsPhaseOneCheck.Run` now also verifies sky ambient, the cookie, motion vectors with a
+still camera (the water and tree line must move, and a probe proves the water pass draws) and
+night lighting in Gorodets.
+
+Verified with Windows Unity 6000.6.0f1:
+
+- EditMode: 56 passed, 0 failed (`TestResults/phase1-fix-editmode.xml`), including profile
+  sub-assets, TAA history, cookie projection and ambient normalization.
+- PlayMode: 10 passed, 0 failed (`TestResults/phase1-fix-playmode.xml`), including night with
+  the clock on a different object.
+- `GraphicsPhaseOneCheck.Run` passed (`Logs/phase1-fix-check.log`): with a still camera 90.9 %
+  of the open-water region and 23 % of the tree line carry motion; night sun 0.127 in rain.
+  Captures in `Logs/GraphicsPhaseOne/` inspected.
+
+Limits: sky ambient and the cloud cookie need compute shaders (otherwise ambient stays at the
+scene default and Lit objects get no cloud shadow); scrolling ripple normals have no motion
+vectors and may soften under TAA; check timings are editor frame intervals on one RTX 4090, not
+isolated GPU cost.
+
 ## Softer Natural Shoreline, 2026-09-13
 
 Both scenes now have irregular wet-sand margins, a gently sloping submerged shelf,

@@ -394,6 +394,9 @@ with a timed fly-through that logs frame times.
 Ordered by impact per effort. Each step should be verified with fixed-camera captures and a
 frame-time log before and after.
 
+Status, 2026-09-13: phase 1 is implemented and verified, using TAA rather than STP. Details and
+known limits are in `.codex/PROJECT_CONTEXT.md`.
+
 | Phase | Work | Impact | Effort |
 |---|---|---|---|
 | 1 | Sky-driven ambient SH and reflection probe refresh; cloud shadows on terrain and water; remove saturation boost; auto exposure | High | Low to medium |

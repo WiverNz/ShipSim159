@@ -92,7 +92,8 @@ namespace ShipSimulator.Visuals
                 rig.SetNight(night);
             WeatherController weather = FindAnyObjectByType<WeatherController>();
             if (weather != null) weather.RefreshVisuals();
-            GetComponent<RiverLighting>()?.Refresh();
+            // RiverLighting sits on the weather object, which is not always this one.
+            if (RiverLighting.Active != null) RiverLighting.Active.Refresh();
         }
 
         private void CreateNavigationAids()

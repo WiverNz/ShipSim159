@@ -17,20 +17,27 @@ namespace ShipSimulator.Editor
     public static class GraphicsPhaseOneCheck
     {
         private const string Key = "ShipSimulator.PhaseOneCheck";
+        private const int Width = 1600;
+        private const int Height = 900;
+        // Pixel rows count from the bottom. Open river and the far tree line in the fixed check view.
+        private static readonly RectInt WaterRegion = new RectInt(760, 110, 340, 190);
+        private static readonly RectInt TreeLineRegion = new RectInt(0, 470, 1600, 110);
         private static double deadline;
         private static int lastFrame = -1;
         private static int frames;
         private static double lastTick;
         private static Camera camera;
         private static RenderTexture target;
+        private static RenderTexture motionTarget;
         private static Vector3 origin;
         private static Vector3 lookAt;
         private static readonly List<double> timings = new List<double>();
         private static bool failed;
         private static float clearSun;
+        private static (float water, float trees) animatedMotion;
         static GraphicsPhaseOneCheck()
         {
-            deadline = EditorApplication.timeSinceStartup + 240;
+            deadline = EditorApplication.timeSinceStartup + 300;
             EditorApplication.update += Tick;
             Application.logMessageReceived += (message, stack, type) =>
             {
@@ -69,7 +76,8 @@ namespace ShipSimulator.Editor
                     ship.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                     origin = ship.transform.position + new Vector3(36, 19, -85);
                     lookAt = ship.transform.position + new Vector3(0, 3, 50);
-                    target = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGBHalf) { name = "Phase 1 capture" };
+                    target = new RenderTexture(Width, Height, 24, RenderTextureFormat.ARGBHalf) { name = "Phase 1 capture" };
+                    motionTarget = new RenderTexture(Width, Height, 0, RenderTextureFormat.ARGBHalf) { name = "Phase 1 motion vectors" };
                     camera.targetTexture = target;
                     camera.allowMSAA = false;
                     camera.transform.position = origin;
@@ -86,14 +94,20 @@ namespace ShipSimulator.Editor
                 lastTick = now;
                 frames++;
                 if (stage == 2 || stage == 3)
-                {
                     camera.transform.position = origin + new Vector3(Mathf.Sin(frames * 0.008f) * 6, 0, 0);
-                    camera.transform.LookAt(lookAt);
+                else
+                    camera.transform.position = origin;
+                camera.transform.LookAt(lookAt);
+                if (stage == 4 && frames == 100)
+                {
+                    animatedMotion = AnalyseMotion("taa-motion-vectors");
+                    Shader.SetGlobalFloat("_RiverMotionProbe", 1);
                 }
                 if (frames == 114 || frames == 116 || frames == 118)
                     Capture("sequence-" + stage + "-" + frames);
                 if (frames < 120) return;
-                string label = stage == 2 ? "smaa-baseline" : stage == 3 ? "taa-day" : stage == 4 ? "taa-rain" : "taa-night";
+                string label = stage == 2 ? "smaa-baseline" : stage == 3 ? "taa-day" : stage == 4 ? "taa-motion"
+                    : stage == 5 ? "taa-rain" : "taa-night";
                 Capture(label);
                 timings.Sort();
                 Debug.Log($"PHASE_ONE_TIMING|{label}|editor frame interval median={timings[timings.Count / 2]:F2} ms p95={timings[(int)(timings.Count * 0.95)]:F2} ms|1600x900; includes editor and readback scheduling, not isolated GPU time");
@@ -102,43 +116,118 @@ namespace ShipSimulator.Editor
                     Object.FindAnyObjectByType<WeatherController>().GetComponent<RiverLighting>().enabled = true;
                     camera.GetUniversalAdditionalCameraData().antialiasing = AntialiasingMode.TemporalAntiAliasing;
                     Shader.SetGlobalFloat("_RiverCloudShadowDisable", 0);
+                    SetStage(3);
+                    return;
+                }
+
+                RiverLighting light = RequireLighting(label);
+                if (stage == 3)
+                {
+                    RequireDaylightAmbient(light);
+                    if (RenderSettings.sun.cookie == null) throw new InvalidOperationException("The cloud shadow cookie was not assigned.");
+                    RiverTemporalFeature.MotionCaptureTarget = motionTarget;
+                }
+                else if (stage == 4)
+                {
+                    Shader.SetGlobalFloat("_RiverMotionProbe", 0);
+                    RiverTemporalFeature.MotionCaptureTarget = null;
+                    float probe = AnalyseMotion("taa-motion-probe").water;
+                    if (probe < 0.9f)
+                        throw new InvalidOperationException($"The water motion pass does not reach the motion texture: probe covers {probe:P1}.");
+                    if (animatedMotion.water < 0.3f)
+                        throw new InvalidOperationException($"Water motion vectors are missing or below half precision: {animatedMotion.water:P1} of open water moves.");
+                    if (animatedMotion.trees < 0.02f)
+                        throw new InvalidOperationException($"Foliage motion vectors are missing: {animatedMotion.trees:P1} of the tree line moves.");
+                    clearSun = RenderSettings.sun.intensity;
+                    Object.FindAnyObjectByType<WeatherController>().Configure(315, 12, 0.7f, 0.35f);
+                }
+                else if (stage == 5)
+                {
+                    if (RenderSettings.sun.intensity >= clearSun * 0.7f) throw new InvalidOperationException("Overcast did not dim direct light.");
+                    Object.FindAnyObjectByType<DayNightController>().Apply(true);
                 }
                 else
                 {
-                    RiverLighting light = RiverLighting.Active;
-                    if (light == null || light.MeterSamples < 2 || light.ProbeUpdates < 1 || RenderSettings.customReflectionTexture == null)
-                        throw new InvalidOperationException($"Exposure meter or sky probe did not run: meter={light?.MeterSamples}, probes={light?.ProbeUpdates}, reflection={RenderSettings.customReflectionTexture}, quality={QualitySettings.names[QualitySettings.GetQualityLevel()]}");
-                    Debug.Log($"PHASE_ONE_STATE|{label}|exposure={light.ExposureEV:F2} EV|meter={light.MeterSamples}|probes={light.ProbeUpdates}");
-                    if (stage == 3)
-                    {
-                        if (RiverTemporalFeature.RenderedFrames < 30) throw new InvalidOperationException("Water motion vectors were not rendered.");
-                        Debug.Log($"PHASE_ONE_TEMPORAL|water motion frames={RiverTemporalFeature.RenderedFrames}|GPU={SystemInfo.graphicsDeviceName}");
-                        clearSun = RenderSettings.sun.intensity;
-                        Object.FindAnyObjectByType<WeatherController>().Configure(315, 12, 0.7f, 0.35f);
-                    }
-                    if (stage == 4)
-                    {
-                        if (RenderSettings.sun.intensity >= clearSun * 0.7f) throw new InvalidOperationException("Overcast did not dim direct light.");
-                        Object.FindAnyObjectByType<DayNightController>().Apply(true);
-                    }
-                    if (stage == 5)
-                    {
-                        SessionState.SetInt(Key, 0);
-                        camera.targetTexture = null;
-                        Object.Destroy(target);
-                        Debug.Log("GRAPHICS_PHASE_ONE|" + (failed ? "FAIL" : "PASS") + ": exposure, live sky, TAA fly-through, rain and night");
-                        EditorApplication.Exit(failed ? 1 : 0);
-                        return;
-                    }
+                    // The clock is on the HUD object, not the weather object that carries RiverLighting.
+                    if (!light.IsNight || RenderSettings.sun.intensity > 0.2801f)
+                        throw new InvalidOperationException($"Night lighting was not applied: night={light.IsNight}, sun={RenderSettings.sun.intensity:F3}");
+                    SessionState.SetInt(Key, 0);
+                    camera.targetTexture = null;
+                    Object.Destroy(target);
+                    Object.Destroy(motionTarget);
+                    Debug.Log("GRAPHICS_PHASE_ONE|" + (failed ? "FAIL" : "PASS") + ": exposure, sky ambient, cloud cookie, motion vectors, TAA, rain and night");
+                    EditorApplication.Exit(failed ? 1 : 0);
+                    return;
                 }
                 SetStage(stage + 1);
             }
             catch (Exception error)
             {
                 SessionState.SetInt(Key, 0);
+                RiverTemporalFeature.MotionCaptureTarget = null;
                 Debug.LogException(error);
                 EditorApplication.Exit(1);
             }
+        }
+        private static RiverLighting RequireLighting(string label)
+        {
+            RiverLighting light = RiverLighting.Active;
+            if (light == null || light.MeterSamples < 2 || light.ProbeUpdates < 1 || RenderSettings.customReflectionTexture == null)
+                throw new InvalidOperationException($"Exposure meter or sky probe did not run: meter={light?.MeterSamples}, probes={light?.ProbeUpdates}, reflection={RenderSettings.customReflectionTexture}, quality={QualitySettings.names[QualitySettings.GetQualityLevel()]}");
+            Debug.Log($"PHASE_ONE_STATE|{label}|exposure={light.ExposureEV:F2} EV|meter={light.MeterSamples}|probes={light.ProbeUpdates}|ambient={light.AmbientUpdates}|night={light.IsNight}|sun={RenderSettings.sun.intensity:F3}");
+            return light;
+        }
+        private static void RequireDaylightAmbient(RiverLighting light)
+        {
+            var colors = new Color[2];
+            RenderSettings.ambientProbe.Evaluate(new[] { Vector3.up, Vector3.down }, colors);
+            Debug.Log($"PHASE_ONE_AMBIENT|up={colors[0]}|down={colors[1]}|updates={light.AmbientUpdates}");
+            if (light.AmbientUpdates < 1 || colors[0].grayscale <= colors[1].grayscale)
+                throw new InvalidOperationException("Sky ambient was not projected from the sky capture.");
+        }
+        private static (float water, float trees) AnalyseMotion(string label)
+        {
+            var previous = RenderTexture.active;
+            RenderTexture.active = motionTarget;
+            var motion = new Texture2D(Width, Height, TextureFormat.RGBAHalf, false);
+            motion.ReadPixels(new Rect(0, 0, Width, Height), 0, 0);
+            motion.Apply();
+            RenderTexture.active = previous;
+            Color[] pixels = motion.GetPixels();
+            Object.Destroy(motion);
+
+            // Logarithmic preview: black is still, white is 1e-3 of the screen per frame or more.
+            var preview = new Texture2D(Width, Height, TextureFormat.RGB24, false);
+            var levels = new Color32[pixels.Length];
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                float magnitude = new Vector2(pixels[i].r, pixels[i].g).magnitude;
+                byte level = (byte)(Mathf.Clamp01((Mathf.Log10(Mathf.Max(magnitude, 1e-9f)) + 7) / 4) * 255);
+                levels[i] = new Color32(level, level, level, 255);
+            }
+            preview.SetPixels32(levels);
+            preview.Apply();
+            File.WriteAllBytes("Logs/GraphicsPhaseOne/" + label + ".png", preview.EncodeToPNG());
+            Object.Destroy(preview);
+
+            float water = MovingFraction(pixels, WaterRegion, out float waterPeak);
+            float trees = MovingFraction(pixels, TreeLineRegion, out float treePeak);
+            Debug.Log($"PHASE_ONE_MOTION|{label}|static camera|water moving={water:P1} peak={waterPeak:E2}|tree line moving={trees:P1} peak={treePeak:E2}");
+            return (water, trees);
+        }
+        private static float MovingFraction(Color[] pixels, RectInt region, out float peak)
+        {
+            int moving = 0;
+            peak = 0;
+            for (int y = region.yMin; y < region.yMax; y++)
+            for (int x = region.xMin; x < region.xMax; x++)
+            {
+                Color value = pixels[y * Width + x];
+                float squared = value.r * value.r + value.g * value.g;
+                peak = Mathf.Max(peak, Mathf.Sqrt(squared));
+                if (squared > 1e-14f) moving++;
+            }
+            return moving / (float)(region.width * region.height);
         }
         private static void SetStage(int stage)
         {

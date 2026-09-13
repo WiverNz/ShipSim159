@@ -55,7 +55,26 @@ namespace ShipSimulator.Editor
             material.SetFloat("_ReflectionStrength", 0.85f);
             material.SetFloat("_WaveHeight", 0.035f);
             material.SetFloat("_Opacity", 1f);
+            ConfigureOptics(material);
             EditorUtility.SetDirty(material);
+        }
+
+        public static void ConfigureOptics(Material material)
+        {
+            material.SetFloat("_SecchiDepth", 1.2f);
+            material.SetFloat("_RefractionStrength", 0.012f);
+            material.SetColor("_ScatterColor", new Color(0.12f, 0.18f, 0.105f, 1));
+            EditorUtility.SetDirty(material);
+        }
+
+        public static void ApplyOpticsBoth()
+        {
+            foreach (string name in new[] { "RiverTrainingScene", "GorodetsTrainingScene" })
+            {
+                Scene scene = EditorSceneManager.OpenScene("Assets/ShipSimulator/Scenes/" + name + ".unity");
+                ConfigureOptics(FindWater(scene).sharedMaterial);
+            }
+            AssetDatabase.SaveAssets();
         }
 
         private static Renderer FindWater(Scene scene)

@@ -46,7 +46,7 @@ namespace ShipSimulator.Editor
             report.AppendLine("# Virtual Sea Trials");
             report.AppendLine();
             report.AppendLine($"Generated {DateTime.Now:yyyy-MM-dd HH:mm}. Pure three-degree-of-freedom simulation of the");
-            report.AppendLine("manoeuvring model. Project 507B coefficients are estimates, not trial data; this is not");
+            report.AppendLine("manoeuvring model. Vessel coefficients are estimates, not trial data; this is not");
             report.AppendLine("validated for maritime training. Distances are in ship lengths (Lpp).");
             report.AppendLine();
             report.AppendLine("| Vessel and condition | Depth m | Slow / half / full kn | Advance | Transfer | Tactical D | Steady D | Turn speed loss | 10/10 1st / 2nd deg | 20/20 1st deg | Initial turn | Crash stop track | Stop time s | Full-speed squat bow / stern m |");
@@ -57,6 +57,12 @@ namespace ShipSimulator.Editor
             Row(report, "507B loaded, river familiarisation channel", VesselParameters.Create(volgoDon, 1f), 8.2f, false);
             Row(report, "507B loaded, Gorodets reach", VesselParameters.Create(volgoDon, 1f), 4.6f, false);
             Row(report, "507B lightship, deep water", VesselParameters.Create(volgoDon, 0f), float.PositiveInfinity, false);
+            VesselData volgoBalt = Load("VolgoBalt295AR.json");
+            VesselData volgoneft = Load("Volgoneft1577.json");
+            withinEnvelope &= Row(report, "Volgo-Balt 2-95A/R loaded, deep water", VesselParameters.Create(volgoBalt, 1f), float.PositiveInfinity, true);
+            Row(report, "Volgo-Balt 2-95A/R loaded, Gorodets reach", VesselParameters.Create(volgoBalt, 1f), 4.6f, false);
+            withinEnvelope &= Row(report, "Volgoneft 1577 loaded, deep water", VesselParameters.Create(volgoneft, 1f), float.PositiveInfinity, true);
+            Row(report, "Volgoneft 1577 loaded, Gorodets reach", VesselParameters.Create(volgoneft, 1f), 4.6f, false);
             withinEnvelope &= Row(report, "KVLCC2 MMG benchmark, deep water", VesselParameters.Create(kvlcc2, 1f), float.PositiveInfinity, true);
 
             report.AppendLine();

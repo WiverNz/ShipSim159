@@ -117,9 +117,11 @@ Material:
     - _ReceiveShadows: 1
     - _ReflectionDistortion: 0.18
     - _ReflectionStrength: 0.85
+    - _RefractionStrength: 0.012
     - _RippleScale: 0.4
     - _RippleStrength: 0.2
     - _RippleTileM: 11
+    - _SecchiDepth: 1.2
     - _Smoothness: 0.86
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -143,6 +145,7 @@ Material:
     - _FlowDirection: {r: 0.08, g: -1, b: 0, a: 0}
     - _FoamColor: {r: 0.86, g: 0.89, b: 0.86, a: 1}
     - _ReflectionTint: {r: 0.56, g: 0.67, b: 0.73, a: 1}
+    - _ScatterColor: {r: 0.12, g: 0.18, b: 0.105, a: 1}
     - _ShallowColor: {r: 0.19, g: 0.24, b: 0.15, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

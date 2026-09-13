@@ -208,6 +208,7 @@ GameObject:
   - component: {fileID: 7877191139025464752}
   - component: {fileID: 463600037978792111}
   - component: {fileID: 969267071402974813}
+  - component: {fileID: 3018345653806199697}
   m_Layer: 0
   m_Name: VolgoDon507B
   m_TagString: Untagged
@@ -289,6 +290,30 @@ MonoBehaviour:
   ambientCurrentMps: {x: 0, y: 0, z: 0.35}
   windVelocityMps: {x: 0, y: 0, z: 0}
   drawDebugForces: 1
+--- !u!114 &3018345653806199697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4893004279475231000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765d9147f2ee4ab4381d4a2b486577eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.VesselLayout
+  vesselId: volgodon-507b
+  cameraScale: 1
+  navigatorEye: {x: -1.8, y: 14.2, z: -20}
+  navigatorLookAt: {x: -1.8, y: 13.8, z: 55}
+  sideLight: {x: -6.6, y: 11.8, z: -44}
+  sideLightSupportBaseY: 10.7
+  forwardMastheadLight: {x: 0, y: 14, z: 42}
+  forwardMastheadSupportBaseY: 6.8
+  aftMastheadLight: {x: 0, y: 18, z: -46}
+  aftMastheadSupportBaseY: 12.4
+  sternLight: {x: 0, y: 8.5, z: -67}
+  sternLightSupportBaseY: 6.6
 --- !u!1 &5363297401706817267
 GameObject:
   m_ObjectHideFlags: 0

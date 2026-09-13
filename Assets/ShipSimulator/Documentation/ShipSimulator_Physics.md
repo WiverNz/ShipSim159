@@ -5,6 +5,17 @@ The vessel model follows the literature-based roadmap in `ShipDynamicsRealismApp
 Project 507B coefficients are estimates (see `VolgoDon507B_Sources.md`), and nothing here is
 calibrated against 507B trials or validated for maritime training.
 
+## Vessels
+
+The model is the same for every vessel; only the JSON specification changes. Three playable vessels
+are defined: Volgo-Don 507B, Volgo-Balt 2-95A/R and Volgoneft 1577, plus the KVLCC2 benchmark used to
+check the model. For each vessel the published particulars (dimensions, displacement, deadweight,
+engine power, service speed) are taken from its sources file. Linear hull derivatives and added masses
+come from Clarke et al. and Söding for its own length, beam, draft and block coefficient. The residual
+resistance coefficient and the rated propeller speed are then calibrated together so that, at the
+published loaded speed, the propellers absorb full delivered power and their thrust balances
+resistance. Everything else is estimated.
+
 ## Structure
 
 The vessel is a Unity `Rigidbody`; no script moves or rotates it directly. The hydrodynamics

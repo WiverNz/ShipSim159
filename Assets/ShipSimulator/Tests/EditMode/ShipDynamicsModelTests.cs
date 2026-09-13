@@ -6,10 +6,12 @@ namespace ShipSimulator.Tests
 {
     public sealed class ShipDynamicsModelTests
     {
-        [Test]
-        public void BenchmarkVesselJson_IsValid()
+        [TestCase(VesselFixtures.Kvlcc2File)]
+        [TestCase(VesselFixtures.VolgoBaltFile)]
+        [TestCase(VesselFixtures.VolgoneftFile)]
+        public void VesselJson_IsValid(string file)
         {
-            Assert.That(VesselDataValidator.TryValidate(VesselFixtures.Load(VesselFixtures.Kvlcc2File), out string error), Is.True, error);
+            Assert.That(VesselDataValidator.TryValidate(VesselFixtures.Load(file), out string error), Is.True, error);
         }
 
         [Test]
@@ -25,10 +27,12 @@ namespace ShipSimulator.Tests
             Assert.That(estimate.YawAddedInertia, Is.EqualTo(0.011f).Within(0.25f * 0.011f));
         }
 
-        [Test]
-        public void ProjectVessel_LinearCoefficientsTraceToClarkeAndSoding()
+        [TestCase(VesselFixtures.VolgoDonFile)]
+        [TestCase(VesselFixtures.VolgoBaltFile)]
+        [TestCase(VesselFixtures.VolgoneftFile)]
+        public void ProjectVessel_LinearCoefficientsTraceToClarkeAndSoding(string file)
         {
-            VesselData data = VesselFixtures.Load(VesselFixtures.VolgoDonFile);
+            VesselData data = VesselFixtures.Load(file);
             VesselDimensions d = data.dimensions;
             HullDerivativeEstimate estimate = HullDerivativeEstimate.Clarke(d.lengthBetweenPerpendicularsM, d.beamMouldedM,
                 d.loadedDraftM, data.hydrostatics.blockCoefficient);

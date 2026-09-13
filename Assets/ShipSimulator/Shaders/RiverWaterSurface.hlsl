@@ -8,6 +8,8 @@
         #include "RiverClouds.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
 
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareOpaqueTexture.hlsl"
+
             // Must match ShipWakeTrack.Capacity.
             #define WAKE_CAPACITY 48
             static const float Gravity = 9.81;
@@ -55,6 +57,9 @@
                 half _Turbidity;
                 half _ReflectionStrength;
                 half _Opacity;
+                float _SecchiDepth;
+                half _RefractionStrength;
+                half4 _ScatterColor;
             CBUFFER_END
 
             struct Attributes
@@ -486,6 +491,8 @@
             }
 
             float _RiverRain;
+            float _RiverNight;
+            float _RiverOpticsProbe;
             half2 RainRippleNormal(float2 position, float footprint)
             {
                 float visibility = saturate(1 - footprint * 8);
@@ -566,7 +573,6 @@
                 // Convert eye-space separation to vertical depth so shallows remain consistent at grazing views.
                 float depth = opticalDepth * abs(viewDirection.y) /
                     max(abs(TransformWorldToViewDir(viewDirection).z), 0.05);
-                half depthVariation = exp(-depth * lerp(1.5, 2.4, saturate(_Turbidity)));
                 half shoreline = 1 - saturate(depth / 0.65);
                 float4 bank = ShoreCoordinates(positionWS.xz);
                 half breaking = saturate(abs(shipWave.x) / max(bank.w, 0.03) - 0.22) *
@@ -578,16 +584,41 @@
                     narrowStreaks * 0.2h;
 
                 half3 lighting = SampleSH(normalWS) * 0.65 + diffuse * mainLight.color * 0.55;
-                half3 muddyShallow = lerp(
-                    _ShallowColor.rgb,
-                    half3(0.22h, 0.27h, 0.19h),
-                    _Turbidity * 0.38h);
-                half3 waterColor = lerp(_DeepColor.rgb, muddyShallow, depthVariation) * lighting;
+                // Reject distorted samples that hit geometry in front of the water, including
+                // neighbouring texels of the downsampled opaque image at silhouettes.
+                float2 normalVS = TransformWorldToViewDir(normalWS).xy;
+                float2 refractedUV = screenUV + normalVS * _RefractionStrength * saturate(depth);
+                float2 guard = 2 * _CameraOpaqueTexture_TexelSize.xy;
+                bool validUV = all(refractedUV > guard) && all(refractedUV < 1 - guard);
+                refractedUV = clamp(refractedUV, guard, 1 - guard);
+                float refractedDepth = LinearEyeDepth(SampleSceneDepth(refractedUV), _ZBufferParams);
+                float closest = refractedDepth;
+                closest = min(closest, LinearEyeDepth(SampleSceneDepth(refractedUV + float2(guard.x, 0)), _ZBufferParams));
+                closest = min(closest, LinearEyeDepth(SampleSceneDepth(refractedUV - float2(guard.x, 0)), _ZBufferParams));
+                closest = min(closest, LinearEyeDepth(SampleSceneDepth(refractedUV + float2(0, guard.y)), _ZBufferParams));
+                closest = min(closest, LinearEyeDepth(SampleSceneDepth(refractedUV - float2(0, guard.y)), _ZBufferParams));
+                if (!validUV || closest <= waterDepth + 0.03)
+                {
+                    refractedUV = screenUV;
+                    refractedDepth = sceneDepth;
+                }
+                float pathLength = min(80, max(0, refractedDepth - waterDepth) /
+                    max(abs(TransformWorldToViewDir(viewDirection).z), 0.05));
+                // Estimated sediment optics. Rain reduces visibility by at most 25 percent.
+                float secchi = max(0.2, _SecchiDepth * (1 - 0.25 * saturate(_RiverRain)));
+                float3 sigma = (1.7 / secchi) * float3(0.75, 1, 1.6);
+                half3 transmission = exp(-sigma * pathLength);
+                half3 waterColor = SampleSceneColor(refractedUV) * transmission +
+                    _ScatterColor.rgb * lighting * (1 - transmission);
                 waterColor = lerp(waterColor, _AeratedColor.rgb * lighting, aeration * 0.85h);
 
-                half perceptualRoughness = saturate(1.0h - _Smoothness + _RiverRain * 0.15h);
+                float3 normalDx = ddx(normalWS), normalDy = ddy(normalWS);
+                float normalVariance = min(0.035, 0.5 * (dot(normalDx, normalDx) + dot(normalDy, normalDy)));
+                half baseRoughness = saturate(1.0h - _Smoothness + _RiverRain * 0.15h);
+                half perceptualRoughness = saturate(sqrt(baseRoughness * baseRoughness + normalVariance));
                 half3 reflection = GlossyEnvironmentReflection(
                     reflect(-viewDirection, normalWS), perceptualRoughness, 1.0h);
+                if (_RiverOpticsProbe > 0.5) return half4(reflection, 1);
                 reflection = lerp(reflection, reflection * _ReflectionTint.rgb, 0.48h);
 
                 float4 reflected = mul(_RiverReflectionVP, float4(positionWS, 1));
@@ -595,17 +626,26 @@
                 #if UNITY_UV_STARTS_AT_TOP
                     reflectionUV.y = 1 - reflectionUV.y;
                 #endif
-                // A tilted facet bends the mirrored ray by an angle, so the offset does not fade
-                // with distance; it stretches reflections along the view as on real water.
                 float2 viewRight = normalize(UNITY_MATRIX_V[0].xz + 0.0001);
                 float2 viewForward = normalize(-UNITY_MATRIX_V[2].xz + 0.0001);
-                reflectionUV += float2(dot(normalWS.xz, viewRight) * 0.5, dot(normalWS.xz, viewForward)) *
-                    _ReflectionDistortion;
-                // Clamped at the screen edge instead of falling back: the environment probe is not
-                // rebaked for the cloud sky and renders there as a black fringe.
-                half3 mirrored = SAMPLE_TEXTURE2D_LOD(_RiverPlanarReflection, sampler_RiverPlanarReflection,
-                    saturate(reflectionUV), lerp(0.4, 2.4, perceptualRoughness) + aeration * 2).rgb;
-                reflection = lerp(reflection, mirrored, _RiverReflectionAvailable);
+                reflectionUV += float2(dot(normalWS.xz, viewRight) * 0.5, dot(normalWS.xz, viewForward)) * _ReflectionDistortion;
+                float edge = min(min(reflectionUV.x, 1 - reflectionUV.x), min(reflectionUV.y, 1 - reflectionUV.y));
+                float planarWeight = smoothstep(0, 0.08, edge) * step(0.001, reflected.w) * _RiverReflectionAvailable;
+                float mip = perceptualRoughness * 5 + aeration * 2;
+                half3 mirrored = SAMPLE_TEXTURE2D_LOD(_RiverPlanarReflection, sampler_RiverPlanarReflection, saturate(reflectionUV), mip).rgb;
+                if (_RiverNight > 0.5)
+                {
+                    // Ripple slope variance spreads point lights mainly along the reflected view ray.
+                    float stretch = min(0.025, 0.003 + normalVariance * 0.4 + baseRoughness * 0.015);
+                    float2 offset = float2(0, stretch);
+                    mirrored *= 0.375;
+                    mirrored += (SAMPLE_TEXTURE2D_LOD(_RiverPlanarReflection, sampler_RiverPlanarReflection, saturate(reflectionUV + offset), mip).rgb +
+                        SAMPLE_TEXTURE2D_LOD(_RiverPlanarReflection, sampler_RiverPlanarReflection, saturate(reflectionUV - offset), mip).rgb) * 0.25;
+                    mirrored += (SAMPLE_TEXTURE2D_LOD(_RiverPlanarReflection, sampler_RiverPlanarReflection, saturate(reflectionUV + offset * 2), mip).rgb +
+                        SAMPLE_TEXTURE2D_LOD(_RiverPlanarReflection, sampler_RiverPlanarReflection, saturate(reflectionUV - offset * 2), mip).rgb) * 0.0625;
+                    planarWeight *= smoothstep(0, stretch * 2 + 0.02, edge);
+                }
+                reflection = lerp(reflection, mirrored, planarWeight);
 
                 half reflectance = saturate(fresnel * lerp(0.75h, 1.15h, saturate(_ReflectionStrength))) *
                     (1 - aeration * 0.5h);
@@ -615,6 +655,7 @@
                 half NdotH = saturate(dot(normalWS, halfDirection));
                 // Far water averages many facets, so its glint widens and dims.
                 half exponent = lerp(lerp(80.0h, 1200.0h, _Smoothness), 60.0h, saturate(distanceToCamera / 900));
+                exponent = max(40, exponent / (1 + 2 * exponent * normalVariance));
                 half glint = pow(NdotH, exponent) * (exponent + 8) / (8 * PI);
                 half sunFresnel = 0.02h + 0.98h * pow(1.0h - saturate(dot(halfDirection, viewDirection)), 5.0h);
                 color += mainLight.color * mainLight.shadowAttenuation *
@@ -633,8 +674,6 @@
                 color = MixFog(color, InitializeInputDataFog(float4(positionWS, 1), input.fogFactor));
 
                 // Reveal wet sediment at the contact edge, with suspended silt hiding the deeper bed.
-                half transmission = exp(-depth * lerp(2.4, 4.0, saturate(_Turbidity)));
                 half contact = smoothstep(0, 0.12, opticalDepth);
-                half alpha = saturate((1 - transmission + transmission * reflectance) * _Opacity + foam) * contact;
-                return half4(color, alpha);
+                return half4(color, contact);
             }

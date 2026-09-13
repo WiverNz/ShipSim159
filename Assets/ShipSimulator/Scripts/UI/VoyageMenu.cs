@@ -30,6 +30,11 @@ namespace ShipSimulator.UI
         private bool canStartCurrent;
         private float resumeScale = 1f;
         private VoyageSave pendingSave;
+        private VesselCatalogue catalogue;
+        private Text vesselNameLabel;
+        private Text vesselLengthLabel;
+        private Text vesselClassLabel;
+        private string projectName = "507B";
         private GameObject overlay;
         private RectTransform pageRoot;
         private Text heading;
@@ -92,13 +97,16 @@ namespace ShipSimulator.UI
             SavePath = VoyageSaveStore.DefaultPath;
             font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             VoyageSettings.Apply();
+            catalogue = VesselCatalogue.Load();
             BuildShell();
+            UpdateVesselLabels();
             overlay.SetActive(false);
         }
 
         public void BindScene()
         {
             loading = true;
+            VesselSwap.Apply(catalogue, VesselSelection.SelectedId);
             canStartCurrent = pendingSave == null && !launchAfterLoad;
             hud = null;
             open = true;
@@ -216,7 +224,9 @@ namespace ShipSimulator.UI
         public void StartVoyage(string scene)
         {
             if (!VoyageSave.IsVoyageScene(scene) || loading) return;
-            if (canStartCurrent && !hasVoyage && SceneManager.GetActiveScene().name == scene)
+            // A different vessel needs a fresh scene, because the HUD is already built for this one.
+            if (canStartCurrent && !hasVoyage && SceneManager.GetActiveScene().name == scene &&
+                VesselSwap.IdOf(FindAnyObjectByType<ShipPhysicsController>()) == VesselSelection.SelectedId)
             {
                 canStartCurrent = false;
                 hasVoyage = true;
@@ -250,6 +260,8 @@ namespace ShipSimulator.UI
             try
             {
                 pendingSave = VoyageSaveStore.Read(SavePath);
+                VesselSelection.SelectedId = pendingSave.VesselIdOrDefault;
+                UpdateVesselLabels();
                 LoadScene(pendingSave.scene);
             }
             catch (Exception error)
@@ -280,6 +292,7 @@ namespace ShipSimulator.UI
             var save = new VoyageSave
             {
                 scene = ship.gameObject.scene.name, savedUtc = DateTime.UtcNow.ToString("O"),
+                vesselId = VesselSwap.IdOf(ship),
                 position = ship.Body.position, rotation = ship.Body.rotation.normalized,
                 velocity = ship.Body.linearVelocity, angularVelocity = ship.Body.angularVelocity,
                 throttle = ship.ThrottleCommand, actualThrottle = ship.ActualThrottle,
@@ -306,6 +319,8 @@ namespace ShipSimulator.UI
             ShipPhysicsController ship = FindAnyObjectByType<ShipPhysicsController>();
             if (ship == null || !ship.enabled || ship.gameObject.scene.name != save.scene)
                 throw new InvalidOperationException("The saved vessel's scenario is not loaded.");
+            if (VesselSwap.IdOf(ship) != save.VesselIdOrDefault)
+                throw new InvalidOperationException("The saved vessel is not the one in this scenario.");
             ship.RestoreVoyage(save);
             ship.Grounding?.RestoreState(save.grounding);
             FindAnyObjectByType<GorodetsScenarioController>()?.RestoreState(save.mission);
@@ -334,7 +349,7 @@ namespace ShipSimulator.UI
             }
             else
             {
-                ActionButton("New voyage", "Choose a river passage", y, ShowVoyages, true); y += 80;
+                ActionButton("New voyage", "Choose a vessel and a river passage", y, ShowVessels, true); y += 80;
             }
             bool exists = File.Exists(SavePath);
             string savedDescription = "No saved voyage yet";
@@ -351,10 +366,31 @@ namespace ShipSimulator.UI
             }
             ActionButton(hasVoyage ? "Load saved voyage" : "Continue voyage", savedDescription, y,
                 () => { if (hasVoyage) Confirm("Load saved voyage?", "Unsaved progress in this passage will be lost.", LoadVoyage); else LoadVoyage(); }, false, valid); y += 80;
-            if (hasVoyage) { ActionButton("New voyage", "Choose a different passage", y, () => Confirm("Leave this passage?", "Save first if you want to keep your current progress.", ShowVoyages)); y += 80; }
+            if (hasVoyage) { ActionButton("New voyage", "Choose a different vessel or passage", y, () => Confirm("Leave this passage?", "Save first if you want to keep your current progress.", ShowVessels)); y += 80; }
             ActionButton("Settings", "Display, audio & camera", y, ShowSettings); y += 80;
             ActionButton("Leave the bridge", Application.isEditor ? "Exit Play Mode" : "Quit to desktop", y,
                 () => Confirm("Leave the bridge?", hasVoyage ? "Unsaved progress will be lost. You can go back and save." : "Your saved voyage will be kept for your return.", Quit));
+            SelectFirst();
+        }
+
+        private void ShowVessels()
+        {
+            if (catalogue == null || catalogue.Entries.Count == 0) { ShowVoyages(); return; }
+            ShowPage("vessels", "CHOOSE YOUR COMMAND", "Select a vessel");
+            float y = 0;
+            foreach (VesselCatalogue.Entry entry in catalogue.Entries)
+            {
+                VesselData data = entry.LoadData();
+                string id = entry.id;
+                ActionButton(data != null ? data.identity.displayName : id, VesselCatalogue.Entry.Describe(data), y, () =>
+                {
+                    VesselSelection.SelectedId = id;
+                    UpdateVesselLabels();
+                    ShowVoyages();
+                }, id == VesselSelection.SelectedId);
+                y += 94;
+            }
+            ActionButton("Back", "Return to the menu", 462, ShowHome);
             SelectFirst();
         }
 
@@ -363,9 +399,29 @@ namespace ShipSimulator.UI
             ShowPage("voyages", "CHART YOUR COURSE", "Select a passage");
             ActionButton("River familiarisation", "Open river  /  Learn the vessel and controls", 0, () => StartVoyage("RiverTrainingScene"), true);
             ActionButton("Gorodets passage", "2.27 km  /  Shoals, currents & leading marks", 94, () => StartVoyage("GorodetsTrainingScene"));
-            Label(pageRoot, "YOUR VESSEL\n\nVolgo-Don 507B\n138.3 m river cargo vessel\n\nW / S  Telegraph     A / D  Rudder\nV  Camera     Right mouse  Look around\nESC  Pause, settings & save", 20, Muted, 0, 214, 450, 224);
-            ActionButton("Back", "Return to the menu", 462, ShowHome);
+            VesselCatalogue.Entry vessel = SelectedVessel();
+            VesselData data = vessel?.LoadData();
+            string vesselText = data != null
+                ? data.identity.displayName + "\n" + VesselCatalogue.Entry.Describe(data)
+                : "Volgo-Don Project 507B";
+            Label(pageRoot, "YOUR VESSEL\n\n" + vesselText + "\n\nW / S  Engines     A / D  Rudder\nV  Camera     Right mouse  Look around\nESC  Pause, settings & save", 20, Muted, 0, 214, 450, 224);
+            ActionButton("Back", "Choose another vessel", 462, ShowVessels);
             SelectFirst();
+        }
+
+        private VesselCatalogue.Entry SelectedVessel() => catalogue != null ? catalogue.Find(VesselSelection.SelectedId) : null;
+
+        private void UpdateVesselLabels()
+        {
+            VesselCatalogue.Entry vessel = SelectedVessel();
+            VesselData data = vessel?.LoadData();
+            if (vesselNameLabel != null) vesselNameLabel.text = vessel != null ? vessel.menuName : "VOLGO-DON\n507B";
+            if (vesselClassLabel != null) vesselClassLabel.text = vessel != null ? vessel.vesselClass : "RIVER CLASS\nCARGO VESSEL";
+            if (vesselLengthLabel != null)
+                vesselLengthLabel.text = (data != null ? data.dimensions.lengthOverallM.ToString("0.0") : "138.3") + " m\nLENGTH OVERALL";
+            projectName = data != null ? data.identity.project : "507B";
+            if (status != null && !hasVoyage && !loading)
+                status.text = "PROJECT " + projectName + "  /  RIVER NAVIGATION SIMULATOR";
         }
 
         public void ShowSettings()
@@ -398,7 +454,7 @@ namespace ShipSimulator.UI
             foreach (Transform child in pageRoot) { child.gameObject.SetActive(false); Destroy(child.gameObject); }
             eyebrow.text = kicker;
             heading.text = title;
-            status.text = hasVoyage ? "PASSAGE PAUSED  /  Your vessel is holding position." : "PROJECT 507B  /  RIVER NAVIGATION SIMULATOR";
+            status.text = hasVoyage ? "PASSAGE PAUSED  /  Your vessel is holding position." : "PROJECT " + projectName + "  /  RIVER NAVIGATION SIMULATOR";
         }
 
         private void BuildShell()
@@ -428,10 +484,10 @@ namespace ShipSimulator.UI
             Label(layout, "INLAND\nPASSAGES", 76, White, 60, 117, 700, 184, FontStyle.Bold);
             Label(layout, "Take the helm. Read the river.", 25, Muted, 65, 313, 680, 45);
             Label(layout, "N", 22, Brass, 382, 354, 30, 34);
-            Label(layout, "VOLGO-DON\n507B", 18, Brass, 442, 487, 210,  60);
+            vesselNameLabel = Label(layout, "VOLGO-DON\n507B", 18, Brass, 442, 487, 210,  60);
             Box(layout, "Vessel rule", 64, 749, 685, 1, Muted * new Color(1, 1, 1, 0.4f));
-            Label(layout, "138.3 m\nLENGTH OVERALL", 19, White, 64, 771, 210, 65);
-            Label(layout, "RIVER CLASS\nCARGO VESSEL", 19, White, 318, 771, 210, 65);
+            vesselLengthLabel = Label(layout, "138.3 m\nLENGTH OVERALL", 19, White, 64, 771, 210, 65);
+            vesselClassLabel = Label(layout, "RIVER CLASS\nCARGO VESSEL", 19, White, 318, 771, 210, 65);
             Label(layout, "YOUR BRIDGE.\nYOUR PASSAGE.", 19, Brass, 576, 771, 210, 65);
             Label(layout, "Engineering & gameplay prototype. Estimated navigation data.", 14, Muted, 64, 851, 720, 25);
             eyebrow = Label(layout, "", 16, Brass, 885, 64, 495, 30);

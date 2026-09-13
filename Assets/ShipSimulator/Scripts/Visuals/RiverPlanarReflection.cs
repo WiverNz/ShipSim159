@@ -10,6 +10,9 @@ namespace ShipSimulator.Visuals
         [SerializeField, Range(256, 1024)] private int resolution = 768;
         private Camera reflectionCamera;
         private RenderTexture reflection;
+        private RenderTexture filterScratch;
+        private ComputeShader reflectionFilter;
+        public bool UsesGaussianFilter => reflectionFilter != null && filterScratch != null;
         private static bool rendering;
         private static readonly int TextureId = Shader.PropertyToID("_RiverPlanarReflection");
         private static readonly int MatrixId = Shader.PropertyToID("_RiverReflectionVP");
@@ -59,6 +62,7 @@ namespace ShipSimulator.Visuals
                 GL.invertCulling = !inverted;
                 RenderPipeline.SubmitRenderRequest(reflectionCamera,
                     new UniversalRenderPipeline.SingleCameraRequest { destination = reflection });
+                FilterReflection();
                 Shader.SetGlobalTexture(TextureId, reflection);
                 Shader.SetGlobalMatrix(MatrixId, GL.GetGPUProjectionMatrix(reflectionCamera.projectionMatrix, true) * view);
                 Shader.SetGlobalFloat(EnabledId, 1);
@@ -89,12 +93,45 @@ namespace ShipSimulator.Visuals
             }
             if (reflection != null && reflection.width == resolution) return;
             if (reflection != null) Release(reflection);
+            if (filterScratch != null) Release(filterScratch);
+            reflectionFilter = SystemInfo.supportsComputeShaders ? Resources.Load<ComputeShader>("RiverReflectionFilter") : null;
             reflection = new RenderTexture(resolution, resolution, 16, RenderTextureFormat.ARGBHalf)
             {
                 name = "River planar reflection", hideFlags = HideFlags.HideAndDontSave,
-                useMipMap = true, autoGenerateMips = true, filterMode = FilterMode.Trilinear
+                useMipMap = true, autoGenerateMips = false, enableRandomWrite = reflectionFilter != null, filterMode = FilterMode.Trilinear
             };
             reflection.Create();
+            if (reflectionFilter != null)
+            {
+                filterScratch = new RenderTexture(reflection.descriptor)
+                { name = "River reflection filter scratch", hideFlags = HideFlags.HideAndDontSave };
+                filterScratch.Create();
+            }
+        }
+
+        private void FilterReflection()
+        {
+            if (!UsesGaussianFilter) { reflection.GenerateMips(); return; }
+            int kernel = reflectionFilter.FindKernel("Blur");
+            int levels = reflection.mipmapCount;
+            for (int mip = 1; mip < levels; mip++)
+            {
+                int size = Mathf.Max(1, resolution >> mip);
+                float roughness = (float)mip / (levels - 1);
+                // Approximate the increasing GGX angular width with a separable Gaussian chain.
+                float radius = 0.65f + roughness * roughness * 1.5f;
+                reflectionFilter.SetInt("_Size", size);
+                reflectionFilter.SetFloat("_SourceMip", mip - 1);
+                reflectionFilter.SetVector("_Direction", new Vector4(radius / size, 0, 0, 0));
+                reflectionFilter.SetTexture(kernel, "_Source", reflection);
+                reflectionFilter.SetTexture(kernel, "_Destination", filterScratch, mip);
+                reflectionFilter.Dispatch(kernel, (size + 7) / 8, (size + 7) / 8, 1);
+                reflectionFilter.SetFloat("_SourceMip", mip);
+                reflectionFilter.SetVector("_Direction", new Vector4(0, radius / size, 0, 0));
+                reflectionFilter.SetTexture(kernel, "_Source", filterScratch);
+                reflectionFilter.SetTexture(kernel, "_Destination", reflection, mip);
+                reflectionFilter.Dispatch(kernel, (size + 7) / 8, (size + 7) / 8, 1);
+            }
         }
 
         private void OnDisable()
@@ -103,6 +140,9 @@ namespace ShipSimulator.Visuals
             Shader.SetGlobalFloat(EnabledId, 0);
             if (reflectionCamera != null) Release(reflectionCamera.gameObject);
             if (reflection != null) Release(reflection);
+            if (filterScratch != null) Release(filterScratch);
+            filterScratch = null;
+            reflectionFilter = null;
             reflectionCamera = null;
             reflection = null;
         }

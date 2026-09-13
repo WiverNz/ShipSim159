@@ -31,10 +31,12 @@ namespace ShipSimulator.Tests
             yield return null;
         }
 
+        private static readonly string[] VesselFiles = { "VolgoDon507B.json", "VolgoBalt295AR.json", "Volgoneft1577.json" };
+
         [UnityTest]
-        public IEnumerator LoadedVessel_FloatsLevelAtItsDesignDraft()
+        public IEnumerator LoadedVessel_FloatsLevelAtItsDesignDraft([ValueSource(nameof(VesselFiles))] string file)
         {
-            VesselData data = LoadVolgoDon();
+            VesselData data = LoadVessel(file);
             ShipPhysicsController ship = CreateShip(data, float.PositiveInfinity, false);
             Run(ship, 60f);
 
@@ -186,9 +188,11 @@ namespace ShipSimulator.Tests
             }
         }
 
-        private static VesselData LoadVolgoDon()
+        private static VesselData LoadVolgoDon() => LoadVessel("VolgoDon507B.json");
+
+        private static VesselData LoadVessel(string file)
         {
-            string path = Path.Combine(Application.dataPath, "ShipSimulator/Data/Vessels/VolgoDon507B.json");
+            string path = Path.Combine(Application.dataPath, "ShipSimulator/Data/Vessels", file);
             return JsonUtility.FromJson<VesselData>(File.ReadAllText(path));
         }
     }

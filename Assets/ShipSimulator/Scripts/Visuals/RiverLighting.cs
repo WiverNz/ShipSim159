@@ -164,6 +164,7 @@ namespace ShipSimulator.Visuals
             FindControllers(true);
             lastWeather = CloudCover();
             lastNight = clock != null && clock.IsNight;
+            Shader.SetGlobalFloat("_RiverNight", lastNight ? 1 : 0);
             if (sun != null)
             {
                 sun.intensity = (lastNight ? 0.28f : 1.25f) * Mathf.Lerp(1, 0.22f, lastWeather);

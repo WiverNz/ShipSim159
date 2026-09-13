@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f213184194e24be4db7f06fd3015ef23, type: 3}
+  m_Name: VesselCatalogue
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.VesselCatalogue
+  entries:
+  - id: volgodon-507b
+    menuName: 'VOLGO-DON
+
+      507B'
+    vesselClass: 'RIVER CLASS
+
+      CARGO VESSEL'
+    prefab: {fileID: 4893004279475231000, guid: 442982955473cc646a541585aae670a2, type: 3}
+  - id: volgobalt-295ar
+    menuName: 'VOLGO-BALT
+
+      2-95A/R'
+    vesselClass: 'RIVER-SEA
+
+      CARGO VESSEL'
+    prefab: {fileID: 6629647057830981630, guid: 53cb6e936c9a9fb4c8cb3257da1ef579, type: 3}
+  - id: volgoneft-1577
+    menuName: 'VOLGONEFT
+
+      1577'
+    vesselClass: 'RIVER-SEA
+
+      OIL TANKER'
+    prefab: {fileID: 7529108598937211877, guid: 892b5d6724dde9144a765df76fc47551, type: 3}

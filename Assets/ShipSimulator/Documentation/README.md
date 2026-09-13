@@ -16,8 +16,9 @@ vessel. It is not a validated maritime training product.
   sea trials, and simulation limitations.
 - [ShipDynamicsRealismApproach.md](ShipDynamicsRealismApproach.md): the research
   and roadmap behind the physics model, with implementation status.
-- [VolgoDon507B_Sources.md](VolgoDon507B_Sources.md): published vessel
-  particulars, sources, confidence, and estimated parameters.
+- [VolgoDon507B_Sources.md](VolgoDon507B_Sources.md), [VolgoBalt295AR_Sources.md](VolgoBalt295AR_Sources.md),
+  [Volgoneft1577_Sources.md](Volgoneft1577_Sources.md): published particulars,
+  sources, confidence, and estimated parameters for each vessel.
 - [NextSteps.md](NextSteps.md): prioritized engineering and simulation work.
 - [Project context](../../../.codex/PROJECT_CONTEXT.md): implementation history,
   verification status, and continuation notes for automated contributors.

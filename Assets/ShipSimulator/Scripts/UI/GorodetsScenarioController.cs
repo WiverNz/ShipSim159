@@ -43,6 +43,16 @@ namespace ShipSimulator.UI
         public float LeadingLineErrorDeg { get; private set; }
         public string Instruction => BuildInstruction();
         public float LocalSpeedLimitMps { get; private set; } = 3.333f;
+        public ShipPhysicsController Ship => ship;
+
+        public void SetShip(ShipPhysicsController targetShip, GroundingController groundingController)
+        {
+            ship = targetShip;
+            grounding = groundingController;
+            if (ship == null) return;
+            startPosition = ship.transform.position;
+            startRotation = ship.transform.rotation;
+        }
 
         public void Configure(ShipPhysicsController targetShip, FairwayRoute fairway,
             ScenarioBathymetry depthProvider, GroundingController groundingController,

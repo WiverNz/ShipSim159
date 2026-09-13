@@ -27,16 +27,19 @@ namespace ShipSimulator.Visuals
             };
             materials.Add(fixtureMaterial);
 
-            CreateLight("Port Navigation Light", new Vector3(-6.6f, 11.8f, -44f),
-                10.7f, new Color(1f, 0.03f, 0.02f), 5.5f, 45f, -56.25f, 112.5f);
-            CreateLight("Starboard Navigation Light", new Vector3(6.6f, 11.8f, -44f),
-                10.7f, new Color(0.02f, 1f, 0.18f), 5.5f, 45f, 56.25f, 112.5f);
-            CreateLight("Forward Masthead Light", new Vector3(0f, 14f, 42f),
-                6.8f, Color.white, 6f, 70f, 0, 225);
-            CreateLight("Aft Masthead Light", new Vector3(0f, 18f, -46f),
-                12.4f, Color.white, 6f, 70f, 0, 225);
-            CreateLight("Stern Light", new Vector3(0f, 8.5f, -67f),
-                6.6f, Color.white, 4.5f, 45f, 180, 135);
+            // Fixture positions belong to the vessel model; a vessel without a layout gets the 507B defaults.
+            VesselLayout layout = GetComponent<VesselLayout>();
+            if (layout == null) layout = gameObject.AddComponent<VesselLayout>();
+            CreateLight("Port Navigation Light", layout.PortSideLight,
+                layout.SideLightSupportBaseY, new Color(1f, 0.03f, 0.02f), 5.5f, 45f, -56.25f, 112.5f);
+            CreateLight("Starboard Navigation Light", layout.StarboardSideLight,
+                layout.SideLightSupportBaseY, new Color(0.02f, 1f, 0.18f), 5.5f, 45f, 56.25f, 112.5f);
+            CreateLight("Forward Masthead Light", layout.ForwardMastheadLight,
+                layout.ForwardMastheadSupportBaseY, Color.white, 6f, 70f, 0, 225);
+            CreateLight("Aft Masthead Light", layout.AftMastheadLight,
+                layout.AftMastheadSupportBaseY, Color.white, 6f, 70f, 0, 225);
+            CreateLight("Stern Light", layout.SternLight,
+                layout.SternLightSupportBaseY, Color.white, 4.5f, 45f, 180, 135);
             SetNight(false);
         }
 

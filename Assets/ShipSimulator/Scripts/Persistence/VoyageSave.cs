@@ -10,6 +10,8 @@ namespace ShipSimulator.Persistence
         public int version = 1;
         public string scene;
         public string savedUtc;
+        // Catalogue id; empty in saves made before vessel selection, which always sailed the 507B.
+        public string vesselId;
         public Vector3 position;
         public Quaternion rotation = Quaternion.identity;
         public Vector3 velocity;
@@ -35,6 +37,9 @@ namespace ShipSimulator.Persistence
         public MissionSave mission = new MissionSave();
         public GroundingSave grounding = new GroundingSave();
 
+        public string VesselIdOrDefault =>
+            string.IsNullOrEmpty(vesselId) ? ShipSimulator.Physics.VesselCatalogue.DefaultVesselId : vesselId;
+
         public static bool IsVoyageScene(string name) =>
             name == "RiverTrainingScene" || name == "GorodetsTrainingScene";
 
@@ -45,6 +50,8 @@ namespace ShipSimulator.Persistence
             if (!DateTime.TryParse(savedUtc, out _)) throw new InvalidDataException("The save date is missing or invalid.");
             if (camera == null || mission == null || grounding == null)
                 throw new InvalidDataException("The save is incomplete.");
+            if (vesselId != null && vesselId.Length > 64)
+                throw new InvalidDataException("The saved vessel id is invalid.");
             Check(position.x, -1000000f, 1000000f); Check(position.y, -1000000f, 1000000f); Check(position.z, -1000000f, 1000000f);
             Check(velocity.magnitude, 0f, 1000f); Check(angularVelocity.magnitude, 0f, 100f);
             Check(rotation.x, -1f, 1f); Check(rotation.y, -1f, 1f);

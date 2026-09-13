@@ -5,22 +5,33 @@ using UnityEngine;
 namespace ShipSimulator.Tests
 {
     // Virtual sea trials on the pure simulator. Deep-water results are checked against the IMO MSC.137(76)
-    // envelope as a sanity bound; they are not validated Project 507B trial data.
+    // envelope as a sanity bound; they are not validated trial data for any of these vessels.
     public sealed class SeaTrialsTests
     {
         private const float Deep = float.PositiveInfinity;
 
-        [Test]
-        public void FullAhead_DeepWater_ReachesPublishedLoadedSpeed()
+        // Published loaded service speeds: 507B 10 kn (MEB), Volgo-Balt 2-95A/R 10 kn (FleetPhoto, korabel.ru),
+        // Volgoneft 1577 20 km/h (korabel.ru, FleetPhoto).
+        private static readonly object[] PublishedSpeeds =
         {
-            float speedKnots = ManoeuvringTrials.SteadySpeed(VesselFixtures.VolgoDon(), 1f, Deep) / 0.514444f;
-            Assert.That(speedKnots, Is.EqualTo(10f).Within(0.7f));
+            new object[] { VesselFixtures.VolgoDonFile, 10f },
+            new object[] { VesselFixtures.VolgoBaltFile, 10f },
+            new object[] { VesselFixtures.VolgoneftFile, 20f / 1.852f }
+        };
+
+        [TestCaseSource(nameof(PublishedSpeeds))]
+        public void FullAhead_DeepWater_ReachesPublishedLoadedSpeed(string file, float publishedKnots)
+        {
+            float speedKnots = ManoeuvringTrials.SteadySpeed(VesselFixtures.Parameters(file), 1f, Deep) / 0.514444f;
+            Assert.That(speedKnots, Is.EqualTo(publishedKnots).Within(0.5f));
         }
 
-        [Test]
-        public void TelegraphSteps_GiveIncreasingSpeeds()
+        [TestCase(VesselFixtures.VolgoDonFile)]
+        [TestCase(VesselFixtures.VolgoBaltFile)]
+        [TestCase(VesselFixtures.VolgoneftFile)]
+        public void TelegraphSteps_GiveIncreasingSpeeds(string file)
         {
-            VesselParameters p = VesselFixtures.VolgoDon();
+            VesselParameters p = VesselFixtures.Parameters(file);
             float slow = ManoeuvringTrials.SteadySpeed(p, 0.32f, Deep);
             float half = ManoeuvringTrials.SteadySpeed(p, 0.65f, Deep);
             float full = ManoeuvringTrials.SteadySpeed(p, 1f, Deep);
@@ -29,10 +40,12 @@ namespace ShipSimulator.Tests
             Assert.That(full, Is.GreaterThan(half));
         }
 
-        [Test]
-        public void TurningCircle_MeetsImoCriteriaAndIsSymmetric()
+        [TestCase(VesselFixtures.VolgoDonFile)]
+        [TestCase(VesselFixtures.VolgoBaltFile)]
+        [TestCase(VesselFixtures.VolgoneftFile)]
+        public void TurningCircle_MeetsImoCriteriaAndIsSymmetric(string file)
         {
-            VesselParameters p = VesselFixtures.VolgoDon();
+            VesselParameters p = VesselFixtures.Parameters(file);
             TurningCircleResult starboard = ManoeuvringTrials.TurningCircle(p, 1f, Deep);
             TurningCircleResult port = ManoeuvringTrials.TurningCircle(p, -1f, Deep);
 
@@ -43,10 +56,12 @@ namespace ShipSimulator.Tests
             Assert.That(starboard.SteadySpeedMps, Is.LessThan(starboard.ApproachSpeedMps), "Speed falls in a hard turn.");
         }
 
-        [Test]
-        public void ZigZag_MeetsImoOvershootCriteria()
+        [TestCase(VesselFixtures.VolgoDonFile)]
+        [TestCase(VesselFixtures.VolgoBaltFile)]
+        [TestCase(VesselFixtures.VolgoneftFile)]
+        public void ZigZag_MeetsImoOvershootCriteria(string file)
         {
-            VesselParameters p = VesselFixtures.VolgoDon();
+            VesselParameters p = VesselFixtures.Parameters(file);
             ZigZagResult ten = ManoeuvringTrials.ZigZag(p, 10f, Deep);
             ZigZagResult twenty = ManoeuvringTrials.ZigZag(p, 20f, Deep);
 
@@ -56,20 +71,24 @@ namespace ShipSimulator.Tests
             Assert.That(ten.InitialTurningDistanceM, Is.LessThanOrEqualTo(2.5f * p.Lpp));
         }
 
-        [Test]
-        public void CrashStop_TrackReachIsWithinImoLimit()
+        [TestCase(VesselFixtures.VolgoDonFile)]
+        [TestCase(VesselFixtures.VolgoBaltFile)]
+        [TestCase(VesselFixtures.VolgoneftFile)]
+        public void CrashStop_TrackReachIsWithinImoLimit(string file)
         {
-            VesselParameters p = VesselFixtures.VolgoDon();
+            VesselParameters p = VesselFixtures.Parameters(file);
             StoppingResult stop = ManoeuvringTrials.CrashStop(p, Deep);
 
             Assert.That(stop.TrackReachM, Is.InRange(1f * p.Lpp, 15f * p.Lpp));
             Assert.That(stop.TimeS, Is.GreaterThan(30f));
         }
 
-        [Test]
-        public void ShallowWater_SlowsTheVesselWidensTheTurnAndSquatsByTheBow()
+        [TestCase(VesselFixtures.VolgoDonFile)]
+        [TestCase(VesselFixtures.VolgoBaltFile)]
+        [TestCase(VesselFixtures.VolgoneftFile)]
+        public void ShallowWater_SlowsTheVesselWidensTheTurnAndSquatsByTheBow(string file)
         {
-            VesselParameters p = VesselFixtures.VolgoDon();
+            VesselParameters p = VesselFixtures.Parameters(file);
             float deepSpeed = ManoeuvringTrials.SteadySpeed(p, 1f, Deep);
             ManoeuvringSimulator shallow = ManoeuvringTrials.Approach(p, 1f, 4.6f);
             TurningCircleResult deepTurn = ManoeuvringTrials.TurningCircle(p, 1f, Deep);

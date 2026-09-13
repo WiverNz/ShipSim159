@@ -1,4 +1,5 @@
 using ShipSimulator.Physics;
+using ShipSimulator.Visuals;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -43,11 +44,29 @@ namespace ShipSimulator.CameraSystem
         public int ViewCount => (localViews != null ? localViews.Length : 0) + 1;
         public string ViewName => GetViewName(viewIndex);
         private bool IsNavigatorView => viewIndex == ViewCount - 1;
+        private VesselLayout layout;
+        // Views are authored for the 507B; other vessels scale them by length and use their own bridge.
+        private float Scale => layout != null ? layout.CameraScale : 1f;
+        private Vector3 NavigatorPosition => layout != null ? layout.NavigatorEye : navigatorPosition;
+        private Vector3 NavigatorLook => layout != null ? layout.NavigatorLookAt : navigatorLookOffset;
+        private Vector3 LookOffset => lookOffset * Scale;
+        private float MinDistance => minDistance * Scale;
+        private float MaxDistance => maxDistance * Scale;
+        public ShipPhysicsController Target => target;
 
         private void Awake()
         {
             controlledCamera = GetComponent<Camera>();
+            layout = target != null ? target.GetComponent<VesselLayout>() : null;
             ResetOrbitToView();
+        }
+
+        public void SetTarget(ShipPhysicsController ship)
+        {
+            target = ship;
+            layout = ship != null ? ship.GetComponent<VesselLayout>() : null;
+            velocity = Vector3.zero;
+            if (!IsNavigatorView) ResetOrbitToView();
         }
 
         private void OnDisable()
@@ -69,10 +88,10 @@ namespace ShipSimulator.CameraSystem
             if (!IsNavigatorView) UpdateMouseOrbit();
 
             Vector3 desired = target.transform.TransformPoint(
-                IsNavigatorView ? navigatorPosition : GetOrbitOffset());
+                IsNavigatorView ? NavigatorPosition : GetOrbitOffset());
             transform.position = Vector3.SmoothDamp(transform.position, desired, ref velocity, smoothTime);
             Vector3 lookTarget = target.transform.TransformPoint(
-                IsNavigatorView ? navigatorLookOffset : lookOffset);
+                IsNavigatorView ? NavigatorLook : LookOffset);
             Quaternion desiredRotation =
                 Quaternion.LookRotation(lookTarget - transform.position, Vector3.up);
             // Softer rotation easing for smoother view changes and turns.
@@ -118,8 +137,8 @@ namespace ShipSimulator.CameraSystem
             {
                 orbitDistance = Mathf.Clamp(
                     orbitDistance * Mathf.Exp(-scroll * zoomSensitivity),
-                    minDistance,
-                    maxDistance);
+                    MinDistance,
+                    MaxDistance);
             }
         }
 
@@ -127,8 +146,8 @@ namespace ShipSimulator.CameraSystem
         {
             if (localViews == null || localViews.Length == 0) return;
 
-            Vector3 offset = localViews[Mathf.Clamp(viewIndex, 0, localViews.Length - 1)];
-            orbitDistance = Mathf.Clamp(offset.magnitude, minDistance, maxDistance);
+            Vector3 offset = localViews[Mathf.Clamp(viewIndex, 0, localViews.Length - 1)] * Scale;
+            orbitDistance = Mathf.Clamp(offset.magnitude, MinDistance, MaxDistance);
             orbitYaw = Mathf.Atan2(offset.x, -offset.z) * Mathf.Rad2Deg;
             orbitPitch = Mathf.Clamp(
                 Mathf.Asin(offset.y / Mathf.Max(offset.magnitude, 0.001f)) * Mathf.Rad2Deg,
@@ -148,8 +167,8 @@ namespace ShipSimulator.CameraSystem
             orbitDistance = save.distance;
             velocity = Vector3.zero;
             if (target == null) return;
-            transform.position = target.transform.TransformPoint(IsNavigatorView ? navigatorPosition : GetOrbitOffset());
-            transform.LookAt(target.transform.TransformPoint(IsNavigatorView ? navigatorLookOffset : lookOffset));
+            transform.position = target.transform.TransformPoint(IsNavigatorView ? NavigatorPosition : GetOrbitOffset());
+            transform.LookAt(target.transform.TransformPoint(IsNavigatorView ? NavigatorLook : LookOffset));
         }
 
         public void NextView()

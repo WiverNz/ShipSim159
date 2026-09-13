@@ -7,6 +7,7 @@ namespace ShipSimulator.Physics
     {
         [SerializeField] private TextAsset vesselJson;
         public VesselData Data { get; private set; }
+        public TextAsset Json => vesselJson;
 
         public void Configure(TextAsset json)
         {

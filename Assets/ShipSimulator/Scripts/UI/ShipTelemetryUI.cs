@@ -65,6 +65,12 @@ namespace ShipSimulator.UI
         private RectTransform radarWarningRing;
         // One telegraph lever per engine: port first, then starboard.
         private readonly int[] telegraphIndices = { 3, 3 };
+
+        public ShipPhysicsController Ship => ship;
+        private float MaxRudderDeg => ship.Data != null ? ship.Data.rudder.maxAngleDeg : 35f;
+
+        // Effective only before Start, which builds the HUD for the vessel it has then.
+        public void SetShip(ShipPhysicsController value) => ship = value;
         private bool helpVisible;
         private bool mapVisible = true;
         private Vector3 objectivePosition = new Vector3(0f, 0f, 650f);
@@ -172,7 +178,7 @@ namespace ShipSimulator.UI
                 $"<size=14><color=#8AA0AD>under keel {underKeel:F1} m</color></size>";
             rudderText.text =
                 $"RUDDER  <size=23><b>{ship.RudderAngleDeg:+0.0;-0.0;0.0} deg</b></size>\n" +
-                $"<size=14>COMMAND {ship.RudderCommand * 35f:+0;-0;0} deg" +
+                $"<size=14>COMMAND {ship.RudderCommand * MaxRudderDeg:+0;-0;0} deg" +
                 $"{FormatBowThrusterStatus(ship.HasBowThruster, ship.BowThrusterOutput)}</size>";
             engineText.text = FormatEngineStatus();
             currentText.text =
@@ -202,7 +208,7 @@ namespace ShipSimulator.UI
 
             if (rudderNeedle != null)
                 rudderNeedle.anchoredPosition = new Vector2(
-                    Mathf.Clamp(ship.RudderAngleDeg / 35f, -1f, 1f) * 145f, -4f);
+                    Mathf.Clamp(ship.RudderAngleDeg / MaxRudderDeg, -1f, 1f) * 145f, -4f);
             if (rudderCommandNeedle != null)
                 rudderCommandNeedle.anchoredPosition = new Vector2(
                     Mathf.Clamp(ship.RudderCommand, -1f, 1f) * 145f, 9f);

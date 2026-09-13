@@ -46,6 +46,7 @@ namespace ShipSimulator.Physics
         public float DamagePoints { get; private set; }
         public float ContactNormalForceN { get; private set; }
         public RiverBottomType ContactBottomType { get; private set; }
+        public ScenarioBathymetry Bathymetry => bathymetry;
 
         public void Configure(ShipPhysicsController targetShip, ScenarioBathymetry provider)
         {

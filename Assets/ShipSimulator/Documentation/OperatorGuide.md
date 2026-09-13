@@ -5,8 +5,21 @@
 Open the project with the Unity version in `ProjectSettings/ProjectVersion.txt`, load
 `Assets/ShipSimulator/Scenes/RiverTrainingScene.unity`, and enter Play Mode.
 The maritime start menu appears when either training scene starts, including in a
-standalone player. Choose **New voyage** for River familiarisation or Gorodets passage,
-or **Continue voyage** to restore the saved passage.
+standalone player. Choose **New voyage**, pick a vessel, then River familiarisation or
+Gorodets passage; or choose **Continue voyage** to restore the saved passage with the
+vessel it was sailed in.
+
+## Vessels
+
+| Vessel | Length | Deadweight | Engines | Handling notes |
+|---|---:|---:|---|---|
+| Volgo-Don 507B | 138.3 m | 5000 t | 2 x 662 kW, bow thruster | Longest and heaviest; the bow thruster helps at low speed |
+| Volgo-Balt 2-95A/R | 113.9 m | 3474 t | 2 x 515 kW | Shortest and deepest (3.86 m draft): the tightest turn in deep water, but the least water under the keel and by far the widest turn in the Gorodets reach |
+| Volgoneft 1577 | 132.6 m | 4803 t | 2 x 736 kW | Tanker with the most power and the highest simulated speed (10.7 kn); no bow thruster |
+
+All three use the same controls. Camera views scale with the vessel's length and the
+navigator view sits in each vessel's wheelhouse. Particulars are published values;
+manoeuvring coefficients and the two generated models are estimates.
 
 ## Menu, Settings and Saved Voyages
 
@@ -23,7 +36,7 @@ Use **Save voyage** in the pause menu to record one passage. Replacing a save, l
 over an active voyage, starting a new passage and quitting require confirmation.
 There is no autosave: save before leaving if you want to keep your progress.
 
-The save restores the scenario, vessel position and rotation, linear/angular velocity,
+The save restores the scenario, the vessel type, its position and rotation, linear/angular velocity,
 commanded and actual engine/rudder state, camera view and orbit, day/night, weather,
 simulation speed, water-level/current multipliers, grounding damage and Gorodets mission
 phase, score and penalty accumulators. Transient visual effects and radar trails restart.

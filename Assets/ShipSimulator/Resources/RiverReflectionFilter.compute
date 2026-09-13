@@ -1,0 +1,19 @@
+#pragma kernel Blur
+Texture2D<float4> _Source;
+SamplerState sampler_linear_clamp;
+RWTexture2D<float4> _Destination;
+float2 _Direction;
+float _SourceMip;
+int _Size;
+[numthreads(8,8,1)]
+void Blur(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _Size || id.y >= _Size) return;
+    float2 uv = (id.xy + 0.5) / _Size;
+    float4 color = _Source.SampleLevel(sampler_linear_clamp, uv, _SourceMip) * 0.375;
+    color += (_Source.SampleLevel(sampler_linear_clamp, uv + _Direction, _SourceMip) +
+        _Source.SampleLevel(sampler_linear_clamp, uv - _Direction, _SourceMip)) * 0.25;
+    color += (_Source.SampleLevel(sampler_linear_clamp, uv + _Direction * 2, _SourceMip) +
+        _Source.SampleLevel(sampler_linear_clamp, uv - _Direction * 2, _SourceMip)) * 0.0625;
+    _Destination[id.xy] = color;
+}

@@ -71,12 +71,16 @@ namespace ShipSimulator.Editor
                         if (!File.Exists(menu.SavePath)) throw new Exception("Save button did not write a voyage.");
                         Debug.Log("MENU_SMOKE|Saved river voyage");
                         SessionState.SetInt(StageKey, 1);
+                        VesselSelection.SelectedId = "volgoneft-1577";
                         menu.StartVoyage("GorodetsTrainingScene");
                         break;
                     case 1:
                         if (scene != "GorodetsTrainingScene" || VoyageMenu.IsOpen) return;
                         if (!menu.HasVoyage) throw new Exception("New scenario has no active voyage.");
-                        Debug.Log("MENU_SMOKE|Started Gorodets passage");
+                        ShipPhysicsController tanker = UnityEngine.Object.FindAnyObjectByType<ShipPhysicsController>();
+                        if (VesselSwap.IdOf(tanker) != "volgoneft-1577" || tanker.Data == null || tanker.Data.identity.project != "1577")
+                            throw new Exception("The chosen vessel was not placed in the scenario.");
+                        Debug.Log("MENU_SMOKE|Started Gorodets passage in the Volgoneft 1577");
                         SessionState.SetInt(StageKey, 2);
                         menu.OpenPause();
                         menu.LoadVoyage();
@@ -85,13 +89,15 @@ namespace ShipSimulator.Editor
                         if (scene != "RiverTrainingScene" || VoyageMenu.IsOpen) return;
                         menu.OpenPause();
                         ShipPhysicsController ship = UnityEngine.Object.FindAnyObjectByType<ShipPhysicsController>();
+                        if (VesselSwap.IdOf(ship) != VesselCatalogue.DefaultVesselId)
+                            throw new Exception("Loading the saved voyage did not restore its vessel.");
                         if (Mathf.Abs(ship.Body.position.z - 35) > 1f || Mathf.Abs(ship.ThrottleCommand - 0.5f) > 0.001f)
                             throw new Exception("Cross-scene load did not restore the saved vessel.");
                         if (Mathf.Abs(ship.ActualThrottle - 0.35f) > 0.05f)
                             throw new Exception("Cross-scene load lost engine response state.");
                         menu.HandleEscape();
                         if (Time.timeScale != 2) throw new Exception("Resume lost saved simulation speed.");
-                        Debug.Log("MENU_SMOKE|PASS: start, save, change scenario, load, pause and resume");
+                        Debug.Log("MENU_SMOKE|PASS: start, save, change scenario and vessel, load, pause and resume");
                         SessionState.SetBool(ActiveKey, false);
                         EditorApplication.Exit(0);
                         break;

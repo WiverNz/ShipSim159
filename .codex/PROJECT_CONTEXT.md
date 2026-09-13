@@ -2,6 +2,48 @@
 
 Last updated: 2026-09-13
 
+## Volgo-Balt and Volgoneft Vessels, Vessel Selection, 2026-09-13
+
+Two more vessels are playable, chosen in the start menu (**New voyage**, then vessel, then passage).
+
+- **Volgo-Balt 2-95A/R** (`VolgoBalt295AR.json`): the largest Volgo-Balt series (79 built at Komárno,
+  1973 to 1984). Published: 113.87 m, design length 110.52 m, 13.0 m moulded beam, 5.5 m depth, 3.86 m
+  draft, 4761 t, 3474 t deadweight, 2 x 515 kW Skoda 6-27.5 A2L, 10 kn.
+- **Volgoneft 1577** (`Volgoneft1577.json`): with its Bulgarian twin 550A the largest Volgoneft group
+  (about 70 + 65 built). Published: 132.6 m, design length 128.6 m, 16.5 m moulded beam, 5.5 m depth,
+  3.515 m draft, 6477 t, 4803 t deadweight, 2 x 736 kW SKL 8NVD48A-2U with reduction gears, 20 km/h.
+- Physics uses the existing model. Clarke and Söding coefficients are computed per hull; the residual
+  resistance coefficient and rated propeller speed are calibrated together to the published speed
+  (script in the session scratchpad, reproducing the C# formulas; it gives 257 rpm for the 507B). Other
+  values are estimated and listed in `VolgoBalt295AR_Sources.md` and `Volgoneft1577_Sources.md`. No bow
+  thruster was found for either type.
+- Models: no usable existing models were found, so `ProceduralVesselBuilder` (with `ProceduralMesh`)
+  generates them from each vessel's data: hull with spoon bow and stern cut up over the propellers,
+  forecastle, poop, aft house, wheelhouse with wings, funnel, masts, railings, rudders and propellers,
+  plus four hatch covers (Volgo-Balt) or walkway, pipelines, manifold, hose cranes, tank hatches and
+  vents (Volgoneft). Superstructure proportions and liveries are estimated. `Ship Simulator > Build
+  Vessel Catalogue` (batch `VesselCatalogueBuilder.Run`) regenerates meshes, materials, prefabs, the
+  catalogue and preview renders in `Logs/Vessels/`.
+- Selection: `VesselCatalogue` (Resources asset), `VesselSelection` (session only), `VesselSwap`
+  (replaces the scene's 507B before `Start`, retargets camera, HUD, grounding and mission),
+  `VoyageSave.vesselId` (empty in older saves means the 507B). A different vessel for the open scene
+  reloads it.
+- `VesselLayout` per prefab holds navigation light positions, navigator eye and camera scale;
+  `NavigationLightRig` and `ShipFollowCamera` read it. The HUD rudder scale uses the vessel's maximum
+  rudder angle. The 507B prefab got a layout with its previous values.
+
+Virtual sea trials, loaded, deep water: Volgo-Balt 9.9 kn full ahead, advance 3.13 L, tactical
+diameter 3.52 L, 10/10 overshoots 4.1/4.9 deg, crash stop 4.54 L; Volgoneft 10.7 kn, 3.31 L, 3.76 L,
+3.9/4.5 deg, 4.99 L. In the 4.6 m Gorodets reach the Volgo-Balt's tactical diameter grows to 8.75 L,
+because the depth is only 1.19 times its draft.
+
+Verified: vessel catalogue build `VESSEL_CATALOGUE|PASS`; EditMode 141 passed; PlayMode 21 passed
+(including the swap test and each vessel floating level at design draft); `SEA_TRIALS|PASS`;
+`MENU_SMOKE|PASS` with a Gorodets start in the Volgoneft and a load that restores the 507B.
+
+Other work in the tree at the same time (graphics phase 2 files: water shader, reflection filter,
+`GraphicsPhaseTwoCheck`) was not touched by this change.
+
 ## Buoy Visuals and Lantern Flashes, 2026-09-13
 
 `DayNightController` now creates an idempotent `BuoyVisualRig` for each existing buoy.

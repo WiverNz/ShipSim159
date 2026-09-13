@@ -123,6 +123,7 @@ namespace ShipSimulator.Editor
             body.interpolation = RigidbodyInterpolation.Interpolate;
             root.AddComponent<VesselDataLoader>();
             root.AddComponent<ShipPhysicsController>();
+            root.AddComponent<ShipSimulator.Visuals.VesselLayout>();
 
             if (!VolgoDonModelIntegrator.AddDetailedVisual(root))
             {

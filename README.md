@@ -7,8 +7,8 @@
 
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator. It is
 built to carry several ship models, chosen in the start menu before a passage.
-The first vessel, and the only playable one so far, is a Project 507B Volgo-Don
-cargo ship.
+Three vessels are playable: a Project 507B Volgo-Don cargo ship, a Project
+2-95A/R Volgo-Balt river-sea cargo ship and a Project 1577 Volgoneft tanker.
 
 The project explores large-vessel handling in a constrained river fairway,
 including delayed engine and rudder response, current-relative motion,
@@ -24,7 +24,9 @@ instrumentation.
 
 - Data-driven vessels: each ship is a JSON specification plus a model prefab, so the same
   simulation runs any hull.
-- Detailed 138.3 m Volgo-Don 507B model integrated into Unity URP as the first vessel.
+- Detailed 138.3 m Volgo-Don 507B model integrated into Unity URP.
+- Generated Volgo-Balt 2-95A/R and Volgoneft 1577 models built from each ship's dimensions,
+  selectable in the start menu.
 - Literature-based manoeuvring model: MMG equations with added mass, ITTC resistance,
   engines, shafts and propellers, MMG rudders in the propeller slipstream, optional bow
   thruster, Blendermann wind loads, shallow-water corrections, squat and bank suction.
@@ -50,15 +52,18 @@ instrumentation.
 
 ## Vessels
 
-| Vessel | Status |
-|---|---|
-| Project 507B Volgo-Don, 138.3 m twin-screw river cargo ship | Playable; published particulars with estimated manoeuvring coefficients |
-| KVLCC2 MMG benchmark | Data only, used by tests and virtual sea trials to check the model |
+| Vessel | Model | Status |
+|---|---|---|
+| Volgo-Don Project 507B, 138.3 m twin-screw river cargo ship | Imported detailed mesh | Playable |
+| Volgo-Balt Project 2-95A/R, 113.9 m twin-screw river-sea cargo ship | Generated from dimensions | Playable |
+| Volgoneft Project 1577, 132.6 m twin-screw river-sea oil tanker | Generated from dimensions | Playable |
+| KVLCC2 MMG benchmark | none | Data only, used by tests and virtual sea trials |
 
-Choosing a vessel in the start menu is planned. The physics already reads everything from
-vessel data; the scenes, menu text, camera views and running-light positions still assume
-the 507B. See [Project status](Assets/ShipSimulator/Documentation/ProjectStatus.md) for what
-adding a vessel requires.
+Choose the vessel under **New voyage** in the start menu, then the passage. Every vessel uses
+published particulars with estimated manoeuvring coefficients; each has its own sources file.
+A vessel is a JSON specification, a prefab carrying `VesselLayout`, and an entry in
+`Assets/ShipSimulator/Resources/VesselCatalogue.asset`. `Ship Simulator > Build Vessel Catalogue`
+regenerates the generated models, the catalogue and preview renders in `Logs/Vessels/`.
 
 ## Requirements
 
@@ -243,6 +248,8 @@ for implementation details.
 - [Operator guide](Assets/ShipSimulator/Documentation/OperatorGuide.md)
 - [Physics model](Assets/ShipSimulator/Documentation/ShipSimulator_Physics.md)
 - [Project 507B sources and parameter confidence](Assets/ShipSimulator/Documentation/VolgoDon507B_Sources.md)
+- [Volgo-Balt 2-95A/R sources](Assets/ShipSimulator/Documentation/VolgoBalt295AR_Sources.md)
+- [Volgoneft 1577 sources](Assets/ShipSimulator/Documentation/Volgoneft1577_Sources.md)
 - [Engineering roadmap](Assets/ShipSimulator/Documentation/NextSteps.md)
 - [Contributor guidelines](AGENTS.md)
 

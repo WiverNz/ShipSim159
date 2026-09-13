@@ -20,6 +20,9 @@ Shader "ShipSimulator/RiverWater"
         _Turbidity("Turbidity", Range(0, 1)) = 0.62
         _ReflectionStrength("Reflection Strength", Range(0, 2)) = 0.6
         _Opacity("Opacity", Range(0, 1)) = 0.94
+        _SecchiDepth("Estimated visibility depth (m)", Range(0.2, 5)) = 1.2
+        _RefractionStrength("Refraction offset", Range(0, 0.05)) = 0.012
+        _ScatterColor("Suspended sediment scattering", Color) = (0.12, 0.18, 0.105, 1)
     }
 
     SubShader

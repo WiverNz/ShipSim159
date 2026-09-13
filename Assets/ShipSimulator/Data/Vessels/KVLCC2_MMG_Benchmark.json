@@ -123,6 +123,9 @@
     "flowStraighteningLeverPrime": -0.710,
     "estimated": false
   },
+  "bowThruster": {
+    "fitted": false
+  },
   "windage": {
     "airDensityKgM3": 1.225,
     "frontalAreaM2": 1200.0,

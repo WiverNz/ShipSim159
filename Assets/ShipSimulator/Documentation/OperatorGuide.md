@@ -51,6 +51,8 @@ the generated environment.
 | `A` / `Left Arrow` | Command port rudder |
 | `D` / `Right Arrow` | Command starboard rudder |
 | `C` / `Enter` | Rudder midships |
+| `J` / `L` | Bow thruster 50 % step to port / starboard |
+| `K` | Bow thruster off |
 | `H` | Sound horn |
 | `T` | Cycle simulation time through 1x, 2x, and 4x |
 | `Shift+T` | Return simulation time to 1x |
@@ -71,7 +73,13 @@ shaft and restarts the engine astern after a delay of several seconds, so crash
 stops take time and distance. In shallow water the ship is slower, turns wider
 and sinks by the bow (squat); near a bank it is pulled toward the bank and its
 bow is pushed away. Wind gusts push and heel the ship, more so when it is
-lightly loaded. All of these follow an estimated model, not trial data.
+lightly loaded.
+
+The bow thruster swings the bow slowly when the ship is stopped or barely
+moving, for berthing and for starting a turn in a narrow reach. It loses most
+of its effect once the ship is making a few knots, and in lightship condition
+its tunnel is out of the water, so it gives nothing. The rudder readout shows
+its side and power. All of these follow an estimated model, not trial data.
 
 ## Cameras
 

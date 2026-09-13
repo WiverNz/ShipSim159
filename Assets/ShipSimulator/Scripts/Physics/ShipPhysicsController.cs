@@ -28,6 +28,7 @@ namespace ShipSimulator.Physics
         private float[] engineCommands = Array.Empty<float>();
         private float[] stationCurrent;
         private float rudderCommand;
+        private float bowThrusterCommand;
         private Vector3 startPosition;
         private Quaternion startRotation;
         private readonly HashSet<RiverCurrentZone> activeCurrentZones = new HashSet<RiverCurrentZone>();
@@ -80,6 +81,10 @@ namespace ShipSimulator.Physics
         public float EngineCommand(int index) => engineCommands[index];
         public float ShaftRpm(int index) => model != null ? model.Shafts[index].Rps * 60f : 0f;
         public float EngineLoadFraction(int index) => model != null ? model.Shafts[index].LoadFraction : 0f;
+        public bool HasBowThruster => model != null && model.BowThruster != null;
+        public float BowThrusterCommand => bowThrusterCommand;
+        public float BowThrusterOutput => HasBowThruster ? model.BowThruster.Output : 0f;
+        public float BowThrusterThrustN => HasBowThruster ? model.BowThruster.ThrustN : 0f;
 
         private void Awake()
         {
@@ -166,6 +171,7 @@ namespace ShipSimulator.Physics
                 YawRate = body.angularVelocity.y,
                 EngineCommands = engineCommands,
                 RudderCommand = rudderCommand,
+                BowThrusterCommand = bowThrusterCommand,
                 RelativeWind = new Vector2(Vector3.Dot(air, forward), Vector3.Dot(air, right)),
                 DepthM = depth,
                 PortFlowAreaM2 = portArea,
@@ -261,8 +267,10 @@ namespace ShipSimulator.Physics
             body.angularVelocity = Vector3.zero;
             SetThrottleCommand(0f);
             rudderCommand = 0f;
+            bowThrusterCommand = 0f;
             externalX = externalY = externalN = 0f;
             model?.RestoreActuators(0f, null);
+            model?.BowThruster?.Restore(0f);
         }
 
         public void RestoreVoyage(ShipSimulator.Persistence.VoyageSave save)
@@ -281,6 +289,8 @@ namespace ShipSimulator.Physics
                 rps[i] = perShaft ? save.shaftRps[i] : save.actualThrottle * parameters.RatedRps;
             }
             model.RestoreActuators(save.rudderAngle * Mathf.Deg2Rad, rps);
+            bowThrusterCommand = HasBowThruster ? Mathf.Clamp(save.bowThrusterCommand, -1f, 1f) : 0f;
+            model.BowThruster?.Restore(save.bowThrusterOutput);
             activeCurrentZones.Clear();
             UnityEngine.Physics.SyncTransforms();
             foreach (RiverCurrentZone zone in FindObjectsByType<RiverCurrentZone>())
@@ -323,6 +333,12 @@ namespace ShipSimulator.Physics
         public void SetRudderCommand(float value)
         {
             rudderCommand = Mathf.Clamp(value, -1f, 1f);
+        }
+
+        // -1 full to port, 1 full to starboard; ignored on a vessel without a bow thruster.
+        public void SetBowThrusterCommand(float value)
+        {
+            bowThrusterCommand = HasBowThruster ? Mathf.Clamp(value, -1f, 1f) : 0f;
         }
 
         public void CenterRudder()

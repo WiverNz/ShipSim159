@@ -83,6 +83,8 @@ Settings.
 | `A` / `Left Arrow` | Command port rudder |
 | `D` / `Right Arrow` | Command starboard rudder |
 | `C` / `Enter` | Rudder midships |
+| `J` / `L` | Bow thruster step to port / starboard |
+| `K` | Bow thruster off |
 | `H` | Sound horn |
 | `R` | Reset vessel |
 | `V` | Cycle camera |
@@ -196,7 +198,8 @@ rather than direct transform changes. The current implementation includes:
 - a three-degree-of-freedom MMG manoeuvring model with added mass, solved each fixed step and
   applied as Rigidbody accelerations;
 - Clarke hull derivatives, low-speed cross-flow drag and current shear;
-- two engines with shaft dynamics and astern reversal, two propellers and two rudders;
+- two engines with shaft dynamics and astern reversal, two propellers, two rudders and a bow
+  thruster;
 - Blendermann wind loads with gusts, shallow-water corrections, squat and bank suction;
 - station buoyancy, heel in turns and wind, and grounding friction;
 - vessel coefficients from JSON, most of them estimated.

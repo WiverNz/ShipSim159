@@ -18,6 +18,7 @@ namespace ShipSimulator.Editor
         private const string OutputFolder = "Logs/Wake";
         private static double deadline;
         private static double stageStart;
+        private static Vector3 stageOrigin;
         private static bool failed;
 
         static ShipWakeRuntimeCheck()
@@ -69,12 +70,16 @@ namespace ShipSimulator.Editor
                     if (now - stageStart < 2) return;
                     ship.SetThrottleCommand(1f);
                     UnityEngine.Object.FindAnyObjectByType<SimulationTimeController>()?.SetScale(4f);
+                    stageOrigin = ship.transform.position;
                     Advance(3, now);
                 }
                 else if (stage == 3)
                 {
-                    // Full ahead in the 4.6 m Gorodets reach settles near 3.5 m/s through the water (shallow-water loss).
-                    if (speed < 3f && now - stageStart < 200) return;
+                    // A loaded ship gathers way slowly in 4.6 m of water (about 3.5 m/s at full ahead), so the
+                    // capture waits for distance: past 380 m the reach bends to starboard and an unsteered ship
+                    // runs onto the shoal inside the bend.
+                    float run = Vector3.Distance(ship.transform.position, stageOrigin);
+                    if (speed < 3f && run < 380f && now - stageStart < 200) return;
                     Capture(ship, "straight", speed);
                     ship.SetRudderCommand(0.5f);
                     Advance(4, now);

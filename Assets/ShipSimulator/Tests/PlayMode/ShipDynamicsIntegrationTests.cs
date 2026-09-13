@@ -119,6 +119,23 @@ namespace ShipSimulator.Tests
         }
 
         [UnityTest]
+        public IEnumerator BowThruster_TurnsTheRigidbodyAndRestoresFromSave()
+        {
+            ShipPhysicsController ship = CreateShip(LoadVolgoDon(), float.PositiveInfinity, false);
+            Assert.That(ship.HasBowThruster, Is.True);
+            ship.SetBowThrusterCommand(1f);
+            Run(ship, 60f);
+
+            Assert.That(ship.Body.angularVelocity.y, Is.GreaterThan(0f));
+            Assert.That(ship.BowThrusterThrustN, Is.GreaterThan(0f));
+
+            ship.RestoreVoyage(new VoyageSave { bowThrusterCommand = -0.5f, bowThrusterOutput = -0.5f });
+            Assert.That(ship.BowThrusterCommand, Is.EqualTo(-0.5f));
+            Assert.That(ship.BowThrusterOutput, Is.EqualTo(-0.5f));
+            yield return null;
+        }
+
+        [UnityTest]
         public IEnumerator InertiaTensor_MapsRollToTheLongitudinalAxis()
         {
             ShipPhysicsController ship = CreateShip(LoadVolgoDon(), float.PositiveInfinity, false);

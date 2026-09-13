@@ -60,6 +60,13 @@ namespace ShipSimulator.Editor
             withinEnvelope &= Row(report, "KVLCC2 MMG benchmark, deep water", VesselParameters.Create(kvlcc2, 1f), float.PositiveInfinity, true);
 
             report.AppendLine();
+            report.AppendLine("Bow thruster alone, full to starboard from rest with engines stopped, yaw rate after 180 s:");
+            report.AppendLine(
+                $"507B loaded deep water {F(ManoeuvringTrials.BowThrusterTurnRateDegPerMin(VesselParameters.Create(volgoDon, 1f), float.PositiveInfinity), 1)} deg/min, " +
+                $"Gorodets reach {F(ManoeuvringTrials.BowThrusterTurnRateDegPerMin(VesselParameters.Create(volgoDon, 1f), 4.6f), 1)} deg/min, " +
+                $"lightship {F(ManoeuvringTrials.BowThrusterTurnRateDegPerMin(VesselParameters.Create(volgoDon, 0f), float.PositiveInfinity), 1)} deg/min.");
+
+            report.AppendLine();
             report.AppendLine("IMO MSC.137(76) reference envelope (deep, unrestricted water, full load): advance <= 4.5 L,");
             report.AppendLine("tactical diameter <= 5 L, initial turning <= 2.5 L, 10/10 and 20/20 overshoot limits by L/V,");
             report.AppendLine("crash stop track reach <= 15 L. The criteria do not apply to a river vessel in shallow water.");

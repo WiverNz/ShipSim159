@@ -142,6 +142,14 @@ namespace ShipSimulator.Physics
         }
 
         // IMO MSC.137(76) first overshoot limits for 10/10 zig-zag, in degrees.
+        // Full bow thruster to starboard from rest, engines stopped; returns the yaw rate at the end.
+        public static float BowThrusterTurnRateDegPerMin(VesselParameters parameters, float depthM, float seconds = 180f)
+        {
+            var ship = new ManoeuvringSimulator(parameters) { DepthM = depthM, BowThrusterCommand = 1f };
+            for (float t = 0f; t < seconds; t += StepS) ship.Step(StepS);
+            return ship.YawRate * Mathf.Rad2Deg * 60f;
+        }
+
         public static float ImoFirstOvershootLimitDeg(float lengthOverSpeedS)
         {
             if (lengthOverSpeedS < 10f) return 10f;

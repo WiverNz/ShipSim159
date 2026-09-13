@@ -21,6 +21,8 @@ namespace ShipSimulator.Persistence
         // Per-engine state; older saves without it restore throttle and actualThrottle on every engine.
         public float[] engineCommands;
         public float[] shaftRps;
+        public float bowThrusterCommand;
+        public float bowThrusterOutput;
         public float simulationScale = 1f;
         public bool night;
         public float windDirection;
@@ -51,6 +53,7 @@ namespace ShipSimulator.Persistence
             Check(norm, 0.99f, 1.01f);
             Check(throttle, -1f, 1f); Check(actualThrottle, -1f, 1f);
             Check(rudder, -1f, 1f); Check(rudderAngle, -90f, 90f);
+            Check(bowThrusterCommand, -1f, 1f); Check(bowThrusterOutput, -1f, 1f);
             if (engineCommands != null)
             {
                 Check(engineCommands.Length, 0f, 8f);

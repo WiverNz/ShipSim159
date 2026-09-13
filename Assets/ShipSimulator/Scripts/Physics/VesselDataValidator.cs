@@ -89,6 +89,15 @@ namespace ShipSimulator.Physics
                 !Finite(rd.flowStraighteningLeverPrime))
                 return Fail("Rudder configuration is invalid.", out error);
 
+            VesselBowThruster bt = data.bowThruster;
+            if (bt != null && bt.fitted &&
+                (!Positive(bt.powerW) || !Positive(bt.tunnelDiameterM) ||
+                 !InRange(bt.longitudinalPositionM, 0f, 0.5f * d.lengthOverallM) ||
+                 !InRange(bt.axisHeightAboveKeelM, 0f, d.depthMouldedM) || !InRange(bt.figureOfMerit, 0.1f, 1f) ||
+                 !Positive(bt.rampSecondsToFull) || !Positive(bt.speedLossReferenceMps) ||
+                 !InRange(bt.minimumSpeedEffectiveness, 0f, 1f)))
+                return Fail("Bow thruster configuration is invalid.", out error);
+
             VesselWindage w = data.windage;
             if (w == null || !Positive(w.airDensityKgM3) || !Positive(w.frontalAreaM2) || !Positive(w.lateralAreaM2) ||
                 !Finite(w.lateralCentroidLongitudinalM) || !NonNegative(w.lateralCentroidHeightM) ||

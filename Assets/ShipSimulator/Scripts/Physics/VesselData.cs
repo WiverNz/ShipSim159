@@ -16,6 +16,8 @@ namespace ShipSimulator.Physics
     // Open-water polynomials K = c0 + c1 J + c2 J^2; astern sets use J = -V_A / (|n| D).
     [Serializable] public sealed class VesselPropeller { public int count; public float diameterM; public float[] longitudinalPositionsM; public float[] lateralPositionsM; public float[] aheadThrustCoefficients; public float[] aheadTorqueCoefficients; public float[] asternThrustCoefficients; public float[] asternTorqueCoefficients; public float wakeFraction; public float thrustDeduction; public float wakeDriftC1; public float wakeDriftC2; public bool estimated; }
     [Serializable] public sealed class VesselRudder { public int count; public float maxAngleDeg; public float rateDegPerSecond; public float areaPerRudderM2; public float spanM; public float longitudinalPositionM; public float[] lateralPositionsM; public float normalForceSlope; public float stallAngleDeg; public float postStallNormalCoefficient; public float steeringResistanceDeduction; public float hullInteractionFactor; public float hullInteractionPositionPrime; public float wakeRatio; public float slipstreamFactor; public float flowStraightening; public float flowStraighteningLeverPrime; public bool estimated; }
+    // Tunnel bow thruster; a missing section or fitted = false means none.
+    [Serializable] public sealed class VesselBowThruster { public bool fitted; public float powerW; public float tunnelDiameterM; public float longitudinalPositionM; public float axisHeightAboveKeelM; public float figureOfMerit; public float rampSecondsToFull; public float speedLossReferenceMps; public float minimumSpeedEffectiveness; public bool estimated; }
     // Blendermann (1994) wind load parameters; areas and centroids at the loaded draft.
     [Serializable] public sealed class VesselWindage { public float airDensityKgM3; public float frontalAreaM2; public float lateralAreaM2; public float lateralCentroidLongitudinalM; public float lateralCentroidHeightM; public float transverseDragCoefficient; public float longitudinalDragBow; public float longitudinalDragStern; public float crossForceParameter; public bool estimated; }
     [Serializable] public sealed class VesselRestrictedWater { public bool shallowWaterCorrections; public float squatCoefficient; public float bankSamplingWidthBeams; public float bankSuctionCoefficient; public float bankMomentLeverPrime; public bool estimated; }
@@ -34,6 +36,7 @@ namespace ShipSimulator.Physics
         public VesselEngine engine;
         public VesselPropeller propeller;
         public VesselRudder rudder;
+        public VesselBowThruster bowThruster;
         public VesselWindage windage;
         public VesselRestrictedWater restrictedWater;
         public VesselControlLimits controlLimits;

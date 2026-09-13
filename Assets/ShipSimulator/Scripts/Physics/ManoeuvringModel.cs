@@ -11,6 +11,8 @@ namespace ShipSimulator.Physics
         public float YawRate;
         public float[] EngineCommands;
         public float RudderCommand;
+        // Positive pushes the bow to starboard.
+        public float BowThrusterCommand;
         // Air velocity relative to the ship: x forward, y starboard.
         public Vector2 RelativeWind;
         // PositiveInfinity for unrestricted water.
@@ -43,6 +45,8 @@ namespace ShipSimulator.Physics
         public float WindN;
         public float BankY;
         public float BankN;
+        public float ThrusterY;
+        public float ThrusterN;
         public float TotalX;
         public float TotalY;
         public float TotalN;
@@ -70,11 +74,15 @@ namespace ShipSimulator.Physics
         public float[] PropellerTorqueNm { get; }
         public float[] RudderNormalForceN { get; }
         public HullForceModel Hull => hull;
+        // Null when the vessel has no bow thruster.
+        public BowThrusterModel BowThruster { get; }
 
         public ManoeuvringModel(VesselParameters parameters)
         {
             Parameters = parameters;
             hull = new HullForceModel(parameters);
+            if (parameters.Data.bowThruster != null && parameters.Data.bowThruster.fitted)
+                BowThruster = new BowThrusterModel(parameters);
             VesselPropeller propeller = parameters.Data.propeller;
             Shafts = new EngineShaft[propeller.count];
             for (int i = 0; i < Shafts.Length; i++) Shafts[i] = new EngineShaft(parameters);
@@ -172,9 +180,17 @@ namespace ShipSimulator.Physics
             RestrictedWaterModel.BankForces(p, speed, input.DepthM, input.PortFlowAreaM2, input.StarboardFlowAreaM2,
                 out output.BankY, out output.BankN);
 
+            if (BowThruster != null)
+            {
+                BowThruster.Step(input.BowThrusterCommand, u, dt);
+                output.ThrusterY = BowThruster.ThrustN;
+                output.ThrusterN = BowThruster.LongitudinalPositionM * BowThruster.ThrustN;
+            }
+
             float x = output.Hull.X + output.ResistanceX + output.PropellerX + output.RudderX + output.WindX + input.ExternalX;
-            float y = output.Hull.Y + output.RudderY + output.WindY + output.BankY + input.ExternalY;
-            float n = output.Hull.N + output.PropellerN + output.RudderN + output.WindN + output.BankN + input.ExternalN;
+            float y = output.Hull.Y + output.RudderY + output.WindY + output.BankY + output.ThrusterY + input.ExternalY;
+            float n = output.Hull.N + output.PropellerN + output.RudderN + output.WindN + output.BankN + output.ThrusterN +
+                input.ExternalN;
             output.TotalX = x;
             output.TotalY = y;
             output.TotalN = n;

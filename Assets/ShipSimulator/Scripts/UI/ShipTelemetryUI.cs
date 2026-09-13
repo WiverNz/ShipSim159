@@ -172,7 +172,8 @@ namespace ShipSimulator.UI
                 $"<size=14><color=#8AA0AD>under keel {underKeel:F1} m</color></size>";
             rudderText.text =
                 $"RUDDER  <size=23><b>{ship.RudderAngleDeg:+0.0;-0.0;0.0} deg</b></size>\n" +
-                $"<size=14>COMMAND {ship.RudderCommand * 35f:+0;-0;0} deg</size>";
+                $"<size=14>COMMAND {ship.RudderCommand * 35f:+0;-0;0} deg" +
+                $"{FormatBowThrusterStatus(ship.HasBowThruster, ship.BowThrusterOutput)}</size>";
             engineText.text = FormatEngineStatus();
             currentText.text =
                 $"<size=14><color=#8AA0AD>CURRENT</color></size>\n" +
@@ -272,7 +273,7 @@ namespace ShipSimulator.UI
                 new Vector2(320f, 12f), new Vector2(-320f, -1016f));
             helpText.text =
                 "A/D  RUDDER   W/S  ENGINES   Q/Z  PORT   E/X  STBD   SPACE  STOP   1-9  CAMERAS\n" +
-                "RMB ORBIT   H HORN   M MAP   N DAY/NIGHT   T TIME   F2 WIND   F3 DIR   F4 RAIN   F5 FOG";
+                "J/L  BOW THRUSTER   K  OFF   H HORN   M MAP   N DAY/NIGHT   T TIME   F2-F5 WEATHER   RMB ORBIT";
             helpText.gameObject.SetActive(false);
             Text helpPrompt = Label(transform, "F1  CONTROLS", 16, TextAnchor.LowerCenter,
                 new Vector2(820f, 16f), new Vector2(-820f, -1034f));
@@ -817,6 +818,9 @@ namespace ShipSimulator.UI
             if (keyboard.enterKey.wasPressedThisFrame || keyboard.cKey.wasPressedThisFrame)
                 ship.CenterRudder();
             if (keyboard.spaceKey.wasPressedThisFrame) SetTelegraph(3);
+            if (keyboard.jKey.wasPressedThisFrame) ship.SetBowThrusterCommand(ship.BowThrusterCommand - 0.5f);
+            if (keyboard.lKey.wasPressedThisFrame) ship.SetBowThrusterCommand(ship.BowThrusterCommand + 0.5f);
+            if (keyboard.kKey.wasPressedThisFrame) ship.SetBowThrusterCommand(0f);
             if (keyboard.hKey.wasPressedThisFrame) PlayHorn();
             if (keyboard.mKey.wasPressedThisFrame)
             {
@@ -888,6 +892,13 @@ namespace ShipSimulator.UI
             }
             telegraphIndices[engine] = clamped;
             ship.SetEngineCommand(engine, TelegraphValues[clamped]);
+        }
+
+        public static string FormatBowThrusterStatus(bool fitted, float output)
+        {
+            if (!fitted) return string.Empty;
+            if (Mathf.Abs(output) < 0.01f) return "   BOW THRUSTER OFF";
+            return $"   BOW THRUSTER {(output < 0f ? "PORT" : "STBD")} {Mathf.Abs(output) * 100f:F0}%";
         }
 
         private string FormatEngineStatus()

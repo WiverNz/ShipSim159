@@ -24,6 +24,7 @@ namespace ShipSimulator.Physics
         public float StarboardFlowAreaM2 { get; set; } = float.PositiveInfinity;
         public float[] EngineCommands { get; }
         public float RudderCommand { get; set; }
+        public float BowThrusterCommand { get; set; }
 
         public ManoeuvringSimulator(VesselParameters parameters)
         {
@@ -67,6 +68,7 @@ namespace ShipSimulator.Physics
                 YawRate = YawRate,
                 EngineCommands = EngineCommands,
                 RudderCommand = RudderCommand,
+                BowThrusterCommand = BowThrusterCommand,
                 RelativeWind = new Vector2(Vector2.Dot(air, Forward), Vector2.Dot(air, Right)),
                 DepthM = DepthM,
                 PortFlowAreaM2 = PortFlowAreaM2,

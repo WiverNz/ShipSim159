@@ -28,10 +28,11 @@ interaction, locks, mooring, anchors) is not. `ShipSimulator_Physics.md` describ
   throttle). `WeatherController` now pushes its gusting wind to the vessel.
 - Reversing a running engine cuts fuel at once, brakes the shaft and restarts astern after a delay
   (regression test `EngineReversal_BrakesBeforeDrivingAstern`).
-- `ShipWakeRuntimeCheck` waited for 4 m/s through the water, which the new model cannot reach in
-  the 4.6 m Gorodets reach (about 3.5 m/s at full ahead), so the ship ran on until it grounded and
-  the check still passed. It now triggers at 3 m/s and fails if the vessel is not under way or is
-  aground at a capture. `VoyageMenuSmokeCheck` clears the per-engine save arrays so it keeps
+- `ShipWakeRuntimeCheck` waited for 4 m/s through the water. The new model gathers way slowly and
+  settles near 3.5 m/s at full ahead in the 4.6 m Gorodets reach, so the unsteered ship sailed
+  straight past the starboard bend at z 260 to 470, grounded on the shoal inside it at (42, 540),
+  and the check still passed. The straight capture now fires at 3 m/s or after 380 m, before the
+  bend, and the check fails if the vessel is not under way or is aground at a capture. `VoyageMenuSmokeCheck` clears the per-engine save arrays so it keeps
   testing the shared-throttle fallback.
 
 Virtual sea trials (`Logs/SeaTrials/sea-trials.md`, `SEA_TRIALS|PASS`), all simulated with
@@ -40,8 +41,18 @@ tactical diameter 3.70 L, 10/10 overshoots 3.6/4.2 deg, 20/20 8.2 deg, crash sto
 Gorodets 4.6 m: full ahead 6.9 kn, tactical diameter 6.59 L, bow squat 0.29 m. KVLCC2 benchmark:
 15.4 kn, advance 3.00 L, tactical diameter 3.09 L, 10/10 overshoots 5.7/10.3 deg.
 
-Verified: compile clean (`Logs/dyn-compile.log`); EditMode 105 passed
-(`TestResults/EditMode.xml`); PlayMode 15 passed (`TestResults/PlayMode.xml`).
+Bow thruster (added on request; the owner reports 507B vessels carry one): `BowThrusterModel` gives
+actuator disc bollard thrust with an estimated figure of merit, a 5 s ramp, an estimated loss of
+effect with ship speed and zero thrust with the tunnel out of the water (lightship). 507B values
+(160 kW, 1.0 m tunnel, 60 m forward) are estimated; about 21 kN bollard thrust. HUD `J`/`L` step
+it 50 % to port or starboard, `K` stops it; its state is saved. From rest it turns the loaded ship
+at 19.3 deg/min after 180 s in deep water and 9.2 deg/min in the Gorodets reach.
+
+Verified: compile clean (`Logs/dyn-compile.log`); EditMode 116 passed
+(`TestResults/EditMode.xml`); PlayMode 17 passed (`TestResults/PlayMode.xml`);
+`VoyageMenuSmokeCheck` `MENU_SMOKE|PASS`; `ShipWakeRuntimeCheck` `WAKE_RUNTIME|PASS` with the ship
+under way and clear of the bottom at both captures. A `MissingReferenceException` from
+`RiverLighting.CaptureSky` during scene switches in the menu smoke log predates this work.
 
 Known limits: quadratic, not four-quadrant, propeller curves; estimated bank model (the Lataire
 papers were not accessible); B/T <= 4 depth factor branch used for all hulls; wall-sided

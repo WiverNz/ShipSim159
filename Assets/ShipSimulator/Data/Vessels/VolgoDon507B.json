@@ -123,6 +123,18 @@
     "flowStraighteningLeverPrime": -0.8,
     "estimated": true
   },
+  "bowThruster": {
+    "fitted": true,
+    "powerW": 160000,
+    "tunnelDiameterM": 1.0,
+    "longitudinalPositionM": 60.0,
+    "axisHeightAboveKeelM": 1.1,
+    "figureOfMerit": 0.62,
+    "rampSecondsToFull": 5.0,
+    "speedLossReferenceMps": 1.0,
+    "minimumSpeedEffectiveness": 0.3,
+    "estimated": true
+  },
   "windage": {
     "airDensityKgM3": 1.225,
     "frontalAreaM2": 190.0,

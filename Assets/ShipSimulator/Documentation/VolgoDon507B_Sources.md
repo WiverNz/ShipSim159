@@ -74,6 +74,9 @@ All values below are estimates for the manoeuvring model described in
 | Rudders | 2 x 5.5 m², span 2.6 m, behind each propeller | estimated; total about 2.3 % of L T, typical for river vessels |
 | Rudder interaction t_R, a_H, x'_H, ε, κ, γ_R, l'_R | 0.39, 0.31, -0.46, 1.05, 0.5, 0.5, -0.8 | KVLCC2 values, estimated |
 | Rudder stall / post-stall normal coefficient | 32 deg / 1.1 | estimated |
+| Bow thruster | fitted, 160 kW, 1.0 m tunnel, 60 m forward of midship, axis 1.1 m above keel | fitting reported by the project owner; power, size and position estimated, not found in the public sources checked |
+| Bow thruster figure of merit, ramp | 0.62, 5 s to full | estimated; gives about 21 kN bollard thrust (13.5 kgf/kW) |
+| Bow thruster speed loss u_ref, f_min | 1.0 m/s, 0.3 | estimated trend for tunnel thrusters under way |
 | Windage frontal / lateral area (loaded) | 190 / 650 m² | estimated from superstructure and freeboard |
 | Wind centroid (x, height) | -15 m, 3.0 m | estimated, aft superstructure |
 | Blendermann coefficients C_Dt, C_Dl bow, C_Dl stern, δ | 0.85, 0.65, 0.55, 0.40 | general cargo ship range from Blendermann (1994) |

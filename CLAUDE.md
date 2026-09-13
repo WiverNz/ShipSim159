@@ -195,7 +195,8 @@ They compile independently: an error in `ShipSimulator.Editor` does not stop
 
 - `ManoeuvringModel`: three-degree-of-freedom MMG solve with added mass, combining
   `HullForceModel`, `ResistanceModel`, `EngineShaft` and `PropellerModel` per shaft,
-  `RudderModel` per rudder, `WindLoadModel` and `RestrictedWaterModel`. It returns
+  `RudderModel` per rudder, an optional `BowThrusterModel`, `WindLoadModel` and
+  `RestrictedWaterModel`. It returns
   accelerations, which the controller applies with `ForceMode.Acceleration`.
 - `HydrostaticsModel`: station prism buoyancy, heave and roll damping, squat as a lowered
   water surface.

@@ -21,6 +21,7 @@ run them without a scene:
 | `EngineShaft` | Diesel, governor, torque and power limit, shaft inertia, astern reversal |
 | `PropellerModel` | Open-water K_T and K_Q, ahead and astern, wake fraction and thrust deduction |
 | `RudderModel` | MMG rudder in the propeller slipstream, Fujii lift slope, stall |
+| `BowThrusterModel` | Tunnel bow thruster: actuator disc thrust, speed and submergence losses |
 | `WindLoadModel` | Blendermann (1994) wind load coefficients |
 | `RestrictedWaterModel` | Depth factors, ICORELS squat with blockage, estimated bank suction |
 | `HydrostaticsModel` | Station prism buoyancy, heave and roll damping, squat as a lowered water surface |
@@ -84,6 +85,22 @@ starboard, positive rudder angle gives positive r.
   without 1/J so it stays finite at bollard pull), flow straightening, Fujii normal force slope,
   a smooth blend to a post-stall coefficient beyond the stall angle, and the hull interaction terms
   t_R, a_H and x'_H.
+
+## Bow thruster
+
+`BowThrusterModel` is a tunnel thruster at the bow, present when the vessel JSON has a
+`bowThruster` section with `fitted: true`. It adds a side force Y at its longitudinal position and
+the yaw moment `N = x_T Y` to the manoeuvring solve.
+
+- Bollard thrust from actuator disc momentum theory, `T = FM (2 rho A P^2)^(1/3)`, with an estimated
+  figure of merit for tunnel and motor losses. For 507B (160 kW, 1.0 m tunnel, both estimated) this
+  gives about 21 kN, or 13.5 kgf per kW, inside the usual 10 to 15 kgf/kW for tunnel thrusters.
+- The command ramps to full in a few seconds. Thrust scales linearly with the ramped command.
+- Effectiveness falls as the ship gathers way, `f = f_min + (1 - f_min) / (1 + (u / u_ref)^2)`,
+  because the passing flow bends the jet back onto the hull. The curve shape and its constants are
+  estimates of the trend reported for tunnel thrusters, not measured data.
+- Thrust fades to zero as the tunnel axis rises toward the waterline, so a lightship 507B, whose
+  draft is below the estimated axis height, gets no thrust.
 
 ## Wind
 

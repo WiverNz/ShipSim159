@@ -4,6 +4,7 @@ Shader "ShipSimulator/RiverGround"
     {
         _SoilColor("Alluvial soil", Color) = (0.25, 0.22, 0.16, 1)
         _GrassColor("Meadow grass", Color) = (0.22, 0.29, 0.12, 1)
+        _SandColor("Shore sediment", Color) = (0.43, 0.36, 0.24, 1)
         _DryColor("Dry grass and sand", Color) = (0.39, 0.36, 0.23, 1)
     }
     SubShader
@@ -22,7 +23,7 @@ Shader "ShipSimulator/RiverGround"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             CBUFFER_START(UnityPerMaterial)
-                half4 _SoilColor, _GrassColor, _DryColor;
+                half4 _SoilColor, _GrassColor, _DryColor, _SandColor;
             CBUFFER_END
             struct Attributes { float4 positionOS:POSITION; float3 normalOS:NORMAL; half4 color:COLOR; UNITY_VERTEX_INPUT_INSTANCE_ID };
             struct Varyings { float4 positionCS:SV_POSITION; float3 world:TEXCOORD0; half3 normal:TEXCOORD1; half4 color:COLOR; half fog:TEXCOORD2; };
@@ -58,11 +59,13 @@ Shader "ShipSimulator/RiverGround"
                 float broad=Fbm(p*0.033);
                 float detail=lerp(0.5,Noise(p*0.7),saturate(1.5-footprint*1.2));
                 float grit=lerp(0.5,Noise(p*13.0),saturate(1-footprint*20));
-                float grass=saturate(i.color.r+(broad-0.5)*0.65);
-                half3 albedo=lerp(_SoilColor.rgb,_GrassColor.rgb,grass);
+                float grass=smoothstep(0.08,0.9,i.color.r+(broad-0.5)*0.48);
+                half3 sediment=lerp(_SoilColor.rgb,_SandColor.rgb,0.55+0.35*broad);
+                half3 albedo=lerp(sediment,_GrassColor.rgb,grass);
                 albedo=lerp(albedo,_DryColor.rgb,smoothstep(0.46,0.8,Fbm(p*0.11+19))*grass*0.65);
                 albedo*=lerp(0.66,1.24,detail)*lerp(0.83,1.1,grit);
-                albedo*=lerp(0.52,1,saturate(i.color.g));
+                float dry=smoothstep(0.02,0.65,i.world.y+(detail-0.5)*0.12);
+                albedo*=lerp(0.58,1,dry);
                 half bump=1.2*saturate(1-footprint*4);
                 half3 n=normalize(i.normal+half3((Noise(p*2+float2(0.05,0))-Noise(p*2))*bump,0,(Noise(p*2+float2(0,0.05))-Noise(p*2))*bump));
                 Light sun=GetMainLight(TransformWorldToShadowCoord(i.world));
@@ -74,5 +77,6 @@ Shader "ShipSimulator/RiverGround"
         }
         UsePass "Universal Render Pipeline/Lit/ShadowCaster"
         UsePass "Universal Render Pipeline/Lit/DepthOnly"
+        UsePass "Universal Render Pipeline/Lit/DepthNormals"
     }
 }

@@ -41,6 +41,8 @@ Read these before changing the project, in the order they are usually needed:
   - `ShipSimulator_Physics.md`: the force model and its assumptions.
   - `VolgoDon507B_Sources.md`: where each vessel parameter came from, and how confident it is.
   - `GorodetsScenarioTechnicalPlan.md`, `NextSteps.md`: scenario plan and roadmap.
+  - `GraphicsRealismApproach.md`, `ShipDynamicsRealismApproach.md`: research and proposed
+    approaches for realistic rendering and for literature-based ship dynamics (not implemented).
 - `AGENTS.md`: the entry point that AGENTS.md-seeking tools look for. It only points back here.
 
 There may also be a `CLAUDE.local.md` and `AGENTS.local.md` in the working tree. Those are

@@ -96,6 +96,11 @@ meshes at longer distances. The river reflects the vessel and banks, with animat
 ripples, shoreline depth shading and sun highlights. Day/night and weather controls
 continue to affect the scene.
 
+Shorelines have irregular wet-sand margins and submerged shelves. Water reveals the
+bed in the shallows, then becomes opaque with depth; reeds form patches across the
+waterline. These visual shapes are inspired by Volga riverbank photographs. The
+Gorodets collision boundaries and scenario bathymetry remain separate prototype data.
+
 Use `Ship Simulator > Upgrade Water And Landscape` to regenerate these visuals in
 both scenes. The normal scene builders also include the upgrade. Generated assets
 are shared under `Assets/ShipSimulator/Settings/NaturalLandscape/`; edit the builder

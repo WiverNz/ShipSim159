@@ -14,7 +14,8 @@ namespace ShipSimulator.Editor
     public static class RiverLandscapeBuilder
     {
         private const string Root = "Assets/ShipSimulator/Settings/NaturalLandscape";
-        private static readonly float[] BankOffsets = { -4, 0, 3, 8, 16, 28, 48, 80, 130, 210, 340, 520 };
+        private const float BankRowSpacing = 3f;
+        private static readonly float[] BankOffsets = { -16, -10, -6, -3, -1, 0, 1, 2, 4, 7, 11, 16, 28, 48, 80, 130, 210, 340, 520 };
 
         [MenuItem("Ship Simulator/Upgrade Water And Landscape")]
         public static void ApplyBoth()
@@ -110,6 +111,22 @@ namespace ShipSimulator.Editor
                     Place(reed, root, new Vector3(x, SurfaceHeight(route, side, x, z, start, end), z), Range(random, 0.75f, 1.5f), Range(random, 0, 360));
                 }
             }
+            var shoreRandom = new System.Random(gorodets ? 819 : 518);
+            for (float z = start + 20; z < end - 20; z += 5)
+            for (int side = -1; side <= 1; side += 2)
+            {
+                float patch = Mathf.PerlinNoise(z * 0.023f + 43, side * 7 + 20);
+                if (patch < 0.54f) continue;
+                for (int i = 0; i < 3; i++)
+                {
+                    float reedZ = z + Range(shoreRandom, -3, 3);
+                    float x = ShoreX(route, reedZ, side) + side * Range(shoreRandom, -1.4f, 5);
+                    float y = SurfaceHeight(route, side, x, reedZ, start, end);
+                    if (y < -0.3f) continue;
+                    Place(reed, root, new Vector3(x, y, reedZ),
+                        Range(shoreRandom, 0.85f, 1.7f), Range(shoreRandom, 0, 360));
+                }
+            }
             foreach (Camera camera in Object.FindObjectsByType<Camera>())
             {
                 camera.depthTextureMode |= DepthTextureMode.Depth;
@@ -139,16 +156,27 @@ namespace ShipSimulator.Editor
 
         private static float Height(float offset, float x, float z)
         {
-            if (offset < 0) return offset * 0.24f;
-            float terrace = Mathf.SmoothStep(0, 3.8f, Mathf.Clamp01(offset / 24));
+            float shore = ShoreOffset(offset, x, z);
+            if (shore < 0) return shore * (0.10f + Mathf.Abs(shore) * 0.007f);
+            float beachWidth = Mathf.Lerp(5, 11, Mathf.PerlinNoise(x * 0.011f + 12, z * 0.019f));
+            float beach = Mathf.Min(shore, beachWidth) * 0.065f;
+            float terrace = Mathf.SmoothStep(0, 3.8f - beachWidth * 0.065f,
+                Mathf.InverseLerp(beachWidth, 28, shore));
             float hills = Mathf.PerlinNoise((x + 731) * 0.008f, (z + 271) * 0.007f) * 12;
-            return terrace + hills * Mathf.SmoothStep(0, 1, Mathf.Clamp01(offset / 80)) +
-                Mathf.PerlinNoise(x * 0.13f, z * 0.09f) * 0.4f * Mathf.Clamp01(offset / 8);
+            return beach + terrace + hills * Mathf.SmoothStep(0, 1, Mathf.Clamp01(offset / 80)) +
+                Mathf.PerlinNoise(x * 0.13f, z * 0.09f) * 0.4f * Mathf.Clamp01((shore - beachWidth) / 8);
+        }
+
+        private static float ShoreOffset(float offset, float x, float z)
+        {
+            float scallop = (Mathf.PerlinNoise(x * 0.035f + 19, z * 0.055f) - 0.5f) * 5f +
+                (Mathf.PerlinNoise(x * 0.13f, z * 0.19f + 81) - 0.5f) * 1.4f;
+            return offset - scallop * (1 - Mathf.SmoothStep(0, 1, Mathf.Abs(offset) / 28));
         }
 
         private static float SurfaceHeight(FairwayRoute route, int side, float x, float z, float start, float end)
         {
-            int rows = Mathf.CeilToInt((end - start) / 7);
+            int rows = Mathf.CeilToInt((end - start) / BankRowSpacing);
             float step = (end - start) / rows;
             float row = Mathf.Clamp((z - start) / step, 0, rows - 0.0001f);
             float lowZ = start + Mathf.Floor(row) * step;
@@ -171,7 +199,7 @@ namespace ShipSimulator.Editor
 
         private static Mesh BankMesh(string name, FairwayRoute route, int side, float start, float end)
         {
-            int rows = Mathf.CeilToInt((end - start) / 7);
+            int rows = Mathf.CeilToInt((end - start) / BankRowSpacing);
             int columns = BankOffsets.Length;
             var builder = new MeshData();
             for (int row = 0; row <= rows; row++)
@@ -182,7 +210,8 @@ namespace ShipSimulator.Editor
                     float offset = BankOffsets[c];
                     float x = ShoreX(route, z, side) + side * offset;
                     builder.Vertex(new Vector3(x, Height(offset, x, z), z), new Vector2(x, z),
-                        new Color(Mathf.SmoothStep(0, 1, Mathf.InverseLerp(3, 19, offset)), Mathf.InverseLerp(-2, 6, offset), 0, 1));
+                        new Color(Mathf.SmoothStep(0, 1, Mathf.InverseLerp(5, 17, ShoreOffset(offset, x, z))),
+                            Mathf.InverseLerp(-0.1f, 0.65f, Height(offset, x, z)), 0, 1));
                 }
             }
             for (int row = 0; row < rows; row++)

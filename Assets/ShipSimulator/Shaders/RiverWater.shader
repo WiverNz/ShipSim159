@@ -488,12 +488,15 @@ Shader "ShipSimulator/RiverWater"
                 float2 screenUV = GetNormalizedScreenSpaceUV(input.positionCS);
                 float sceneDepth = LinearEyeDepth(SampleSceneDepth(screenUV), _ZBufferParams);
                 float waterDepth = -TransformWorldToView(positionWS).z;
-                float depth = max(0, sceneDepth - waterDepth);
-                half depthVariation = exp(-depth * 0.45);
+                float opticalDepth = max(0, sceneDepth - waterDepth);
+                // Convert eye-space separation to vertical depth so shallows remain consistent at grazing views.
+                float depth = opticalDepth * abs(viewDirection.y) /
+                    max(abs(TransformWorldToViewDir(viewDirection).z), 0.05);
+                half depthVariation = exp(-depth * lerp(1.5, 2.4, saturate(_Turbidity)));
                 half shoreline = 1 - saturate(depth / 0.65);
                 // The waterline against a moving hull churns much more than a quiet bank.
                 foamAmount = max(foamAmount,
-                    shoreline * (0.35h + 0.3h * saturate(_WakeHull.z / 3) * exp(-hullDistance / 3))) +
+                    shoreline * (0.07h + 0.55h * saturate(_WakeHull.z / 3) * exp(-hullDistance / 3))) +
                     narrowStreaks * 0.2h;
 
                 half3 lighting = SampleSH(normalWS) * 0.65 + diffuse * mainLight.color * 0.55;
@@ -551,7 +554,10 @@ Shader "ShipSimulator/RiverWater"
                 color = lerp(color, _FoamColor.rgb * foamLight, foam);
                 color = MixFog(color, input.fogFactor);
 
-                half alpha = saturate(_Opacity + fresnel * 0.05h + foam);
+                // Reveal wet sediment at the contact edge, with suspended silt hiding the deeper bed.
+                half transmission = exp(-depth * lerp(2.4, 4.0, saturate(_Turbidity)));
+                half contact = smoothstep(0, 0.12, opticalDepth);
+                half alpha = saturate((1 - transmission + transmission * reflectance) * _Opacity + foam) * contact;
                 return half4(color, alpha);
             }
             ENDHLSL

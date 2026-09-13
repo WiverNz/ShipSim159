@@ -35,6 +35,19 @@ namespace ShipSimulator.Editor
                 camera.transform.position = ship.transform.position + new Vector3(24, 7, 80);
                 camera.transform.LookAt(ship.transform.position + new Vector3(82, 7, 165));
                 Render(camera, $"Logs/Landscape/{name}-{stage}-shore.png");
+                Mesh bank = GameObject.Find("Right natural bank").GetComponent<MeshFilter>().sharedMesh;
+                Vector3 edge = Vector3.zero;
+                float nearest = float.MaxValue;
+                foreach (Vector3 vertex in bank.vertices)
+                {
+                    float score = Mathf.Abs(vertex.y) * 10 + Mathf.Abs(vertex.z - ship.transform.position.z - 150);
+                    if (score >= nearest) continue;
+                    nearest = score;
+                    edge = vertex;
+                }
+                camera.transform.position = edge + new Vector3(-7, 3.5f, -8);
+                camera.transform.LookAt(edge + new Vector3(2, 0, 7));
+                Render(camera, $"Logs/Landscape/{name}-{stage}-waterline.png");
                 Object.DestroyImmediate(cameraObject);
             }
             Debug.Log("LANDSCAPE_PREVIEW|" + stage + " complete");

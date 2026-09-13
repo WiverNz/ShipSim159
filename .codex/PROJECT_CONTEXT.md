@@ -2,6 +2,16 @@
 
 Last updated: 2026-09-13
 
+## Research Documents: Graphics and Ship Dynamics, 2026-09-13
+
+Two research documents were added under `Assets/ShipSimulator/Documentation/`; no code
+changed. `GraphicsRealismApproach.md` surveys sky, water, terrain, vegetation and
+post-processing techniques and proposes a phased URP roadmap. `ShipDynamicsRealismApproach.md`
+audits the current physics, collects MMG, Clarke, Blendermann, squat and bank-effect
+formulations, and proposes an implementation and validation plan. Its audit found that
+configured thrust (620 kN, speed independent) is about three times a power-based estimate and
+that no physical speed limit exists; these are findings for later work, not fixed.
+
 ## Ship Waves, Cloud Sky and Realistic Water, 2026-09-13
 
 Shader-drawn ship waves replace the old trail-renderer wake. `ShipWakeController` feeds

@@ -86,5 +86,52 @@ namespace ShipSimulator.Tests
             Assert.That(shader, Is.Not.Null);
             Assert.That(ShaderUtil.ShaderHasError(shader), Is.False);
         }
+
+        [Test]
+        public void Riverbed_ParticipatesInDepthNormalsPrepassForShallowWater()
+        {
+            var material = new Material(Shader.Find("ShipSimulator/RiverGround"));
+            try
+            {
+                Assert.That(material.FindPass("DepthNormals"), Is.GreaterThanOrEqualTo(0),
+                    "SSAO requests the depth-normals prepass. Missing terrain depth makes shore water fully opaque.");
+            }
+            finally
+            {
+                Object.DestroyImmediate(material);
+            }
+        }
+
+        [TestCase("RiverTrainingScene")]
+        [TestCase("GorodetsTrainingScene")]
+        public void Shoreline_HasBroadWetMarginAndSubmergedShelf(string name)
+        {
+            EditorSceneManager.OpenScene("Assets/ShipSimulator/Scenes/" + name + ".unity");
+            Transform landscape = GameObject.Find("Environment").transform.Find("Natural Landscape");
+            foreach (string side in new[] { "Left", "Right" })
+            {
+                Mesh mesh = landscape.Find(side + " natural bank").GetComponent<MeshFilter>().sharedMesh;
+                Vector3[] vertices = mesh.vertices;
+                int[] triangles = mesh.triangles;
+                float wetArea = 0;
+                float submergedArea = 0;
+                for (int i = 0; i < triangles.Length; i += 3)
+                {
+                    Vector3 a = vertices[triangles[i]];
+                    Vector3 b = vertices[triangles[i + 1]];
+                    Vector3 c = vertices[triangles[i + 2]];
+                    float height = (a.y + b.y + c.y) / 3;
+                    float area = Mathf.Abs(Vector3.Cross(b - a, c - a).y) * 0.5f;
+                    if (height >= 0 && height < 0.5f) wetArea += area;
+                    if (height < 0 && height > -1) submergedArea += area;
+                }
+                Assert.That(wetArea / mesh.bounds.size.z, Is.GreaterThan(3),
+                    "The water must meet a broad low sediment margin rather than an abrupt grass slope.");
+                Assert.That(submergedArea / mesh.bounds.size.z, Is.GreaterThan(4),
+                    "Transparent shallows need a continuous bed beneath them.");
+                Assert.That(mesh.bounds.min.y, Is.LessThan(-2),
+                    "The bed edge must reach opaque water before the mesh ends.");
+            }
+        }
     }
 }

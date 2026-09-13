@@ -2,6 +2,34 @@
 
 Last updated: 2026-09-13
 
+## Softer Natural Shoreline, 2026-09-13
+
+Both scenes now have irregular wet-sand margins, a gently sloping submerged shelf,
+and reed patches extending into the shallows. Bank rows are spaced at 3 m; plant
+roots interpolate the actual bank triangles. Additional reeds use a separate seeded
+random sequence so the woodland layout stays stable.
+
+Reference: the Volga bank at Podgornoye, https://www.tursar.ru/page-joy.php?j=809,
+showing exposed sediment, a visible submerged bed and uneven reed patches. No external
+image assets were added to the game.
+
+RiverGround lacked the DepthNormals pass needed by the SSAO prepass. This omitted the
+bed from camera depth and prevented shallow-water blending. The added pass restores
+bed detection. Water now blends over wet sediment with depth-based transmission,
+fades shallow colour before the shelf ends, and reduces quiet-bank foam. Ground has
+height-dependent wetness and a patchy sand-to-grass transition. Gorodets collision
+boxes and scenario bathymetry remain unchanged; the familiarisation scene's existing
+mesh colliders follow the regenerated banks. These remain procedural visual estimates.
+
+Verified: 46 EditMode tests passed (`TestResults/shore-editmode.xml`), including
+wet-margin area, submerged shelf, depth-pass presence and plant grounding. Final
+shaders rendered without errors (`Logs/shore-final.log`). Both shore and close
+waterline previews were inspected (`Logs/Landscape/*-after-shore.png` and
+`*-after-waterline.png`). Runtime daylight, rain/fog and night checks passed with
+planar reflections active (`Logs/shore-runtime.log`). The first test editor failed
+during native initialization; the successful EditMode retry used `-nographics`,
+with rendered shaders checked separately.
+
 ## Research Documents: Graphics and Ship Dynamics, 2026-09-13
 
 Two research documents were added under `Assets/ShipSimulator/Documentation/`; no code

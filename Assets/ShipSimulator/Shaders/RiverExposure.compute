@@ -1,0 +1,12 @@
+#pragma kernel Meter
+Texture2D<float4> _Source;
+RWStructuredBuffer<float> _Luminance;
+float4 _SourceSize;
+[numthreads(8,8,1)]
+void Meter(uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= 32 || id.y >= 32) return;
+    uint2 pixel = min(uint2((id.xy + 0.5) / 32.0 * _SourceSize.xy), uint2(_SourceSize.xy) - 1);
+    float3 color = _Source.Load(int3(pixel,0)).rgb;
+    _Luminance[id.y * 32 + id.x] = max(dot(color,float3(0.2126,0.7152,0.0722)),0.00001);
+}

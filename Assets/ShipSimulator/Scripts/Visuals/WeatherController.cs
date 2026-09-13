@@ -36,6 +36,7 @@ namespace ShipSimulator.Visuals
 
         private void Awake()
         {
+            if (GetComponent<RiverLighting>() == null) gameObject.AddComponent<RiverLighting>();
             EnsureRainSystem();
             ApplyWeather();
         }
@@ -100,6 +101,7 @@ namespace ShipSimulator.Visuals
         {
             ApplyFog();
             ApplyWater();
+            GetComponent<RiverLighting>()?.Refresh();
         }
 
         public static Vector3 CalculateWindVelocity(float directionDeg, float speedMps)
@@ -118,6 +120,7 @@ namespace ShipSimulator.Visuals
             ApplyRain();
             ApplyFog();
             ApplyWater();
+            GetComponent<RiverLighting>()?.Refresh();
         }
 
         private void EnsureRainSystem()

@@ -35,6 +35,7 @@ namespace ShipSimulator.Visuals
             reflectionCamera.farClipPlane = Mathf.Min(source.farClipPlane, 1400);
             var data = reflectionCamera.GetUniversalAdditionalCameraData();
             data.renderPostProcessing = false;
+            data.antialiasing = AntialiasingMode.None;
             data.renderShadows = false;
             data.requiresColorOption = CameraOverrideOption.Off;
             data.requiresDepthOption = CameraOverrideOption.Off;
@@ -50,7 +51,7 @@ namespace ShipSimulator.Visuals
             Vector3 point = view.MultiplyPoint(new Vector3(0, height + 0.08f, 0));
             Vector3 normal = view.MultiplyVector(Vector3.up).normalized;
             Vector4 clipPlane = new Vector4(normal.x, normal.y, normal.z, -Vector3.Dot(point, normal));
-            reflectionCamera.projectionMatrix = source.CalculateObliqueMatrix(clipPlane);
+            reflectionCamera.projectionMatrix = ObliqueProjection(source, clipPlane);
             bool inverted = GL.invertCulling;
             try
             {
@@ -67,6 +68,15 @@ namespace ShipSimulator.Visuals
                 GL.invertCulling = inverted;
                 rendering = false;
             }
+        }
+
+        private static Matrix4x4 ObliqueProjection(Camera source, Vector4 plane)
+        {
+            Matrix4x4 projection = source.nonJitteredProjectionMatrix;
+            Vector4 q = projection.inverse * new Vector4(Mathf.Sign(plane.x), Mathf.Sign(plane.y), 1, 1);
+            Vector4 c = plane * (2 / Vector4.Dot(plane, q));
+            for (int column = 0; column < 4; column++) projection[2, column] = c[column] - projection[3, column];
+            return projection;
         }
 
         private void EnsureResources()

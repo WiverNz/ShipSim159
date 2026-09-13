@@ -32,6 +32,7 @@ namespace ShipSimulator.UI
             int quality = (QualitySettings.GetQualityLevel() + 1) % QualitySettings.names.Length;
             QualitySettings.SetQualityLevel(quality);
             PlayerPrefs.SetInt(Prefix + "Quality", quality);
+            ShipSimulator.Visuals.RiverLighting.ConfigureCameraQuality();
         }
 
         public static void ToggleVSync()

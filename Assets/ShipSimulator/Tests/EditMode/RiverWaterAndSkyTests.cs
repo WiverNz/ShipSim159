@@ -27,7 +27,7 @@ namespace ShipSimulator.Tests
             Assert.That(importer.mipmapEnabled, Is.True, "Mipmaps keep distant ripples from shimmering.");
 
             var camera = GameObject.Find("Main Camera").GetComponent<UniversalAdditionalCameraData>();
-            Assert.That(camera.antialiasing, Is.EqualTo(AntialiasingMode.SubpixelMorphologicalAntiAliasing));
+            Assert.That(camera.antialiasing, Is.EqualTo(AntialiasingMode.TemporalAntiAliasing));
         }
 
         [Test]

@@ -356,8 +356,8 @@ namespace ShipSimulator.Editor
             ColorAdjustments color = profile.Add<ColorAdjustments>();
             color.postExposure.Override(0.12f);
             color.contrast.Override(6f);       // gentle, avoids crushed shadows
-            color.saturation.Override(5f);
-            color.colorFilter.Override(new Color(1f, 0.99f, 0.96f));
+            color.saturation.Override(0f);
+            color.colorFilter.Override(Color.white);
 
             Tonemapping tonemapping = profile.Add<Tonemapping>();
             tonemapping.mode.Override(TonemappingMode.ACES);

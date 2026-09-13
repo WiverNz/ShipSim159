@@ -42,6 +42,14 @@ namespace ShipSimulator.Visuals
         {
             if (ship == null || ship.Data == null) return;
 
+            Shader.SetGlobalVectorArray("_PreviousWakePoints", points);
+            Shader.SetGlobalVectorArray("_PreviousWakeInfo", info);
+            Shader.SetGlobalFloat("_PreviousWakeCount", Shader.GetGlobalFloat(CountId));
+            Shader.SetGlobalVector("_PreviousWakeBounds", Shader.GetGlobalVector(BoundsId));
+            Shader.SetGlobalVector("_PreviousWakeShip", Shader.GetGlobalVector(ShipId));
+            Shader.SetGlobalVector("_PreviousWakeHull", Shader.GetGlobalVector(HullId));
+            Shader.SetGlobalFloat("_PreviousWakeAmplitude", Shader.GetGlobalFloat(AmplitudeId));
+
             Vector3 heading = transform.forward;
             Vector2 forward = new Vector2(heading.x, heading.z);
             if (forward.sqrMagnitude < 0.0001f) return;
@@ -88,6 +96,7 @@ namespace ShipSimulator.Visuals
         {
             track.Clear();
             Shader.SetGlobalFloat(CountId, 0f);
+            Shader.SetGlobalFloat("_PreviousWakeCount", 0f);
         }
 
         private void OnDestroy()

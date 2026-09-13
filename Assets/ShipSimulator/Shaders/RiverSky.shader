@@ -54,8 +54,7 @@ Shader "ShipSimulator/RiverSky"
             CBUFFER_END
 
             // Set by WeatherController.
-            float _RiverCloudWeather;
-            float4 _RiverWind;
+            #include "RiverClouds.hlsl"
 
             struct Attributes
             {
@@ -67,39 +66,6 @@ Shader "ShipSimulator/RiverSky"
                 float4 positionCS : SV_POSITION;
                 float3 direction : TEXCOORD0;
             };
-
-            float Hash(float2 position)
-            {
-                position = frac(position * float2(123.34, 456.21));
-                position += dot(position, position + 45.32);
-                return frac(position.x * position.y);
-            }
-
-            float Noise(float2 position)
-            {
-                float2 cell = floor(position);
-                float2 f = frac(position);
-                f = f * f * f * (f * (f * 6.0 - 15.0) + 10.0);
-                float a = Hash(cell);
-                float b = Hash(cell + float2(1, 0));
-                float c = Hash(cell + float2(0, 1));
-                float d = Hash(cell + 1);
-                return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
-            }
-
-            float Fbm(float2 position, int octaves)
-            {
-                const float2x2 rotation = float2x2(0.8, -0.6, 0.6, 0.8);
-                float sum = 0;
-                float amplitude = 0.5;
-                for (int i = 0; i < octaves; i++)
-                {
-                    sum += amplitude * Noise(position);
-                    position = mul(rotation, position) * 2.03 + 11.7;
-                    amplitude *= 0.5;
-                }
-                return sum;
-            }
 
             Varyings Vert(Attributes input)
             {
@@ -137,21 +103,15 @@ Shader "ShipSimulator/RiverSky"
                 if (up > 0.001)
                 {
                     // Project the view ray onto a distant cloud deck and drift it with the wind.
-                    float2 deck = direction.xz / (up + 0.06) * 0.92 * _CloudScale;
-                    float2 drift = (_RiverWind.xz * 0.0015 + float2(0.0008, 0.0003)) *
-                        _Time.y * _CloudSpeed;
-                    float2 position = deck + drift;
-                    float warp = Fbm(position * 0.5 + 3.1, 3);
+                    float2 position = RiverCloudCoordinates(_WorldSpaceCameraPos, direction, _CloudScale, _CloudSpeed);
+                    float warp = RiverCloudFbm(position * 0.5 + 3.1, 3);
                     float2 cloudPosition = position + warp * 0.8;
-                    float shape = Fbm(cloudPosition, 5);
-
                     float coverage = saturate(lerp(_CloudCoverage, 1, _RiverCloudWeather));
-                    float threshold = lerp(0.62, 0.2, coverage);
-                    cloud = smoothstep(threshold, threshold + 0.22, shape);
+                    cloud = RiverCloudDensity(position, coverage);
 
                     // Thicker cloud between this point and the sun leaves it in its own shade.
                     float2 toSun = normalize(sunDirection.xz + 0.0001) * 0.07;
-                    float sunward = Fbm(cloudPosition + toSun, 3) - Fbm(cloudPosition, 3);
+                    float sunward = RiverCloudFbm(cloudPosition + toSun, 3) - RiverCloudFbm(cloudPosition, 3);
                     half lit = saturate(0.6 - sunward * 6);
                     half overcast = smoothstep(0.65, 1, coverage);
 
@@ -169,7 +129,7 @@ Shader "ShipSimulator/RiverSky"
                 if (_StarIntensity > 0.001 && up > 0)
                 {
                     float3 cell = floor(direction * 420);
-                    half star = smoothstep(0.9985, 1, Hash(cell.xy + cell.z * 17.13));
+                    half star = smoothstep(0.9985, 1, RiverCloudHash(cell.xy + cell.z * 17.13));
                     sky += star * _StarIntensity * (1 - cloud) * saturate(up * 4) * 1.6;
                 }
 

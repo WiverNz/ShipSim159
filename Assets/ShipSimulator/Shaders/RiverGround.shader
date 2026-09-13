@@ -22,6 +22,7 @@ Shader "ShipSimulator/RiverGround"
             #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+        #include "RiverClouds.hlsl"
             CBUFFER_START(UnityPerMaterial)
                 half4 _SoilColor, _GrassColor, _DryColor, _SandColor;
             CBUFFER_END
@@ -69,6 +70,7 @@ Shader "ShipSimulator/RiverGround"
                 half bump=1.2*saturate(1-footprint*4);
                 half3 n=normalize(i.normal+half3((Noise(p*2+float2(0.05,0))-Noise(p*2))*bump,0,(Noise(p*2+float2(0,0.05))-Noise(p*2))*bump));
                 Light sun=GetMainLight(TransformWorldToShadowCoord(i.world));
+                sun.shadowAttenuation*=RiverCloudShadow(i.world,sun.direction);
                 half3 light=SampleSH(n)+sun.color*saturate(dot(n,sun.direction))*sun.shadowAttenuation;
                 half3 color=albedo*light;
                 return half4(MixFog(color,i.fog),1);

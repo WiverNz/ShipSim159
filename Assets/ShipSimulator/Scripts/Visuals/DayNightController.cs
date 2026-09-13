@@ -64,16 +64,6 @@ namespace ShipSimulator.Visuals
                 sun.shadowStrength = night ? 0.4f : 0.72f;
             }
 
-            RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = night
-                ? new Color(0.06f, 0.09f, 0.16f)
-                : new Color(0.46f, 0.57f, 0.70f);
-            RenderSettings.ambientEquatorColor = night
-                ? new Color(0.06f, 0.08f, 0.12f)
-                : new Color(0.40f, 0.43f, 0.39f);
-            RenderSettings.ambientGroundColor = night
-                ? new Color(0.03f, 0.04f, 0.06f)
-                : new Color(0.20f, 0.17f, 0.13f);
             RenderSettings.fogColor = night
                 ? new Color(0.05f, 0.085f, 0.13f)
                 : new Color(0.62f, 0.70f, 0.77f);
@@ -102,7 +92,7 @@ namespace ShipSimulator.Visuals
                 rig.SetNight(night);
             WeatherController weather = FindAnyObjectByType<WeatherController>();
             if (weather != null) weather.RefreshVisuals();
-            DynamicGI.UpdateEnvironment();
+            GetComponent<RiverLighting>()?.Refresh();
         }
 
         private void CreateNavigationAids()

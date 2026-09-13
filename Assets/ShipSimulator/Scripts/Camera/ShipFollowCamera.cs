@@ -161,6 +161,8 @@ namespace ShipSimulator.CameraSystem
         public void SetView(int index)
         {
             if (ViewCount == 0) return;
+            var temporal = GetComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>();
+            if (temporal != null) temporal.resetHistory = true;
             viewIndex = Mathf.Clamp(index, 0, ViewCount - 1);
             if (!IsNavigatorView) ResetOrbitToView();
         }

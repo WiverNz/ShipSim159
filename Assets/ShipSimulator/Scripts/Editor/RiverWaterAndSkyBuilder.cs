@@ -32,6 +32,7 @@ namespace ShipSimulator.Editor
         public static void Apply(Scene scene)
         {
             ShipSimulatorVisualUpgrade.ConfigureLighting(scene);
+            GraphicsPhaseOneBuilder.ConfigureRenderer();
             ConfigureWater(scene);
             ConfigureCameras(scene);
             EditorSceneManager.MarkSceneDirty(scene);
@@ -74,7 +75,10 @@ namespace ShipSimulator.Editor
             foreach (UniversalAdditionalCameraData camera in
                      root.GetComponentsInChildren<UniversalAdditionalCameraData>(true))
             {
-                camera.antialiasing = AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+                camera.antialiasing = AntialiasingMode.TemporalAntiAliasing;
+                camera.taaSettings.quality = TemporalAAQuality.High;
+                camera.taaSettings.baseBlendFactor = 0.2f;
+                camera.GetComponent<Camera>().allowMSAA = false;
                 camera.antialiasingQuality = AntialiasingQuality.High;
                 EditorUtility.SetDirty(camera);
             }

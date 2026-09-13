@@ -315,6 +315,8 @@ namespace ShipSimulator.Editor
                 lods[lod] = new LOD(lod == 0 ? 0.065f : lod == 1 ? 0.018f : 0.0035f, renderers.ToArray());
             }
             var group = plant.AddComponent<LODGroup>();
+            group.fadeMode = LODFadeMode.CrossFade;
+            group.animateCrossFading = true;
             group.SetLODs(lods);
             group.RecalculateBounds();
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(plant, Root + "/" + name + ".prefab");

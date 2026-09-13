@@ -122,10 +122,10 @@ namespace ShipSimulator.Tests
                 rig.EnsureCreated();
                 Light[] lights = vessel.GetComponentsInChildren<Light>(true);
 
-                Assert.That(lights, Has.Length.EqualTo(6));
+                Assert.That(lights, Has.Length.EqualTo(5));
                 Assert.That(lights, Has.All.Matches<Light>(light => !light.enabled));
                 Assert.That(vessel.transform.Find(
-                    "Bow Navigation Light Fixture/Support"), Is.Not.Null);
+                    "Forward Masthead Light Fixture/Support"), Is.Not.Null);
                 Assert.That(vessel.transform.Find(
                     "Forward Masthead Light Fixture/Lantern Housing"), Is.Not.Null);
 

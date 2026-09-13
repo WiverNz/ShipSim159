@@ -2,6 +2,50 @@
 
 Last updated: 2026-09-13
 
+## Water Weather, Bank Wake and Running Lights, 2026-09-13
+
+- Water fog was missing because shared HLSL contained the fog variant pragmas but was loaded
+  with a normal include. Both water passes now use `include_with_pragmas`; surface fog uses
+  URP's per-fragment eye depth, including reflections, foam and highlights.
+- Rain particles now use explicit alpha blending and soft impact textures. Small water impacts
+  are emitted only inside the bank waterlines and below unobstructed air; rain also adds expanding
+  normal-map rings and increases surface roughness. Impact rings remain normal-only under TAA.
+- `RiverShoreProfile` samples the actual zero-height crossings of the generated natural-bank
+  meshes in each scene. Wake crests flatten and dissipate in shallow water, with breaking foam
+  and a weak mirrored incident wave near the bank. Current and previous water displacement use
+  the same bank response, preserving motion-vector consistency. The exaggerated normal gain
+  was reduced from 1.9 to 1.15.
+- Ship running lights are steady, with red port and green starboard 112.5-degree sectors,
+  two forward-facing white 225-degree mastheads, and a white 135-degree stern light. The aft
+  masthead is 4 m higher than the forward one; the extra all-round white bow light was removed.
+  Point-light cookies and emissive lenses share these sectors. The lens keeps a small minimum
+  pixel size to reduce aliasing and handles flipped render-texture projections. Its shader lives
+  in Resources so player builds include it. Buoy flashers remain separate.
+
+Reference pattern: [UNECE CEVNI Article 3.08](https://wiki.unece.org/spaces/TransportSustainableCEVNIv5/pages/25265334/Article%2B3.08%2B-%2BMarking%2Bfor%2Bmotorized%2Bvessels%2Bproceeding%2Balone),
+with light sectors as defined in [navigation Rule 21](https://www.navcen.uscg.gov/navigation-rules-amalgamated).
+Fixture positions are estimated, not a verified Project 507B electrical plan or certification
+against local navigation rules. This is an underway pattern; anchor, towing, special-status and
+signal-light modes are not implemented. A stopped engine does not change the running pattern.
+
+The bank effect is an analytic visual approximation, not a shallow-water solver: it does not
+model propagated wave energy after a stopped track, full refraction, overtopping or reflected
+wave travel around bends. Its near-bank depth slope and reflection strength are estimated;
+physical bathymetry and vessel forces are unchanged. Missing natural-bank meshes disable the
+shore response and water impact emission. Rain impact rejection uses collision geometry for
+hulls and structures; it does not create rain impacts on decks or land.
+
+Verified: 76 EditMode tests and 10 PlayMode tests passed in
+`TestResults/water-weather-{editmode,playmode}.xml`. `WaterWeatherCheck.Run` checks dense-fog
+attenuation, live rain impacts, and steady night light state over 400 frames, and captures both
+weather and four viewing directions in `Logs/WaterWeather/`. The bank-wake capture uses a
+synthetic wake fixture, leaving vessel physics frozen. Fog detail contrast dropped from 0.0068
+to about 0.0001. It also rejects oversized night lenses, a flipped-projection bug caught during
+visual inspection. `GraphicsPhaseOneCheck.Run` also passed (`Logs/water-weather-phase-one.log`):
+water motion reached 90.8% of open-water pixels with a static camera, the cloud cookie and sky
+ambient passed, and rainy-night sun intensity remained 0.127. Run graphics checks with rendering
+enabled, in a dedicated batch editor.
+
 ## Wind-Driven Water and Vegetation, 2026-09-13
 
 A stationary scene no longer looks frozen. `WindGustModel` varies the configured wind for

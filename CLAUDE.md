@@ -137,6 +137,9 @@ the same way, sails Gorodets at full ahead and under helm, renders wake captures
 `Logs/Wake/` and ends with `WAKE_RUNTIME|PASS`. `GraphicsPhaseOneCheck.Run`, launched the same way,
 checks exposure, sky ambient, the cloud cookie, motion vectors, TAA, rain and night in Gorodets,
 writes captures to `Logs/GraphicsPhaseOne/` and ends with `GRAPHICS_PHASE_ONE|PASS`.
+`WaterWeatherCheck.Run` checks fog attenuation on water, rain impacts, bank-wave rendering and
+steady ship running lights from four directions, writes `Logs/WaterWeather/` and ends with
+`WATER_WEATHER|PASS`. Launch it with the same rendering-enabled batch flags.
 
 One thing about results that has already cost time here:
 

@@ -42,7 +42,7 @@ Shader "ShipSimulator/RiverWater"
             HLSLPROGRAM
             #pragma vertex Vert
             #pragma fragment Frag
-            #include "RiverWaterSurface.hlsl"
+            #include_with_pragmas "RiverWaterSurface.hlsl"
             ENDHLSL
         }
         Pass
@@ -55,7 +55,7 @@ Shader "ShipSimulator/RiverWater"
             HLSLPROGRAM
             #pragma vertex WaterMotionVert
             #pragma fragment WaterMotionFrag
-            #include "RiverWaterSurface.hlsl"
+            #include_with_pragmas "RiverWaterSurface.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/MotionVectorsCommon.hlsl"
             float _RiverPreviousTime;
             float4 _PreviousWakePoints[WAKE_CAPACITY];
@@ -208,7 +208,7 @@ Shader "ShipSimulator/RiverWater"
             }
 
             // Height and world-space xz gradient of every ship-generated wave.
-            float3 PreviousShipWaves(float2 position, float4 wake, float4 frame, float footprint)
+            float3 PreviousOpenWaterShipWaves(float2 position, float4 wake, float4 frame, float footprint)
             {
                 float speed = max(wake.w, 0);
                 float amplitude = _PreviousWakeAmplitude * speed * speed / Gravity * frame.w * exp(-wake.z / 90);
@@ -229,6 +229,22 @@ Shader "ShipSimulator/RiverWater"
             // Churned water behind the propellers, widening with distance. x is aeration, which
             // lingers as a pale band; y is surface foam, which breaks up sooner.
 
+            float3 PreviousShipWaves(float2 position, float4 wake, float4 frame, float footprint)
+            {
+                float4 shore = ShoreCoordinates(position);
+                if (shore.x <= 0) return 0;
+                float3 wave = PreviousOpenWaterShipWaves(position, wake, frame, footprint);
+                if (shore.x < 22)
+                {
+                    float2 mirrored = position - 2 * shore.x * shore.yz;
+                    float4 reflectedWake, reflectedFrame;
+                    PreviousFindWakeCoordinates(mirrored, reflectedWake, reflectedFrame);
+                    float3 reflected = PreviousOpenWaterShipWaves(mirrored, reflectedWake, reflectedFrame, footprint);
+                    reflected.yz -= 2 * dot(reflected.yz, shore.yz) * shore.yz;
+                    wave += reflected * (0.16 * (1 - smoothstep(3, 22, shore.x)));
+                }
+                return LimitShoreWave(wave, shore);
+            }
             struct MotionOutput { float4 positionCS:SV_POSITION; float4 current:TEXCOORD0; float4 previous:TEXCOORD1; };
             MotionOutput WaterMotionVert(Attributes input)
             {

@@ -10,6 +10,7 @@ namespace ShipSimulator.Visuals
         private readonly List<Material> materials = new List<Material>();
         private readonly List<GameObject> generatedObjects = new List<GameObject>();
         private Material fixtureMaterial;
+        private readonly List<Cubemap> cookies = new List<Cubemap>();
 
         private void Awake()
         {
@@ -27,17 +28,15 @@ namespace ShipSimulator.Visuals
             materials.Add(fixtureMaterial);
 
             CreateLight("Port Navigation Light", new Vector3(-6.6f, 11.8f, -44f),
-                10.7f, new Color(1f, 0.03f, 0.02f), 5.5f, 45f);
+                10.7f, new Color(1f, 0.03f, 0.02f), 5.5f, 45f, -56.25f, 112.5f);
             CreateLight("Starboard Navigation Light", new Vector3(6.6f, 11.8f, -44f),
-                10.7f, new Color(0.02f, 1f, 0.18f), 5.5f, 45f);
-            CreateLight("Forward Masthead Light", new Vector3(0f, 18f, -38f),
-                12.4f, new Color(0.92f, 0.96f, 1f), 6f, 70f);
-            CreateLight("Aft Masthead Light", new Vector3(0f, 15.5f, -56f),
-                10.5f, new Color(0.92f, 0.96f, 1f), 4f, 55f);
+                10.7f, new Color(0.02f, 1f, 0.18f), 5.5f, 45f, 56.25f, 112.5f);
+            CreateLight("Forward Masthead Light", new Vector3(0f, 14f, 42f),
+                6.8f, Color.white, 6f, 70f, 0, 225);
+            CreateLight("Aft Masthead Light", new Vector3(0f, 18f, -46f),
+                12.4f, Color.white, 6f, 70f, 0, 225);
             CreateLight("Stern Light", new Vector3(0f, 8.5f, -67f),
-                6.6f, new Color(0.92f, 0.96f, 1f), 4.5f, 45f);
-            CreateLight("Bow Navigation Light", new Vector3(0f, 7f, 62f),
-                3.2f, new Color(0.92f, 0.96f, 1f), 4.8f, 52f);
+                6.6f, Color.white, 4.5f, 45f, 180, 135);
             SetNight(false);
         }
 
@@ -57,11 +56,12 @@ namespace ShipSimulator.Visuals
             generatedObjects.Clear();
             lights.Clear();
             lenses.Clear();
+            ReleaseMaterials();
         }
 
         private void CreateLight(
             string lightName, Vector3 localPosition, float supportBaseY,
-            Color color, float intensity, float range)
+            Color color, float intensity, float range, float sectorCenter, float sectorArc)
         {
             CreateFixture(lightName, localPosition, supportBaseY);
 
@@ -77,19 +77,30 @@ namespace ShipSimulator.Visuals
             light.range = range;
             light.shadows = LightShadows.None;
             light.enabled = false;
+            Cubemap cookie = NavigationLightSectors.CreateCookie(sectorCenter, sectorArc);
+            cookies.Add(cookie);
+            light.cookie = cookie;
             lights.Add(light);
 
-            GameObject lens = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            GameObject lens = GameObject.CreatePrimitive(PrimitiveType.Quad);
             lens.name = "Lens";
-            lens.transform.SetParent(lightObject.transform, false);
-            lens.transform.localScale = Vector3.one * 0.42f;
             Collider collider = lens.GetComponent<Collider>();
-            if (collider != null) DestroyRuntimeObject(collider);
-            Material material = new Material(Shader.Find("Universal Render Pipeline/Unlit"))
+            if (collider != null)
+            {
+                collider.enabled = false;
+                DestroyRuntimeObject(collider);
+            }
+            lens.transform.SetParent(lightObject.transform, false);
+            lens.transform.localPosition = Vector3.up * 0.28f;
+            lens.transform.localScale = Vector3.one * 0.42f;
+            Material material = new Material(Resources.Load<Shader>("NavigationSectorLight"))
             {
                 color = color * 2.2f
             };
+            material.SetFloat("_SectorCenter", sectorCenter);
+            material.SetFloat("_SectorArc", sectorArc);
             lens.GetComponent<Renderer>().material = material;
+            lens.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             lens.GetComponent<Renderer>().enabled = false;
             lenses.Add(lens.GetComponent<Renderer>());
             materials.Add(material);
@@ -137,10 +148,16 @@ namespace ShipSimulator.Visuals
             renderer.receiveShadows = true;
         }
 
-        private void OnDestroy()
+        private void OnDestroy() => ReleaseMaterials();
+
+        private void ReleaseMaterials()
         {
+            foreach (Cubemap cookie in cookies) if (cookie != null) DestroyRuntimeObject(cookie);
             for (int i = 0; i < materials.Count; i++)
                 if (materials[i] != null) DestroyRuntimeObject(materials[i]);
+            materials.Clear();
+            cookies.Clear();
+            fixtureMaterial = null;
         }
 
         private static void DestroyRuntimeObject(Object target)

@@ -36,6 +36,7 @@ namespace ShipSimulator.Visuals
         private void Start()
         {
             RefineWaterMeshes();
+            if (GetComponent<RiverShoreProfile>() == null) gameObject.AddComponent<RiverShoreProfile>();
         }
 
         private void LateUpdate()

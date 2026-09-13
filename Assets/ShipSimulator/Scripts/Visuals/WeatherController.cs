@@ -18,9 +18,11 @@ namespace ShipSimulator.Visuals
         private Transform rainTransform;
         private ParticleSystem rainSplashes;
         private Transform splashTransform;
+        private float splashRemainder;
         private Material rainMaterial;
         private Material splashMaterial;
         private Texture2D rainTexture;
+        private Texture2D splashTexture;
         private Camera targetCamera;
         private MaterialPropertyBlock waterProperties;
         private Vector3 visualWindMps;
@@ -68,7 +70,28 @@ namespace ShipSimulator.Visuals
                         targetCamera.transform.position.x,
                         0.08f,
                         targetCamera.transform.position.z);
+                    EmitWaterSplashes();
                 }
+            }
+        }
+
+        private void EmitWaterSplashes()
+        {
+            if (rainSplashes == null || rainIntensity <= 0 || Time.deltaTime <= 0) return;
+            RiverShoreProfile shore = RiverShoreProfile.Active;
+            if (shore == null || !shore.IsReady) return;
+            splashRemainder += 950f * rainIntensity * Mathf.Min(Time.deltaTime, 0.1f);
+            int count = Mathf.FloorToInt(splashRemainder);
+            splashRemainder -= count;
+            for (int i = 0; i < count; i++)
+            {
+                Vector3 position = splashTransform.position + new Vector3(
+                    Random.Range(-37.5f, 37.5f), 0, Random.Range(-37.5f, 37.5f));
+                if (shore.DistanceToBank(position) < 0.25f) continue;
+                // Reject hulls, jetties and dry structures above the water surface.
+                if (UnityEngine.Physics.Raycast(position + Vector3.up * 30, Vector3.down,
+                    out RaycastHit hit, 30, ~(1 << 4), QueryTriggerInteraction.Ignore)) continue;
+                rainSplashes.Emit(new ParticleSystem.EmitParams { position = position, applyShapeToPosition = false }, 1);
             }
         }
 
@@ -197,7 +220,7 @@ namespace ShipSimulator.Visuals
                     rainMaterial.SetTexture("_BaseMap", rainTexture);
                 rainMaterial.SetFloat("_Surface", 1f);
                 rainMaterial.SetFloat("_ZWrite", 0f);
-                rainMaterial.renderQueue = 3000;
+                ConfigureParticleBlending(rainMaterial);
                 renderer.material = rainMaterial;
             }
 
@@ -218,8 +241,7 @@ namespace ShipSimulator.Visuals
 
             ParticleSystem.EmissionModule splashEmission =
                 rainSplashes.emission;
-            splashEmission.rateOverTime = Mathf.Lerp(
-                0f, 420f, rainIntensity);
+            splashEmission.rateOverTime = 0f;
             if (rainIntensity > 0.01f)
             {
                 if (!rain.isPlaying) rain.Play();
@@ -248,13 +270,13 @@ namespace ShipSimulator.Visuals
 
             ParticleSystem.MainModule main = rainSplashes.main;
             main.loop = true;
-            main.startLifetime = new ParticleSystem.MinMaxCurve(0.18f, 0.42f);
-            main.startSpeed = new ParticleSystem.MinMaxCurve(0.35f, 1.3f);
-            main.startSize = new ParticleSystem.MinMaxCurve(0.025f, 0.075f);
+            main.startLifetime = new ParticleSystem.MinMaxCurve(0.12f, 0.3f);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(0.25f, 0.75f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.04f, 0.1f);
             main.startColor = new ParticleSystem.MinMaxGradient(
                 new Color(0.68f, 0.78f, 0.84f, 0.18f),
                 new Color(0.82f, 0.9f, 0.94f, 0.5f));
-            main.maxParticles = 900;
+            main.maxParticles = 1800;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
             main.gravityModifier = 1.3f;
 
@@ -298,9 +320,41 @@ namespace ShipSimulator.Visuals
                     new Color(0.72f, 0.83f, 0.88f, 0.42f));
                 splashMaterial.SetFloat("_Surface", 1f);
                 splashMaterial.SetFloat("_ZWrite", 0f);
-                splashMaterial.renderQueue = 3000;
+                splashTexture = CreateSplashTexture();
+                splashMaterial.SetTexture("_BaseMap", splashTexture);
+                ConfigureParticleBlending(splashMaterial);
                 renderer.material = splashMaterial;
             }
+        }
+
+        private static void ConfigureParticleBlending(Material material)
+        {
+            material.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            material.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            material.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            material.SetFloat("_SrcBlendAlpha", (float)UnityEngine.Rendering.BlendMode.One);
+            material.SetFloat("_DstBlendAlpha", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            material.renderQueue = 3000;
+        }
+
+        private static Texture2D CreateSplashTexture()
+        {
+            const int size = 32;
+            var texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            texture.name = "Soft rain impact";
+            texture.wrapMode = TextureWrapMode.Clamp;
+            var pixels = new Color[size * size];
+            for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
+            {
+                float radius = new Vector2((x + 0.5f) / size * 2 - 1, (y + 0.5f) / size * 2 - 1).magnitude;
+                float alpha = Mathf.Pow(Mathf.Clamp01(1 - radius), 2);
+                pixels[y * size + x] = new Color(1, 1, 1, alpha);
+            }
+            texture.SetPixels(pixels);
+            texture.Apply();
+            return texture;
         }
 
         // Soft vertical streak: opaque-ish core fading at the ends and across the
@@ -349,6 +403,10 @@ namespace ShipSimulator.Visuals
                 ? new Color(0.075f, 0.09f, 0.11f)
                 : new Color(0.56f, 0.59f, 0.60f);
             RenderSettings.fogColor = Color.Lerp(clearColor, denseColor, fogIntensity);
+            if (rainMaterial != null) rainMaterial.SetColor("_BaseColor", night
+                ? new Color(0.20f, 0.25f, 0.32f, 0.32f) : new Color(0.70f, 0.80f, 0.88f, 0.38f));
+            if (splashMaterial != null) splashMaterial.SetColor("_BaseColor", night
+                ? new Color(0.18f, 0.23f, 0.30f, 0.4f) : new Color(0.72f, 0.83f, 0.88f, 0.42f));
             // A global rather than a skybox material property, so the sky asset is never edited
             // before DayNightController swaps in its runtime copy.
             Shader.SetGlobalFloat("_RiverCloudWeather",
@@ -364,6 +422,7 @@ namespace ShipSimulator.Visuals
             Shader.SetGlobalVector(PreviousWindTravelId, new Vector4(windTravelM.x, 0f, windTravelM.y, 0f));
             visualWindMps = WindGustModel.VisualWind(Time.timeAsDouble, windDirectionDeg, windSpeedMps);
             windTravelM += new Vector2(visualWindMps.x, visualWindMps.z) * Time.deltaTime;
+            Shader.SetGlobalFloat("_RiverRain", rainIntensity);
             Shader.SetGlobalVector(WindId, new Vector4(visualWindMps.x, 0f, visualWindMps.z, visualWindMps.magnitude));
             Shader.SetGlobalVector(WindTravelId, new Vector4(windTravelM.x, 0f, windTravelM.y, 0f));
         }
@@ -389,9 +448,9 @@ namespace ShipSimulator.Visuals
                     Mathf.Lerp(0.35f, 0.8f, wind01));
                 waterProperties.SetFloat("_Turbidity",
                     Mathf.Lerp(0.55f, 0.72f, rainIntensity));
-                // Wet surface: rain raises smoothness and reflectivity.
+                // Rain impacts roughen the surface and soften reflections.
                 waterProperties.SetFloat("_Smoothness",
-                    Mathf.Lerp(0.80f, 0.90f, rainIntensity));
+                    Mathf.Lerp(0.80f, 0.68f, rainIntensity));
                 waterProperties.SetFloat("_ReflectionStrength",
                     Mathf.Lerp(0.62f, 0.82f, rainIntensity));
                 renderer.SetPropertyBlock(waterProperties);
@@ -422,6 +481,8 @@ namespace ShipSimulator.Visuals
             DestroyGenerated(rainMaterial);
             DestroyGenerated(splashMaterial);
             DestroyGenerated(rainTexture);
+            DestroyGenerated(splashTexture);
+            Shader.SetGlobalFloat("_RiverRain", 0);
         }
 
         private static void DestroyGenerated(Object generated)

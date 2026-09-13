@@ -15,7 +15,7 @@
             static const float VertexFootprint = 1.7;
             // Estimated visual gain: seen from the bridge, ship waves read through their slopes,
             // which would otherwise drown under the ambient ripples.
-            static const float ShipWaveSlopeGain = 1.9;
+            static const float ShipWaveSlopeGain = 1.15;
             // ShipWakeController's default amplitude, where the hull wave shape was tuned.
             static const float TunedWakeAmplitude = 0.07;
 
@@ -354,8 +354,41 @@
                     0.10 * stern * exp(-hullDistance / 8));
             }
 
+            TEXTURE2D(_RiverShoreProfile);
+            SAMPLER(sampler_RiverShoreProfile);
+            float4 _RiverShoreRange;
+            // x: inward distance, yz: inward normal, w: estimated shallow depth.
+            float4 ShoreCoordinates(float2 position)
+            {
+                if (_RiverShoreRange.w < 0.5 || position.y < _RiverShoreRange.x ||
+                    position.y > _RiverShoreRange.x + _RiverShoreRange.y) return float4(1000, 1, 0, 10);
+                float u = (position.y - _RiverShoreRange.x) / _RiverShoreRange.y;
+                float texel = 1 / _RiverShoreRange.z;
+                float2 uv = float2(lerp(0.5 * texel, 1 - 0.5 * texel, u), 0.5);
+                float2 banks = SAMPLE_TEXTURE2D_LOD(_RiverShoreProfile, sampler_RiverShoreProfile, uv, 0).rg;
+                float2 next = SAMPLE_TEXTURE2D_LOD(_RiverShoreProfile, sampler_RiverShoreProfile,
+                    uv + float2(texel, 0), 0).rg;
+                float2 tangent = (next - banks) * (_RiverShoreRange.z - 1) / _RiverShoreRange.y;
+                bool left = position.x - banks.x < banks.y - position.x;
+                float slope = left ? tangent.x : tangent.y;
+                float2 inward = normalize(float2(1, -slope)) * (left ? 1 : -1);
+                float distance = (left ? position.x - banks.x : banks.y - position.x) / sqrt(1 + slope * slope);
+                return float4(distance, inward, max(distance, 0) * 0.14);
+            }
+
+            float3 LimitShoreWave(float3 wave, float4 shore)
+            {
+                // Soft banks absorb most incident energy. A depth-limited crest breaks before dry land.
+                float wet = smoothstep(0, 1.8, shore.x);
+                float limit = max(0.55 * shore.w, 0.001);
+                float ratio = wave.x / limit;
+                float bounded = limit * ratio / sqrt(1 + ratio * ratio);
+                float slopeScale = pow(1 + ratio * ratio, -1.5);
+                return float3(bounded, wave.yz * slopeScale) * wet;
+            }
+
             // Height and world-space xz gradient of every ship-generated wave.
-            float3 ShipWaves(float2 position, float4 wake, float4 frame, float footprint)
+            float3 OpenWaterShipWaves(float2 position, float4 wake, float4 frame, float footprint)
             {
                 float speed = max(wake.w, 0);
                 float amplitude = _WakeAmplitude * speed * speed / Gravity * frame.w * exp(-wake.z / 90);
@@ -371,6 +404,23 @@
                 float2 gradient = kelvin.y * back + kelvin.z * lateralAxis +
                     float2(hullX - hull, hullZ - hull) / epsilon;
                 return float3(kelvin.x + hull, gradient);
+            }
+
+            float3 ShipWaves(float2 position, float4 wake, float4 frame, float footprint)
+            {
+                float4 shore = ShoreCoordinates(position);
+                if (shore.x <= 0) return 0;
+                float3 wave = OpenWaterShipWaves(position, wake, frame, footprint);
+                if (shore.x < 22)
+                {
+                    float2 mirrored = position - 2 * shore.x * shore.yz;
+                    float4 reflectedWake, reflectedFrame;
+                    FindWakeCoordinates(mirrored, reflectedWake, reflectedFrame);
+                    float3 reflected = OpenWaterShipWaves(mirrored, reflectedWake, reflectedFrame, footprint);
+                    reflected.yz -= 2 * dot(reflected.yz, shore.yz) * shore.yz;
+                    wave += reflected * (0.16 * (1 - smoothstep(3, 22, shore.x)));
+                }
+                return LimitShoreWave(wave, shore);
             }
 
             // Churned water behind the propellers, widening with distance. x is aeration, which
@@ -435,6 +485,28 @@
                 return output;
             }
 
+            float _RiverRain;
+            half2 RainRippleNormal(float2 position, float footprint)
+            {
+                float visibility = saturate(1 - footprint * 8);
+                if (_RiverRain < 0.001 || visibility < 0.001) return 0;
+                float2 cell = floor(position * 0.85);
+                half2 slope = 0;
+                for (int y = -1; y <= 1; y++)
+                for (int x = -1; x <= 1; x++)
+                {
+                    float2 id = cell + float2(x,y);
+                    float2 random = Hash22(id);
+                    float age = frac(_Time.y * 0.85 + random.x);
+                    float2 delta = position - (id + random) / 0.85;
+                    float radius = length(delta);
+                    float ring = radius - age * 0.72;
+                    float envelope = exp(-ring * ring * 180) * sin(age * PI) * exp(-age * 2);
+                    slope += delta / max(radius,0.02) * cos(ring * 55) * envelope * 0.15;
+                }
+                return slope * _RiverRain * visibility;
+            }
+
             half4 Frag(Varyings input) : SV_Target
             {
                 float3 positionWS = input.positionWS;
@@ -447,7 +519,7 @@
                 half gust = GustPatches(positionWS.xz);
                 half2 ripple = (RippleNormal(positionWS.xz, time) * _RippleStrength *
                     lerp(1.0h, 0.5h, saturate(distanceToCamera / 900)) +
-                    WindWaveNormal(positionWS.xz, footprint)) * gust;
+                    WindWaveNormal(positionWS.xz, footprint)) * gust + RainRippleNormal(positionWS.xz, footprint);
 
                 float3 shipWave = 0;
                 half aeration = 0;
@@ -496,6 +568,10 @@
                     max(abs(TransformWorldToViewDir(viewDirection).z), 0.05);
                 half depthVariation = exp(-depth * lerp(1.5, 2.4, saturate(_Turbidity)));
                 half shoreline = 1 - saturate(depth / 0.65);
+                float4 bank = ShoreCoordinates(positionWS.xz);
+                half breaking = saturate(abs(shipWave.x) / max(bank.w, 0.03) - 0.22) *
+                    (1 - smoothstep(0.2, 1.6, bank.w)) * smoothstep(0, 0.35, bank.x);
+                foamAmount = max(foamAmount, breaking * 2.5);
                 // The waterline against a moving hull churns much more than a quiet bank.
                 foamAmount = max(foamAmount,
                     shoreline * (0.07h + 0.55h * saturate(_WakeHull.z / 3) * exp(-hullDistance / 3))) +
@@ -509,7 +585,7 @@
                 half3 waterColor = lerp(_DeepColor.rgb, muddyShallow, depthVariation) * lighting;
                 waterColor = lerp(waterColor, _AeratedColor.rgb * lighting, aeration * 0.85h);
 
-                half perceptualRoughness = 1.0h - _Smoothness;
+                half perceptualRoughness = saturate(1.0h - _Smoothness + _RiverRain * 0.15h);
                 half3 reflection = GlossyEnvironmentReflection(
                     reflect(-viewDirection, normalWS), perceptualRoughness, 1.0h);
                 reflection = lerp(reflection, reflection * _ReflectionTint.rgb, 0.48h);
@@ -554,7 +630,7 @@
                 half3 foamLight = SampleSH(half3(0, 1, 0)) * 0.9 +
                     mainLight.color * (saturate(mainLight.direction.y) * mainLight.shadowAttenuation * 0.85 + 0.08);
                 color = lerp(color, _FoamColor.rgb * foamLight, foam);
-                color = MixFog(color, input.fogFactor);
+                color = MixFog(color, InitializeInputDataFog(float4(positionWS, 1), input.fogFactor));
 
                 // Reveal wet sediment at the contact edge, with suspended silt hiding the deeper bed.
                 half transmission = exp(-depth * lerp(2.4, 4.0, saturate(_Turbidity)));

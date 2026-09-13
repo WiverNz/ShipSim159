@@ -294,8 +294,10 @@ namespace ShipSimulator.Tests
                     Is.EqualTo(ParticleSystemSimulationSpace.World));
                 Assert.That(drops.emission.rateOverTime.constant,
                     Is.GreaterThan(1000f));
-                Assert.That(splashes.emission.rateOverTime.constant,
-                    Is.GreaterThan(100f));
+                Assert.That(splashes.emission.rateOverTime.constant, Is.Zero,
+                    "Impacts are emitted only after testing the waterline and overhead obstructions.");
+                Assert.That(dropsRenderer.sharedMaterial.GetFloat("_DstBlend"),
+                    Is.EqualTo((float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha));
                 Assert.That(RenderSettings.fogDensity, Is.GreaterThan(0.003f));
                 Assert.That(weather.WindVelocityMps.magnitude,
                     Is.EqualTo(8f).Within(0.001f));

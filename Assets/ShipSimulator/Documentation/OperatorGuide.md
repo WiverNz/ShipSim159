@@ -83,7 +83,14 @@ vessel physics, current response, mission timing, and visual simulation.
 The weather panel controls wind direction and force, rain intensity, and fog.
 Wind changes the force applied to the vessel and the procedural water surface.
 Rain and fog are visual prototype effects and are not validated visibility
-conditions.
+conditions. Fog also obscures the water surface and reflections. Rain produces small splashes
+and expanding ripples on exposed water. Ship waves flatten and break near natural banks, with
+an estimated, weak reflected component.
+
+At night the vessel displays steady underway lights: red to port, green to starboard, two white
+mastheads facing forward, and a white stern light. Visibility depends on viewing direction;
+turning across a sector boundary is not a flash cycle. Buoy lights have their own flash cycles.
+The prototype does not switch to anchor, towing or special-status signal patterns.
 
 Depth, bathymetry, route geometry, RPM, and engine load are prototype
 estimates. They must not be treated as validated navigation or training data.

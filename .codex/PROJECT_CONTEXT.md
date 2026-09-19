@@ -1019,3 +1019,16 @@ Latest verification after this work:
 - `Assets/ShipSimulator/Scripts/Physics/ShipPhysicsController.cs`
 - `Assets/ShipSimulator/Scripts/Physics/VesselDataValidator.cs`
 - `Assets/ShipSimulator/Scripts/Editor/VolgoDonModelIntegrator.cs`
+
+## Shared agent check tools (2026-09-20)
+
+- Moved reusable Unity launching and XML summaries to `Tools/shipsim-check.ps1` and
+  `Tools/read-test-results.py`; usage and platform limits are in `Tools/README.md`.
+- The Windows/WSL launcher derives the checkout and Hub version automatically, supports
+  a custom editor location and dry runs, quotes paths with spaces, and rejects compiler
+  errors or missing/failed test results after Unity exits. Personal approved entry points
+  remain fixed-argument compatibility wrappers under `.codex/tools/`.
+- Validation: ten mocked launcher regression cases passed, including paths with spaces,
+  a busy project, compiler errors, missing outputs and exit propagation. Actual FastCrafts
+  dry-run and XML summary parsing passed. No Unity gameplay or rendering checks were run
+  for this tooling-only change. Native macOS/Linux launching remains unsupported.

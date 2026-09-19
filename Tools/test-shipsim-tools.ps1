@@ -32,6 +32,7 @@ function Start-Process {
     $script = Join-Path $fixture 'Tools\shipsim-check.ps1'
     $source = $source.Replace("`$ErrorActionPreference = 'Stop'", $mock + "`n`$ErrorActionPreference = 'Stop'")
     Set-Content -LiteralPath $script -Value $source
+    $savedTestEnvironment = $env:SHIPSIM_TOOL_TEST
     $hostExe = (Get-Process -Id $PID).Path
     $cases = @(
         @('ok','Compile',0), @('ok','EditMode',0), @('ok','PlayMode',0),
@@ -44,11 +45,13 @@ function Start-Process {
         # Each invocation needs fresh outputs, including the missing-output cases.
         Get-ChildItem -LiteralPath $fixture -Directory | Where-Object Name -in @('Logs','TestResults') |
             Remove-Item -Recurse -Force
+        $ErrorActionPreference = 'Continue'
         $output = & $hostExe -NoProfile -ExecutionPolicy RemoteSigned -File $script -Action $case[1] -UnityEditor $fakeEditor 2>&1
+        $ErrorActionPreference = 'Stop'
         if ($LASTEXITCODE -ne $case[2]) { throw "Case $case returned $LASTEXITCODE instead of $($case[2]): $output" }
         Write-Output "PASS: $case"
     }
 } finally {
-    Remove-Item Env:SHIPSIM_TOOL_TEST -ErrorAction SilentlyContinue
+    $env:SHIPSIM_TOOL_TEST = $savedTestEnvironment
     Remove-Item -LiteralPath $fixture -Recurse -Force
 }

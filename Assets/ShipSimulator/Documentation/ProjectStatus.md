@@ -183,7 +183,11 @@ written for displacement ships, so their rows are reported without it.
   `UnityEngine.UI.Text` and its telegraph controls support at most two engines.
 - **Runtime log noise.** `RiverLighting.CaptureSky` throws a `MissingReferenceException` during scene
   switches (seen in the menu smoke log); the checks still pass.
-- **Graphics.** Roadmap phase 1 is done; phase 2 is planned in `GraphicsPhaseTwoPlan.md`.
+- **Graphics.** Roadmap phase 1 and phase 2 Steps 0 and 1 are implemented: baseline captures,
+  timing logs, water refraction, depth absorption, filtered reflections and specular antialiasing.
+  RTX 3060 / 1080p GPU acceptance remains open; timings collected on RTX 4090 do not establish
+  that budget. The rain-toward-sun temporal crop increased variance by 10.2%, although eight of
+  ten crops improved. Height fog and current-driven flow remain in `GraphicsPhaseTwoPlan.md`.
 
 ## What needs to be done
 
@@ -205,7 +209,8 @@ In priority order:
    hydrostatics, collisions through the added-mass solve.
 7. **Controls and UI.** Input Actions with rebinding and gamepad support; telegraphs for any engine
    count; move the HUD to TextMesh Pro or UI Toolkit.
-8. **Graphics phase 2.** Water refraction and depth absorption, height fog with sun in-scattering,
-   current-driven flow maps. Steps, acceptance criteria and checks are in `GraphicsPhaseTwoPlan.md`.
+8. **Graphics phase 2.** Validate the implemented water optics on RTX 3060 at 1080p and review
+   rainy-water temporal variance. Then height fog with sun in-scattering and current-driven flow
+   maps. Steps, acceptance criteria and checks are in `GraphicsPhaseTwoPlan.md`.
 9. **Engineering hygiene.** Fix the `RiverLighting.CaptureSky` exception; add loader parse-error and
    missing-component tests; record a frame-time budget.

@@ -33,8 +33,10 @@ Minimum target agreed with the user: **GeForce RTX 3060, 1920 x 1080**.
 
 Optics settings are applied by `RiverWaterAndSkyBuilder.ConfigureOptics` and `ApplyOpticsBoth`,
 which only updates the water material. The baseline captures precede all optics changes;
-initial diagnostic attempts are retained in separately named directories. See the project
-context for final regression results. Future baseline runs must preserve or rename existing
+initial diagnostic attempts are retained in separately named directories. Weather and sailing-wake
+regressions passed on 2026-09-13. Final verification on the current checkout (2026-09-19):
+169 EditMode tests and 23 PlayMode tests passed, as did the clear-water temporal comparison
+assertion against the preserved captures. See the project context for result paths. Future baseline runs must preserve or rename existing
 capture directories deliberately; the check refuses to overwrite them.
 
 Phase 2 of the roadmap in `GraphicsRealismApproach.md` (section 10) covers three things:

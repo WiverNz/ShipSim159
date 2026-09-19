@@ -1,6 +1,6 @@
 # ShipSim159 Project Context
 
-Last updated: 2026-09-13
+Last updated: 2026-09-19
 
 ## Graphics Phase 2, Steps 0 and 1, 2026-09-13
 
@@ -32,9 +32,15 @@ sun +0.7%, rain toward sun +10.2%. See `temporal-comparison.csv`. CPU median del
 these are whole-scene comparisons, not isolated shader-cost measurements. Fine normal motion
 and exposure still affect the temporal metric. Optical coefficients are visual estimates.
 
-Verification: before, after and sky-probe captures passed; `WaterWeatherCheck` passed with
-water fog detail contrast 0.0059 clear / 0.0001 fog. Remaining suite results are recorded below
-when completed.
+Verification: before, after and sky-probe captures passed on 2026-09-13; `WaterWeatherCheck`
+passed with water fog detail contrast 0.0059 clear / 0.0001 fog. `ShipWakeRuntimeCheck` passed
+straight and turning captures with 48 wake points. The original suites passed 145 EditMode and
+21 PlayMode tests. On 2026-09-19, the current checkout passed 169 EditMode and 23 PlayMode tests
+(`TestResults/phase-two-final-{EditMode,PlayMode}.xml`), with zero compile/runtime errors in
+those logs. The final clear-water temporal comparison assertion also passed against the
+preserved before/after crops (`Logs/phase-two-comparison-final.log`). The historical screenshots
+were not regenerated for the newer vessel catalogue; the optics shader is unchanged since
+those successful captures. RTX 3060 GPU timing and the rain-view variance remain open limits.
 
 ## Passenger Fast Craft: Meteor 342U and Luch 14352, 2026-09-19
 

@@ -6,10 +6,13 @@ User-requested auto-allow setup, 2026-09-20. WSL rules:
 Run from WSL without a heredoc, redirection, or an enclosing `zsh -lc` command:
 
 ```sh
-powershell.exe -NoProfile -File 'G:\Projects\ShipSim159\.codex\tools\shipsim-check.ps1' -Action Status
-powershell.exe -NoProfile -File 'G:\Projects\ShipSim159\.codex\tools\shipsim-check.ps1' -Action EditMode
+powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File 'G:\Projects\ShipSim159\.codex\tools\shipsim-check.ps1' -Action Status
+powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File 'G:\Projects\ShipSim159\.codex\tools\shipsim-check.ps1' -Action EditMode
 python3 -I /mnt/g/projects/shipsim159/.codex/tools/read-test-results.py
 ```
+
+The process-local RemoteSigned switch permits this local script without modifying Windows
+execution-policy settings. Machine/User Group Policy still takes precedence.
 
 Actions: Status, Compile, EditMode, PlayMode, Shakedown, FastCrafts, BuildCatalogue,
 PhaseOne, WaterWeather, Wake, Buoys, Menu. No arbitrary command, method, project, log path,
@@ -27,3 +30,6 @@ broad `powershell.exe -NoProfile -Command` allowance; these new rules do not nar
 Audit: `/home/askibin/.codex/shipsim159-approval-audit.json` lists recovered escalation
 requests, purposes and hashes. It is not proof of individual UI approval clicks.
 Official rules documentation: https://learn.chatgpt.com/docs/agent-configuration/rules
+
+Shared implementations now live in `Tools/`; see `Tools/README.md`. The commands above
+remain compatibility entry points with fixed machine paths and no additional arguments.

@@ -88,10 +88,22 @@ Desktop, keyboard and mouse. `ProjectSettings/ProjectVersion.txt` is the source 
 the project with the editor version it names, or the Hub will offer an upgrade and rewrite the
 manifest.
 
-There is no `make`, no npm and no build script in this repository. Everything runs either
-through the editor UI or through `Unity.exe` in batch mode. On a multi-version machine, invoke
+There is no `make` or npm workflow. Checks run through the editor UI or through Unity
+in batch mode; `Tools/shipsim-check.ps1` wraps the common batch commands. On a multi-version machine, invoke
 the editor by its absolute path rather than relying on PATH, so the version always matches
 `ProjectVersion.txt`.
+
+### Shared check scripts
+
+See [`Tools/README.md`](Tools/README.md) for the shared launchers, supported actions and
+platform requirements. They work for any agent and resolve this checkout automatically.
+On Windows, run `powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File
+.\Tools\shipsim-check.ps1 -Action Status`, then choose `Compile`, `EditMode`, `PlayMode`
+or a runtime check. Use `-DryRun` to preview a launch. The default editor comes from the
+standard Unity Hub installation for `ProjectSettings/ProjectVersion.txt`; `-UnityEditor`
+overrides its location. Runtime checks require a graphics-capable desktop session.
+`python3 -I Tools/read-test-results.py` summarizes saved XML results on any OS.
+Personal auto-allow rules are separate from these shared tools.
 
 ### Run
 
@@ -138,7 +150,7 @@ UI: `Window > General > Test Runner`, run the EditMode and PlayMode suites.
 Batch:
 
 ```
-Unity.exe -batchmode -buildTarget Win64 -projectPath <abs> -runTests -testPlatform EditMode -testResults <abs> -quit
+Unity.exe -batchmode -buildTarget Win64 -projectPath <abs> -runTests -testPlatform EditMode -testResults <abs>
 ```
 
 Swap `EditMode` for `PlayMode`, and **drop `-nographics` for PlayMode**: rendering has to stay

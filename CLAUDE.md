@@ -46,6 +46,8 @@ Read these before changing the project, in the order they are usually needed:
   - `VolgoDon507B_Sources.md`, `VolgoBalt295AR_Sources.md`, `Volgoneft1577_Sources.md`,
     `Meteor342U_Sources.md`, `Luch14352_Sources.md`: where each vessel's parameters came from, and
     how confident they are. Every vessel needs its own file.
+  - `SerpukhovZatonScenario_Sources.md`: where the Serpukhov zaton scenario's geography and
+    navigation data came from, and which of its values are estimated.
   - `GorodetsScenarioTechnicalPlan.md`, `NextSteps.md`: scenario plan and roadmap.
   - `GraphicsPhaseTwoPlan.md`: the next graphics work (water optics, height fog, flow map).
   - `GraphicsRealismApproach.md`, `ShipDynamicsRealismApproach.md`: research and proposed
@@ -69,8 +71,11 @@ missing you are on a different machine and should write your own.
   materials that `Build Vessel Catalogue` overwrites.
 - `Assets/ShipSimulator/Resources/VesselCatalogue.asset`: the selectable vessels and their prefabs.
 - `Assets/ShipSimulator/Prefabs/`: vessel, navigation and environment prefabs.
-- `Assets/ShipSimulator/Scenes/`: `GorodetsTrainingScene.unity` (default startup and build entry point) and
-  `RiverTrainingScene.unity` (river familiarisation).
+- `Assets/ShipSimulator/Scenes/`: `GorodetsTrainingScene.unity` (default startup and build entry point),
+  `RiverTrainingScene.unity` (river familiarisation) and `SerpukhovZatonScene.unity` (Nara mouth and
+  the Serpukhov lay-up basin, restricted to the fast craft).
+- `Assets/ShipSimulator/Data/Scenarios/`: surveyed scenario geography (shorelines, fairway, landmarks)
+  that a builder reads instead of hard-coding.
 - `Assets/ShipSimulator/Data/Vessels/`: JSON vessel specifications.
 - `ProjectSettings/`, `Packages/`: Unity configuration and package dependencies.
 
@@ -92,10 +97,11 @@ Open the project and enter Play Mode. `TrainingSceneStartup` opens Gorodets when
 editor starts with a clean untitled scene. Play from a non-voyage scene launches Gorodets
 through `EditorSceneManager.playModeStartScene`, preserving unsaved editor work. An open
 training scene plays directly, so River familiarisation remains selectable. Batch automation
-keeps control of its own scene setup. Both training scenes are enabled in Build Settings.
+keeps control of its own scene setup. All three voyage scenes are enabled in Build Settings, with
+Gorodets first.
 `Ship Simulator > Play Training Scene` opens Gorodets, after offering to save modified scenes.
 
-Both training scenes open the runtime maritime start menu. Choose a new passage or continue
+Every voyage scene opens the runtime maritime start menu. Choose a new passage or continue
 the saved voyage. Escape opens the pause menu with save/load and persistent settings.
 `VoyageMenu` bootstraps at runtime, so scene rebuilds do not remove it. Its overlay blocks
 the HUD and gameplay input, and preserves simulation speed across pause/resume.
@@ -189,6 +195,8 @@ One thing about results that has already cost time here:
 | `Apply Navigation And Collision Upgrade` | Applies navigation aids and the collision hull setup |
 | `Arrange Navigation Buoys` | Places the fairway buoy line |
 | `Build Gorodets Scenario` | Regenerates `GorodetsTrainingScene` |
+| `Build Serpukhov Zaton Scenario` | Regenerates `SerpukhovZatonScene` from `Data/Scenarios/SerpukhovZaton.json` |
+| `Render Serpukhov Zaton Preview` | Renders stills of the Serpukhov scene into `Logs/Serpukhov/` |
 | `Render Visual Preview` | Renders a still of the scene |
 | `Upgrade Water And Landscape` | Applies natural banks, vegetation LODs and reflective water to both scenes |
 | `Apply Realistic Water And Sky` | Applies the cloud sky, ripple normal map, water tuning and temporal AA camera settings to both scenes |
@@ -197,6 +205,10 @@ One thing about results that has already cost time here:
 | `Run Virtual Sea Trials` | Runs standard manoeuvres for every vessel and writes `Logs/SeaTrials/sea-trials.md` |
 | `Run Vessel Shakedown` | Sails every catalogue vessel and captures it with the HUD in `Logs/Shakedown/` |
 | `Play Training Scene` / `Stop Play Mode` | Enter and leave Play Mode |
+
+`Upgrade Water And Landscape`, `Apply Realistic Water And Sky` and `Apply Graphics Phase One` still
+cover only the two original scenes. `SerpukhovZatonScene` builds its own water, ground and cameras,
+so a graphics pass applied through those three does not reach it.
 
 These commands **regenerate scene-owned content**. A manual scene edit they overwrite must
 instead be made in the corresponding builder or integrator script under `Scripts/Editor/`, or it

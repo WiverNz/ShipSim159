@@ -26,6 +26,9 @@ namespace ShipSimulator.UI
         [SerializeField] private LeadingMarkPair[] leadingLines = Array.Empty<LeadingMarkPair>();
         [SerializeField] private float[] phaseDistancesM =
             { 60f, 300f, 700f, 1150f, 1600f, 1950f };
+        // Other scenarios reuse this controller with their own wording; empty falls back to Gorodets.
+        [SerializeField] private string[] phaseLabels = Array.Empty<string>();
+        [SerializeField] private string[] phaseInstructions = Array.Empty<string>();
 
         private Vector3 startPosition;
         private Quaternion startRotation;
@@ -41,6 +44,7 @@ namespace ShipSimulator.UI
         public float RouteDistanceM { get; private set; }
         public float CrossTrackErrorM { get; private set; }
         public float LeadingLineErrorDeg { get; private set; }
+        public string PhaseLabel => Entry(phaseLabels) ?? Phase.ToString();
         public string Instruction => BuildInstruction();
         public float LocalSpeedLimitMps { get; private set; } = 3.333f;
         public ShipPhysicsController Ship => ship;
@@ -68,6 +72,13 @@ namespace ShipSimulator.UI
                 startPosition = ship.transform.position;
                 startRotation = ship.transform.rotation;
             }
+        }
+
+        public void ConfigurePhases(float[] distancesM, string[] labels, string[] instructions)
+        {
+            if (distancesM != null && distancesM.Length >= 6) phaseDistancesM = distancesM;
+            phaseLabels = labels ?? Array.Empty<string>();
+            phaseInstructions = instructions ?? Array.Empty<string>();
         }
 
         private void Start()
@@ -188,8 +199,21 @@ namespace ShipSimulator.UI
                 Phase = GorodetsMissionPhase.AcquireGorodetsLeadingLine;
         }
 
+        private string Entry(string[] table)
+        {
+            int index = (int)Phase;
+            return table != null && index < table.Length && !string.IsNullOrEmpty(table[index])
+                ? table[index]
+                : null;
+        }
+
         private string BuildInstruction()
         {
+            string custom = Entry(phaseInstructions);
+            if (custom != null)
+                return Phase == GorodetsMissionPhase.Completed || Phase == GorodetsMissionPhase.Failed
+                    ? $"{custom} Score {Score:F0}/100"
+                    : custom;
             return Phase switch
             {
                 GorodetsMissionPhase.DepartApproach =>

@@ -128,6 +128,9 @@ namespace ShipSimulator.Visuals
                     if (buoy == null) buoy = marker.gameObject.AddComponent<BuoyVisualRig>();
                     buoy.Build(marker.name.Contains("Right Red"));
                 }
+                // A third-category waterway keeps painted marks and no lights, so those marks say so
+                // in their own name and get the detailed body without a beacon.
+                if (marker.name.Contains("Unlit")) continue;
                 float height = isBuoy
                     ? 3.04f
                     : board != null ? board.localPosition.y + 0.5f : 9f;

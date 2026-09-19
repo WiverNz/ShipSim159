@@ -25,6 +25,7 @@ namespace ShipSimulator.Tests
         private int originalVSync;
         private Keyboard keyboard;
         private InputTestFixture inputFixture;
+        private string originalVesselId;
 
         [UnitySetUp]
         public IEnumerator SetUp()
@@ -35,6 +36,7 @@ namespace ShipSimulator.Tests
             originalVolume = AudioListener.volume;
             originalQuality = QualitySettings.GetQualityLevel();
             originalVSync = QualitySettings.vSyncCount;
+            originalVesselId = VesselSelection.SelectedId;
             yield return SceneManager.LoadSceneAsync("GorodetsTrainingScene", LoadSceneMode.Additive);
             voyageScene = SceneManager.GetSceneByName("GorodetsTrainingScene");
             SceneManager.SetActiveScene(voyageScene);
@@ -63,6 +65,8 @@ namespace ShipSimulator.Tests
             AudioListener.volume = originalVolume;
             QualitySettings.SetQualityLevel(originalQuality);
             QualitySettings.vSyncCount = originalVSync;
+            // The selection is static, so a test that changes it would hand the next one a different ship.
+            VesselSelection.SelectedId = originalVesselId;
             inputFixture.TearDown();
         }
 
@@ -165,6 +169,32 @@ namespace ShipSimulator.Tests
             Assert.That(Time.timeScale, Is.Zero);
             menu.Resume();
             Assert.That(Time.timeScale, Is.EqualTo(2));
+        }
+
+        [UnityTest]
+        public IEnumerator PassagePage_DisablesTheZatonForACargoShipAndOffersItToAFastCraft()
+        {
+            VesselSelection.SelectedId = "volgodon-507b";
+            menu.ShowVoyages();
+            Button blocked = PassageButton("Serpukhov zaton");
+            Assert.That(blocked, Is.Not.Null, "The zaton must be listed even when it cannot be taken.");
+            Assert.That(blocked.interactable, Is.False);
+            Assert.That(blocked.GetComponentsInChildren<Text>()[1].text, Does.Contain("Too long"));
+            Assert.That(PassageButton("Gorodets passage").interactable, Is.True);
+            yield return Capture("menu-passages-cargo.png");
+
+            VesselSelection.SelectedId = "luch-14352";
+            menu.ShowVoyages();
+            Assert.That(PassageButton("Serpukhov zaton").interactable, Is.True);
+            yield return Capture("menu-passages-fast-craft.png");
+            menu.ShowHome();
+        }
+
+        private Button PassageButton(string title)
+        {
+            foreach (Button button in menu.GetComponentsInChildren<Button>())
+                if (button.name == title) return button;
+            return null;
         }
 
         private IEnumerator Capture(string name)

@@ -199,7 +199,7 @@ namespace ShipSimulator.UI
                 objectivePosition);
             objectiveText.text = scenario != null
                 ? $"<size=14><color=#56C7E6>OBJECTIVE</color></size>\n" +
-                  $"<size=23><b>{scenario.Phase}</b></size>\n" +
+                  $"<size=23><b>{scenario.PhaseLabel}</b></size>\n" +
                   $"<size=15>{scenario.Instruction}</size>\n\n" +
                   $"<color=#8AA0AD>Score</color> <b>{scenario.Score:F0}/100</b>     " +
                   $"<color=#8AA0AD>Limit</color> <b>{scenario.LocalSpeedLimitMps * 3.6f:F0} km/h</b>"

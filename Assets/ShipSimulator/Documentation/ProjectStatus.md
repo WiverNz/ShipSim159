@@ -19,8 +19,8 @@ left to do. Detailed references: `ShipSimulator_Physics.md` (model), the sources
 | Engine | Unity 6000.6.0f1, URP 17.6.0, Input System 1.20.0 |
 | Platform | Windows desktop, keyboard and mouse |
 | Vessels | 5 playable: cargo ships Volgo-Don 507B, Volgo-Balt 2-95A/R, Volgoneft 1577 and fast passenger craft Meteor 342U (hydrofoil), Luch 14352 (air cushion), chosen in the start menu; KVLCC2 benchmark data for model checks |
-| Passages | `GorodetsTrainingScene` (2.27 km mission, default) and `RiverTrainingScene` (familiarisation) |
-| Automated tests | EditMode 169 passed, PlayMode 23 passed (latest recorded runs) |
+| Passages | `GorodetsTrainingScene` (2.27 km mission, default), `RiverTrainingScene` (familiarisation) and `SerpukhovZatonScene` (2.42 km, fast craft only) |
+| Automated tests | EditMode 189 passed, PlayMode 34 passed (2026-09-19) |
 | Batch runtime checks | Menu smoke (including vessel selection), ship wake, graphics phase one, water weather, buoy graphics, vessel catalogue build, virtual sea trials |
 
 ## How it looks
@@ -95,6 +95,13 @@ specific to one ship: every vessel is a JSON specification checked by `VesselDat
   acquire the Gorodets leading line, pass Gorodets shoal, pass Upper Kochergino, pass Lower
   Kochergino, reach finish.
 - **River familiarisation**: straight reach with buoys, banks and current zones.
+- **Serpukhov zaton** (`Ship Simulator > Build Serpukhov Zaton Scenario`): 2.42 km from the Oka, in
+  through the mouth of the Nara and up into the Serpukhov lay-up basin. Shoreline traced from
+  OpenStreetMap water outlines; published channel dimensions (20 m on the Nara, 30 m on the Oka,
+  100 m bend radius) with estimated navigation-season depths. Unlit marks only, because the reach is
+  a third-category waterway. Restricted in the start menu to vessels within 40 m x 10 m x 1.6 m,
+  which admits the Meteor and the Luch. Sources and estimates in
+  `SerpukhovZatonScenario_Sources.md`; stills from `Ship Simulator > Render Serpukhov Zaton Preview`.
 
 ### Bridge, HUD and menus
 
@@ -172,7 +179,13 @@ written for displacement ships, so their rows are reported without it.
   contact for grounding still uses the hull keel, while the reported clearance uses the foils or
   skegs.
 - **Environment is not real geography.** Bathymetry, route geometry and currents of the Gorodets
-  reach are procedural estimates, not surveyed data or charts.
+  reach are procedural estimates, not surveyed data or charts. The Serpukhov zaton scene traces its
+  shoreline from OpenStreetMap and uses the published channel width, bend radius and mark category,
+  but its depths, currents, shoals and mark positions are estimates: no public survey or buoy scheme
+  of that reach exists.
+- **The Serpukhov scene is outside the graphics passes.** `Upgrade Water And Landscape`,
+  `Apply Realistic Water And Sky` and `Apply Graphics Phase One` still cover only the two original
+  scenes, and its shore structures are placeholder boxes.
 - **Model simplifications.** Quadratic propeller curves rather than four-quadrant data; estimated bank
   suction; wall-sided station hydrostatics; no wave loads; Unity collider contacts bypass the
   added-mass solve.

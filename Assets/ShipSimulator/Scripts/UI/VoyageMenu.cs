@@ -106,7 +106,10 @@ namespace ShipSimulator.UI
         public void BindScene()
         {
             loading = true;
+            VesselSelection.SelectedId = VoyagePassage.FirstAcceptedVesselId(
+                catalogue, SceneManager.GetActiveScene().name, VesselSelection.SelectedId);
             VesselSwap.Apply(catalogue, VesselSelection.SelectedId);
+            UpdateVesselLabels();
             canStartCurrent = pendingSave == null && !launchAfterLoad;
             hud = null;
             open = true;
@@ -373,7 +376,7 @@ namespace ShipSimulator.UI
             SelectFirst();
         }
 
-        private void ShowVessels()
+        public void ShowVessels()
         {
             if (catalogue == null || catalogue.Entries.Count == 0) { ShowVoyages(); return; }
             ShowPage("vessels", "CHOOSE YOUR COMMAND", "Select a vessel");
@@ -394,17 +397,26 @@ namespace ShipSimulator.UI
             SelectFirst();
         }
 
-        private void ShowVoyages()
+        public void ShowVoyages()
         {
             ShowPage("voyages", "CHART YOUR COURSE", "Select a passage");
-            ActionButton("River familiarisation", "Open river  /  Learn the vessel and controls", 0, () => StartVoyage("RiverTrainingScene"), true);
-            ActionButton("Gorodets passage", "2.27 km  /  Shoals, currents & leading marks", 94, () => StartVoyage("GorodetsTrainingScene"));
             VesselCatalogue.Entry vessel = SelectedVessel();
             VesselData data = vessel?.LoadData();
+            float y = 0;
+            bool first = true;
+            foreach (VoyagePassage passage in VoyagePassage.All)
+            {
+                string restriction = passage.Restriction(data);
+                string scene = passage.SceneName;
+                ActionButton(passage.Title, restriction ?? passage.Detail, y,
+                    () => StartVoyage(scene), first && restriction == null, restriction == null);
+                first &= restriction != null;
+                y += 88;
+            }
             string vesselText = data != null
                 ? data.identity.displayName + "\n" + VesselCatalogue.Entry.Describe(data)
                 : "Volgo-Don Project 507B";
-            Label(pageRoot, "YOUR VESSEL\n\n" + vesselText + "\n\nW / S  Engines     A / D  Rudder\nV  Camera     Right mouse  Look around\nESC  Pause, settings & save", 20, Muted, 0, 214, 450, 224);
+            Label(pageRoot, "YOUR VESSEL\n\n" + vesselText + "\n\nW / S  Engines     A / D  Rudder\nV  Camera     Right mouse  Look around\nESC  Pause, settings & save", 18, Muted, 0, y + 10, 450, 180);
             ActionButton("Back", "Choose another vessel", 462, ShowVessels);
             SelectFirst();
         }
@@ -570,7 +582,7 @@ namespace ShipSimulator.UI
                 if (selectable.IsInteractable()) { selectable.Select(); break; }
         }
 
-        private static string ScenarioName(string scene) => scene == "GorodetsTrainingScene" ? "Gorodets passage" : "River familiarisation";
+        private static string ScenarioName(string scene) => VoyagePassage.TitleOf(scene);
 
         private static void Quit()
         {

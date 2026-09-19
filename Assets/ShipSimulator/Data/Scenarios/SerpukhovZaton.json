@@ -1,0 +1,996 @@
+{
+ "identity": {
+  "id": "serpukhov-zaton",
+  "displayName": "Serpukhov Zaton",
+  "sceneName": "SerpukhovZatonScene"
+ },
+ "frame": {
+  "originLatitudeDeg": 54.8844,
+  "originLongitudeDeg": 37.4106,
+  "upRiverBearingDeg": 316.337,
+  "note": "Local metres. +z runs up the Nara from its mouth on the Oka, +x is starboard of it."
+ },
+ "provenance": {
+  "shorelines": "OpenStreetMap water outlines (ODbL), extracted 2026-09-19.",
+  "channelWidths": "Rosmorrechflot order ZD-496-r appendix 2: Nara 20 m, Oka 30 m guaranteed width.",
+  "depths": "ESTIMATED navigation-season depths. The published guarantee is 1.00 m at the Kashira projected level.",
+  "speedLimits": "ESTIMATED.",
+  "currents": "ESTIMATED, scaled from the published mean Nara discharge of 5.5 m3/s.",
+  "hazards": "ESTIMATED. No public survey of the basin exists.",
+  "landmarks": "Positions from OpenStreetMap; shapes are placeholder massing, not surveyed buildings."
+ },
+ "ambientCurrentZMps": -0.15,
+ "route": [
+  {
+   "x": 374.5,
+   "z": -277.15,
+   "leftWidthM": 15.0,
+   "rightWidthM": 15.0,
+   "centerDepthM": 2.8,
+   "leftEdgeDepthM": 1.5,
+   "rightEdgeDepthM": 1.5,
+   "speedLimitMps": 4.0
+  },
+  {
+   "x": 253.6,
+   "z": -229.44,
+   "leftWidthM": 15.0,
+   "rightWidthM": 15.0,
+   "centerDepthM": 2.8,
+   "leftEdgeDepthM": 1.5,
+   "rightEdgeDepthM": 1.5,
+   "speedLimitMps": 4.0
+  },
+  {
+   "x": 142.0,
+   "z": -185.4,
+   "leftWidthM": 15.0,
+   "rightWidthM": 15.0,
+   "centerDepthM": 2.8,
+   "leftEdgeDepthM": 1.5,
+   "rightEdgeDepthM": 1.5,
+   "speedLimitMps": 4.0
+  },
+  {
+   "x": 53.65,
+   "z": -150.53,
+   "leftWidthM": 15.0,
+   "rightWidthM": 15.0,
+   "centerDepthM": 2.8,
+   "leftEdgeDepthM": 1.5,
+   "rightEdgeDepthM": 1.5,
+   "speedLimitMps": 4.0
+  },
+  {
+   "x": -2.0,
+   "z": -46.0,
+   "leftWidthM": 13.0,
+   "rightWidthM": 13.0,
+   "centerDepthM": 2.6,
+   "leftEdgeDepthM": 1.4,
+   "rightEdgeDepthM": 1.4,
+   "speedLimitMps": 3.4
+  },
+  {
+   "x": 4.07,
+   "z": 197.15,
+   "leftWidthM": 10.0,
+   "rightWidthM": 10.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.2,
+   "rightEdgeDepthM": 1.2,
+   "speedLimitMps": 3.0
+  },
+  {
+   "x": -7.78,
+   "z": 353.24,
+   "leftWidthM": 10.0,
+   "rightWidthM": 10.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.2,
+   "rightEdgeDepthM": 1.2,
+   "speedLimitMps": 3.0
+  },
+  {
+   "x": -28.34,
+   "z": 471.03,
+   "leftWidthM": 10.0,
+   "rightWidthM": 10.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.2,
+   "rightEdgeDepthM": 1.2,
+   "speedLimitMps": 3.0
+  },
+  {
+   "x": -95.53,
+   "z": 571.78,
+   "leftWidthM": 10.0,
+   "rightWidthM": 10.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.2,
+   "rightEdgeDepthM": 1.2,
+   "speedLimitMps": 3.0
+  },
+  {
+   "x": -159.89,
+   "z": 660.42,
+   "leftWidthM": 10.0,
+   "rightWidthM": 10.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.2,
+   "rightEdgeDepthM": 1.2,
+   "speedLimitMps": 3.0
+  },
+  {
+   "x": -166.84,
+   "z": 858.97,
+   "leftWidthM": 10.0,
+   "rightWidthM": 10.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.2,
+   "rightEdgeDepthM": 1.2,
+   "speedLimitMps": 3.0
+  },
+  {
+   "x": -183.08,
+   "z": 1015.9,
+   "leftWidthM": 10.0,
+   "rightWidthM": 10.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.2,
+   "rightEdgeDepthM": 1.2,
+   "speedLimitMps": 3.0
+  },
+  {
+   "x": -175.74,
+   "z": 1155.47,
+   "leftWidthM": 10.0,
+   "rightWidthM": 10.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.2,
+   "rightEdgeDepthM": 1.2,
+   "speedLimitMps": 2.4
+  },
+  {
+   "x": -84.31,
+   "z": 1238.59,
+   "leftWidthM": 10.0,
+   "rightWidthM": 10.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.2,
+   "rightEdgeDepthM": 1.2,
+   "speedLimitMps": 2.4
+  },
+  {
+   "x": 0.0,
+   "z": 1283.0,
+   "leftWidthM": 18.0,
+   "rightWidthM": 18.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.3,
+   "rightEdgeDepthM": 1.3,
+   "speedLimitMps": 1.8
+  },
+  {
+   "x": 141.08,
+   "z": 1334.36,
+   "leftWidthM": 60.0,
+   "rightWidthM": 60.0,
+   "centerDepthM": 3.2,
+   "leftEdgeDepthM": 1.6,
+   "rightEdgeDepthM": 1.6,
+   "speedLimitMps": 1.2
+  },
+  {
+   "x": 282.34,
+   "z": 1375.59,
+   "leftWidthM": 60.0,
+   "rightWidthM": 60.0,
+   "centerDepthM": 3.2,
+   "leftEdgeDepthM": 1.6,
+   "rightEdgeDepthM": 1.6,
+   "speedLimitMps": 1.2
+  },
+  {
+   "x": 417.72,
+   "z": 1401.23,
+   "leftWidthM": 48.93354390195187,
+   "rightWidthM": 48.93354390195187,
+   "centerDepthM": 3.2,
+   "leftEdgeDepthM": 1.6,
+   "rightEdgeDepthM": 1.6,
+   "speedLimitMps": 1.2
+  },
+  {
+   "x": 470.0,
+   "z": 1406.0,
+   "leftWidthM": 30.0,
+   "rightWidthM": 30.0,
+   "centerDepthM": 3.0,
+   "leftEdgeDepthM": 1.5,
+   "rightEdgeDepthM": 1.5,
+   "speedLimitMps": 1.2
+  }
+ ],
+ "shorelines": [
+  {
+   "name": "nara",
+   "points": [
+    {
+     "x": 10.56,
+     "z": 1257.51
+    },
+    {
+     "x": -49.62,
+     "z": 1241.37
+    },
+    {
+     "x": -134.88,
+     "z": 1178.55
+    },
+    {
+     "x": -154.52,
+     "z": 1151.21
+    },
+    {
+     "x": -163.54,
+     "z": 1088.72
+    },
+    {
+     "x": -167.4,
+     "z": 1022.78
+    },
+    {
+     "x": -151.06,
+     "z": 973.39
+    },
+    {
+     "x": -151.44,
+     "z": 949.71
+    },
+    {
+     "x": -157.52,
+     "z": 934.58
+    },
+    {
+     "x": -144.07,
+     "z": 821.21
+    },
+    {
+     "x": -146.93,
+     "z": 764.16
+    },
+    {
+     "x": -139.89,
+     "z": 671.95
+    },
+    {
+     "x": -130.35,
+     "z": 644.76
+    },
+    {
+     "x": -107.46,
+     "z": 611.27
+    },
+    {
+     "x": -65.26,
+     "z": 569.05
+    },
+    {
+     "x": -23.78,
+     "z": 503.92
+    },
+    {
+     "x": -6.86,
+     "z": 475.37
+    },
+    {
+     "x": 0.45,
+     "z": 446.35
+    },
+    {
+     "x": 10.23,
+     "z": 419.67
+    },
+    {
+     "x": 13.95,
+     "z": 360.37
+    },
+    {
+     "x": 12.55,
+     "z": 328.75
+    },
+    {
+     "x": 17.18,
+     "z": 310.2
+    },
+    {
+     "x": 24.37,
+     "z": 235.46
+    },
+    {
+     "x": 27.59,
+     "z": 183.53
+    },
+    {
+     "x": 26.27,
+     "z": 133.54
+    },
+    {
+     "x": 29.92,
+     "z": -43.57
+    },
+    {
+     "x": -12.24,
+     "z": -55.38
+    },
+    {
+     "x": -15.38,
+     "z": -24.57
+    },
+    {
+     "x": -19.45,
+     "z": 210.76
+    },
+    {
+     "x": -28.11,
+     "z": 377.73
+    },
+    {
+     "x": -37.41,
+     "z": 434.52
+    },
+    {
+     "x": -49.83,
+     "z": 466.7
+    },
+    {
+     "x": -54.91,
+     "z": 483.25
+    },
+    {
+     "x": -68.35,
+     "z": 504.7
+    },
+    {
+     "x": -125.8,
+     "z": 574.52
+    },
+    {
+     "x": -159.32,
+     "z": 607.97
+    },
+    {
+     "x": -179.88,
+     "z": 648.89
+    },
+    {
+     "x": -189.6,
+     "z": 896.72
+    },
+    {
+     "x": -187.13,
+     "z": 948.57
+    },
+    {
+     "x": -198.76,
+     "z": 1009.02
+    },
+    {
+     "x": -201.48,
+     "z": 1111.3
+    },
+    {
+     "x": -196.95,
+     "z": 1159.73
+    },
+    {
+     "x": -187.16,
+     "z": 1185.22
+    },
+    {
+     "x": -165.16,
+     "z": 1207.77
+    },
+    {
+     "x": -132.68,
+     "z": 1227.5
+    },
+    {
+     "x": -118.99,
+     "z": 1235.82
+    },
+    {
+     "x": -25.26,
+     "z": 1298.88
+    },
+    {
+     "x": -10.63,
+     "z": 1308.86
+    },
+    {
+     "x": 10.56,
+     "z": 1257.51
+    }
+   ]
+  },
+  {
+   "name": "basin",
+   "points": [
+    {
+     "x": 538.4,
+     "z": 1412.42
+    },
+    {
+     "x": 527.43,
+     "z": 1384.09
+    },
+    {
+     "x": 512.03,
+     "z": 1356.56
+    },
+    {
+     "x": 500.54,
+     "z": 1340.53
+    },
+    {
+     "x": 481.81,
+     "z": 1314.76
+    },
+    {
+     "x": 472.88,
+     "z": 1299.86
+    },
+    {
+     "x": 470.7,
+     "z": 1289.6
+    },
+    {
+     "x": 465.0,
+     "z": 1275.26
+    },
+    {
+     "x": 468.5,
+     "z": 1258.5
+    },
+    {
+     "x": 474.83,
+     "z": 1252.77
+    },
+    {
+     "x": 480.37,
+     "z": 1250.61
+    },
+    {
+     "x": 490.61,
+     "z": 1255.33
+    },
+    {
+     "x": 507.48,
+     "z": 1280.18
+    },
+    {
+     "x": 535.08,
+     "z": 1281.26
+    },
+    {
+     "x": 576.77,
+     "z": 1181.7
+    },
+    {
+     "x": 584.95,
+     "z": 1163.13
+    },
+    {
+     "x": 591.0,
+     "z": 1138.85
+    },
+    {
+     "x": 557.8,
+     "z": 1086.42
+    },
+    {
+     "x": 488.07,
+     "z": 1051.92
+    },
+    {
+     "x": 474.15,
+     "z": 1052.73
+    },
+    {
+     "x": 466.64,
+     "z": 1098.65
+    },
+    {
+     "x": 496.11,
+     "z": 1180.63
+    },
+    {
+     "x": 492.75,
+     "z": 1201.6
+    },
+    {
+     "x": 467.12,
+     "z": 1206.77
+    },
+    {
+     "x": 463.87,
+     "z": 1214.3
+    },
+    {
+     "x": 419.8,
+     "z": 1210.21
+    },
+    {
+     "x": 383.42,
+     "z": 1221.56
+    },
+    {
+     "x": 347.85,
+     "z": 1246.34
+    },
+    {
+     "x": 312.1,
+     "z": 1261.15
+    },
+    {
+     "x": 275.5,
+     "z": 1273.05
+    },
+    {
+     "x": 195.1,
+     "z": 1270.04
+    },
+    {
+     "x": 147.0,
+     "z": 1240.8
+    },
+    {
+     "x": 125.12,
+     "z": 1218.89
+    },
+    {
+     "x": 109.53,
+     "z": 1205.49
+    },
+    {
+     "x": 38.25,
+     "z": 1242.04
+    },
+    {
+     "x": 10.56,
+     "z": 1257.51
+    },
+    {
+     "x": -10.63,
+     "z": 1308.86
+    },
+    {
+     "x": 12.02,
+     "z": 1319.26
+    },
+    {
+     "x": 46.8,
+     "z": 1353.72
+    },
+    {
+     "x": 85.24,
+     "z": 1404.61
+    },
+    {
+     "x": 93.41,
+     "z": 1398.97
+    },
+    {
+     "x": 113.9,
+     "z": 1422.31
+    },
+    {
+     "x": 108.95,
+     "z": 1429.03
+    },
+    {
+     "x": 162.99,
+     "z": 1507.64
+    },
+    {
+     "x": 194.32,
+     "z": 1515.82
+    },
+    {
+     "x": 240.3,
+     "z": 1476.91
+    },
+    {
+     "x": 327.16,
+     "z": 1469.67
+    },
+    {
+     "x": 379.4,
+     "z": 1455.53
+    },
+    {
+     "x": 438.34,
+     "z": 1433.74
+    },
+    {
+     "x": 478.81,
+     "z": 1439.7
+    },
+    {
+     "x": 517.15,
+     "z": 1430.17
+    },
+    {
+     "x": 538.4,
+     "z": 1412.42
+    }
+   ]
+  },
+  {
+   "name": "oka",
+   "points": [
+    {
+     "x": -1079.83,
+     "z": 395.88
+    },
+    {
+     "x": -1042.36,
+     "z": 368.27
+    },
+    {
+     "x": -997.91,
+     "z": 358.33
+    },
+    {
+     "x": -953.47,
+     "z": 348.39
+    },
+    {
+     "x": -906.91,
+     "z": 343.81
+    },
+    {
+     "x": -862.75,
+     "z": 333.15
+    },
+    {
+     "x": -821.33,
+     "z": 315.54
+    },
+    {
+     "x": -781.05,
+     "z": 295.05
+    },
+    {
+     "x": -741.5,
+     "z": 272.69
+    },
+    {
+     "x": -702.78,
+     "z": 248.25
+    },
+    {
+     "x": -667.48,
+     "z": 215.13
+    },
+    {
+     "x": -632.98,
+     "z": 180.01
+    },
+    {
+     "x": -594.76,
+     "z": 154.29
+    },
+    {
+     "x": -549.95,
+     "z": 145.28
+    },
+    {
+     "x": -505.14,
+     "z": 136.26
+    },
+    {
+     "x": -460.33,
+     "z": 127.24
+    },
+    {
+     "x": -415.52,
+     "z": 118.23
+    },
+    {
+     "x": -370.71,
+     "z": 109.21
+    },
+    {
+     "x": -325.9,
+     "z": 100.19
+    },
+    {
+     "x": -281.09,
+     "z": 91.18
+    },
+    {
+     "x": -236.28,
+     "z": 82.16
+    },
+    {
+     "x": -191.48,
+     "z": 73.14
+    },
+    {
+     "x": -146.67,
+     "z": 64.13
+    },
+    {
+     "x": -101.86,
+     "z": 55.11
+    },
+    {
+     "x": -57.05,
+     "z": 46.09
+    },
+    {
+     "x": -12.24,
+     "z": 37.08
+    },
+    {
+     "x": 13.88,
+     "z": -19.3
+    },
+    {
+     "x": 46.33,
+     "z": -59.64
+    },
+    {
+     "x": 78.78,
+     "z": -99.98
+    },
+    {
+     "x": 120.63,
+     "z": -116.5
+    },
+    {
+     "x": 162.48,
+     "z": -133.01
+    },
+    {
+     "x": 204.33,
+     "z": -149.53
+    },
+    {
+     "x": 246.18,
+     "z": -166.04
+    },
+    {
+     "x": 288.03,
+     "z": -182.56
+    },
+    {
+     "x": 329.88,
+     "z": -199.07
+    },
+    {
+     "x": 371.73,
+     "z": -215.59
+    },
+    {
+     "x": 413.58,
+     "z": -232.1
+    },
+    {
+     "x": 455.43,
+     "z": -248.62
+    },
+    {
+     "x": 497.28,
+     "z": -265.13
+    },
+    {
+     "x": 539.13,
+     "z": -281.65
+    },
+    {
+     "x": 580.98,
+     "z": -298.16
+    },
+    {
+     "x": 622.83,
+     "z": -314.68
+    },
+    {
+     "x": 664.68,
+     "z": -331.19
+    },
+    {
+     "x": 706.53,
+     "z": -347.71
+    },
+    {
+     "x": 748.38,
+     "z": -364.22
+    },
+    {
+     "x": 790.23,
+     "z": -380.74
+    },
+    {
+     "x": 832.08,
+     "z": -397.25
+    },
+    {
+     "x": 626.6,
+     "z": -999.65
+    },
+    {
+     "x": -1326.4,
+     "z": -228.95
+    }
+   ]
+  }
+ ],
+ "landmarks": [
+  {
+   "name": "Passenger berth",
+   "kind": "quay",
+   "x": 109.7,
+   "z": 1408.4,
+   "headingDeg": 41.3,
+   "lengthM": 56,
+   "widthM": 10,
+   "heightM": 2.4,
+   "shoreDistanceM": -6.0
+  },
+  {
+   "name": "Yacht club pontoons",
+   "kind": "quay",
+   "x": 237.1,
+   "z": 1471.9,
+   "headingDeg": 130.2,
+   "lengthM": 40,
+   "widthM": 6,
+   "heightM": 1.3,
+   "shoreDistanceM": -5.9
+  },
+  {
+   "name": "Port administration",
+   "kind": "building",
+   "x": 398.3,
+   "z": 1543.2,
+   "headingDeg": 76.50347585689755,
+   "lengthM": 34,
+   "widthM": 14,
+   "heightM": 9.0
+  },
+  {
+   "name": "Vladychny monastery massing",
+   "kind": "landmark",
+   "x": 503.8,
+   "z": 1685.2,
+   "headingDeg": 76.50347585689755,
+   "lengthM": 60,
+   "widthM": 44,
+   "heightM": 26.0
+  },
+  {
+   "name": "Laid-up craft 1",
+   "kind": "mooring",
+   "x": 163.5,
+   "z": 1285.9,
+   "headingDeg": 76.50347585689755,
+   "lengthM": 42,
+   "widthM": 8.0,
+   "heightM": 4.5,
+   "shoreDistanceM": -30.0
+  },
+  {
+   "name": "Laid-up craft 2",
+   "kind": "mooring",
+   "x": 249.3,
+   "z": 1302.1,
+   "headingDeg": 76.50347585689755,
+   "lengthM": 51,
+   "widthM": 8.0,
+   "heightM": 4.5,
+   "shoreDistanceM": -30.0
+  },
+  {
+   "name": "Laid-up craft 3",
+   "kind": "mooring",
+   "x": 320.8,
+   "z": 1289.9,
+   "headingDeg": 76.50347585689755,
+   "lengthM": 60,
+   "widthM": 8.0,
+   "heightM": 4.5,
+   "shoreDistanceM": -30.0
+  },
+  {
+   "name": "Laid-up craft 4",
+   "kind": "mooring",
+   "x": 444.2,
+   "z": 1308.6,
+   "headingDeg": 76.50347585689755,
+   "lengthM": 69,
+   "widthM": 8.0,
+   "heightM": 4.5,
+   "shoreDistanceM": -30.0
+  }
+ ],
+ "currentRegions": [
+  {
+   "name": "Oka set",
+   "x": 120,
+   "z": -230,
+   "widthM": 900,
+   "lengthM": 460,
+   "velocityXMps": 0.512,
+   "velocityZMps": -0.202,
+   "blendM": 40,
+   "priority": 2,
+   "overrideAmbient": true
+  },
+  {
+   "name": "Mouth eddy",
+   "x": -10,
+   "z": 60,
+   "widthM": 140,
+   "lengthM": 170,
+   "velocityXMps": 0.12,
+   "velocityZMps": -0.05,
+   "blendM": 30,
+   "priority": 1,
+   "overrideAmbient": true
+  },
+  {
+   "name": "Basin still water",
+   "x": 260,
+   "z": 1370,
+   "widthM": 640,
+   "lengthM": 220,
+   "velocityXMps": 0.0,
+   "velocityZMps": 0.0,
+   "blendM": 35,
+   "priority": 3,
+   "overrideAmbient": true
+  }
+ ],
+ "hazards": [
+  {
+   "name": "Mouth bar",
+   "x": 18,
+   "z": 78,
+   "widthM": 90,
+   "lengthM": 110,
+   "depthReductionM": 0.9,
+   "bottom": "Sand"
+  },
+  {
+   "name": "Inner bend silt",
+   "x": -118,
+   "z": 640,
+   "widthM": 70,
+   "lengthM": 190,
+   "depthReductionM": 0.7,
+   "bottom": "Silt"
+  },
+  {
+   "name": "Outer bend silt",
+   "x": -108,
+   "z": 1112,
+   "widthM": 60,
+   "lengthM": 150,
+   "depthReductionM": 0.6,
+   "bottom": "Silt"
+  },
+  {
+   "name": "Entrance sill",
+   "x": 6,
+   "z": 1268,
+   "widthM": 70,
+   "lengthM": 60,
+   "depthReductionM": 0.5,
+   "bottom": "Silt"
+  }
+ ]
+}

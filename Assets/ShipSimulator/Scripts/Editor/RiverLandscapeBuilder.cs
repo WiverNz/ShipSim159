@@ -249,7 +249,7 @@ namespace ShipSimulator.Editor
             return SaveMesh(name + "Water", builder.Build(name + "Water"));
         }
 
-        private static GameObject PlantPrefab(string name, int seed, bool bush, bool reed, Material bark, Material leaves)
+        internal static GameObject PlantPrefab(string name, int seed, bool bush, bool reed, Material bark, Material leaves)
         {
             var plant = new GameObject(name);
             var lods = new LOD[3];
@@ -324,7 +324,7 @@ namespace ShipSimulator.Editor
             return prefab;
         }
 
-        private static void Place(GameObject prefab, Transform parent, Vector3 position, float scale, float yaw)
+        internal static void Place(GameObject prefab, Transform parent, Vector3 position, float scale, float yaw)
         {
             var plant = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
             plant.transform.localPosition = position;
@@ -332,7 +332,7 @@ namespace ShipSimulator.Editor
             plant.transform.localScale = new Vector3(scale, scale * 1.04f, scale);
         }
 
-        private static GameObject MeshObject(string name, Transform parent, Mesh mesh, Material material)
+        internal static GameObject MeshObject(string name, Transform parent, Mesh mesh, Material material)
         {
             var item = new GameObject(name, typeof(MeshFilter), typeof(MeshRenderer));
             item.transform.SetParent(parent, false);
@@ -341,7 +341,7 @@ namespace ShipSimulator.Editor
             return item;
         }
 
-        private static Mesh SaveMesh(string name, Mesh mesh)
+        internal static Mesh SaveMesh(string name, Mesh mesh)
         {
             string path = Root + "/" + name + ".asset";
             Mesh existing = AssetDatabase.LoadAssetAtPath<Mesh>(path);
@@ -356,7 +356,7 @@ namespace ShipSimulator.Editor
             return mesh;
         }
 
-        private static Material MaterialAsset(string name, string shader, Color color)
+        internal static Material MaterialAsset(string name, string shader, Color color)
         {
             string path = Root + "/" + name + ".mat";
             Material material = AssetDatabase.LoadAssetAtPath<Material>(path);
@@ -376,14 +376,14 @@ namespace ShipSimulator.Editor
             return material;
         }
 
-        private static void EnsureFolder()
+        internal static void EnsureFolder()
         {
             if (!AssetDatabase.IsValidFolder(Root)) AssetDatabase.CreateFolder("Assets/ShipSimulator/Settings", "NaturalLandscape");
         }
 
-        private static float Range(System.Random random, float min, float max) => Mathf.Lerp(min, max, (float)random.NextDouble());
+        internal static float Range(System.Random random, float min, float max) => Mathf.Lerp(min, max, (float)random.NextDouble());
 
-        private sealed class MeshData
+        internal sealed class MeshData
         {
             private readonly List<Vector3> vertices = new List<Vector3>();
             private readonly List<Vector2> uv = new List<Vector2>();

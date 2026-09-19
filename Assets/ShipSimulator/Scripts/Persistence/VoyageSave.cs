@@ -41,7 +41,7 @@ namespace ShipSimulator.Persistence
             string.IsNullOrEmpty(vesselId) ? ShipSimulator.Physics.VesselCatalogue.DefaultVesselId : vesselId;
 
         public static bool IsVoyageScene(string name) =>
-            name == "RiverTrainingScene" || name == "GorodetsTrainingScene";
+            ShipSimulator.UI.VoyagePassage.IsPassageScene(name);
 
         public void Validate()
         {

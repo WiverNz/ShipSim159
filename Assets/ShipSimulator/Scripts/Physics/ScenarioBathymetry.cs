@@ -46,6 +46,14 @@ namespace ShipSimulator.Physics
             hazards = localHazards ?? Array.Empty<BathymetryHazard>();
         }
 
+        // A narrow waterway shoals to nothing just outside its marked channel, where an open river
+        // still carries water, so the depth beyond the edges belongs to the scenario.
+        public void Configure(FairwayRoute fairwayRoute, BathymetryHazard[] localHazards, float beyondEdgesDepthM)
+        {
+            Configure(fairwayRoute, localHazards);
+            outsideDepthM = beyondEdgesDepthM;
+        }
+
         public void SetWaterLevelOffset(float value)
         {
             waterLevelOffsetM = value;

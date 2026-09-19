@@ -2,6 +2,57 @@
 
 Last updated: 2026-09-19
 
+## Serpukhov Zaton Scenario, 2026-09-19
+
+Added a third voyage scene, `SerpukhovZatonScene`: the Oka approach, the mouth of the Nara and the
+Serpukhov lay-up and repair basin, 2.42 km of fairway. The work is in the tree, uncommitted.
+
+Geography is data, not code. `Assets/ShipSimulator/Data/Scenarios/SerpukhovZaton.json` holds the
+shorelines (OpenStreetMap water outlines, ODbL, extracted 2026-09-19: relations 2174292 and 2174294
+and the Oka bank envelope from way 543276172), the fairway centreline with widths, depths and speed
+limits, the landmarks, the current regions and the shoals, in local metres with the frame recorded in
+the file. `ScenarioGeometry` (editor) loads it and answers signed shore distance;
+`SerpukhovZatonBuilder` builds the scene from it.
+
+What is published and what is invented is written down in
+`Assets/ShipSimulator/Documentation/SerpukhovZatonScenario_Sources.md`. Published: the Nara is 2 km of
+third-category waterway, guaranteed 1.00 m deep and 20 m wide with a 100 m bend radius, marks working
+20 April to 31 October (Rosmorrechflot order ZD-496-r, appendix 2, row 1420); the Oka past Serpukhov
+is also third category, 1.00 m and 30 m (row 1381). Estimated: every depth in the scene, the
+currents, the shoals, the speed limits and the positions of the marks. No public survey or buoy
+scheme of that reach exists.
+
+Third category means unlit, so the scene carries no night beacons. `DayNightController` lights any
+child of a root named `Navigation` whose name contains `Buoy`, so the marks here are named `Unlit ...`
+and that method now skips them. Edge buoys follow the downstream convention: the route runs up-river,
+so the red right-edge marks stand on its left.
+
+Vessel restriction. `VoyagePassage` (runtime, `Scripts/UI/`) is now the single list of passages, with
+per-passage limits; `VoyageSave.IsVoyageScene` and the menu's scenario naming both read it. The zaton
+allows 40 m length, 10 m beam and 1.6 m draft, so only the Meteor 342U and the Luch 14352 can take it;
+the menu greys the passage out for the cargo ships and says why. `VoyageMenu.BindScene` also clamps
+the selection, so opening the scene directly cannot put a 507B in the basin. Honest gap: at the
+published 1.00 m guarantee the Meteor would have no clearance either, so the scene models an ordinary
+navigation-season level instead.
+
+Shared code touched, all small: `GorodetsScenarioController` gained optional phase labels and
+instructions (`ConfigurePhases`) so a second scenario can reuse it without showing Gorodets wording,
+and the HUD reads `PhaseLabel`; `ScenarioBathymetry.Configure` gained an outside-the-channel depth
+(0.35 m here, so leaving 20 m of marked water grounds you); several `RiverLandscapeBuilder` helpers
+became `internal` for reuse.
+
+Two traps worth remembering. Distance-to-shore taken as the minimum over every polygon edge raises a
+sill wherever two water bodies meet, which put a bar across the basin entrance and the Nara mouth;
+`ScenarioGeometry.BoundaryEdges` now drops edges whose far side is also water. And the Nara polygon
+ends on a straight line across its mouth, so the generator pushes that end 70 m down-river to overlap
+the Oka rather than butt against it.
+
+Verified: batch compile clean, EditMode 189 passed, PlayMode 34 passed, scene built from the menu
+method in batch, and stills rendered to `Logs/Serpukhov/` by
+`Ship Simulator > Render Serpukhov Zaton Preview` and looked at. Not verified: how it handles under
+manual control, and frame cost. Shore structures are placeholder boxes, and the scene is outside
+`Upgrade Water And Landscape`, `Apply Realistic Water And Sky` and `Apply Graphics Phase One`.
+
 ## Vessel Shakedown and Ride Height, 2026-09-19
 
 Continued the uncommitted vessel presentation work without committing or discarding it.

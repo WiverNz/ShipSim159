@@ -66,3 +66,6 @@ Desktop.ini
 *.bak
 *.orig
 *.swp
+
+# Download cache for Tools/serpukhov_zaton_geometry.py
+/Tools/.cache/

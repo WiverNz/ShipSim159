@@ -46,6 +46,10 @@ namespace ShipSimulator.Editor
             public string currents;
             public string hazards;
             public string landmarks;
+            public string elevation;
+            public string landcover;
+            public string buildings;
+            public string moorings;
         }
 
         [Serializable]
@@ -72,7 +76,7 @@ namespace ShipSimulator.Editor
         public sealed class Landmark
         {
             public string name;
-            // quay, mooring, building or landmark.
+            // Only "quay" is used now; buildings ashore come from the buildings block instead.
             public string kind;
             public float x;
             public float z;
@@ -115,9 +119,66 @@ namespace ShipSimulator.Editor
             public float depthReductionM;
         }
 
+        [Serializable]
+        public sealed class ElevationBlock
+        {
+            public float originX;
+            public float originZ;
+            public float stepM;
+            public int columns;
+            public int rows;
+            public float demWaterLevelM;
+            public string note;
+            // Row-major, z outer and x inner, in metres above the river surface.
+            public float[] heightsM;
+        }
+
+        [Serializable]
+        public sealed class LandCover
+        {
+            // wood, scrub, meadow, farmland, orchard, allotments, built, sand or reeds.
+            public string cover;
+            public string name;
+            public Point[] points;
+        }
+
+        [Serializable]
+        public sealed class Building
+        {
+            public string name;
+            // pitched, flat or church.
+            public string roof;
+            public float x;
+            public float z;
+            public float headingDeg;
+            public float lengthM;
+            public float widthM;
+            public float heightM;
+        }
+
+        [Serializable]
+        public sealed class Mooring
+        {
+            public string name;
+            // barge, vessel, craft, dock or pier.
+            public string kind;
+            public float x;
+            public float z;
+            public float headingDeg;
+            public float lengthM;
+            public float widthM;
+
+            public Vector3 Center => new Vector3(x, 0f, z);
+            public Quaternion Rotation => Quaternion.Euler(0f, headingDeg, 0f);
+        }
+
         public IdentityBlock identity;
         public FrameBlock frame;
         public ProvenanceBlock provenance;
+        public ElevationBlock elevation;
+        public LandCover[] landcover;
+        public Building[] buildings;
+        public Mooring[] moorings;
         public float ambientCurrentZMps;
         public RouteSample[] route;
         public Shoreline[] shorelines;
@@ -225,6 +286,78 @@ namespace ShipSimulator.Editor
                     (points[j].z - points[i].z) + points[i].x)
                     crossings = !crossings;
             return crossings;
+        }
+
+        // Terrain height above the river surface, bilinear between the sampled elevation posts.
+        public float ElevationAbove(float x, float z)
+        {
+            if (elevation == null || elevation.heightsM == null ||
+                elevation.heightsM.Length != elevation.columns * elevation.rows)
+                return 0f;
+            float fx = Mathf.Clamp((x - elevation.originX) / elevation.stepM, 0f, elevation.columns - 1.001f);
+            float fz = Mathf.Clamp((z - elevation.originZ) / elevation.stepM, 0f, elevation.rows - 1.001f);
+            int cx = (int)fx;
+            int cz = (int)fz;
+            float tx = fx - cx;
+            float tz = fz - cz;
+            float a = Post(cx, cz);
+            float b = Post(cx + 1, cz);
+            float c = Post(cx, cz + 1);
+            float d = Post(cx + 1, cz + 1);
+            return Mathf.Lerp(Mathf.Lerp(a, b, tx), Mathf.Lerp(c, d, tx), tz);
+        }
+
+        private float Post(int column, int row)
+        {
+            column = Mathf.Clamp(column, 0, elevation.columns - 1);
+            row = Mathf.Clamp(row, 0, elevation.rows - 1);
+            return elevation.heightsM[row * elevation.columns + column];
+        }
+
+        // The land cover class at a point, or null where nothing is mapped.
+        public string CoverAt(float x, float z)
+        {
+            if (landcover == null) return null;
+            Bounds[] boxes = CoverBounds();
+            // Built ground wins over the wood it is cut out of, so the last match through the list
+            // would be arbitrary; keep the most specific class instead.
+            string found = null;
+            for (int i = 0; i < landcover.Length; i++)
+            {
+                if (!boxes[i].Contains(new Vector3(x, 0f, z))) continue;
+                if (!Contains(landcover[i].points, x, z)) continue;
+                string cover = landcover[i].cover;
+                if (found == null || Rank(cover) > Rank(found)) found = cover;
+            }
+            return found;
+        }
+
+        private static int Rank(string cover) => cover switch
+        {
+            "built" => 5,
+            "sand" => 4,
+            "allotments" => 3,
+            "orchard" => 3,
+            "wood" => 2,
+            "scrub" => 2,
+            "reeds" => 2,
+            _ => 1
+        };
+
+        private Bounds[] coverBounds;
+
+        private Bounds[] CoverBounds()
+        {
+            if (coverBounds != null) return coverBounds;
+            coverBounds = new Bounds[landcover.Length];
+            for (int i = 0; i < landcover.Length; i++)
+            {
+                Point[] points = landcover[i].points;
+                var bounds = new Bounds(points[0].ToWorld(), new Vector3(0f, 10f, 0f));
+                foreach (Point point in points) bounds.Encapsulate(point.ToWorld());
+                coverBounds[i] = bounds;
+            }
+            return coverBounds;
         }
 
         private static float SegmentDistance(float x, float z, Point a, Point b)

@@ -2,6 +2,46 @@
 
 Last updated: 2026-09-19
 
+## Serpukhov Zaton: Real Terrain, Land Cover and Traced Moorings, 2026-09-19
+
+Second pass on the Serpukhov scene, still uncommitted. The point was to make the way in legible from
+the water and to put the laid-up fleet where it actually lies.
+
+Moored craft. Fetched Esri World Imagery tiles over the basin at zoom 18, cropped and gridded them,
+and traced 21 hulls by eye: bow and stern pixels plus a beam, converted at 0.343 m per pixel. Two
+cargo barges of about 70 m on the north bank, laid-up vessels of 30 to 45 m on the north-east shore,
+a floating dock of about 62 by 19 m, small craft, two mooring piers and a hulk on the west bank. All
+21 landed inside the OpenStreetMap water outline without nudging, which is a useful cross-check that
+the outline and the imagery agree. The earlier four invented "laid-up craft" were on the wrong side
+of the basin entirely and are gone. The trace table lives in the generator as TRACED_MOORINGS.
+
+Terrain. Elevation now comes from AWS terrarium terrain tiles at zoom 14, sampled onto a 25 m grid
+(149 x 193) and levelled to the river surface, which the tiles put at 107.1 m, matching the 107 m
+Wikipedia gives for the Nara mouth. A 30 m source smears the waterline, so the first 70 m of bank is
+still carried by the shoreline and blended into the terrain behind it; beyond that the real valley
+shows, up to about 58 m above the water at the edge of the frame.
+
+Land cover and town. 46 OpenStreetMap landuse/natural polygons and 158 building footprints within
+650 m of the fairway, each reduced to its minimum-area box with a height from building:levels or by
+type. Planting now follows the cover, so the wooded peninsula reads as a wood, the fields stay open
+and the port yard stays clear. Walls take one of four muted colours picked from the position: the
+first attempt was a uniform white and read as a test scene.
+
+The geometry file is now 392 KB of derived data, so the generator is committed as
+Tools/serpukhov_zaton_geometry.py rather than left in a scratchpad. It caches its downloads under
+Tools/.cache (gitignored) and refuses to write a file whose fairway leaves the charted water. Running
+it reproduced the hand-built file to within 0.1 m on positions and 0.03 m on elevation, and the
+committed data is now its output.
+
+One trap: the generator's own shore test first used the naive minimum over every polygon edge, which
+is exactly the sill bug the C# side already fixed, and it rejected a fairway sample that was fine. It
+now mirrors ScenarioGeometry.BoundaryEdges.
+
+Verified: batch compile clean, EditMode 192 passed, PlayMode 35 passed, scene rebuilt from the menu
+method in batch, generator rerun end to end, and stills in Logs/Serpukhov/ looked at. Not verified:
+frame cost, which is now the main open question at about 4600 vegetation instances plus the town and
+the moored craft, and handling under manual control.
+
 ## Serpukhov Zaton Scenario, 2026-09-19
 
 Added a third voyage scene, `SerpukhovZatonScene`: the Oka approach, the mouth of the Nara and the

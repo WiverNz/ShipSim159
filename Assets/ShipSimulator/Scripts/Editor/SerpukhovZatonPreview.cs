@@ -65,6 +65,24 @@ namespace ShipSimulator.Editor
                 camera.transform.LookAt(mark.transform.position + Vector3.up * 6f);
                 Write(camera, "09-entry-leading-marks");
             }
+            Transform town = GameObject.Find("Shore buildings") != null
+                ? GameObject.Find("Shore buildings").transform : null;
+            if (town != null && town.childCount > 0)
+            {
+                Transform block = town.GetChild(town.childCount / 2);
+                camera.transform.position = block.position + new Vector3(62f, 26f, -78f);
+                camera.transform.LookAt(block.position);
+                Write(camera, "10-town-massing");
+            }
+            Transform craftRoot = GameObject.Find("Laid-up craft") != null
+                ? GameObject.Find("Laid-up craft").transform : null;
+            if (craftRoot != null && craftRoot.childCount > 0)
+            {
+                Transform hull = craftRoot.GetChild(0);
+                camera.transform.position = hull.position + new Vector3(52f, 22f, -60f);
+                camera.transform.LookAt(hull.position);
+                Write(camera, "11-laid-up-craft");
+            }
             camera.transform.position = new Vector3(160f, 620f, 560f);
             camera.transform.rotation = Quaternion.Euler(70f, 0f, 0f);
             camera.fieldOfView = 62f;

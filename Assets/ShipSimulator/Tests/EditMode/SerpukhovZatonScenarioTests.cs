@@ -143,6 +143,51 @@ namespace ShipSimulator.Tests
         }
 
         [Test]
+        public void Geometry_CarriesRealReliefMappedLandCoverAndTracedMoorings()
+        {
+            ScenarioGeometry geometry = ScenarioGeometry.Load(GeometryPath);
+
+            ScenarioGeometry.ElevationBlock relief = geometry.elevation;
+            Assert.That(relief, Is.Not.Null);
+            Assert.That(relief.heightsM, Has.Length.EqualTo(relief.columns * relief.rows));
+            // The Nara mouth stands about 107 m above sea level; the grid is levelled to the river.
+            Assert.That(relief.demWaterLevelM, Is.InRange(100f, 115f));
+            Assert.That(geometry.ElevationAbove(0f, 0f), Is.InRange(-8f, 8f), "The river surface is the datum.");
+            float highest = float.MinValue;
+            foreach (float height in relief.heightsM) highest = Mathf.Max(highest, height);
+            Assert.That(highest, Is.GreaterThan(15f), "The valley sides have to rise above the floodplain.");
+
+            var covers = new System.Collections.Generic.HashSet<string>();
+            foreach (ScenarioGeometry.LandCover cover in geometry.landcover) covers.Add(cover.cover);
+            Assert.That(covers, Does.Contain("wood"));
+            Assert.That(covers, Does.Contain("built"));
+            Assert.That(geometry.buildings, Has.Length.GreaterThan(40));
+
+            Assert.That(geometry.moorings, Has.Length.GreaterThan(12));
+            foreach (ScenarioGeometry.Mooring craft in geometry.moorings)
+            {
+                Assert.That(geometry.SignedShoreDistance(craft.x, craft.z), Is.LessThan(0f),
+                    craft.name + " has to be afloat.");
+                Assert.That(craft.lengthM, Is.InRange(5f, 130f), craft.name);
+                Assert.That(craft.widthM, Is.InRange(1f, 30f), craft.name);
+            }
+        }
+
+        [Test]
+        public void ZatonScene_ShowsTheTownAndTheLaidUpCraftThatMakeTheWayInLegible()
+        {
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+
+            GameObject craft = GameObject.Find("Laid-up craft");
+            GameObject town = GameObject.Find("Shore buildings");
+
+            Assert.That(craft, Is.Not.Null);
+            Assert.That(craft.transform.childCount, Is.GreaterThan(20));
+            Assert.That(town, Is.Not.Null);
+            Assert.That(town.transform.childCount, Is.GreaterThan(80));
+        }
+
+        [Test]
         public void Geometry_MarksItsEstimatedValuesAndKeepsThePublishedChannelWidths()
         {
             ScenarioGeometry geometry = ScenarioGeometry.Load(GeometryPath);
@@ -150,6 +195,8 @@ namespace ShipSimulator.Tests
             Assert.That(geometry.provenance.depths, Does.Contain("ESTIMATED"));
             Assert.That(geometry.provenance.hazards, Does.Contain("ESTIMATED"));
             Assert.That(geometry.provenance.shorelines, Does.Contain("OpenStreetMap"));
+            Assert.That(geometry.provenance.moorings, Does.Contain("APPROXIMATE"));
+            Assert.That(geometry.provenance.elevation, Does.Contain("Not a survey"));
             foreach (ScenarioGeometry.RouteSample sample in geometry.route)
             {
                 // Published guaranteed widths: 30 m on the Oka, 20 m on the Nara.

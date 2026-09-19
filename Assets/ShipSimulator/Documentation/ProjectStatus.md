@@ -20,7 +20,7 @@ left to do. Detailed references: `ShipSimulator_Physics.md` (model), the sources
 | Platform | Windows desktop, keyboard and mouse |
 | Vessels | 5 playable: cargo ships Volgo-Don 507B, Volgo-Balt 2-95A/R, Volgoneft 1577 and fast passenger craft Meteor 342U (hydrofoil), Luch 14352 (air cushion), chosen in the start menu; KVLCC2 benchmark data for model checks |
 | Passages | `GorodetsTrainingScene` (2.27 km mission, default), `RiverTrainingScene` (familiarisation) and `SerpukhovZatonScene` (2.42 km, fast craft only) |
-| Automated tests | EditMode 189 passed, PlayMode 34 passed (2026-09-19) |
+| Automated tests | EditMode 192 passed, PlayMode 35 passed (2026-09-19) |
 | Batch runtime checks | Menu smoke (including vessel selection), ship wake, graphics phase one, water weather, buoy graphics, vessel catalogue build, virtual sea trials |
 
 ## How it looks
@@ -182,7 +182,11 @@ written for displacement ships, so their rows are reported without it.
   reach are procedural estimates, not surveyed data or charts. The Serpukhov zaton scene traces its
   shoreline from OpenStreetMap and uses the published channel width, bend radius and mark category,
   but its depths, currents, shoals and mark positions are estimates: no public survey or buoy scheme
-  of that reach exists.
+  of that reach exists. Its relief comes from a ~30 m elevation source, its buildings are massing
+  boxes, and its moored craft are traced by eye from one satellite image: approximate positions and
+  sizes, no vessel identified, and laid-up craft move between seasons.
+- **Frame cost of the Serpukhov scene is unmeasured.** It carries about 4600 vegetation instances
+  plus the town and the moored craft, more than either older scene.
 - **The Serpukhov scene is outside the graphics passes.** `Upgrade Water And Landscape`,
   `Apply Realistic Water And Sky` and `Apply Graphics Phase One` still cover only the two original
   scenes, and its shore structures are placeholder boxes.

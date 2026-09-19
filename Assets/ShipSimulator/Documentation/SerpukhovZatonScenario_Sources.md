@@ -23,6 +23,10 @@ the Oka, in Serpukhov, Moscow region.
 | Maximum convoy dimensions, Nara | 100 x 20 m | Moscow Canal daily information bulletin, 24.07.2025 | high |
 | Maintained by | Serpukhov District of Waterways, Moscow Canal (Oka Kaluga to Shchurovo plus the Nara, 253 km) | kim-online.ru | high |
 | Shoreline outlines | OpenStreetMap water polygons, extracted 2026-09-19 (ODbL) | relations 2174292 "Serpukhovskiy zaton (port)" and 2174294, way 543276172 | high |
+| Terrain relief | AWS terrarium terrain tiles, zoom 14, sampled 2026-09-19 | about 30 m source resolution | medium |
+| River surface elevation | 107.1 m above sea level, median of the terrain tiles over the water | Russian Wikipedia gives 107 m for the Nara mouth | medium |
+| Land cover | OpenStreetMap landuse/natural polygons (ODbL), 46 polygons | wood, farmland, built, allotments, sand | medium |
+| Building footprints | OpenStreetMap (ODbL), 158 within 650 m of the fairway | reduced to their minimum-area box | medium |
 | Basin size | about 11.9 ha, longest chord about 625 m | measured from the OpenStreetMap outline | medium |
 | Navigable Nara reach, mouth to basin entrance | about 1.45 km along the channel | measured from the OpenStreetMap outline | medium |
 | Basin entrance width | about 55 m | measured from the OpenStreetMap outline | medium |
@@ -43,7 +47,23 @@ the Oka, in Serpukhov, Moscow region.
 | Basin current | nil | ESTIMATED |
 | Shoals: mouth bar, two bend silt patches, entrance sill | 0.5 to 0.9 m of depth reduction | ESTIMATED. No public survey of the basin or the reach exists |
 | Bank and bed relief | procedural | ESTIMATED; visual only, the depth the vessel feels comes from `ScenarioBathymetry` |
-| Quays, laid-up craft, port office, monastery massing | placeholder boxes | Positions from OpenStreetMap; shapes are massing, not surveyed buildings |
+| Quays | placeholder boxes | Positions from OpenStreetMap; shapes are massing |
+| Building heights | 3 to 19 m | ESTIMATED from `building:levels` where tagged, otherwise by building type. Shapes are massing boxes, not surveyed buildings |
+| Bank profile within 70 m of the water | procedural | ESTIMATED. A 30 m elevation source smears the waterline, so the first 70 m of bank is carried by the shoreline and blended into the terrain behind it |
+| Moored craft | 21 hulls, 11 to 109 m | **APPROXIMATE**, see below |
+
+## Moored craft
+
+The laid-up vessels, barges, the floating dock and the port's piers were **traced by eye from Esri
+World Imagery** in September 2026: each one is a line drawn bow to stern on the picture, plus a beam
+read across it, converted at 0.343 m per pixel. That gives 21 hulls: two cargo barges of about 70 m
+alongside the north bank, a group of laid-up vessels of 30 to 45 m on the north-east shore, a
+floating dock of about 62 by 19 m, small craft, two mooring piers and a hulk on the west bank.
+
+What this is not: the positions are approximate, the sizes are read off a picture rather than from a
+register, **no vessel is identified and no type is established**, and laid-up craft move between
+seasons, so the arrangement is a snapshot of one image and not the state of the basin today. The
+imagery was used as a reference only; none of it is redistributed with the project.
 
 ## Navigation marks
 
@@ -84,6 +104,12 @@ Nara towards the basin on a bearing of about 316.3 degrees; +x is starboard of t
 parameters are recorded in the `frame` block of the geometry file.
 
 ## Rebuilding
+
+`Tools/serpukhov_zaton_geometry.py` regenerates the geometry file from its sources: it needs network
+access and Pillow, caches every download under `Tools/.cache/`, and refuses to write a file whose
+fairway leaves the charted water. The traced moorings live in its `TRACED_MOORINGS` table, and the
+fairway, currents and shoals, which are scenario design rather than survey, are written into the
+script by hand.
 
 `Ship Simulator > Build Serpukhov Zaton Scenario` regenerates the scene from the geometry file.
 `Ship Simulator > Render Serpukhov Zaton Preview` writes stills to `Logs/Serpukhov/`. Scene content

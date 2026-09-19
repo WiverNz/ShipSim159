@@ -74,8 +74,10 @@ missing you are on a different machine and should write your own.
 - `Assets/ShipSimulator/Scenes/`: `GorodetsTrainingScene.unity` (default startup and build entry point),
   `RiverTrainingScene.unity` (river familiarisation) and `SerpukhovZatonScene.unity` (Nara mouth and
   the Serpukhov lay-up basin, restricted to the fast craft).
-- `Assets/ShipSimulator/Data/Scenarios/`: surveyed scenario geography (shorelines, fairway, landmarks)
-  that a builder reads instead of hard-coding.
+- `Assets/ShipSimulator/Data/Scenarios/`: surveyed and traced scenario geography (shorelines, relief,
+  land cover, buildings, moored craft, fairway) that a builder reads instead of hard-coding.
+- `Tools/`: outside `Assets/`, so Unity ignores it. `serpukhov_zaton_geometry.py` regenerates that
+  scenario geography from OpenStreetMap, terrain tiles and traced satellite imagery.
 - `Assets/ShipSimulator/Data/Vessels/`: JSON vessel specifications.
 - `ProjectSettings/`, `Packages/`: Unity configuration and package dependencies.
 

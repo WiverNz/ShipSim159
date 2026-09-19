@@ -204,8 +204,8 @@ namespace ShipSimulator.Editor
             foreach (float x in xs)
             {
                 float shore = geometry.SignedShoreDistance(x, z);
-                mesh.Vertex(new Vector3(x, GroundHeight(shore, x, z), z), new Vector2(x, z),
-                    new Color(Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(2f, 20f, shore)), 0f, 0f, 1f));
+                mesh.Vertex(new Vector3(x, GroundHeight(geometry, shore, x, z), z), new Vector2(x, z),
+                    new Color(GrassAmount(geometry, shore, x, z), 0f, 0f, 1f));
             }
             Grid(mesh, xs.Length, zs.Length);
             RiverLandscapeBuilder.MeshObject("Basin ground", parent,
@@ -213,17 +213,35 @@ namespace ShipSimulator.Editor
                 RiverLandscapeBuilder.MaterialAsset("AlluvialGround", "ShipSimulator/RiverGround", Color.white));
         }
 
-        // Visual bed and bank only. The depth the vessel actually feels comes from ScenarioBathymetry.
-        private static float GroundHeight(float shoreDistanceM, float x, float z)
+        // Real relief from the elevation grid, but a 30 m elevation source smears the waterline, so the
+        // first 70 m of bank is carried by the shoreline instead and blended into the terrain behind it.
+        // Visual only: the depth the vessel feels comes from ScenarioBathymetry.
+        private static float GroundHeight(ScenarioGeometry geometry, float shoreDistanceM, float x, float z)
         {
             if (shoreDistanceM <= 0f)
                 return -(0.2f + 3.3f * Mathf.Clamp01(-shoreDistanceM / 40f));
-            float beach = 1.1f * Mathf.Clamp01(shoreDistanceM / 9f);
-            float terrace = 3.4f * Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(9f, 70f, shoreDistanceM));
-            float hills = Mathf.PerlinNoise((x + 311f) * 0.0072f, (z + 907f) * 0.0065f) * 11f *
-                Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((shoreDistanceM - 30f) / 110f));
-            float grain = (Mathf.PerlinNoise(x * 0.12f, z * 0.1f) - 0.5f) * 0.4f;
-            return beach + terrace + hills + grain;
+            float terrain = Mathf.Max(geometry.ElevationAbove(x, z), 0.4f);
+            float beach = 0.35f + 2.3f * Mathf.Clamp01(shoreDistanceM / 26f);
+            float blend = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(shoreDistanceM / 70f));
+            float grain = (Mathf.PerlinNoise(x * 0.09f + 31f, z * 0.08f + 17f) - 0.5f) * 0.55f +
+                (Mathf.PerlinNoise(x * 0.021f, z * 0.019f) - 0.5f) * 1.5f * blend;
+            return Mathf.Lerp(beach, terrain, blend) + grain;
+        }
+
+        private static float GrassAmount(ScenarioGeometry geometry, float shoreDistanceM, float x, float z)
+        {
+            float bare = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(2f, 18f, shoreDistanceM));
+            return geometry.CoverAt(x, z) switch
+            {
+                "sand" => 0f,
+                "built" => Mathf.Min(bare, 0.42f),
+                "wood" => Mathf.Max(bare, 0.92f),
+                "farmland" => Mathf.Max(bare, 0.88f),
+                "allotments" => Mathf.Max(bare, 0.72f),
+                "orchard" => Mathf.Max(bare, 0.78f),
+                "reeds" => Mathf.Max(bare, 0.65f),
+                _ => bare
+            };
         }
 
         // Columns run along x inside each row and rows along z, so this winding faces up.
@@ -243,46 +261,151 @@ namespace ShipSimulator.Editor
             root.SetParent(parent, false);
             Material concrete = LitMaterial("SerpukhovConcrete", new Color(0.52f, 0.51f, 0.48f));
             Material steel = LitMaterial("SerpukhovLaidUpSteel", new Color(0.30f, 0.33f, 0.34f));
-            Material masonry = LitMaterial("SerpukhovMasonry", new Color(0.82f, 0.79f, 0.72f));
-            Material roof = LitMaterial("SerpukhovRoof", new Color(0.24f, 0.26f, 0.29f));
 
+            // Berths sit at the waterline; everything else ashore comes from the building footprints.
             foreach (ScenarioGeometry.Landmark landmark in geometry.landmarks)
             {
-                Vector3 afloat = landmark.Center;
-                // Shore buildings stand on the bank; quays and laid-up craft belong to the waterline.
-                Vector3 grounded = landmark.Center + Vector3.up *
-                    GroundHeight(geometry.SignedShoreDistance(landmark.x, landmark.z), landmark.x, landmark.z);
-                switch (landmark.kind)
+                Box(root, landmark.name, landmark.Center + Vector3.up * landmark.heightM * 0.5f,
+                    new Vector3(landmark.widthM, landmark.heightM, landmark.lengthM),
+                    landmark.Rotation, concrete);
+                for (int i = 0; i < 4; i++)
+                    Box(root, landmark.name + " bollard " + (i + 1),
+                        landmark.Center + landmark.Rotation * new Vector3(
+                            0f, landmark.heightM + 0.4f, (i - 1.5f) * landmark.lengthM * 0.28f),
+                        new Vector3(0.5f, 0.8f, 0.5f), landmark.Rotation, steel);
+            }
+            BuildMoorings(root, geometry);
+            BuildTown(parent, geometry);
+        }
+
+        // Laid-up craft, barges, the floating dock and the port's piers, traced from satellite imagery.
+        // Approximate shapes: a hull box with a raised coaming or deckhouse, not a modelled vessel.
+        private static void BuildMoorings(Transform parent, ScenarioGeometry geometry)
+        {
+            if (geometry.moorings == null) return;
+            Transform root = new GameObject("Laid-up craft").transform;
+            root.SetParent(parent, false);
+            Material rust = LitMaterial("SerpukhovBargeHull", new Color(0.33f, 0.20f, 0.14f));
+            Material steel = LitMaterial("SerpukhovLaidUpSteel", new Color(0.30f, 0.33f, 0.34f));
+            Material paint = LitMaterial("SerpukhovVesselPaint", new Color(0.74f, 0.74f, 0.70f));
+            Material deck = LitMaterial("SerpukhovDeck", new Color(0.42f, 0.40f, 0.36f));
+            var random = new System.Random(342);
+
+            foreach (ScenarioGeometry.Mooring craft in geometry.moorings)
+            {
+                float length = craft.lengthM;
+                float beam = Mathf.Max(2.5f, craft.widthM);
+                Quaternion rotation = craft.Rotation;
+                Vector3 centre = craft.Center;
+                switch (craft.kind)
                 {
-                    case "quay":
-                        Box(root, landmark.name, afloat + Vector3.up * landmark.heightM * 0.5f,
-                            new Vector3(landmark.widthM, landmark.heightM, landmark.lengthM),
-                            landmark.Rotation, concrete);
-                        for (int i = 0; i < 4; i++)
-                            Box(root, landmark.name + " bollard " + (i + 1),
-                                afloat + landmark.Rotation * new Vector3(
-                                    0f, landmark.heightM + 0.4f, (i - 1.5f) * landmark.lengthM * 0.28f),
-                                new Vector3(0.5f, 0.8f, 0.5f), landmark.Rotation, steel);
+                    case "pier":
+                        Box(root, craft.name, centre + Vector3.up * 0.9f,
+                            new Vector3(beam, 0.5f, length), rotation, deck);
+                        int piles = Mathf.Max(3, Mathf.RoundToInt(length / 12f));
+                        for (int i = 0; i < piles; i++)
+                            Box(root, craft.name + " pile " + (i + 1),
+                                centre + rotation * new Vector3(0f, 0.1f, (i / (piles - 1f) - 0.5f) * length * 0.92f),
+                                new Vector3(0.45f, 2.4f, 0.45f), rotation, steel);
                         break;
-                    case "mooring":
-                        Box(root, landmark.name, afloat + Vector3.up * (landmark.heightM * 0.5f - 1.1f),
-                            new Vector3(landmark.widthM, landmark.heightM, landmark.lengthM),
-                            landmark.Rotation, steel);
-                        Box(root, landmark.name + " house",
-                            afloat + landmark.Rotation * new Vector3(
-                                0f, landmark.heightM - 0.2f, -landmark.lengthM * 0.34f),
-                            new Vector3(landmark.widthM * 0.7f, 2.6f, landmark.lengthM * 0.2f),
-                            landmark.Rotation, masonry);
+                    case "dock":
+                        // A floating dock reads as an open box: two side walls on a submerged pontoon.
+                        Box(root, craft.name, centre + Vector3.up * 0.3f,
+                            new Vector3(beam, 2.4f, length), rotation, rust);
+                        for (int side = -1; side <= 1; side += 2)
+                            Box(root, craft.name + (side < 0 ? " port wall" : " starboard wall"),
+                                centre + rotation * new Vector3(side * (beam * 0.5f - 1.2f), 3.4f, 0f),
+                                new Vector3(2.4f, 5.6f, length * 0.92f), rotation, rust);
+                        break;
+                    case "craft":
+                        Box(root, craft.name, centre + Vector3.up * 0.25f,
+                            new Vector3(beam, 1.5f, length), rotation, paint);
+                        Box(root, craft.name + " cabin",
+                            centre + rotation * new Vector3(0f, 1.6f, -length * 0.1f),
+                            new Vector3(beam * 0.62f, 1.6f, length * 0.34f), rotation, paint);
+                        break;
+                    case "vessel":
+                        Box(root, craft.name, centre + Vector3.up * 0.1f,
+                            new Vector3(beam, 3.4f, length), rotation, RiverLandscapeBuilder.Range(random, 0f, 1f) < 0.45f ? rust : steel);
+                        Box(root, craft.name + " deckhouse",
+                            centre + rotation * new Vector3(0f, 3.1f, -length * 0.22f),
+                            new Vector3(beam * 0.72f, 3.0f, length * 0.3f), rotation, paint);
+                        Box(root, craft.name + " wheelhouse",
+                            centre + rotation * new Vector3(0f, 5.6f, -length * 0.18f),
+                            new Vector3(beam * 0.45f, 2.2f, length * 0.13f), rotation, paint);
                         break;
                     default:
-                        Box(root, landmark.name, grounded + Vector3.up * (landmark.heightM * 0.5f - 1f),
-                            new Vector3(landmark.widthM, landmark.heightM, landmark.lengthM),
-                            landmark.Rotation, masonry);
-                        Box(root, landmark.name + " roof",
-                            grounded + Vector3.up * (landmark.heightM + 0.4f),
-                            new Vector3(landmark.widthM * 1.08f, 2.8f, landmark.lengthM * 1.08f),
-                            landmark.Rotation, roof);
+                        // Barge: a long low hull with cargo coamings and a small house aft.
+                        Box(root, craft.name, centre + Vector3.down * 0.2f,
+                            new Vector3(beam, 3.2f, length), rotation, rust);
+                        Box(root, craft.name + " coaming",
+                            centre + rotation * new Vector3(0f, 1.9f, length * 0.06f),
+                            new Vector3(beam * 0.82f, 1.4f, length * 0.68f), rotation, deck);
+                        Box(root, craft.name + " house",
+                            centre + rotation * new Vector3(0f, 2.6f, -length * 0.41f),
+                            new Vector3(beam * 0.55f, 2.6f, length * 0.12f), rotation, paint);
                         break;
+                }
+            }
+        }
+
+        // The town, the port yard and the monastery on the bank. Massing only: real footprints reduced
+        // to their minimum-area box, with heights estimated from the storey count or the building type.
+        private static void BuildTown(Transform parent, ScenarioGeometry geometry)
+        {
+            if (geometry.buildings == null) return;
+            Transform root = new GameObject("Shore buildings").transform;
+            root.SetParent(parent, false);
+            // A row of identical white blocks reads as a test scene, so the walls vary within a muted
+            // palette chosen from the position, which keeps a rebuild reproducible.
+            Material[] walls =
+            {
+                LitMaterial("SerpukhovWallRender", new Color(0.44f, 0.42f, 0.38f)),
+                LitMaterial("SerpukhovWallBrick", new Color(0.38f, 0.29f, 0.24f)),
+                LitMaterial("SerpukhovWallPanel", new Color(0.36f, 0.37f, 0.36f)),
+                LitMaterial("SerpukhovWallLime", new Color(0.49f, 0.46f, 0.39f))
+            };
+            Material[] roofs =
+            {
+                LitMaterial("SerpukhovRoofSlate", new Color(0.16f, 0.16f, 0.17f)),
+                LitMaterial("SerpukhovRoofTin", new Color(0.21f, 0.25f, 0.27f)),
+                LitMaterial("SerpukhovRoofRed", new Color(0.30f, 0.15f, 0.11f))
+            };
+            Material masonry = LitMaterial("SerpukhovMasonry", new Color(0.58f, 0.55f, 0.49f));
+            Material metalRoof = LitMaterial("SerpukhovMetalRoof", new Color(0.26f, 0.29f, 0.31f));
+
+            foreach (ScenarioGeometry.Building building in geometry.buildings)
+            {
+                float ground = GroundHeight(geometry,
+                    geometry.SignedShoreDistance(building.x, building.z), building.x, building.z);
+                var basePoint = new Vector3(building.x, ground - 0.8f, building.z);
+                Quaternion rotation = Quaternion.Euler(0f, building.headingDeg, 0f);
+                bool tall = building.heightM > 11f;
+                int tint = Mathf.Abs(Mathf.RoundToInt(building.x * 7.3f + building.z * 3.1f));
+                Material wall = building.roof == "church" ? masonry : walls[tint % walls.Length];
+                Material roof = roofs[(tint / 3) % roofs.Length];
+                Box(root, building.name, basePoint + Vector3.up * building.heightM * 0.5f,
+                    new Vector3(building.widthM, building.heightM, building.lengthM), rotation, wall);
+                if (building.roof == "church")
+                {
+                    Box(root, building.name + " drum",
+                        basePoint + Vector3.up * (building.heightM + 2.6f),
+                        new Vector3(building.widthM * 0.42f, 5.2f, building.lengthM * 0.34f), rotation, masonry);
+                    Box(root, building.name + " cupola",
+                        basePoint + Vector3.up * (building.heightM + 6.4f),
+                        new Vector3(building.widthM * 0.3f, 2.6f, building.lengthM * 0.24f), rotation, metalRoof);
+                }
+                else if (building.roof == "pitched")
+                {
+                    Box(root, building.name + " roof",
+                        basePoint + Vector3.up * (building.heightM + 0.7f),
+                        new Vector3(building.widthM * 1.06f, 1.5f, building.lengthM * 1.06f), rotation, roof);
+                }
+                else
+                {
+                    Box(root, building.name + " parapet",
+                        basePoint + Vector3.up * (building.heightM + 0.25f),
+                        new Vector3(building.widthM * 1.02f, 0.6f, building.lengthM * 1.02f), rotation, metalRoof);
                 }
             }
         }
@@ -310,50 +433,70 @@ namespace ShipSimulator.Editor
                 bushes[i] = Plant("Bush" + i, 159 + i * 19, true, false, bark, foliage);
             GameObject reed = Plant("ReedClump", 902, true, true, bark, reeds);
 
+            // Planting follows the mapped land cover, so the wooded peninsula reads as a wood and the
+            // fields and the port yard stay open. That is what makes the way in legible from the water.
             var random = new System.Random(1577);
-            for (float z = CoreZ.x; z < CoreZ.y; z += 15f)
-            for (float x = CoreX.x; x < CoreX.y; x += 15f)
+            for (float z = CoreZ.x; z < CoreZ.y; z += 12f)
+            for (float x = CoreX.x; x < CoreX.y; x += 12f)
             {
-                float px = x + RiverLandscapeBuilder.Range(random, -7f, 7f);
-                float pz = z + RiverLandscapeBuilder.Range(random, -7f, 7f);
+                float px = x + RiverLandscapeBuilder.Range(random, -5.5f, 5.5f);
+                float pz = z + RiverLandscapeBuilder.Range(random, -5.5f, 5.5f);
                 float shore = geometry.SignedShoreDistance(px, pz);
                 if (shore <= 0.5f) continue;
-                var position = new Vector3(px, GroundHeight(shore, px, pz), pz);
-                if (shore < 4f)
+                var position = new Vector3(px, GroundHeight(geometry, shore, px, pz), pz);
+                string cover = geometry.CoverAt(px, pz);
+                if (shore < 4.5f && cover != "built" && cover != "sand")
                 {
-                    if (random.NextDouble() < 0.55)
+                    if (random.NextDouble() < 0.5)
                         RiverLandscapeBuilder.Place(reed, root, position,
                             RiverLandscapeBuilder.Range(random, 0.75f, 1.5f),
                             RiverLandscapeBuilder.Range(random, 0f, 360f));
                     continue;
                 }
-                // Port ground and the quays are kept clear; the willows belong to the open banks.
-                if (NearStructure(geometry, px, pz)) continue;
-                double density = shore < 26f ? 0.22 : shore < 130f ? 0.16 : 0.07;
-                if (random.NextDouble() > density) continue;
-                if (random.NextDouble() < 0.28)
+                if (NearBuilding(geometry, px, pz)) continue;
+                double trees_, bushes_;
+                switch (cover)
+                {
+                    case "wood": trees_ = 0.50; bushes_ = 0.10; break;
+                    case "scrub": trees_ = 0.05; bushes_ = 0.30; break;
+                    case "orchard": trees_ = 0.26; bushes_ = 0.05; break;
+                    case "allotments": trees_ = 0.08; bushes_ = 0.10; break;
+                    case "farmland": trees_ = 0.004; bushes_ = 0.004; break;
+                    case "meadow": trees_ = 0.02; bushes_ = 0.03; break;
+                    case "built": trees_ = 0.03; bushes_ = 0.02; break;
+                    case "sand": trees_ = 0.0; bushes_ = 0.0; break;
+                    // Unmapped ground: a thin fringe near the bank, open behind it.
+                    default: trees_ = shore < 40f ? 0.14 : 0.05; bushes_ = 0.06; break;
+                }
+                double roll = random.NextDouble();
+                if (roll < trees_)
+                    RiverLandscapeBuilder.Place(trees[random.Next(trees.Length)], root, position,
+                        RiverLandscapeBuilder.Range(random, 0.7f, 1.45f),
+                        RiverLandscapeBuilder.Range(random, 0f, 360f));
+                else if (roll < trees_ + bushes_)
                     RiverLandscapeBuilder.Place(bushes[random.Next(bushes.Length)], root, position,
                         RiverLandscapeBuilder.Range(random, 0.7f, 1.6f),
-                        RiverLandscapeBuilder.Range(random, 0f, 360f));
-                else
-                    RiverLandscapeBuilder.Place(trees[random.Next(trees.Length)], root, position,
-                        RiverLandscapeBuilder.Range(random, 0.7f, 1.4f),
                         RiverLandscapeBuilder.Range(random, 0f, 360f));
             }
         }
 
-        private static bool NearStructure(ScenarioGeometry geometry, float x, float z)
+        private static bool NearBuilding(ScenarioGeometry geometry, float x, float z)
         {
             foreach (ScenarioGeometry.Landmark landmark in geometry.landmarks)
             {
-                if (landmark.kind == "mooring") continue;
-                float clearance = Mathf.Max(landmark.lengthM, landmark.widthM) * 0.75f + 14f;
-                float dx = x - landmark.x;
-                float dz = z - landmark.z;
-                if (dx * dx + dz * dz < clearance * clearance) return true;
+                float clearance = Mathf.Max(landmark.lengthM, landmark.widthM) * 0.6f + 12f;
+                if (Sqr(x - landmark.x) + Sqr(z - landmark.z) < clearance * clearance) return true;
+            }
+            if (geometry.buildings == null) return false;
+            foreach (ScenarioGeometry.Building building in geometry.buildings)
+            {
+                float clearance = Mathf.Max(building.lengthM, building.widthM) * 0.6f + 4f;
+                if (Sqr(x - building.x) + Sqr(z - building.z) < clearance * clearance) return true;
             }
             return false;
         }
+
+        private static float Sqr(float value) => value * value;
 
         // Russian inland buoyage is read going downstream: the red right-edge buoys stand on the bank
         // that is on your right when the current is behind you. This route runs up-river, so they sit
@@ -400,7 +543,7 @@ namespace ShipSimulator.Editor
 
         private static Vector3 Seat(ScenarioGeometry geometry, Vector3 position)
         {
-            position.y = GroundHeight(geometry.SignedShoreDistance(position.x, position.z),
+            position.y = GroundHeight(geometry, geometry.SignedShoreDistance(position.x, position.z),
                 position.x, position.z) - 0.3f;
             return position;
         }

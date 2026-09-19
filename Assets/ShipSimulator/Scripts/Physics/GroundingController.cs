@@ -45,6 +45,9 @@ namespace ShipSimulator.Physics
         public float MinimumClearanceM { get; private set; } = float.PositiveInfinity;
         public float DamagePoints { get; private set; }
         public float ContactNormalForceN { get; private set; }
+        // What the bottom can hold the vessel with: compare it against the astern thrust to see whether
+        // working off is possible at all.
+        public float HoldingForceN { get; private set; }
         public RiverBottomType ContactBottomType { get; private set; }
         public ScenarioBathymetry Bathymetry => bathymetry;
 
@@ -63,6 +66,7 @@ namespace ShipSimulator.Physics
 
             MinimumClearanceM = float.PositiveInfinity;
             ContactNormalForceN = 0f;
+            HoldingForceN = 0f;
             float deepestPenetration = 0f;
             RiverBottomType worst = RiverBottomType.Sand;
             foreach (Vector3 local in contactPoints)
@@ -84,10 +88,16 @@ namespace ShipSimulator.Physics
                 Stiffness(bottom.BottomType, out float stiffness, out float friction);
                 float damping = 2f * contactDampingRatio * Mathf.Sqrt(stiffness * body.mass / contactPoints.Length);
                 Vector3 pointVelocity = body.GetPointVelocity(world);
-                float normal = Mathf.Max(0f, stiffness * penetration - damping * pointVelocity.y);
+                // The bottom holds a vessel up; it does not throw her. Without this cap the penalty
+                // spring answers a metre of penetration with tens of meganewtons and launches the hull
+                // clear of the water, which is how a hydrofoil driven onto a bar ended up flying.
+                float maxNormal = 3f * body.mass * 9.81f / contactPoints.Length;
+                float normal = Mathf.Min(maxNormal,
+                    Mathf.Max(0f, stiffness * penetration - damping * pointVelocity.y));
                 body.AddForceAtPosition(Vector3.up * normal, world, ForceMode.Force);
                 ContactNormalForceN += normal;
 
+                HoldingForceN += friction * normal;
                 var sliding = new Vector3(pointVelocity.x, 0f, pointVelocity.z);
                 // Regularised below 5 cm/s so the friction force does not chatter around zero speed.
                 ship.AddExternalForce(-friction * normal * sliding / Mathf.Max(sliding.magnitude, 0.05f), world);
@@ -154,6 +164,8 @@ namespace ShipSimulator.Physics
             State = GroundingState.Clear;
             previousState = GroundingState.Clear;
             MinimumClearanceM = float.PositiveInfinity;
+            ContactNormalForceN = 0f;
+            HoldingForceN = 0f;
             DamagePoints = 0f;
         }
     }

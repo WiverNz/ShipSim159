@@ -1,6 +1,40 @@
 # ShipSim159 Project Context
 
-Last updated: 2026-09-19
+Last updated: 2026-09-20
+
+## Grounding Contact Force, Foil Draft and a Shader Warning, 2026-09-20
+
+Three reports from playing the Serpukhov scene, all uncommitted like the rest.
+
+Aground with no way off. The real fault was the contact force, not the friction. The penalty spring
+answered a metre of penetration with tens of meganewtons, so the holding force ran to megatonnes and
+nothing moved; on a hydrofoil driven well onto a bar it also launched the hull two metres clear of
+the water. `GroundingController` now caps the per-point normal force at three times the weight share,
+which is what the bottom can actually hold her up with. Measured afterwards, the Luch at 0.60 m
+against her 0.66 m draft is held by 12 kN and gets off on 13 kN astern; at 0.50 m it is 28 kN and at
+0.35 m 50 kN, and she stays. The scene's depth beyond the marked channel went from 0.35 m to 0.6 m on
+those numbers, so the edge of the channel is recoverable and a proper grounding is not.
+
+Correction worth recording: the first diagnosis was that the friction regularisation acted as a huge
+damper. It does not. `-mu N * v / max(|v|, 0.05)` is a vector expression whose magnitude is exactly
+mu N above 5 cm/s and tapers below it, which is right. That change was reverted after measurement;
+the only physics change is the normal-force cap. `HoldingForceN` is new and now shows on the HUD next
+to the grounding warning, because the number that tells you whether astern can work you off belongs
+on the bridge.
+
+Foil draft. `VoyagePassage` compared `loadedDraftM`, so the Meteor was admitted on her 1.15 m hull
+while her foils reach 2.35 m and touched the bottom in the 2.4 m channel. `VoyagePassage.DeepestDraftM`
+adds the support appendage, so the passage now admits the Luch alone. This is very likely what the
+report of "cannot move at all" actually was: a Meteor aground on her foils at the start line, held by
+an uncapped contact force, which also explains never seeing the basin, the barges or the town.
+
+Shader. `RiverReflectionFilter.compute` compared and divided the unsigned dispatch id by an int
+`_Size`, warning about a signed/unsigned mismatch on dx12. It casts once to uint now.
+
+Verified: EditMode 193 passed, PlayMode 39 passed, no shader warning in the play-mode log. The
+ejection regression is covered by `Grounding_DoesNotThrowTheHullClearOfTheWater`, which was confirmed
+to fail without the cap; `Grounding_AfterALightTouch_AsternThrustWorksHerOff` and
+`Grounding_WellUpOnTheShoal_HoldsHerAgainstFullAstern` pin the two sides of the measured table.
 
 ## Serpukhov Zaton: Real Terrain, Land Cover and Traced Moorings, 2026-09-19
 

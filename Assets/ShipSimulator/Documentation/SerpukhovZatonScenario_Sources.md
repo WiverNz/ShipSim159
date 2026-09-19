@@ -85,17 +85,36 @@ generated from the fairway, not copied from a chart.**
 
 ## Which vessels the passage admits
 
-`VoyagePassage` limits the scenario to 40 m length, 10 m beam and 1.6 m draft, which admits the
-Meteor 342U and the Luch 14352 and excludes the three cargo ships. The reasons:
+`VoyagePassage` limits the scenario to 40 m length, 10 m beam and 1.6 m draft. **Only the Luch 14352
+gets in.** The reasons:
 
-- the marked channel is 20 m wide with a 100 m bend radius;
-- the basin entrance is about 55 m across and the turn into it is about 70 degrees;
-- the Volgo-Don 507B, Volgo-Balt 2-95A/R and Volgoneft 1577 are 114 to 138 m long and draw over
-  3.5 m, so neither the channel nor the turn will take them.
+- the marked channel is 20 m wide with a 100 m bend radius, and the basin entrance is about 55 m
+  across with a turn of some 70 degrees into it, so nothing of cargo-ship size can be turned there;
+- the draft that matters is the deepest point, not the hull. A Meteor 342U draws 1.15 m on her hull
+  but 2.35 m with her foils down, and the foils touch first. On a waterway guaranteed to 1.00 m she
+  has no business being there, and in this scene she grounded on her foils in the channel itself.
+  `VoyagePassage.DeepestDraftM` adds the support appendage for exactly this reason;
+- the Luch is a skeg air-cushion craft drawing 0.66 m on her hull and 1.11 m to the bottom of her
+  skegs, which the modelled channel takes.
 
-Note the honest gap: at the **published guaranteed** depth of 1.00 m the Meteor 342U (1.15 m loaded
-draft) would have no under-keel clearance either. The scenario models an ordinary navigation-season
-level instead, and the draft limit follows from that, not from the guarantee.
+Note the honest gap: at the **published guaranteed** depth of 1.00 m even the Luch would be down to
+her skegs. The scenario models an ordinary navigation-season level instead, and the draft limit
+follows from that, not from the guarantee.
+
+## Running aground
+
+Depth beyond the marked channel is 0.6 m. That is a scenario choice, and the numbers behind it were
+measured rather than guessed:
+
+| Luch on the bottom | Holding force | Astern thrust | Outcome |
+|---|---:|---:|---|
+| 0.60 m (a light touch, 6 cm) | 12 kN | 13 kN | works herself off astern |
+| 0.50 m | 28 kN | 13 kN | held |
+| 0.35 m | 50 kN | 13 kN | held fast |
+
+So leaving the marked water still puts you on the bottom, but the edge of the channel is recoverable
+while running properly up on a shoal is not, which is how it should be. The HUD shows the holding
+force next to the grounding warning so the figure is on the bridge, not only in the physics.
 
 ## Local frame
 

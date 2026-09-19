@@ -57,8 +57,10 @@ namespace ShipSimulator.Editor
             CurrentFieldProvider currentField = physicsRoot.AddComponent<CurrentFieldProvider>();
             currentField.Configure(new Vector3(0f, 0f, geometry.ambientCurrentZMps), CurrentRegions(geometry));
             ScenarioBathymetry bathymetry = physicsRoot.AddComponent<ScenarioBathymetry>();
-            // Outside a 20 m channel the Nara is shoal, so straying out of the marked water grounds you.
-            bathymetry.Configure(route, Hazards(geometry), 0.35f);
+            // Outside a 20 m channel the Nara shoals, so leaving the marked water puts you on the
+            // bottom. 0.6 m lets the Luch touch and work herself off astern, while the deeper Meteor
+            // grounds properly; less than that simply holds either of them there for good.
+            bathymetry.Configure(route, Hazards(geometry), 0.6f);
 
             new GameObject("Weather System").AddComponent<WeatherController>();
 

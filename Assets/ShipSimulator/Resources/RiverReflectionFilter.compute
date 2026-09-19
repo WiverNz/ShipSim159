@@ -8,8 +8,11 @@ int _Size;
 [numthreads(8,8,1)]
 void Blur(uint3 id : SV_DispatchThreadID)
 {
-    if (id.x >= _Size || id.y >= _Size) return;
-    float2 uv = (id.xy + 0.5) / _Size;
+    // _Size arrives as an int, and comparing or dividing it against the unsigned thread id warns
+    // about a signed/unsigned mismatch on dx12.
+    uint size = (uint)max(_Size, 0);
+    if (id.x >= size || id.y >= size) return;
+    float2 uv = (id.xy + 0.5) / (float)size;
     float4 color = _Source.SampleLevel(sampler_linear_clamp, uv, _SourceMip) * 0.375;
     color += (_Source.SampleLevel(sampler_linear_clamp, uv + _Direction, _SourceMip) +
         _Source.SampleLevel(sampler_linear_clamp, uv - _Direction, _SourceMip)) * 0.25;

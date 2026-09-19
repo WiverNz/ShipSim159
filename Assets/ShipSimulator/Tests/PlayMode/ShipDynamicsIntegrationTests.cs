@@ -124,6 +124,72 @@ namespace ShipSimulator.Tests
             yield return null;
         }
 
+        // The Luch draws 0.66 m. At 0.60 m she touches lightly and her 13 kN astern beats the 12 kN
+        // the bottom holds her with; at 0.35 m she is properly aground and 50 kN holds her there.
+        [UnityTest]
+        public IEnumerator Grounding_AfterALightTouch_AsternThrustWorksHerOff()
+        {
+            ShipPhysicsController ship = CreateShip(LoadVessel("Luch14352.json"), 0.6f, true);
+            ship.RestoreVoyage(new VoyageSave { position = Vector3.zero, velocity = Vector3.zero });
+            Run(ship, 5f);
+            Assert.That(ship.Grounding.MinimumClearanceM, Is.LessThan(0f), "She has to be on the bottom first.");
+
+            ship.SetThrottleCommand(-1f);
+            Run(ship, 180f);
+
+            Assert.That(ship.Body.position.z, Is.LessThan(-50f), "Full astern has to work her off a light touch.");
+            Assert.That(ship.Body.linearVelocity.z, Is.LessThan(-0.3f));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator Grounding_WellUpOnTheShoal_HoldsHerAgainstFullAstern()
+        {
+            ShipPhysicsController ship = CreateShip(LoadVessel("Luch14352.json"), 0.35f, true);
+            ship.RestoreVoyage(new VoyageSave { position = Vector3.zero, velocity = Vector3.zero });
+            Run(ship, 5f);
+            ship.SetThrottleCommand(-1f);
+            Run(ship, 180f);
+
+            Assert.That(ship.Grounding.HoldingForceN, Is.GreaterThan(30000f));
+            Assert.That(ship.Body.position.z, Is.GreaterThan(-20f), "Aground is aground.");
+            yield return null;
+        }
+
+        // A penalty spring answering a metre of penetration with tens of meganewtons used to launch
+        // the hull clear of the water; the contact force is capped to a few times her weight instead.
+        [UnityTest]
+        public IEnumerator Grounding_DoesNotThrowTheHullClearOfTheWater()
+        {
+            ShipPhysicsController ship = CreateShip(LoadVessel("Meteor342U.json"), 0.35f, true);
+            ship.RestoreVoyage(new VoyageSave { position = Vector3.zero, velocity = Vector3.zero });
+            Run(ship, 30f);
+
+            Assert.That(ship.Body.position.y, Is.LessThan(1.5f), "She must settle onto the bottom, not fly.");
+            Assert.That(ship.Grounding.MinimumClearanceM, Is.InRange(-2.5f, 0f));
+            Assert.That(ship.Body.linearVelocity.magnitude, Is.LessThan(1f));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator Grounding_HoldingForceGrowsWithHowFarSheIsOnTheShoal()
+        {
+            VesselData data = LoadVolgoDon();
+            ShipPhysicsController light = CreateShip(data, data.dimensions.loadedDraftM - 0.02f, true);
+            light.Grounding.Step(Step);
+            float lightHold = light.Grounding.HoldingForceN;
+            Object.Destroy(shipObject);
+            yield return null;
+
+            ShipPhysicsController hard = CreateShip(data, data.dimensions.loadedDraftM - 0.4f, true);
+            hard.Grounding.Step(Step);
+
+            Assert.That(lightHold, Is.GreaterThan(0f));
+            Assert.That(hard.Grounding.HoldingForceN, Is.GreaterThan(lightHold * 2f),
+                "Further onto the shoal has to hold her harder.");
+            yield return null;
+        }
+
         [UnityTest]
         public IEnumerator BowThruster_TurnsTheRigidbodyAndRestoresFromSave()
         {

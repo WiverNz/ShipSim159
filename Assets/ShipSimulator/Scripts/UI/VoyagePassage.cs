@@ -52,6 +52,14 @@ namespace ShipSimulator.UI
 
         public bool Accepts(VesselData data) => Restriction(data) == null;
 
+        // Foils and skegs reach below the keel and touch the bottom first, so the draft that matters
+        // to a shallow waterway is the deepest point, not the hull's.
+        public static float DeepestDraftM(VesselData data) =>
+            data == null
+                ? 0f
+                : data.dimensions.loadedDraftM +
+                  (SupportModel.Lifts(data.support) ? data.support.supportedDraftM : 0f);
+
         // Null when the vessel fits; otherwise the reason it does not, ready to show in the menu.
         public string Restriction(VesselData data)
         {
@@ -61,8 +69,9 @@ namespace ShipSimulator.UI
                 return $"Too long for this passage  /  {size.lengthOverallM:0.0} m, limit {MaxLengthOverallM:0} m";
             if (MaxBeamOverallM > 0f && size.beamOverallM > MaxBeamOverallM)
                 return $"Too wide for this passage  /  {size.beamOverallM:0.0} m, limit {MaxBeamOverallM:0.0} m";
-            if (MaxDraftM > 0f && size.loadedDraftM > MaxDraftM)
-                return $"Too deep for this passage  /  {size.loadedDraftM:0.00} m, limit {MaxDraftM:0.00} m";
+            float draft = DeepestDraftM(data);
+            if (MaxDraftM > 0f && draft > MaxDraftM)
+                return $"Too deep for this passage  /  {draft:0.00} m, limit {MaxDraftM:0.00} m";
             return null;
         }
 

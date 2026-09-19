@@ -632,12 +632,15 @@ namespace ShipSimulator.UI
                 : ship.Data != null ? ship.Data.controlLimits.maxLoadedSpeedMps : float.MaxValue;
             if (speedMps > speedLimit * 1.05f)
                 warning += "OVERSPEED\n";
-            if (ship.Grounding != null)
+            if (ship.Grounding != null &&
+                (ship.Grounding.State == GroundingState.Touching ||
+                 ship.Grounding.State == GroundingState.HardGrounding))
             {
-                if (ship.Grounding.State == GroundingState.Touching)
-                    warning += "BOTTOM CONTACT\n";
-                if (ship.Grounding.State == GroundingState.HardGrounding)
-                    warning += "HARD GROUNDING\n";
+                // The holding force is what astern thrust has to beat to work her off, so it belongs
+                // on the warning line rather than only in the physics.
+                warning += (ship.Grounding.State == GroundingState.Touching
+                    ? "BOTTOM CONTACT" : "HARD GROUNDING") +
+                    $" ({ship.Grounding.HoldingForceN / 1000f:F0} kN HOLDING)\n";
             }
             if (currentSpeed > 1.2f) warning += "STRONG CURRENT\n";
             if (currentSpeed > 0.65f)

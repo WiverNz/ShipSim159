@@ -20,7 +20,7 @@ left to do. Detailed references: `ShipSimulator_Physics.md` (model), the sources
 | Platform | Windows desktop, keyboard and mouse |
 | Vessels | 5 playable: cargo ships Volgo-Don 507B, Volgo-Balt 2-95A/R, Volgoneft 1577 and fast passenger craft Meteor 342U (hydrofoil), Luch 14352 (air cushion), chosen in the start menu; KVLCC2 benchmark data for model checks |
 | Passages | `GorodetsTrainingScene` (2.27 km mission, default), `RiverTrainingScene` (familiarisation) and `SerpukhovZatonScene` (2.42 km, fast craft only) |
-| Automated tests | EditMode 192 passed, PlayMode 35 passed (2026-09-19) |
+| Automated tests | EditMode 193 passed, PlayMode 39 passed (2026-09-20) |
 | Batch runtime checks | Menu smoke (including vessel selection), ship wake, graphics phase one, water weather, buoy graphics, vessel catalogue build, virtual sea trials |
 
 ## How it looks

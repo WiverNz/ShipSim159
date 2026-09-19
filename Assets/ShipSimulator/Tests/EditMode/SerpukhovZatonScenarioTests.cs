@@ -71,7 +71,7 @@ namespace ShipSimulator.Tests
         }
 
         [Test]
-        public void Passages_AdmitEveryVesselToTheOpenRiverAndOnlyFastCraftToTheZaton()
+        public void Passages_AdmitEveryVesselToTheOpenRiverAndOnlyTheLuchToTheZaton()
         {
             VesselCatalogue catalogue = VesselCatalogue.Load();
             VoyagePassage zaton = VoyagePassage.Find("SerpukhovZatonScene");
@@ -86,7 +86,24 @@ namespace ShipSimulator.Tests
                 else Assert.That(zaton.Restriction(data), Is.Not.Empty, entry.id);
             }
 
-            Assert.That(admitted, Is.EquivalentTo(new[] { "meteor-342u", "luch-14352" }));
+            Assert.That(admitted, Is.EquivalentTo(new[] { "luch-14352" }));
+        }
+
+        [Test]
+        public void PassageDraft_CountsTheFoilsAndSkegsThatTouchTheBottomFirst()
+        {
+            VesselCatalogue catalogue = VesselCatalogue.Load();
+            VesselData meteor = catalogue.Find("meteor-342u").LoadData();
+            VesselData luch = catalogue.Find("luch-14352").LoadData();
+            VesselData cargo = catalogue.Find(VesselCatalogue.DefaultVesselId).LoadData();
+
+            // A Meteor with her foils down reaches 2.35 m, not the 1.15 m of her hull, so a waterway
+            // guaranteed to 1.00 m is not hers whatever the hull draft says.
+            Assert.That(VoyagePassage.DeepestDraftM(meteor), Is.EqualTo(2.35f).Within(0.05f));
+            Assert.That(VoyagePassage.DeepestDraftM(luch), Is.EqualTo(1.11f).Within(0.05f));
+            Assert.That(VoyagePassage.DeepestDraftM(cargo),
+                Is.EqualTo(cargo.dimensions.loadedDraftM).Within(1e-4f), "A displacement hull has no appendage.");
+            Assert.That(VoyagePassage.Find("SerpukhovZatonScene").Restriction(meteor), Does.Contain("Too deep"));
         }
 
         [Test]

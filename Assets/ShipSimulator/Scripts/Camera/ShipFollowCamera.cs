@@ -55,7 +55,8 @@ namespace ShipSimulator.CameraSystem
                 : null;
         private Vector3 NavigatorPosition => layout != null ? layout.NavigatorEye : navigatorPosition;
         private Vector3 NavigatorLook => layout != null ? layout.NavigatorLookAt : navigatorLookOffset;
-        private Vector3 LookOffset => lookOffset * Scale;
+        private Vector3 LookOffset => viewIndex == 1 && ModelViews != null
+            ? NavigatorLook : lookOffset * Scale;
         private float MinDistance => minDistance * Scale;
         private float MaxDistance => maxDistance * Scale;
         public ShipPhysicsController Target => target;
@@ -95,7 +96,10 @@ namespace ShipSimulator.CameraSystem
 
             Vector3 desired = target.transform.TransformPoint(
                 IsNavigatorView ? NavigatorPosition : GetOrbitOffset());
-            transform.position = Vector3.SmoothDamp(transform.position, desired, ref velocity, smoothTime);
+            // A bridge eye moves with the hull. World-space lag pulls it through the windscreen at speed.
+            transform.position = IsNavigatorView ? desired :
+                Vector3.SmoothDamp(transform.position, desired, ref velocity, smoothTime);
+            if (IsNavigatorView) velocity = Vector3.zero;
             Vector3 lookTarget = target.transform.TransformPoint(
                 IsNavigatorView ? NavigatorLook : LookOffset);
             Quaternion desiredRotation =

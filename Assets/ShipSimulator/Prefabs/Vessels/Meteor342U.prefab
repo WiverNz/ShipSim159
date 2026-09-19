@@ -160,8 +160,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.VesselLayout
   vesselId: meteor-342u
   cameraScale: 0.25018075
-  navigatorEye: {x: -1, y: 5.25, z: 7.407999}
-  navigatorLookAt: {x: -1, y: 4.65, z: 88.408}
+  navigatorEye: {x: -1, y: 4.604, z: 8.757999}
+  navigatorLookAt: {x: -1, y: 4.304, z: 88.408}
   sideLight: {x: -2.25, y: 4.8500004, z: 7.307999}
   sideLightSupportBaseY: 3.8500001
   forwardMastheadLight: {x: 0, y: 6.45, z: 4.907999}

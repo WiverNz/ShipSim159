@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using ShipSimulator.Persistence;
+using ShipSimulator.CameraSystem;
 using ShipSimulator.Physics;
 using ShipSimulator.Visuals;
 using UnityEngine;
@@ -90,6 +91,47 @@ namespace ShipSimulator.Tests
             Assert.That(layout.CameraViews[5].z, Is.GreaterThan(bounds.max.z), "The bow view clears the stem.");
             Assert.That(layout.CameraViews[6].z, Is.LessThan(bounds.min.z), "The stern view clears the transom.");
             Assert.That(layout.CameraViews[1].y, Is.GreaterThan(bounds.max.y), "The bridge view clears the mast.");
+        }
+
+        [TestCase("meteor-342u")]
+        [TestCase("luch-14352")]
+        public void NavigatorView_ClearsTheOpaqueWheelhouse(string id)
+        {
+            var prefab = VesselCatalogue.Load().Find(id).prefab;
+            var layout = prefab.GetComponent<VesselLayout>();
+            var probe = new GameObject("Navigator obstruction probe");
+            bool backfaces = UnityEngine.Physics.queriesHitBackfaces;
+            try
+            {
+                var collider = probe.AddComponent<MeshCollider>();
+                collider.sharedMesh = prefab.transform.Find("DetailedVisual").GetComponent<MeshFilter>().sharedMesh;
+                UnityEngine.Physics.queriesHitBackfaces = true;
+                UnityEngine.Physics.SyncTransforms();
+                var direction = (layout.NavigatorLookAt - layout.NavigatorEye).normalized;
+                Assert.That(collider.Raycast(new Ray(layout.NavigatorEye, direction), out _, 3f), Is.False,
+                    "The view must not look through the cabin wall or roof.");
+            }
+            finally
+            {
+                UnityEngine.Physics.queriesHitBackfaces = backfaces;
+                UnityEngine.Object.DestroyImmediate(probe);
+            }
+        }
+
+        [TestCase("meteor-342u")]
+        [TestCase("luch-14352")]
+        public void BridgeView_LooksAlongTheRiverRatherThanDownAtTheRoof(string id)
+        {
+            var cameraObject = new GameObject("Bridge view probe", typeof(Camera));
+            try
+            {
+                var follow = cameraObject.AddComponent<ShipFollowCamera>();
+                follow.SetTarget(VesselCatalogue.Load().Find(id).prefab.GetComponent<ShipPhysicsController>());
+                follow.SetView(1);
+                follow.RestoreState(follow.CaptureState());
+                Assert.That(Vector3.Dot(cameraObject.transform.forward, Vector3.forward), Is.GreaterThan(0.9f));
+            }
+            finally { UnityEngine.Object.DestroyImmediate(cameraObject); }
         }
 
         [Test]

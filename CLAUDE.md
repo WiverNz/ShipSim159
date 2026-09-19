@@ -157,7 +157,9 @@ flash on/off states, to `Logs/Buoys/` and ends with `BUOY_GRAPHICS|PASS`.
 steering to hold the channel, captures each one from six views with the HUD composited over
 the world, writes `Logs/Shakedown/shakedown.md` and ends with `VESSEL_SHAKEDOWN|PASS`. It is
 an automated complement to manual handling checks. Run it after changing a vessel, the HUD,
-the cameras or the wake; it does not establish subjective handling feel.
+the cameras or the wake; it does not establish subjective handling feel. The check uses a fixed
+1/60 s capture step and simulation-time sailing limit. `RunFastCrafts` runs just Meteor and Luch.
+All vessels are reported even if one fails; failures include nearby collider diagnostics.
 `GraphicsPhaseTwoCheck.RunBefore` / `RunAfter` capture five views in five weather conditions at
 1920x1080 and write frame timing CSVs and temporal crops under `Logs/GraphicsPhaseTwo/`.
 They refuse to overwrite an existing before/after directory. `RunSkyProbe` checks the live sky

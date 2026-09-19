@@ -23,7 +23,7 @@ namespace ShipSimulator.Editor
         private const string IndexKey = "ShipSimulator.Shakedown.Index";
         private const string OutputFolder = "Logs/Shakedown";
         private const string SceneName = "RiverTrainingScene";
-        private const float RunSecondsPerVessel = 200f;
+        private const float RunSecondsPerVessel = 800f;
         private const int SettleTicks = 8;
 
         // Chase, bridge, port beam, bow, stern and the navigator's eye: the views that sit closest to the
@@ -33,6 +33,7 @@ namespace ShipSimulator.Editor
         private static double deadline;
         private static double stageStart;
         private static double nextProgress;
+        private static float voyageStart;
         private static bool failed;
         private static int captureIndex;
         private static int settle;
@@ -99,6 +100,7 @@ namespace ShipSimulator.Editor
                     throw new TimeoutException("Vessel shakedown timed out.");
                 if (!EditorApplication.isPlaying) return;
                 Application.runInBackground = true;
+                Time.captureDeltaTime = 1f / 60f;
                 var menu = UnityEngine.Object.FindAnyObjectByType<VoyageMenu>();
                 if (menu == null || !menu.IsReady) return;
 
@@ -136,6 +138,7 @@ namespace ShipSimulator.Editor
                     UnityEngine.Object.FindAnyObjectByType<ShipTelemetryUI>()?.RefreshAfterVoyageLoad();
                     captureIndex = 0;
                     settle = 0;
+                    voyageStart = Time.time;
                     Advance(3, now);
                     return;
                 }
@@ -144,7 +147,7 @@ namespace ShipSimulator.Editor
                 if (stage == 3)
                 {
                     Steer(ship, speed);
-                    if (!AtTargetSpeed(ship, speed) && now - stageStart < RunSecondsPerVessel) return;
+                    if (!AtTargetSpeed(ship, speed) && Time.time - voyageStart < RunSecondsPerVessel) return;
                     UnityEngine.Object.FindAnyObjectByType<SimulationTimeController>()?.SetScale(1f);
                     Advance(4, now);
                     return;
@@ -158,7 +161,13 @@ namespace ShipSimulator.Editor
                     if (captureIndex >= CapturedViews.Length)
                     {
                         RestoreHud();
-                        Record(entry, ship, speed);
+                        try { Record(entry, ship, speed); }
+                        catch (InvalidOperationException error)
+                        {
+                            failed = true;
+                            Debug.LogError("VESSEL_SHAKEDOWN|FAIL: " + error.Message);
+                            ReportContacts(ship);
+                        }
                         SessionState.SetInt(IndexKey, index + 1);
                         Advance(1, now);
                         return;
@@ -183,6 +192,7 @@ namespace ShipSimulator.Editor
             catch (Exception error)
             {
                 RestoreHud();
+                Time.captureDeltaTime = 0f;
                 SessionState.SetInt(StageKey, 0);
                 Debug.LogException(error);
                 if (Application.isBatchMode) EditorApplication.Exit(1);
@@ -213,14 +223,11 @@ namespace ShipSimulator.Editor
         {
             Vector3 position = ship.transform.position;
             float length = ship.Data != null ? ship.Data.dimensions.lengthOverallM : 100f;
-            // Course along the channel, then an approach angle set by how far off the centreline the
-            // vessel is. Aiming straight at a point far ahead instead leaves a long ship riding the
-            // outside of every bend, which in this reach means the shoal.
-            float channelHeading = Mathf.Atan2(
-                FairwayModel.CenterX(position.z + 10f) - FairwayModel.CenterX(position.z - 10f), 20f) * Mathf.Rad2Deg;
-            float offTrack = position.x - FairwayModel.CenterX(position.z);
             float lookAhead = Mathf.Clamp(Mathf.Max(1.5f * length, 8f * Mathf.Abs(speed)), 100f, 260f);
-            float bearing = channelHeading - Mathf.Atan2(offTrack, lookAhead) * Mathf.Rad2Deg;
+            // Aim ahead of the bend. Following only the local tangent carries a long bow into the
+            // outside bank before the ship's centre reaches the change in curvature.
+            float bearing = Mathf.Atan2(FairwayModel.CenterX(position.z + lookAhead) - position.x,
+                lookAhead) * Mathf.Rad2Deg;
             float error = Mathf.DeltaAngle(ship.transform.eulerAngles.y, bearing);
             float yawRate = ship.Body.angularVelocity.y * Mathf.Rad2Deg;
             ship.SetRudderCommand(Mathf.Clamp((error - yawRate * 2.5f) / 15f, -1f, 1f));
@@ -278,6 +285,23 @@ namespace ShipSimulator.Editor
             if (kelvinCrestM > 0.6f || bowCrestM > 1.2f)
                 throw new InvalidOperationException($"{entry.id} raises an implausible wake: " +
                     $"{kelvinCrestM:0.00} m crest, {bowCrestM:0.00} m bow wave.");
+        }
+
+        private static void ReportContacts(ShipPhysicsController ship)
+        {
+            foreach (Collider hull in ship.GetComponentsInChildren<Collider>())
+            {
+                if (!hull.enabled || hull.isTrigger) continue;
+                foreach (Collider other in UnityEngine.Physics.OverlapBox(hull.bounds.center,
+                    hull.bounds.extents + Vector3.one * 0.2f, Quaternion.identity, ~0, QueryTriggerInteraction.Ignore))
+                {
+                    if (other.attachedRigidbody == ship.Body) continue;
+                    Debug.Log($"VESSEL_SHAKEDOWN|NEAR {other.name} bounds={other.bounds}");
+                    if (UnityEngine.Physics.ComputePenetration(hull, hull.transform.position, hull.transform.rotation,
+                        other, other.transform.position, other.transform.rotation, out _, out float depth))
+                        Debug.Log($"VESSEL_SHAKEDOWN|CONTACT {other.name} penetration={depth:0.000} m");
+                }
+            }
         }
 
         // Smallest distance from a model-authored orbit view to the vessel's own silhouette box. Vessels on
@@ -389,7 +413,7 @@ namespace ShipSimulator.Editor
             var text = new StringBuilder();
             text.AppendLine("# Vessel shakedown");
             text.AppendLine();
-            text.AppendLine("Every catalogue vessel run at full ahead down the river reach, steered to hold the");
+            text.AppendLine($"{report.Count} selected catalogue vessels run at full ahead down the river reach, steered to hold the");
             text.AppendLine("channel. Captures with the HUD over them are in this folder. Wake crests are the");
             text.AppendLine("estimated visual model's, not measured wave heights.");
             text.AppendLine();
@@ -398,6 +422,7 @@ namespace ShipSimulator.Editor
             foreach (string line in report) text.AppendLine(line);
             File.WriteAllText(OutputFolder + "/shakedown.md", text.ToString());
             Debug.Log($"VESSEL_SHAKEDOWN|{(failed ? "FAIL" : "PASS")}: {report.Count} vessels");
+            Time.captureDeltaTime = 0f;
             if (Application.isBatchMode) EditorApplication.Exit(failed ? 1 : 0);
             else EditorApplication.ExitPlaymode();
         }

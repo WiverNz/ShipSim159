@@ -300,8 +300,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.VesselLayout
   vesselId: volgobalt-295ar
   cameraScale: 0.823355
-  navigatorEye: {x: -1, y: 10.94, z: -40.902504}
-  navigatorLookAt: {x: -1, y: 10.34, z: 40.097496}
+  navigatorEye: {x: -1, y: 10.852, z: -39.552505}
+  navigatorLookAt: {x: -1, y: 10.552, z: 40.097496}
   sideLight: {x: -6.15, y: 10.54, z: -41.002502}
   sideLightSupportBaseY: 9.54
   forwardMastheadLight: {x: 0, y: 11.54, z: 46.103104}

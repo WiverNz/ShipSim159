@@ -346,8 +346,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.VesselLayout
   vesselId: volgoneft-1577
   cameraScale: 0.9587853
-  navigatorEye: {x: -1, y: 11.285, z: -50.300003}
-  navigatorLookAt: {x: -1, y: 10.685, z: 30.699997}
+  navigatorEye: {x: -1, y: 11.197, z: -48.950005}
+  navigatorLookAt: {x: -1, y: 10.896999, z: 30.699997}
   sideLight: {x: -7.9, y: 10.885, z: -50.4}
   sideLightSupportBaseY: 9.885
   forwardMastheadLight: {x: 0, y: 12.184999, z: 55.840004}

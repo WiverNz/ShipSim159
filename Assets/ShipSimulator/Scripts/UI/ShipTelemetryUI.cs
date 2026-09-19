@@ -345,7 +345,7 @@ namespace ShipSimulator.UI
                 new Vector2(680f, 154f));
             Icon(block, HudIcon.Speed, new Vector2(-300f, 118f), 22f, HudTheme.Accent);
             engineText = Label(block, "TELEGRAPH  STOP", 19, TextAnchor.UpperCenter,
-                new Vector2(8f, 103f), new Vector2(-8f, -8f));
+                new Vector2(8f, 80f), new Vector2(-8f, -8f));
             string[] labels =
             {
                 "FULL\nASTERN", "HALF\nASTERN", "SLOW\nASTERN", "STOP",
@@ -575,7 +575,7 @@ namespace ShipSimulator.UI
             if (radarChannel == null) return;
             radarSections.Clear();
             float shipZ = ship.transform.position.z;
-            float draft = ship.EstimatedDraftM;
+            float draft = ship.EffectiveDraftM;
             radarMinAheadM = float.MaxValue;
 
             for (float z = shipZ - 120f; z <= shipZ + 320f; z += 11f)
@@ -1032,7 +1032,7 @@ namespace ShipSimulator.UI
             depthRadarText.text =
                 $"DEPTH <size=24><b>{currentDepth:F1} m</b></size>    " +
                 $"<color=#8AA0AD>MIN AHEAD</color> <b>{minimumAhead:F1} m</b>    " +
-                $"<color=#8AA0AD>DRAFT</color> {ship.EstimatedDraftM:F1} m\n" +
+                $"<color=#8AA0AD>DRAFT</color> {ship.EffectiveDraftM:F1} m\n" +
                 "<size=13><b><color=#46A6BC>SAFE</color>   " +
                 "<color=#D29B45>SHALLOW</color>   <color=#E04539>DANGER</color>   " +
                 "<color=#E8B24D>ROUTE</color></b></size>\n" +

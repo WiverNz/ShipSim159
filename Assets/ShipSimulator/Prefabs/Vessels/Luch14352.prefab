@@ -160,8 +160,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.VesselLayout
   vesselId: luch-14352
   cameraScale: 0.1715112
-  navigatorEye: {x: -1, y: 4.94, z: 3.4318}
-  navigatorLookAt: {x: -1, y: 4.34, z: 84.4318}
+  navigatorEye: {x: -1, y: 4.232, z: 4.7818}
+  navigatorLookAt: {x: -1, y: 3.932, z: 84.4318}
   sideLight: {x: -1.85, y: 4.54, z: 3.3318}
   sideLightSupportBaseY: 3.54
   forwardMastheadLight: {x: 0, y: 6.04, z: 0.93179977}

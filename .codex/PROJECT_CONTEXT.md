@@ -22,11 +22,28 @@ control help for Luch and bounded straight-ahead radar prediction to its actual 
 The shakedown snaps each capture to its selected camera and checks physical hull rise as well as
 heel, wake amplitude and clearance. Interactive menu execution returns to the editor, not exit.
 
-Verification: PlayMode 32/32 (`TestResults/Shakedown-PlayMode.xml`), including takeoff, settled
-ride height, roll recovery, return to displacement draft, dry-foil force and foil bottom contact.
-EditMode 179/179 (`TestResults/Shakedown-EditMode.xml`), including wake, camera and radar checks.
-The graphics-enabled fleet shakedown is being rerun; record its outcome before calling visual
-verification complete. No manual half-hour pilot session has been performed by the agent.
+Further visual inspection caught a low-roof obstruction in the generated navigator eye and
+world-space camera smoothing pulling that eye back through the windscreen at speed. Generated
+eyes now sit just outside the front glazing at window height, and navigator position follows
+the rendered hull without lag. The bridge overview aims at the model's forward lookout point.
+Radar draft and ahead-channel clearance use `EffectiveDraftM`; engine RPM/load text has enough
+vertical space for its second line. Prefabs were regenerated; unrelated material churn removed.
+
+Verification: PlayMode 34/34 (`TestResults/Shakedown-PlayMode.xml`), including takeoff, settled
+ride height, roll recovery, return to displacement draft, dry-foil force, foil bottom contact,
+live radar draft and the moving navigator camera. EditMode 183/183 (`TestResults/Shakedown-EditMode.xml`), including bridge-view direction,
+window/roof obstruction, wake scaling and the high-speed radar horizon.
+The complete five-vessel run passed (`Logs/shakedown-verified.log`, `VESSEL_SHAKEDOWN|PASS`).
+Its first autopilot version followed the local channel tangent into the outside bank; contact
+logging identified the real natural-bank mesh. Looking ahead through the bend fixes that test
+harness error without changing game collisions. The check uses a fixed 1/60 s capture step,
+reports all vessels on failure, and provides `RunFastCrafts` for a focused passenger-craft run.
+
+Captured fast-craft speeds were about 46 km/h for Meteor and 25 km/h for Luch, near completed
+takeoff rather than service speed. Estimated wake crests were 0.10/0.15 m; bow waves 0.32/0.49 m,
+heel about 0.1 degrees and hull rise 1.04/0.21 m. Images are under `Logs/Shakedown/`.
+The 65 km/h radar horizon is covered numerically, not by these underway captures. No manual
+half-hour pilot session has been performed; resistance-hump feel remains a human check.
 
 ## Graphics Phase 2, Steps 0 and 1, 2026-09-13
 

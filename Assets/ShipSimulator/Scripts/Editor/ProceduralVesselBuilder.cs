@@ -358,9 +358,13 @@ namespace ShipSimulator.Editor
             float sideX = -(0.5f * form.Beam - 0.35f);
             VesselLayout layout = root.AddComponent<VesselLayout>();
             layout.ConfigureCameraViews(CameraViews(meshAsset.bounds));
+            // Generated wheelhouses are opaque solids, without an interior. Put the eye just beyond
+            // the front glazing, at window height, rather than inside the cabin or its low roof.
+            float eyeHeight = fixtures.WheelhouseFloor +
+                0.62f * (fixtures.WheelhouseRoof - fixtures.WheelhouseFloor);
             layout.Configure(design.Id, d.lengthOverallM / 138.3f,
-                new Vector3(-1f, fixtures.WheelhouseFloor + 1.7f, fixtures.WheelhouseFront - 1f),
-                new Vector3(-1f, fixtures.WheelhouseFloor + 1.1f, fixtures.WheelhouseFront + 80f),
+                new Vector3(-1f, eyeHeight, fixtures.WheelhouseFront + 0.35f),
+                new Vector3(-1f, eyeHeight - 0.3f, fixtures.WheelhouseFront + 80f),
                 new Vector3(sideX, fixtures.WheelhouseFloor + 1.3f, fixtures.WheelhouseFront - 1.1f), fixtures.WheelhouseFloor + 0.3f,
                 new Vector3(0f, fixtures.ForemastTop, fixtures.ForemastZ), fixtures.ForecastleTop,
                 new Vector3(0f, fixtures.AftMastTop, fixtures.AftMastZ), fixtures.WheelhouseRoof,

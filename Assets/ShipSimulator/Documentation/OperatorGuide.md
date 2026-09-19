@@ -25,7 +25,8 @@ the foils or the cushion take the weight. Once supported they draw much less wat
 stop a cargo ship can be crossed, and they answer the helm quickly.
 
 All five use the same controls. Generated vessels have exterior camera positions fitted to their
-model bounds; the navigator view sits in each vessel's wheelhouse. Luch has one engine: either
+model bounds; generated navigator views sit just outside the front glazing, since the models
+have no cabin interior. This eye follows the hull without positional lag. Luch has one engine: either
 Q/Z or E/X operates the same telegraph. The speed readout shows the nominal foil/cushion transition,
 and draft/under-keel clearance follows the physical hull and appendages. Radar prediction shortens
 its horizon at high speed to keep the straight-ahead path within 300 m.

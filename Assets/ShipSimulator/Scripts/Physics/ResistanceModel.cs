@@ -36,13 +36,19 @@ namespace ShipSimulator.Physics
             if (float.IsInfinity(depth) || speed < 1e-3f) return 0f;
             float blockage = 0.1242f * Mathf.Max(0f, midshipArea / (depth * depth) - 0.05f);
             float waveTerm = 1f - Mathf.Sqrt(Mathf.Clamp01((float)System.Math.Tanh(VesselParameters.Gravity * depth / (speed * speed))));
+            // The regression is subcritical. Past the critical depth Froude number the wave system falls
+            // behind the craft and its drag drops again, so the term is faded out instead of extrapolated.
+            float depthFroude = speed / Mathf.Sqrt(VesselParameters.Gravity * depth);
+            waveTerm *= 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(1f, 1.6f, depthFroude));
             return Mathf.Clamp(blockage + waveTerm, 0f, MaxShallowSpeedLoss);
         }
 
         public static float ResistanceN(VesselParameters p, float speed, float depth)
         {
-            float loss = LackenbySpeedLoss(p.MidshipArea, depth, speed);
-            return DeepWaterResistanceN(p, speed / (1f - loss)) * p.Data.calibration.resistanceMultiplier;
+            float loss = LackenbySpeedLoss(p.MidshipArea, depth, speed) *
+                SupportModel.Immersion(p.Data.support, speed);
+            return DeepWaterResistanceN(p, speed / (1f - loss)) * p.Data.calibration.resistanceMultiplier *
+                SupportModel.ResistanceFactor(p.Data.support, speed);
         }
     }
 }

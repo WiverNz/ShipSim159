@@ -9,6 +9,8 @@ namespace ShipSimulator.Tests
         [TestCase(VesselFixtures.Kvlcc2File)]
         [TestCase(VesselFixtures.VolgoBaltFile)]
         [TestCase(VesselFixtures.VolgoneftFile)]
+        [TestCase(VesselFixtures.MeteorFile)]
+        [TestCase(VesselFixtures.LuchFile)]
         public void VesselJson_IsValid(string file)
         {
             Assert.That(VesselDataValidator.TryValidate(VesselFixtures.Load(file), out string error), Is.True, error);
@@ -30,6 +32,8 @@ namespace ShipSimulator.Tests
         [TestCase(VesselFixtures.VolgoDonFile)]
         [TestCase(VesselFixtures.VolgoBaltFile)]
         [TestCase(VesselFixtures.VolgoneftFile)]
+        [TestCase(VesselFixtures.MeteorFile)]
+        [TestCase(VesselFixtures.LuchFile)]
         public void ProjectVessel_LinearCoefficientsTraceToClarkeAndSoding(string file)
         {
             VesselData data = VesselFixtures.Load(file);

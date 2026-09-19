@@ -195,8 +195,16 @@ namespace ShipSimulator.Physics
             float heel = parameters.Mass * diagnostics.GravityCentreAccelerationY * turningLever - diagnostics.WindY * windLever;
             body.AddTorque(forward * heel, ForceMode.Force);
 
+            // Cushion or foil lift, which floats the hull higher until hydrostatics balance the rest.
+            if (diagnostics.SupportLiftN > 0f)
+                body.AddForceAtPosition(Vector3.up * diagnostics.SupportLiftN,
+                    transform.TransformPoint(0f, parameters.KeelLocalY, data.support.supportLongitudinalPositionM),
+                    ForceMode.Force);
+
             hydrostatics.Apply(body, transform, waterLevel, diagnostics.BowSquatM, diagnostics.SternSquatM);
             effectiveDraft = Mathf.Max(KeelDepth(0.5f * parameters.Lpp), KeelDepth(0f), KeelDepth(-0.5f * parameters.Lpp));
+            // Skegs and foils reach below the lifted hull, so they set the clearance that matters.
+            effectiveDraft = Mathf.Max(effectiveDraft, SupportModel.SupportedDraftM(data.support, input.SurgeSpeed));
         }
 
         public float SampleDepth(Vector3 worldPosition)

@@ -37,3 +37,19 @@ MonoBehaviour:
 
       OIL TANKER'
     prefab: {fileID: 7529108598937211877, guid: 892b5d6724dde9144a765df76fc47551, type: 3}
+  - id: meteor-342u
+    menuName: 'METEOR
+
+      342U'
+    vesselClass: 'RIVER PASSENGER
+
+      HYDROFOIL'
+    prefab: {fileID: 2526289022872108393, guid: c22ad93fdb363dd4bb97efeac8adec85, type: 3}
+  - id: luch-14352
+    menuName: 'LUCH
+
+      14352'
+    vesselClass: 'RIVER PASSENGER
+
+      AIR CUSHION'
+    prefab: {fileID: 3102707268182294962, guid: 04b148e309da5dd40a41742b2b9eb398, type: 3}

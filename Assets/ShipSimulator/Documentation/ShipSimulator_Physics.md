@@ -7,9 +7,10 @@ calibrated against 507B trials or validated for maritime training.
 
 ## Vessels
 
-The model is the same for every vessel; only the JSON specification changes. Three playable vessels
-are defined: Volgo-Don 507B, Volgo-Balt 2-95A/R and Volgoneft 1577, plus the KVLCC2 benchmark used to
-check the model. For each vessel the published particulars (dimensions, displacement, deadweight,
+The model is the same for every vessel; only the JSON specification changes. Five playable vessels
+are defined: the cargo ships Volgo-Don 507B, Volgo-Balt 2-95A/R and Volgoneft 1577, and the fast
+passenger craft Meteor 342U (hydrofoil) and Luch 14352 (skeg air cushion), plus the KVLCC2 benchmark
+used to check the model. For each vessel the published particulars (dimensions, displacement, deadweight,
 engine power, service speed) are taken from its sources file. Linear hull derivatives and added masses
 come from Clarke et al. and Söding for its own length, beam, draft and block coefficient. The residual
 resistance coefficient and the rated propeller speed are then calibrated together so that, at the
@@ -33,6 +34,7 @@ run them without a scene:
 | `PropellerModel` | Open-water K_T and K_Q, ahead and astern, wake fraction and thrust deduction |
 | `RudderModel` | MMG rudder in the propeller slipstream, Fujii lift slope, stall |
 | `BowThrusterModel` | Tunnel bow thruster: actuator disc thrust, speed and submergence losses |
+| `SupportModel` | Air cushion or hydrofoil lift: weight fraction, drag hump, supported draft |
 | `WindLoadModel` | Blendermann (1994) wind load coefficients |
 | `RestrictedWaterModel` | Depth factors, ICORELS squat with blockage, estimated bank suction |
 | `HydrostaticsModel` | Station prism buoyancy, heave and roll damping, squat as a lowered water surface |
@@ -112,6 +114,28 @@ the yaw moment `N = x_T Y` to the manoeuvring solve.
   estimates of the trend reported for tunnel thrusters, not measured data.
 - Thrust fades to zero as the tunnel axis rises toward the waterline, so a lightship 507B, whose
   draft is below the estimated axis height, gets no thrust.
+
+## Fast craft: cushion and hydrofoil support
+
+Vessels with a `support` section stop floating on their hull as they gather way. One speed-dependent
+fraction, zero below the takeoff speed and full at the support speed, says how much of the weight the
+air cushion or the foils carry. That fraction:
+
+- lifts the hull with a vertical force at the support position, so draft, trim and freeboard follow
+  from the same station hydrostatics as for any other vessel;
+- weakens everything the immersed hull does, scaling hull forces, squat and bank suction;
+- reshapes resistance: a hump through the takeoff range, then a fraction of the displacement drag
+  once supported;
+- reports the foils or skegs as the deepest point, because they reach below the lifted hull.
+
+Rudders and propellers stay immersed and keep working, which is how both craft steer. Lift-fan power
+is taken off the delivered power before the propeller. The curve shape, the takeoff speeds and the
+supported drag factors are estimates of published trends, not measured data for these craft; foil
+lift distribution, banked turns and cushion pitch stability are not modelled.
+
+Shallow water: the Lackenby speed loss is a subcritical regression, so it is faded out above the
+critical depth Froude number rather than extrapolated. Without that, a hydrofoil at 65 km/h in 4.6 m
+of water was wrongly held below takeoff speed.
 
 ## Wind
 

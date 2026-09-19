@@ -46,6 +46,8 @@ namespace ShipSimulator.Editor
             GameObject volgoDon = AssetDatabase.LoadAssetAtPath<GameObject>(VolgoDonPrefabPath);
             GameObject volgoBalt = ProceduralVesselBuilder.Build(ProceduralVesselBuilder.VolgoBalt);
             GameObject volgoneft = ProceduralVesselBuilder.Build(ProceduralVesselBuilder.Volgoneft);
+            GameObject meteor = ProceduralVesselBuilder.Build(ProceduralVesselBuilder.Meteor);
+            GameObject luch = ProceduralVesselBuilder.Build(ProceduralVesselBuilder.Luch);
 
             var catalogue = AssetDatabase.LoadAssetAtPath<VesselCatalogue>(CataloguePath);
             if (catalogue == null)
@@ -61,7 +63,9 @@ namespace ShipSimulator.Editor
                     vesselClass = "RIVER CLASS\nCARGO VESSEL", prefab = volgoDon
                 },
                 Entry(ProceduralVesselBuilder.VolgoBalt, volgoBalt),
-                Entry(ProceduralVesselBuilder.Volgoneft, volgoneft)
+                Entry(ProceduralVesselBuilder.Volgoneft, volgoneft),
+                Entry(ProceduralVesselBuilder.Meteor, meteor),
+                Entry(ProceduralVesselBuilder.Luch, luch)
             });
             EditorUtility.SetDirty(catalogue);
             AssetDatabase.SaveAssets();
@@ -126,6 +130,10 @@ namespace ShipSimulator.Editor
                     Shoot(camera, new Vector3(-0.6f, 0.2f, -0.7f) * length, new Vector3(0f, 3f, -0.1f * length), $"{entry.id}-stern-quarter");
                     Shoot(camera, new Vector3(1.05f * length, 4f, 0f), new Vector3(0f, 3f, 0f), $"{entry.id}-side");
                     Shoot(camera, new Vector3(0.18f * length, 0.9f * length, -0.05f * length), Vector3.zero, $"{entry.id}-top");
+                    // Without the water plane, so foils, skegs, propellers and rudders can be checked.
+                    water.SetActive(false);
+                    Shoot(camera, new Vector3(0.5f, 0.12f, 0.6f) * length, new Vector3(0f, -0.3f, 0f), $"{entry.id}-underwater");
+                    water.SetActive(true);
                     Object.DestroyImmediate(vessel);
                 }
             }

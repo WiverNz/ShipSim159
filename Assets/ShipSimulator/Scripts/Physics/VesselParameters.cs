@@ -100,8 +100,10 @@ namespace ShipSimulator.Physics
                 Loa * rise * rise * 0.5f) / WindLateralArea;
 
             RatedRps = data.engine.ratedPropellerRpm / 60f;
+            // Lift fans take their share before the propellers on a cushion craft.
+            float liftShare = data.support != null ? Mathf.Clamp01(data.support.liftPowerFraction) : 0f;
             DeliveredPowerPerShaftW = data.engine.powerPerEngineW * data.engine.gearEfficiency *
-                data.engine.shaftEfficiency;
+                data.engine.shaftEfficiency * (1f - liftShare);
         }
 
         public static VesselParameters Create(VesselData data, float loadFraction)

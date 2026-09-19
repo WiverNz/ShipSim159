@@ -1,0 +1,180 @@
+{
+  "identity": {
+    "displayName": "Meteor Project 342U",
+    "project": "342U",
+    "vesselType": "Twin-screw river passenger hydrofoil"
+  },
+  "dimensions": {
+    "lengthOverallM": 34.6,
+    "lengthBetweenPerpendicularsM": 33.0,
+    "beamOverallM": 9.5,
+    "beamMouldedM": 5.2,
+    "depthMouldedM": 2.4,
+    "loadedDraftM": 1.15
+  },
+  "massProperties": {
+    "loadedMassKg": 53400.0,
+    "deadweightKg": 17000.0,
+    "lightshipMassKg": 36400.0,
+    "loadFraction": 1.0,
+    "loadingCondition": "full passenger load",
+    "centerOfMassLocalM": { "x": 0.0, "y": 0.45, "z": -0.5 },
+    "rollGyrationRadiusM": 1.87,
+    "pitchGyrationRadiusM": 8.25,
+    "yawGyrationRadiusM": 8.25,
+    "estimated": true
+  },
+  "hydrostatics": {
+    "waterDensityKgM3": 1000.0,
+    "waterlineLocalY": 0.0,
+    "blockCoefficient": 0.2706,
+    "midshipCoefficient": 0.5,
+    "waterplaneCoefficient": 0.72,
+    "longitudinalCentreOfBuoyancyM": -0.5,
+    "stationCount": 20,
+    "stripsAcross": 4,
+    "heaveDampingRatio": 0.35,
+    "heaveAddedMassFraction": 0.8,
+    "rollDampingRatio": 0.12,
+    "estimated": true
+  },
+  "resistance": {
+    "kinematicViscosityM2PerS": 0.00000114,
+    "wettedSurfaceM2": 0.0,
+    "formFactor": 1.20,
+    "correlationAllowance": 0.0004,
+    "residualResistanceCoefficient": 0.002959,
+    "estimated": true
+  },
+  "hull": {
+    "surgeAddedMassPrime": 0.002998,
+    "swayAddedMassPrime": 0.11705,
+    "yawAddedInertiaPrime": 0.005708,
+    "xVV": -0.040,
+    "xVR": 0.002,
+    "xRR": 0.011,
+    "xVVVV": 0.771,
+    "yV": -0.16306,
+    "yR": 0.05639,
+    "yVVV": -1.607,
+    "yVVR": 0.379,
+    "yVRR": -0.391,
+    "yRRR": 0.008,
+    "nV": -0.06390,
+    "nR": -0.03702,
+    "nVVV": -0.030,
+    "nVVR": -0.294,
+    "nVRR": 0.055,
+    "nRRR": -0.013,
+    "maxYawRatePrime": 1.2,
+    "lowSpeedBlendStartMps": 0.5,
+    "lowSpeedBlendEndMps": 2.0,
+    "crossFlowStations": 12,
+    "estimated": true,
+    "derivation": "Linear derivatives and added masses: Clarke, Gedling and Hine (1983) and Soding at the hull draft, converted to MMG primes. Clarke was fitted to merchant hulls, so these are rough for a slender hydrofoil hull. Nonlinear terms: KVLCC2 set of Yasukawa and Yoshimura (2015)."
+  },
+  "engine": {
+    "engineCount": 2,
+    "engineType": "M-400 diesel, 1000 hp at 1700 rpm",
+    "powerPerEngineW": 736000.0,
+    "gearEfficiency": 0.95,
+    "shaftEfficiency": 0.98,
+    "ratedPropellerRpm": 1924.5,
+    "shaftInertiaKgM2": 40.0,
+    "governorBandFraction": 0.01,
+    "rpmRampSecondsFullRange": 8.0,
+    "reversalRpmFraction": 0.25,
+    "reversalDelaySeconds": 4.0,
+    "reversalBrakeTorqueFraction": 0.5,
+    "estimatedDynamics": true
+  },
+  "propeller": {
+    "count": 2,
+    "diameterM": 0.71,
+    "longitudinalPositionsM": [-13.5, -13.5],
+    "lateralPositionsM": [-1.6, 1.6],
+    "aheadThrustCoefficients": [0.33, -0.25, -0.12],
+    "aheadTorqueCoefficients": [0.042, -0.022, -0.012],
+    "asternThrustCoefficients": [0.23, -0.20, -0.10],
+    "asternTorqueCoefficients": [0.036, -0.018, -0.010],
+    "wakeFraction": 0.05,
+    "thrustDeduction": 0.06,
+    "wakeDriftC1": 2.0,
+    "wakeDriftC2": 1.3,
+    "estimated": true
+  },
+  "rudder": {
+    "count": 2,
+    "maxAngleDeg": 35.0,
+    "rateDegPerSecond": 6.0,
+    "areaPerRudderM2": 0.6,
+    "spanM": 0.9,
+    "longitudinalPositionM": -15.2,
+    "lateralPositionsM": [-1.6, 1.6],
+    "normalForceSlope": 0.0,
+    "stallAngleDeg": 32.0,
+    "postStallNormalCoefficient": 1.1,
+    "steeringResistanceDeduction": 0.2,
+    "hullInteractionFactor": 0.2,
+    "hullInteractionPositionPrime": -0.45,
+    "wakeRatio": 1.0,
+    "slipstreamFactor": 0.5,
+    "flowStraightening": 0.4,
+    "flowStraighteningLeverPrime": -0.8,
+    "estimated": true
+  },
+  "bowThruster": {
+    "fitted": false
+  },
+  "support": {
+    "mode": "hydrofoil",
+    "takeoffSpeedMps": 8.0,
+    "fullSupportSpeedMps": 13.0,
+    "supportedWeightFraction": 0.93,
+    "supportedDraftM": 1.2,
+    "supportedResistanceFactor": 0.35,
+    "humpResistanceFactor": 1.6,
+    "supportLongitudinalPositionM": 2.0,
+    "liftPowerFraction": 0.0,
+    "estimated": true
+  },
+  "windage": {
+    "airDensityKgM3": 1.225,
+    "frontalAreaM2": 22.0,
+    "lateralAreaM2": 120.0,
+    "lateralCentroidLongitudinalM": 0.0,
+    "lateralCentroidHeightM": 1.8,
+    "transverseDragCoefficient": 0.85,
+    "longitudinalDragBow": 0.6,
+    "longitudinalDragStern": 0.5,
+    "crossForceParameter": 0.40,
+    "estimated": true
+  },
+  "restrictedWater": {
+    "shallowWaterCorrections": true,
+    "squatCoefficient": 0.0,
+    "bankSamplingWidthBeams": 4.0,
+    "bankSuctionCoefficient": 0.5,
+    "bankMomentLeverPrime": -0.25,
+    "estimated": true
+  },
+  "controlLimits": {
+    "maxLoadedSpeedMps": 18.06,
+    "throttleCommandRatePerSecond": 0.3,
+    "rudderCommandRatePerSecond": 0.5
+  },
+  "calibration": {
+    "thrustMultiplier": 1.0,
+    "resistanceMultiplier": 1.0,
+    "rudderMultiplier": 1.0,
+    "trainingValidated": false
+  },
+  "sourceReferences": [
+    "https://ru.wikipedia.org/wiki/Метеор_(теплоход)",
+    "https://www.katera-lodki.ru/sudno-pr342e/",
+    "https://transportpedia.org/vehicle/meteor",
+    "https://marinetec.com/en/fleet/meteor-hydrofoil-boat-project-342e/",
+    "https://link.springer.com/article/10.1007/s00773-014-0293-y",
+    "https://github.com/cybergalactic/MSS"
+  ]
+}

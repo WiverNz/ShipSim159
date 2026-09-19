@@ -6,9 +6,9 @@
 # ShipSim159
 
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator. It is
-built to carry several ship models, chosen in the start menu before a passage.
-Three vessels are playable: a Project 507B Volgo-Don cargo ship, a Project
-2-95A/R Volgo-Balt river-sea cargo ship and a Project 1577 Volgoneft tanker.
+built to carry several ship models, chosen in the start menu before a passage:
+three cargo vessels (Volgo-Don 507B, Volgo-Balt 2-95A/R, Volgoneft 1577) and two
+fast passenger craft (Meteor 342U hydrofoil, Luch 14352 air cushion).
 
 The project explores large-vessel handling in a constrained river fairway,
 including delayed engine and rudder response, current-relative motion,
@@ -31,6 +31,8 @@ instrumentation.
   engines, shafts and propellers, MMG rudders in the propeller slipstream, optional bow
   thruster, Blendermann wind loads, shallow-water corrections, squat and bank suction.
 - Station buoyancy with loading-dependent draft, trim and heel; grounding with bottom friction.
+- Fast craft support model: an air cushion or hydrofoils unload the hull as speed builds, so draft,
+  drag and hull forces change between hullborne and foilborne running.
 - Virtual sea trials (turning circle, zig-zag, crash stop) against the IMO envelope.
 - Ambient and trigger-based river currents.
 - Curved river fairway with estimated bathymetry and under-keel clearance.
@@ -57,6 +59,8 @@ instrumentation.
 | Volgo-Don Project 507B, 138.3 m twin-screw river cargo ship | Imported detailed mesh | Playable |
 | Volgo-Balt Project 2-95A/R, 113.9 m twin-screw river-sea cargo ship | Generated from dimensions | Playable |
 | Volgoneft Project 1577, 132.6 m twin-screw river-sea oil tanker | Generated from dimensions | Playable |
+| Meteor Project 342U, 34.6 m passenger hydrofoil | Generated from dimensions | Playable |
+| Luch Project 14352, 23.7 m skeg air-cushion passenger craft | Generated from dimensions | Playable |
 | KVLCC2 MMG benchmark | none | Data only, used by tests and virtual sea trials |
 
 Choose the vessel under **New voyage** in the start menu, then the passage. Every vessel uses
@@ -250,6 +254,8 @@ for implementation details.
 - [Project 507B sources and parameter confidence](Assets/ShipSimulator/Documentation/VolgoDon507B_Sources.md)
 - [Volgo-Balt 2-95A/R sources](Assets/ShipSimulator/Documentation/VolgoBalt295AR_Sources.md)
 - [Volgoneft 1577 sources](Assets/ShipSimulator/Documentation/Volgoneft1577_Sources.md)
+- [Meteor 342U sources](Assets/ShipSimulator/Documentation/Meteor342U_Sources.md)
+- [Luch 14352 sources](Assets/ShipSimulator/Documentation/Luch14352_Sources.md)
 - [Engineering roadmap](Assets/ShipSimulator/Documentation/NextSteps.md)
 - [Contributor guidelines](AGENTS.md)
 

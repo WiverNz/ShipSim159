@@ -31,7 +31,8 @@ namespace ShipSimulator.Tests
             yield return null;
         }
 
-        private static readonly string[] VesselFiles = { "VolgoDon507B.json", "VolgoBalt295AR.json", "Volgoneft1577.json" };
+        private static readonly string[] VesselFiles =
+            { "VolgoDon507B.json", "VolgoBalt295AR.json", "Volgoneft1577.json", "Meteor342U.json", "Luch14352.json" };
 
         [UnityTest]
         public IEnumerator LoadedVessel_FloatsLevelAtItsDesignDraft([ValueSource(nameof(VesselFiles))] string file)

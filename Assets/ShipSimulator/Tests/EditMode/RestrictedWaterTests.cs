@@ -60,6 +60,18 @@ namespace ShipSimulator.Tests
         }
 
         [Test]
+        public void LackenbySpeedLoss_FadesAboveTheCriticalDepthFroudeNumber()
+        {
+            // A fast craft at 18 m/s in 4.6 m of water runs at depth Froude 2.7, far outside the
+            // regression, where extrapolating it wrongly stopped hydrofoils from taking off.
+            float critical = ResistanceModel.LackenbySpeedLoss(6f, 4.6f, 0.9f * Mathf.Sqrt(9.81f * 4.6f));
+            float supercritical = ResistanceModel.LackenbySpeedLoss(6f, 4.6f, 18f);
+
+            Assert.That(critical, Is.GreaterThan(0f));
+            Assert.That(supercritical, Is.LessThan(0.05f));
+        }
+
+        [Test]
         public void BankOnStarboard_PullsTheShipTowardItAndTurnsTheBowAway()
         {
             VesselParameters p = VesselFixtures.VolgoDon();

@@ -1,0 +1,180 @@
+{
+  "identity": {
+    "displayName": "Luch Project 14352",
+    "project": "14352",
+    "vesselType": "Skeg air-cushion river passenger vessel"
+  },
+  "dimensions": {
+    "lengthOverallM": 23.72,
+    "lengthBetweenPerpendicularsM": 22.5,
+    "beamOverallM": 4.53,
+    "beamMouldedM": 4.4,
+    "depthMouldedM": 1.9,
+    "loadedDraftM": 0.66
+  },
+  "massProperties": {
+    "loadedMassKg": 23000.0,
+    "deadweightKg": 5500.0,
+    "lightshipMassKg": 17500.0,
+    "loadFraction": 1.0,
+    "loadingCondition": "full passenger load",
+    "centerOfMassLocalM": { "x": 0.0, "y": 0.44, "z": -0.3 },
+    "rollGyrationRadiusM": 1.6,
+    "pitchGyrationRadiusM": 5.6,
+    "yawGyrationRadiusM": 5.6,
+    "estimated": true
+  },
+  "hydrostatics": {
+    "waterDensityKgM3": 1000.0,
+    "waterlineLocalY": 0.0,
+    "blockCoefficient": 0.352,
+    "midshipCoefficient": 0.45,
+    "waterplaneCoefficient": 0.75,
+    "longitudinalCentreOfBuoyancyM": -0.3,
+    "stationCount": 20,
+    "stripsAcross": 4,
+    "heaveDampingRatio": 0.35,
+    "heaveAddedMassFraction": 0.8,
+    "rollDampingRatio": 0.12,
+    "estimated": true
+  },
+  "resistance": {
+    "kinematicViscosityM2PerS": 0.00000114,
+    "wettedSurfaceM2": 0.0,
+    "formFactor": 1.25,
+    "correlationAllowance": 0.0004,
+    "residualResistanceCoefficient": 0.003546,
+    "estimated": true
+  },
+  "hull": {
+    "surgeAddedMassPrime": 0.005938,
+    "swayAddedMassPrime": 0.10878,
+    "yawAddedInertiaPrime": 0.005409,
+    "xVV": -0.040,
+    "xVR": 0.002,
+    "xRR": 0.011,
+    "xVVVV": 0.771,
+    "yV": -0.17866,
+    "yR": 0.05558,
+    "yVVV": -1.607,
+    "yVVR": 0.379,
+    "yVRR": -0.391,
+    "yRRR": 0.008,
+    "nV": -0.05256,
+    "nR": -0.03691,
+    "nVVV": -0.030,
+    "nVVR": -0.294,
+    "nVRR": 0.055,
+    "nRRR": -0.013,
+    "maxYawRatePrime": 1.2,
+    "lowSpeedBlendStartMps": 0.4,
+    "lowSpeedBlendEndMps": 1.6,
+    "crossFlowStations": 12,
+    "estimated": true,
+    "derivation": "Linear derivatives and added masses: Clarke, Gedling and Hine (1983) and Soding at the displacement draft, converted to MMG primes. Clarke was fitted to merchant hulls, so these are rough for a skeg craft. Nonlinear terms: KVLCC2 set of Yasukawa and Yoshimura (2015)."
+  },
+  "engine": {
+    "engineCount": 1,
+    "engineType": "12ChN15/18 (3KD12N-520)",
+    "powerPerEngineW": 382000.0,
+    "gearEfficiency": 0.95,
+    "shaftEfficiency": 0.98,
+    "ratedPropellerRpm": 1460.3,
+    "shaftInertiaKgM2": 25.0,
+    "governorBandFraction": 0.01,
+    "rpmRampSecondsFullRange": 8.0,
+    "reversalRpmFraction": 0.25,
+    "reversalDelaySeconds": 4.0,
+    "reversalBrakeTorqueFraction": 0.5,
+    "estimatedDynamics": true
+  },
+  "propeller": {
+    "count": 1,
+    "diameterM": 0.65,
+    "longitudinalPositionsM": [-9.5],
+    "lateralPositionsM": [0.0],
+    "aheadThrustCoefficients": [0.33, -0.25, -0.12],
+    "aheadTorqueCoefficients": [0.042, -0.022, -0.012],
+    "asternThrustCoefficients": [0.23, -0.20, -0.10],
+    "asternTorqueCoefficients": [0.036, -0.018, -0.010],
+    "wakeFraction": 0.06,
+    "thrustDeduction": 0.08,
+    "wakeDriftC1": 2.0,
+    "wakeDriftC2": 1.3,
+    "estimated": true
+  },
+  "rudder": {
+    "count": 2,
+    "maxAngleDeg": 35.0,
+    "rateDegPerSecond": 6.0,
+    "areaPerRudderM2": 0.45,
+    "spanM": 0.6,
+    "longitudinalPositionM": -10.4,
+    "lateralPositionsM": [-1.45, 1.45],
+    "normalForceSlope": 0.0,
+    "stallAngleDeg": 32.0,
+    "postStallNormalCoefficient": 1.1,
+    "steeringResistanceDeduction": 0.2,
+    "hullInteractionFactor": 0.2,
+    "hullInteractionPositionPrime": -0.45,
+    "wakeRatio": 1.0,
+    "slipstreamFactor": 0.5,
+    "flowStraightening": 0.4,
+    "flowStraighteningLeverPrime": -0.8,
+    "estimated": true
+  },
+  "bowThruster": {
+    "fitted": false
+  },
+  "support": {
+    "mode": "airCushion",
+    "takeoffSpeedMps": 3.0,
+    "fullSupportSpeedMps": 7.0,
+    "supportedWeightFraction": 0.35,
+    "supportedDraftM": 0.45,
+    "supportedResistanceFactor": 0.45,
+    "humpResistanceFactor": 1.5,
+    "supportLongitudinalPositionM": 0.0,
+    "liftPowerFraction": 0.35,
+    "estimated": true
+  },
+  "windage": {
+    "airDensityKgM3": 1.225,
+    "frontalAreaM2": 14.0,
+    "lateralAreaM2": 75.0,
+    "lateralCentroidLongitudinalM": 0.0,
+    "lateralCentroidHeightM": 1.5,
+    "transverseDragCoefficient": 0.85,
+    "longitudinalDragBow": 0.6,
+    "longitudinalDragStern": 0.5,
+    "crossForceParameter": 0.40,
+    "estimated": true
+  },
+  "restrictedWater": {
+    "shallowWaterCorrections": true,
+    "squatCoefficient": 0.0,
+    "bankSamplingWidthBeams": 4.0,
+    "bankSuctionCoefficient": 0.5,
+    "bankMomentLeverPrime": -0.25,
+    "estimated": true
+  },
+  "controlLimits": {
+    "maxLoadedSpeedMps": 11.11,
+    "throttleCommandRatePerSecond": 0.3,
+    "rudderCommandRatePerSecond": 0.5
+  },
+  "calibration": {
+    "thrustMultiplier": 1.0,
+    "resistanceMultiplier": 1.0,
+    "rudderMultiplier": 1.0,
+    "trainingValidated": false
+  },
+  "sourceReferences": [
+    "https://fleetphoto.ru/projects/84/",
+    "https://www.vympel.ru/projects/skeg-ships-and-hovercrafts/passazhirskoe-sudno-dlya-malykh-rek-tipa-luch/",
+    "https://cruiseinform.ru/catalog/04/projects/14351/",
+    "http://www.spkfleet.ru/luch.htm",
+    "https://link.springer.com/article/10.1007/s00773-014-0293-y",
+    "https://github.com/cybergalactic/MSS"
+  ]
+}

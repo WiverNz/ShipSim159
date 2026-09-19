@@ -19,11 +19,54 @@ namespace ShipSimulator.Tests
             new object[] { VesselFixtures.VolgoneftFile, 20f / 1.852f }
         };
 
+        // Published service speeds: Meteor 342U 65 km/h, Luch 14352 40 km/h.
+        private static readonly object[] FastCraftSpeeds =
+        {
+            new object[] { VesselFixtures.MeteorFile, 65f / 1.852f },
+            new object[] { VesselFixtures.LuchFile, 40f / 1.852f }
+        };
+
         [TestCaseSource(nameof(PublishedSpeeds))]
         public void FullAhead_DeepWater_ReachesPublishedLoadedSpeed(string file, float publishedKnots)
         {
             float speedKnots = ManoeuvringTrials.SteadySpeed(VesselFixtures.Parameters(file), 1f, Deep) / 0.514444f;
             Assert.That(speedKnots, Is.EqualTo(publishedKnots).Within(0.5f));
+        }
+
+        [TestCaseSource(nameof(FastCraftSpeeds))]
+        public void FastCraft_ReachPublishedSpeedOnCushionOrFoils(string file, float publishedKnots)
+        {
+            VesselParameters p = VesselFixtures.Parameters(file);
+            ManoeuvringSimulator ship = ManoeuvringTrials.Approach(p, 1f, Deep);
+
+            Assert.That(ship.SurgeSpeed / 0.514444f, Is.EqualTo(publishedKnots).Within(1f));
+            Assert.That(ship.Last.SupportFraction, Is.EqualTo(p.Data.support.supportedWeightFraction).Within(0.01f),
+                "At service speed the craft is fully supported.");
+            Assert.That(ship.Last.SupportLiftN, Is.GreaterThan(0.3f * p.Mass * VesselParameters.Gravity));
+        }
+
+        [TestCaseSource(nameof(FastCraftSpeeds))]
+        public void FastCraft_StayHullborneBelowTakeoffSpeed(string file, float publishedKnots)
+        {
+            VesselParameters p = VesselFixtures.Parameters(file);
+            ManoeuvringSimulator ship = ManoeuvringTrials.Approach(p, 0.32f, Deep);
+
+            Assert.That(ship.SurgeSpeed, Is.LessThan(p.Data.support.fullSupportSpeedMps));
+            Assert.That(ship.Last.SupportFraction, Is.LessThan(p.Data.support.supportedWeightFraction));
+            Assert.That(publishedKnots, Is.GreaterThan(ship.SurgeSpeed / 0.514444f));
+        }
+
+        [TestCase(VesselFixtures.MeteorFile)]
+        [TestCase(VesselFixtures.LuchFile)]
+        public void FastCraft_TurnAndStopWithinTheirOwnLengthScale(string file)
+        {
+            VesselParameters p = VesselFixtures.Parameters(file);
+            TurningCircleResult turn = ManoeuvringTrials.TurningCircle(p, 1f, Deep);
+            StoppingResult stop = ManoeuvringTrials.CrashStop(p, Deep);
+
+            Assert.That(turn.TacticalDiameterM, Is.GreaterThan(0.5f * p.Lpp).And.LessThan(30f * p.Lpp));
+            Assert.That(turn.SteadySpeedMps, Is.LessThan(turn.ApproachSpeedMps));
+            Assert.That(stop.TrackReachM, Is.GreaterThan(0f).And.LessThan(60f * p.Lpp));
         }
 
         [TestCase(VesselFixtures.VolgoDonFile)]

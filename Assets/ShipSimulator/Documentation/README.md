@@ -17,7 +17,8 @@ vessel. It is not a validated maritime training product.
 - [ShipDynamicsRealismApproach.md](ShipDynamicsRealismApproach.md): the research
   and roadmap behind the physics model, with implementation status.
 - [VolgoDon507B_Sources.md](VolgoDon507B_Sources.md), [VolgoBalt295AR_Sources.md](VolgoBalt295AR_Sources.md),
-  [Volgoneft1577_Sources.md](Volgoneft1577_Sources.md): published particulars,
+  [Volgoneft1577_Sources.md](Volgoneft1577_Sources.md), [Meteor342U_Sources.md](Meteor342U_Sources.md),
+  [Luch14352_Sources.md](Luch14352_Sources.md): published particulars,
   sources, confidence, and estimated parameters for each vessel.
 - [NextSteps.md](NextSteps.md): prioritized engineering and simulation work.
 - [Project context](../../../.codex/PROJECT_CONTEXT.md): implementation history,

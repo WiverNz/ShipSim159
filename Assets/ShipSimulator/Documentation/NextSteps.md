@@ -16,6 +16,11 @@
 2. Replace the wall-sided station prisms with hull lines when a lines plan is available.
 3. Replace the estimated bank suction model with a published formulation
    (for example Lataire et al.) and add four-quadrant propeller data.
+4. Deepen the fast craft support model: foil lift per foil with banked turns,
+   cushion pressure and pitch stability, lift-fan dynamics, and contact on the
+   foils and skegs rather than only the hull keel.
+5. Replace the generated vessel meshes with modelled or imported hulls, starting
+   with the Meteor's streamlined superstructure, and add textures and names.
 4. Implement ship-ship interaction, locks, docking mechanics, mooring lines,
    anchors, thrusters, damage, and scenario scoring.
 5. Add validated navigation signs, lights, rules, and instructor tools.

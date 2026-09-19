@@ -33,8 +33,9 @@ namespace ShipSimulator.Physics
 
             VesselHydrostatics h = data.hydrostatics;
             if (h == null || !Positive(h.waterDensityKgM3) || !Finite(h.waterlineLocalY) ||
-                !InRange(h.blockCoefficient, 0.3f, 1f) || !InRange(h.midshipCoefficient, 0.5f, 1f) ||
-                !InRange(h.waterplaneCoefficient, 0.67f, 1f) || h.waterplaneCoefficient < h.blockCoefficient ||
+                // Fast craft hulls are far finer than merchant hulls, so the lower bounds stay loose.
+                !InRange(h.blockCoefficient, 0.2f, 1f) || !InRange(h.midshipCoefficient, 0.35f, 1f) ||
+                !InRange(h.waterplaneCoefficient, 0.5f, 1f) || h.waterplaneCoefficient < h.blockCoefficient ||
                 !InRange(h.longitudinalCentreOfBuoyancyM, -0.1f * d.lengthBetweenPerpendicularsM, 0.1f * d.lengthBetweenPerpendicularsM) ||
                 h.stationCount < 4 || h.stripsAcross < 2 || !NonNegative(h.heaveDampingRatio) ||
                 !NonNegative(h.heaveAddedMassFraction) || !NonNegative(h.rollDampingRatio))
@@ -97,6 +98,18 @@ namespace ShipSimulator.Physics
                  !Positive(bt.rampSecondsToFull) || !Positive(bt.speedLossReferenceMps) ||
                  !InRange(bt.minimumSpeedEffectiveness, 0f, 1f)))
                 return Fail("Bow thruster configuration is invalid.", out error);
+
+            VesselSupport support = data.support;
+            if (support != null && support.supportedWeightFraction > 0f &&
+                (!NonNegative(support.takeoffSpeedMps) ||
+                 !(Finite(support.fullSupportSpeedMps) && support.fullSupportSpeedMps > support.takeoffSpeedMps) ||
+                 !InRange(support.supportedWeightFraction, 0f, 0.98f) ||
+                 !InRange(support.supportedDraftM, 0f, d.depthMouldedM) ||
+                 !InRange(support.supportedResistanceFactor, 0.05f, 1f) ||
+                 !InRange(support.humpResistanceFactor, 1f, 4f) ||
+                 !InRange(support.supportLongitudinalPositionM, -d.lengthOverallM, d.lengthOverallM) ||
+                 !InRange(support.liftPowerFraction, 0f, 0.6f)))
+                return Fail("Cushion or hydrofoil support configuration is invalid.", out error);
 
             VesselWindage w = data.windage;
             if (w == null || !Positive(w.airDensityKgM3) || !Positive(w.frontalAreaM2) || !Positive(w.lateralAreaM2) ||

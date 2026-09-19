@@ -36,6 +36,40 @@ Verification: before, after and sky-probe captures passed; `WaterWeatherCheck` p
 water fog detail contrast 0.0059 clear / 0.0001 fog. Remaining suite results are recorded below
 when completed.
 
+## Passenger Fast Craft: Meteor 342U and Luch 14352, 2026-09-19
+
+Two fast passenger craft are playable, which needed a support model rather than only new data.
+
+- **Meteor 342U** (`Meteor342U.json`): hydrofoil, over 400 of the family built 1961 to 1999.
+  Published: 34.6 m hull, 9.5 m over the foils, 2.35 m afloat and about 1.2 m foilborne, 36.4 t light
+  and 53.4 t full, 114 to 123 passengers, 2 x M-400 of 1000 hp at 1700 rpm, two five-bladed 0.71 m
+  propellers, 65 km/h service speed.
+- **Luch 14352** (`Luch14352.json`): skeg air cushion craft, over 80 of the type built 1983 to 1999.
+  Published: 23.72 m, 4.53 m beam, 0.66 m displacement draft, 0.45 m skeg depth, 57 (+15) passengers,
+  one 382 kW 12ChN15/18, 40 km/h. Displacement 23 t is estimated from project 14351's 21.2 t.
+- `SupportModel` plus the optional `support` JSON section: a speed-dependent fraction of the weight
+  moves to the cushion or foils. It applies lift at the support position (so draft follows from the
+  existing station hydrostatics), scales hull forces, squat and bank suction by the remaining
+  immersion, multiplies resistance by a hump-then-drop factor, takes lift-fan power off the delivered
+  power, and reports the foils or skegs as the deepest point for clearance.
+- Bug found by the trials: `ResistanceModel.LackenbySpeedLoss` kept growing past the critical depth
+  Froude number, where the regression does not apply. A hydrofoil at 65 km/h in 4.6 m of water (depth
+  Froude 2.7) was held below takeoff at 18.6 kn. The wave term now fades out above critical; the
+  craft reaches 34.3 kn there, and the displacement ships are unchanged. Regression test:
+  `LackenbySpeedLoss_FadesAboveTheCriticalDepthFroudeNumber`.
+- Validator: hull coefficient ranges relaxed for fine fast-craft hulls, plus support validation.
+- Models: `ProceduralVesselBuilder` gained V-sections, a passenger cabin with window bands and
+  tapered nose, a wheelhouse, hydrofoils with struts and end plates, skegs with the cushion tunnel,
+  and a bow boarding ramp. Previews now also render a dry view with the water plane hidden, which is
+  the only way to check foils, skegs, propellers and rudders.
+
+Calibrated to published speeds: Meteor 34.4 kn (65 km/h) deep and 34.3 kn in the Gorodets reach, Luch
+21.1 kn (39 km/h). Both turn and stop inside 6.2 ship lengths. Numbers for the estimated parameters
+are in `Meteor342U_Sources.md` and `Luch14352_Sources.md`.
+
+Verified: vessel catalogue build `VESSEL_CATALOGUE|PASS` (5 vessels); EditMode 169 passed; PlayMode
+23 passed; `SEA_TRIALS|PASS`; `MENU_SMOKE|PASS`.
+
 ## Volgo-Balt and Volgoneft Vessels, Vessel Selection, 2026-09-13
 
 Two more vessels are playable, chosen in the start menu (**New voyage**, then vessel, then passage).

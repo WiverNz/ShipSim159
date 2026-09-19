@@ -17,7 +17,7 @@ namespace ShipSimulator.Tests
             VesselCatalogue catalogue = VesselCatalogue.Load();
             Assert.That(catalogue, Is.Not.Null, "Resources/VesselCatalogue is missing.");
             Assert.That(catalogue.Find(VesselCatalogue.DefaultVesselId), Is.Not.Null);
-            Assert.That(catalogue.Entries.Count, Is.EqualTo(3));
+            Assert.That(catalogue.Entries.Count, Is.EqualTo(5));
 
             var ids = new HashSet<string>();
             foreach (VesselCatalogue.Entry entry in catalogue.Entries)
@@ -37,20 +37,28 @@ namespace ShipSimulator.Tests
 
         [TestCase("volgobalt-295ar")]
         [TestCase("volgoneft-1577")]
+        [TestCase("meteor-342u")]
+        [TestCase("luch-14352")]
         public void GeneratedModel_MatchesTheVesselDimensions(string id)
         {
             VesselCatalogue.Entry entry = VesselCatalogue.Load().Find(id);
-            VesselDimensions dimensions = entry.LoadData().dimensions;
+            VesselData data = entry.LoadData();
+            VesselDimensions dimensions = data.dimensions;
             Bounds bounds = entry.prefab.transform.Find("DetailedVisual").GetComponent<MeshFilter>().sharedMesh.bounds;
+            // Foils and skegs reach below the hull; displacement ships end at the keel.
+            float appendage = SupportModel.Lifts(data.support) ? data.support.supportedDraftM : 0f;
 
             Assert.That(bounds.size.z, Is.EqualTo(dimensions.lengthOverallM).Within(0.01f * dimensions.lengthOverallM));
             Assert.That(bounds.size.x, Is.InRange(dimensions.beamMouldedM - 0.05f, dimensions.beamOverallM + 0.05f));
-            Assert.That(bounds.min.y, Is.EqualTo(-dimensions.loadedDraftM).Within(0.05f), "The keel sits at the loaded draft.");
+            Assert.That(bounds.min.y, Is.InRange(-dimensions.loadedDraftM - appendage - 0.1f, -dimensions.loadedDraftM + 0.05f),
+                "The keel sits at the loaded draft, with foils or skegs below it.");
             Assert.That(bounds.center.z, Is.EqualTo(0f).Within(3f), "The model is centred on midship.");
         }
 
         [TestCase("volgobalt-295ar")]
         [TestCase("volgoneft-1577")]
+        [TestCase("meteor-342u")]
+        [TestCase("luch-14352")]
         public void GeneratedLights_AftMastheadAboveForwardAndSideLightsOnTheBeam(string id)
         {
             VesselCatalogue.Entry entry = VesselCatalogue.Load().Find(id);

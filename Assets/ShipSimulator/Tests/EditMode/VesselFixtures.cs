@@ -9,6 +9,8 @@ namespace ShipSimulator.Tests
         public const string VolgoDonFile = "VolgoDon507B.json";
         public const string VolgoBaltFile = "VolgoBalt295AR.json";
         public const string VolgoneftFile = "Volgoneft1577.json";
+        public const string MeteorFile = "Meteor342U.json";
+        public const string LuchFile = "Luch14352.json";
         public const string Kvlcc2File = "KVLCC2_MMG_Benchmark.json";
 
         public static VesselData Load(string file)

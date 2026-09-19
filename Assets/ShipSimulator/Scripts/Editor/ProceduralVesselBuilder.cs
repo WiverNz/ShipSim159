@@ -12,7 +12,9 @@ namespace ShipSimulator.Editor
     // liveries are estimated from photographs of the type, not taken from drawings.
     public static class ProceduralVesselBuilder
     {
-        public enum DeckKind { DryCargo, Tanker }
+        public enum DeckKind { DryCargo, Tanker, Passenger }
+
+        public enum SectionKind { FullForm, Vee }
 
         public sealed class Design
         {
@@ -21,7 +23,20 @@ namespace ShipSimulator.Editor
             public string MenuName;
             public string VesselClass;
             public DeckKind Kind;
+            public SectionKind Section;
+            // Vee hulls only: chine rise as a fraction of the side height.
+            public float Deadrise;
+            // Length of the bow entrance as a fraction of the vessel; 0 keeps the default full-form value.
+            public float EntranceFraction;
             public float BilgeRadius;
+            public float CabinStartFraction;
+            public float CabinEndFraction;
+            public float CabinWidthFraction;
+            public float CabinHeight;
+            public float WheelhouseHeight;
+            public bool Foils;
+            public bool Skegs;
+            public bool BowRamp;
             public float ForecastleFraction;
             public float ForecastleHeight;
             public float PoopFraction;
@@ -105,6 +120,64 @@ namespace ShipSimulator.Editor
             FunnelTop = new Color(0.07f, 0.07f, 0.08f)
         };
 
+        public static readonly Design Meteor = new Design
+        {
+            Id = "meteor-342u",
+            AssetName = "Meteor342U",
+            MenuName = "METEOR\n342U",
+            VesselClass = "RIVER PASSENGER\nHYDROFOIL",
+            Kind = DeckKind.Passenger,
+            Section = SectionKind.Vee,
+            Deadrise = 0.42f,
+            EntranceFraction = 0.3f,
+            BilgeRadius = 0.3f,
+            ForecastleFraction = 0f,
+            PoopFraction = 0f,
+            CabinStartFraction = 0.08f,
+            CabinEndFraction = 0.78f,
+            CabinWidthFraction = 0.88f,
+            CabinHeight = 2.3f,
+            WheelhouseHeight = 1.7f,
+            Foils = true,
+            Hull = new Color(0.82f, 0.84f, 0.85f),
+            Bottom = new Color(0.5f, 0.17f, 0.14f),
+            Deck = new Color(0.35f, 0.38f, 0.4f),
+            House = new Color(0.93f, 0.94f, 0.93f),
+            Hatch = new Color(0.11f, 0.29f, 0.5f),
+            Pipe = new Color(0.6f, 0.62f, 0.63f),
+            Funnel = new Color(0.93f, 0.94f, 0.93f),
+            FunnelTop = new Color(0.11f, 0.29f, 0.5f)
+        };
+
+        public static readonly Design Luch = new Design
+        {
+            Id = "luch-14352",
+            AssetName = "Luch14352",
+            MenuName = "LUCH\n14352",
+            VesselClass = "RIVER PASSENGER\nAIR CUSHION",
+            Kind = DeckKind.Passenger,
+            Section = SectionKind.FullForm,
+            EntranceFraction = 0.2f,
+            BilgeRadius = 0.25f,
+            ForecastleFraction = 0f,
+            PoopFraction = 0f,
+            CabinStartFraction = 0.12f,
+            CabinEndFraction = 0.74f,
+            CabinWidthFraction = 0.9f,
+            CabinHeight = 2f,
+            WheelhouseHeight = 1.6f,
+            Skegs = true,
+            BowRamp = true,
+            Hull = new Color(0.86f, 0.87f, 0.86f),
+            Bottom = new Color(0.45f, 0.16f, 0.13f),
+            Deck = new Color(0.36f, 0.4f, 0.42f),
+            House = new Color(0.94f, 0.94f, 0.92f),
+            Hatch = new Color(0.13f, 0.35f, 0.45f),
+            Pipe = new Color(0.6f, 0.62f, 0.63f),
+            Funnel = new Color(0.94f, 0.94f, 0.92f),
+            FunnelTop = new Color(0.13f, 0.35f, 0.45f)
+        };
+
         private enum Part { Bottom, Hull, Deck, House, Glass, Fittings, Hatch, Pipe, Funnel, FunnelTop }
 
         private static readonly int PartCount = Enum.GetValues(typeof(Part)).Length;
@@ -126,9 +199,18 @@ namespace ShipSimulator.Editor
             private readonly float entrance;
             private readonly float run;
             private readonly float bilgeRadius;
+            private readonly SectionKind section;
+            private readonly float deadrise;
 
-            public HullForm(VesselData data, float bilge)
+            public HullForm(VesselData data, float bilge) : this(data, bilge, SectionKind.FullForm, 0f, 0f)
             {
+            }
+
+            public HullForm(VesselData data, float bilge, SectionKind sectionKind, float deadriseFraction,
+                float entranceFraction)
+            {
+                section = sectionKind;
+                deadrise = deadriseFraction;
                 VesselDimensions d = data.dimensions;
                 Beam = d.beamMouldedM;
                 Depth = d.depthMouldedM;
@@ -136,7 +218,7 @@ namespace ShipSimulator.Editor
                 float overhang = d.lengthOverallM - d.lengthBetweenPerpendicularsM;
                 Stern = -0.5f * d.lengthBetweenPerpendicularsM - 0.55f * overhang;
                 Bow = 0.5f * d.lengthBetweenPerpendicularsM + 0.45f * overhang;
-                entrance = 0.17f * d.lengthOverallM;
+                entrance = (entranceFraction > 0f ? entranceFraction : 0.17f) * d.lengthOverallM;
                 run = 0.22f * d.lengthOverallM;
                 bilgeRadius = bilge;
             }
@@ -176,15 +258,32 @@ namespace ShipSimulator.Editor
             {
                 var points = new Vector2[RingCount];
                 float keel = Keel(z);
-                float radius = Mathf.Max(0f, Mathf.Min(bilgeRadius, Mathf.Min(HalfBreadth(z, keel) * 0.6f, (Depth - keel) * 0.35f)));
-                float wallStart = keel + radius;
-                float corner = Mathf.Max(0f, HalfBreadth(z, wallStart) - radius);
-                points[0] = new Vector2(0f, keel);
-                points[1] = new Vector2(corner, keel);
-                for (int a = 1; a <= ArcSegments; a++)
+                float wallStart;
+                if (section == SectionKind.Vee)
                 {
-                    float angle = a / (float)ArcSegments * 0.5f * Mathf.PI;
-                    points[1 + a] = new Vector2(corner + radius * Mathf.Sin(angle), wallStart - radius * Mathf.Cos(angle));
+                    // Straight deadrise from the centreline keel out to the chine.
+                    float rise = Mathf.Max(0.15f, deadrise * (Depth - keel));
+                    wallStart = keel + rise;
+                    float chine = HalfBreadth(z, wallStart);
+                    points[0] = new Vector2(0f, keel);
+                    for (int a = 1; a <= ArcSegments + 1; a++)
+                    {
+                        float t = a / (float)(ArcSegments + 1);
+                        points[a] = new Vector2(t * chine, keel + t * rise);
+                    }
+                }
+                else
+                {
+                    float radius = Mathf.Max(0f, Mathf.Min(bilgeRadius, Mathf.Min(HalfBreadth(z, keel) * 0.6f, (Depth - keel) * 0.35f)));
+                    wallStart = keel + radius;
+                    float corner = Mathf.Max(0f, HalfBreadth(z, wallStart) - radius);
+                    points[0] = new Vector2(0f, keel);
+                    points[1] = new Vector2(corner, keel);
+                    for (int a = 1; a <= ArcSegments; a++)
+                    {
+                        float angle = a / (float)ArcSegments * 0.5f * Mathf.PI;
+                        points[1 + a] = new Vector2(corner + radius * Mathf.Sin(angle), wallStart - radius * Mathf.Cos(angle));
+                    }
                 }
                 float paint = Mathf.Clamp(paintLine, wallStart, Depth);
                 int index = 1 + ArcSegments;
@@ -226,13 +325,23 @@ namespace ShipSimulator.Editor
             if (!VesselDataValidator.TryValidate(data, out string error))
                 throw new InvalidOperationException(design.AssetName + " data is invalid: " + error);
 
-            var form = new HullForm(data, design.BilgeRadius);
+            var form = new HullForm(data, design.BilgeRadius, design.Section, design.Deadrise, design.EntranceFraction);
             var mesh = new ProceduralMesh(PartCount);
             BuildHull(mesh, form);
             Fixtures fixtures = BuildDecks(mesh, form, design, data);
-            BuildSuperstructure(mesh, form, design, ref fixtures);
-            if (design.Kind == DeckKind.DryCargo) BuildHatches(mesh, form, design, fixtures);
-            else BuildTankerDeck(mesh, form, fixtures);
+            if (design.Kind == DeckKind.Passenger)
+            {
+                BuildPassengerDeck(mesh, form, design, ref fixtures);
+                if (design.Foils) BuildFoils(mesh, form, data);
+                if (design.Skegs) BuildSkegs(mesh, form);
+                if (design.BowRamp) BuildBowRamp(mesh, form);
+            }
+            else
+            {
+                BuildSuperstructure(mesh, form, design, ref fixtures);
+                if (design.Kind == DeckKind.DryCargo) BuildHatches(mesh, form, design, fixtures);
+                else BuildTankerDeck(mesh, form, fixtures);
+            }
             BuildAppendages(mesh, form, data);
 
             EnsureFolder(design.ModelFolder);
@@ -340,10 +449,21 @@ namespace ShipSimulator.Editor
                 PoopTop = form.DeckY + design.PoopHeight,
                 ForecastleTop = form.DeckY + design.ForecastleHeight
             };
-            RaisedDeck(mesh, form, form.Stern, fixtures.PoopFront, design.PoopHeight);
-            RaisedDeck(mesh, form, fixtures.ForecastleAft, form.Bow, design.ForecastleHeight);
-            Railing(mesh, form, fixtures.PoopFront, fixtures.ForecastleAft, form.DeckY, 0.35f);
-            Railing(mesh, form, form.Stern + 0.5f, fixtures.PoopFront, fixtures.PoopTop, 0.35f);
+            if (design.PoopFraction <= 0f)
+            {
+                fixtures.PoopFront = form.Stern;
+                fixtures.PoopTop = form.DeckY;
+            }
+            if (design.ForecastleFraction <= 0f)
+            {
+                fixtures.ForecastleAft = form.Bow;
+                fixtures.ForecastleTop = form.DeckY;
+            }
+            if (design.PoopFraction > 0f) RaisedDeck(mesh, form, form.Stern, fixtures.PoopFront, design.PoopHeight);
+            if (design.ForecastleFraction > 0f) RaisedDeck(mesh, form, fixtures.ForecastleAft, form.Bow, design.ForecastleHeight);
+            Railing(mesh, form, fixtures.PoopFront + 0.5f, fixtures.ForecastleAft - 0.5f, form.DeckY, 0.35f);
+            if (design.PoopFraction > 0f) Railing(mesh, form, form.Stern + 0.5f, fixtures.PoopFront, fixtures.PoopTop, 0.35f);
+            if (design.Kind == DeckKind.Passenger) return fixtures;
             // Forecastle bulwark with a windlass and anchors below it.
             BulwarkOnRaisedDeck(mesh, form, fixtures.ForecastleAft + 1f, form.Bow - 1.5f, fixtures.ForecastleTop);
             mesh.Box(P(Part.Fittings), new Vector3(0f, fixtures.ForecastleTop + 0.45f, form.Bow - 8f), new Vector3(3.2f, 0.9f, 1.4f));
@@ -360,6 +480,129 @@ namespace ShipSimulator.Editor
             mesh.Cylinder(P(Part.Fittings), new Vector3(-1.4f, fixtures.ForemastTop - 2.2f, fixtures.ForemastZ),
                 new Vector3(1.4f, fixtures.ForemastTop - 2.2f, fixtures.ForemastZ), 0.06f, 6);
             return fixtures;
+        }
+
+        // One long passenger cabin with window bands, a raised wheelhouse near its front and a short mast.
+        private static void BuildPassengerDeck(ProceduralMesh mesh, HullForm form, Design design, ref Fixtures fixtures)
+        {
+            float deckY = form.DeckY;
+            float aft = Mathf.Lerp(form.Stern, form.Bow, design.CabinStartFraction);
+            float fore = Mathf.Lerp(form.Stern, form.Bow, design.CabinEndFraction);
+            float width = form.Beam * design.CabinWidthFraction;
+            float height = design.CabinHeight;
+            float roof = deckY + height;
+            float middle = 0.5f * (aft + fore);
+
+            mesh.Box(P(Part.House), new Vector3(0f, deckY + 0.5f * height, middle), new Vector3(width, height, fore - aft));
+            mesh.Box(P(Part.House), new Vector3(0f, roof + 0.06f, middle), new Vector3(width + 0.25f, 0.12f, fore - aft + 0.25f));
+            // Window band with mullions, the length of the saloons.
+            for (int side = -1; side <= 1; side += 2)
+            {
+                mesh.Box(P(Part.Glass), new Vector3(side * (0.5f * width + 0.03f), deckY + 0.62f * height, middle),
+                    new Vector3(0.06f, 0.95f, fore - aft - 2.4f));
+                for (float z = aft + 1.6f; z < fore - 1.2f; z += 1.8f)
+                    mesh.Box(P(Part.Fittings), new Vector3(side * (0.5f * width + 0.05f), deckY + 0.62f * height, z),
+                        new Vector3(0.09f, 1.05f, 0.14f));
+            }
+            // Tapered front over the narrowing bow, ending in a raked windscreen.
+            const int noseSteps = 3;
+            float noseLength = Mathf.Min(4.5f, 0.25f * (fore - aft));
+            for (int s = 0; s < noseSteps; s++)
+            {
+                float z0 = fore + s * noseLength / noseSteps;
+                float z1 = fore + (s + 1) * noseLength / noseSteps;
+                float noseWidth = Mathf.Lerp(width, width * 0.45f, (s + 0.5f) / noseSteps);
+                float noseHeight = Mathf.Lerp(height, height * 0.72f, (s + 0.5f) / noseSteps);
+                mesh.Box(P(Part.House), new Vector3(0f, deckY + 0.5f * noseHeight, 0.5f * (z0 + z1)),
+                    new Vector3(noseWidth, noseHeight, z1 - z0));
+                mesh.Box(P(Part.Glass), new Vector3(0f, deckY + 0.62f * noseHeight, z1 + 0.02f),
+                    new Vector3(noseWidth - 0.5f, 0.85f, 0.05f));
+                for (int side = -1; side <= 1; side += 2)
+                    mesh.Box(P(Part.Glass), new Vector3(side * (0.5f * noseWidth + 0.03f), deckY + 0.62f * noseHeight,
+                        0.5f * (z0 + z1)), new Vector3(0.05f, 0.8f, (z1 - z0) * 0.8f));
+            }
+            // Blue band along the cabin side, the usual river passenger livery.
+            for (int side = -1; side <= 1; side += 2)
+                mesh.Box(P(Part.Hatch), new Vector3(side * (0.5f * width + 0.02f), deckY + 0.22f * height, middle),
+                    new Vector3(0.05f, 0.3f, fore - aft));
+
+            float wheelLength = Mathf.Min(3.4f, 0.25f * (fore - aft));
+            float wheelFore = fore - 1.2f;
+            float wheelWidth = width * 0.62f;
+            fixtures.WheelhouseFloor = roof;
+            fixtures.WheelhouseFront = wheelFore;
+            fixtures.WheelhouseRoof = roof + design.WheelhouseHeight;
+            fixtures.WingHalfWidth = 0.5f * wheelWidth;
+            mesh.Box(P(Part.House), new Vector3(0f, roof + 0.5f * design.WheelhouseHeight, wheelFore - 0.5f * wheelLength),
+                new Vector3(wheelWidth, design.WheelhouseHeight, wheelLength));
+            mesh.Box(P(Part.House), new Vector3(0f, fixtures.WheelhouseRoof + 0.06f, wheelFore - 0.5f * wheelLength),
+                new Vector3(wheelWidth + 0.3f, 0.12f, wheelLength + 0.3f));
+            mesh.Box(P(Part.Glass), new Vector3(0f, roof + 0.62f * design.WheelhouseHeight, wheelFore + 0.03f),
+                new Vector3(wheelWidth - 0.5f, 0.9f, 0.06f));
+            for (int side = -1; side <= 1; side += 2)
+                mesh.Box(P(Part.Glass), new Vector3(side * (0.5f * wheelWidth + 0.03f), roof + 0.62f * design.WheelhouseHeight,
+                    wheelFore - 0.5f * wheelLength), new Vector3(0.06f, 0.85f, wheelLength - 0.8f));
+
+            fixtures.AftMastZ = wheelFore - wheelLength - 0.6f;
+            fixtures.AftMastTop = fixtures.WheelhouseRoof + 2.6f;
+            // A craft this size carries one masthead light; the rig draws a second one lower and just
+            // forward of it on the same mast.
+            fixtures.ForemastZ = fixtures.AftMastZ + 0.5f;
+            fixtures.ForemastTop = fixtures.AftMastTop - 1.4f;
+            fixtures.ForecastleTop = fixtures.WheelhouseRoof;
+            mesh.Cylinder(P(Part.Fittings), new Vector3(0f, fixtures.WheelhouseRoof, fixtures.AftMastZ),
+                new Vector3(0f, fixtures.AftMastTop, fixtures.AftMastZ), 0.07f, 8);
+            // Engine casing on the aft deck, kept inside the narrowing transom.
+            float casingZ = aft - 1.2f;
+            float casingWidth = Mathf.Min(width * 0.5f, 2f * form.DeckHalfBreadth(casingZ) - 0.8f);
+            if (casingWidth > 0.4f)
+                mesh.Box(P(Part.Fittings), new Vector3(0f, deckY + 0.45f, casingZ), new Vector3(casingWidth, 0.9f, 1.6f));
+        }
+
+        private static void BuildFoils(ProceduralMesh mesh, HullForm form, VesselData data)
+        {
+            float span = data.dimensions.beamOverallM;
+            float depth = data.support != null ? data.support.supportedDraftM : 1.2f;
+            float length = form.Bow - form.Stern;
+            BuildFoil(mesh, form, form.Stern + 0.76f * length, span, 0.95f, depth);
+            BuildFoil(mesh, form, form.Stern + 0.16f * length, span * 0.68f, 0.8f, depth * 0.95f);
+        }
+
+        private static void BuildFoil(ProceduralMesh mesh, HullForm form, float z, float span, float chord, float depth)
+        {
+            float foilY = -depth + 0.09f;
+            mesh.Box(P(Part.Fittings), new Vector3(0f, foilY, z), new Vector3(span, 0.18f, chord));
+            for (int side = -1; side <= 1; side += 2)
+            {
+                mesh.Box(P(Part.Fittings), new Vector3(side * (0.5f * span - 0.05f), foilY + 0.35f, z), new Vector3(0.1f, 0.8f, chord));
+                float strutX = side * 0.19f * span;
+                float top = form.Keel(z) - form.Draft;
+                mesh.Box(P(Part.Fittings), new Vector3(strutX, 0.5f * (foilY + top), z),
+                    new Vector3(0.16f, Mathf.Max(0.4f, top - foilY), chord * 0.85f));
+            }
+        }
+
+        // Side hulls that stay in the water and hold the cushion between them.
+        private static void BuildSkegs(ProceduralMesh mesh, HullForm form)
+        {
+            float length = form.Bow - form.Stern;
+            float aft = form.Stern + 0.04f * length;
+            float fore = form.Stern + 0.82f * length;
+            float half = 0.5f * form.Beam;
+            for (int side = -1; side <= 1; side += 2)
+                mesh.Box(P(Part.Hull), new Vector3(side * (half - 0.38f), -form.Draft + 0.3f, 0.5f * (aft + fore)),
+                    new Vector3(0.72f, 0.95f, fore - aft));
+            // The cushion space between the skegs reads as a shadowed tunnel.
+            mesh.Box(P(Part.Fittings), new Vector3(0f, -form.Draft + 0.62f, 0.5f * (aft + fore)),
+                new Vector3(2f * (half - 0.78f), 0.3f, fore - aft));
+        }
+
+        private static void BuildBowRamp(ProceduralMesh mesh, HullForm form)
+        {
+            float z = form.Bow - 1.6f;
+            mesh.Box(P(Part.Fittings), new Vector3(0f, form.DeckY + 0.35f, z), new Vector3(1.9f, 0.14f, 3.2f),
+                Quaternion.Euler(18f, 0f, 0f));
+            mesh.Box(P(Part.Fittings), new Vector3(0f, form.DeckY + 0.9f, z - 1.8f), new Vector3(2.1f, 1.1f, 0.12f));
         }
 
         private static void RaisedDeck(ProceduralMesh mesh, HullForm form, float start, float end, float height)

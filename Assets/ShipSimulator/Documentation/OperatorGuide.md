@@ -16,6 +16,13 @@ vessel it was sailed in.
 | Volgo-Don 507B | 138.3 m | 5000 t | 2 x 662 kW, bow thruster | Longest and heaviest; the bow thruster helps at low speed |
 | Volgo-Balt 2-95A/R | 113.9 m | 3474 t | 2 x 515 kW | Shortest and deepest (3.86 m draft): the tightest turn in deep water, but the least water under the keel and by far the widest turn in the Gorodets reach |
 | Volgoneft 1577 | 132.6 m | 4803 t | 2 x 736 kW | Tanker with the most power and the highest simulated speed (10.7 kn); no bow thruster |
+| Meteor 342U | 34.6 m | 114 passengers | 2 x 736 kW | Hydrofoil: rises onto its foils above about 30 km/h and runs at 65 km/h; steer early, it covers ground three times faster than a cargo ship |
+| Luch 14352 | 23.7 m | 57 passengers | 1 x 382 kW | Air cushion between two skegs: lifts partly out of the water above about 11 km/h, draft drops from 0.66 m to 0.45 m, service speed 40 km/h |
+
+The two fast craft behave differently from the cargo ships. Below takeoff speed they push their
+hulls through the water and feel sluggish; through the takeoff range drag peaks, then falls away as
+the foils or the cushion take the weight. Once supported they draw much less water, so shoals that
+stop a cargo ship can be crossed, and they answer the helm quickly.
 
 All three use the same controls. Camera views scale with the vessel's length and the
 navigator view sits in each vessel's wheelhouse. Particulars are published values;

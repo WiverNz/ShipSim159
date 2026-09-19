@@ -30,9 +30,10 @@ navigation values as training-validated data. Label estimated parameters as esti
 ## Orientation
 
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator designed for several ship
-models, which the player chooses in the start menu. Three vessels are playable: Volgo-Don 507B,
-Volgo-Balt 2-95A/R and Volgoneft 1577. Treat each as one catalogue entry, not as the project's
-identity.
+models, which the player chooses in the start menu. Five vessels are playable: the cargo ships
+Volgo-Don 507B, Volgo-Balt 2-95A/R and Volgoneft 1577, and the fast passenger craft Meteor 342U
+(hydrofoil) and Luch 14352 (skeg air cushion). Treat each as one catalogue entry, not as the
+project's identity.
 
 Read these before changing the project, in the order they are usually needed:
 
@@ -42,8 +43,9 @@ Read these before changing the project, in the order they are usually needed:
   - `ProjectStatus.md`: what is implemented and verified, screenshots, limits and next work.
   - `OperatorGuide.md`: controls and how the scenario is meant to be flown.
   - `ShipSimulator_Physics.md`: the force model and its assumptions.
-  - `VolgoDon507B_Sources.md`, `VolgoBalt295AR_Sources.md`, `Volgoneft1577_Sources.md`: where each
-    vessel's parameters came from, and how confident they are. Every vessel needs its own file.
+  - `VolgoDon507B_Sources.md`, `VolgoBalt295AR_Sources.md`, `Volgoneft1577_Sources.md`,
+    `Meteor342U_Sources.md`, `Luch14352_Sources.md`: where each vessel's parameters came from, and
+    how confident they are. Every vessel needs its own file.
   - `GorodetsScenarioTechnicalPlan.md`, `NextSteps.md`: scenario plan and roadmap.
   - `GraphicsPhaseTwoPlan.md`: the next graphics work (water optics, height fog, flow map).
   - `GraphicsRealismApproach.md`, `ShipDynamicsRealismApproach.md`: research and proposed
@@ -239,8 +241,10 @@ Environment inputs:
 ### Data-driven vessel
 
 Vessel behavior comes from a JSON specification per ship in `Assets/ShipSimulator/Data/Vessels/`:
-`VolgoDon507B.json`, `VolgoBalt295AR.json` and `Volgoneft1577.json` for the playable vessels and
-`KVLCC2_MMG_Benchmark.json` for model checks. `VesselDataValidator` validates every required section
+`VolgoDon507B.json`, `VolgoBalt295AR.json`, `Volgoneft1577.json`, `Meteor342U.json` and
+`Luch14352.json` for the playable vessels and `KVLCC2_MMG_Benchmark.json` for model checks. The
+optional `support` section turns a vessel into a fast craft: `SupportModel` then unloads the hull
+with speed, which changes draft, resistance, hull forces, squat and reported under-keel clearance. `VesselDataValidator` validates every required section
 before physics runs; invalid data disables `ShipPhysicsController` and logs a specific error. When
 adding a JSON field, extend both the `VesselData` schema and `VesselDataValidator`, and make it
 optional or give every vessel file a value.

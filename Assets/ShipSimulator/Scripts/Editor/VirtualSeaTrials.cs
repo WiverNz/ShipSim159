@@ -63,6 +63,13 @@ namespace ShipSimulator.Editor
             Row(report, "Volgo-Balt 2-95A/R loaded, Gorodets reach", VesselParameters.Create(volgoBalt, 1f), 4.6f, false);
             withinEnvelope &= Row(report, "Volgoneft 1577 loaded, deep water", VesselParameters.Create(volgoneft, 1f), float.PositiveInfinity, true);
             Row(report, "Volgoneft 1577 loaded, Gorodets reach", VesselParameters.Create(volgoneft, 1f), 4.6f, false);
+            VesselData meteor = Load("Meteor342U.json");
+            VesselData luch = Load("Luch14352.json");
+            // Fast craft: the IMO envelope is written for displacement ships, so their rows are reported only.
+            Row(report, "Meteor 342U hydrofoil, deep water", VesselParameters.Create(meteor, 1f), float.PositiveInfinity, false);
+            Row(report, "Meteor 342U hydrofoil, Gorodets reach", VesselParameters.Create(meteor, 1f), 4.6f, false);
+            Row(report, "Luch 14352 air cushion, deep water", VesselParameters.Create(luch, 1f), float.PositiveInfinity, false);
+            Row(report, "Luch 14352 air cushion, Gorodets reach", VesselParameters.Create(luch, 1f), 4.6f, false);
             withinEnvelope &= Row(report, "KVLCC2 MMG benchmark, deep water", VesselParameters.Create(kvlcc2, 1f), float.PositiveInfinity, true);
 
             report.AppendLine();
@@ -75,7 +82,8 @@ namespace ShipSimulator.Editor
             report.AppendLine();
             report.AppendLine("IMO MSC.137(76) reference envelope (deep, unrestricted water, full load): advance <= 4.5 L,");
             report.AppendLine("tactical diameter <= 5 L, initial turning <= 2.5 L, 10/10 and 20/20 overshoot limits by L/V,");
-            report.AppendLine("crash stop track reach <= 15 L. The criteria do not apply to a river vessel in shallow water.");
+            report.AppendLine("crash stop track reach <= 15 L. The criteria do not apply to a river vessel in shallow water,");
+            report.AppendLine("nor to the hydrofoil and air cushion craft, which are reported without an envelope check.");
             report.AppendLine();
             report.AppendLine(withinEnvelope
                 ? "Result: deep-water loaded conditions are inside the IMO envelope."

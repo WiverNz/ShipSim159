@@ -52,6 +52,9 @@ namespace ShipSimulator.Physics
         public float TotalN;
         public float AdvanceSpeed;
         public float Blockage;
+        // Weight fraction carried by the cushion or foils, and the lift that produces it.
+        public float SupportFraction;
+        public float SupportLiftN;
         public float BowSquatM;
         public float SternSquatM;
         public DepthFactors Depth;
@@ -162,7 +165,15 @@ namespace ShipSimulator.Physics
                 output.PropellerN += -propeller.lateralPositionsM[i] * effective;
             }
 
-            output.Hull = hull.Evaluate(u, v, r, cachedFactors, input.StationSwayCurrent);
+            output.SupportFraction = SupportModel.Fraction(data.support, u);
+            output.SupportLiftN = output.SupportFraction * p.Mass * VesselParameters.Gravity;
+            float immersion = SupportModel.Immersion(data.support, u);
+
+            HullForces hullForces = hull.Evaluate(u, v, r, cachedFactors, input.StationSwayCurrent);
+            hullForces.X *= immersion;
+            hullForces.Y *= immersion;
+            hullForces.N *= immersion;
+            output.Hull = hullForces;
             output.ResistanceX = speed > 1e-6f ? -ResistanceModel.ResistanceN(p, speed, input.DepthM) * u / speed : 0f;
 
             for (int j = 0; j < RudderNormalForceN.Length; j++)
@@ -179,6 +190,8 @@ namespace ShipSimulator.Physics
             WindLoadModel.Evaluate(p, input.RelativeWind, out output.WindX, out output.WindY, out output.WindN);
             RestrictedWaterModel.BankForces(p, speed, input.DepthM, input.PortFlowAreaM2, input.StarboardFlowAreaM2,
                 out output.BankY, out output.BankN);
+            output.BankY *= immersion;
+            output.BankN *= immersion;
 
             if (BowThruster != null)
             {
@@ -204,6 +217,8 @@ namespace ShipSimulator.Physics
             output.Blockage = RestrictedWaterModel.Blockage(p, input.DepthM, input.PortFlowAreaM2, input.StarboardFlowAreaM2);
             RestrictedWaterModel.Squat(p.DisplacementVolume, lpp, p.BlockCoefficient, speed, input.DepthM,
                 output.Blockage, data.restrictedWater.squatCoefficient, out output.BowSquatM, out output.SternSquatM);
+            output.BowSquatM *= immersion;
+            output.SternSquatM *= immersion;
             return output;
         }
 

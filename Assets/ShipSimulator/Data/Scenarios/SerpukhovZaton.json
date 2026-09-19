@@ -28793,98 +28793,78 @@
  },
  "route": [
   {
-   "x": 374.5,
-   "z": -277.15,
-   "leftWidthM": 15.0,
-   "rightWidthM": 15.0,
-   "centerDepthM": 2.8,
+   "x": 470.0,
+   "z": 1406.0,
+   "leftWidthM": 30.0,
+   "rightWidthM": 30.0,
+   "centerDepthM": 3.0,
    "leftEdgeDepthM": 1.5,
    "rightEdgeDepthM": 1.5,
-   "speedLimitMps": 4.0
+   "speedLimitMps": 1.0
   },
   {
-   "x": 253.6,
-   "z": -229.44,
-   "leftWidthM": 15.0,
-   "rightWidthM": 15.0,
-   "centerDepthM": 2.8,
-   "leftEdgeDepthM": 1.5,
-   "rightEdgeDepthM": 1.5,
-   "speedLimitMps": 4.0
+   "x": 417.72,
+   "z": 1401.23,
+   "leftWidthM": 48.93354390195187,
+   "rightWidthM": 48.93354390195187,
+   "centerDepthM": 3.2,
+   "leftEdgeDepthM": 1.6,
+   "rightEdgeDepthM": 1.6,
+   "speedLimitMps": 1.2
   },
   {
-   "x": 142.0,
-   "z": -185.4,
-   "leftWidthM": 15.0,
-   "rightWidthM": 15.0,
-   "centerDepthM": 2.8,
-   "leftEdgeDepthM": 1.5,
-   "rightEdgeDepthM": 1.5,
-   "speedLimitMps": 4.0
+   "x": 282.34,
+   "z": 1375.59,
+   "leftWidthM": 60.0,
+   "rightWidthM": 60.0,
+   "centerDepthM": 3.2,
+   "leftEdgeDepthM": 1.6,
+   "rightEdgeDepthM": 1.6,
+   "speedLimitMps": 1.2
   },
   {
-   "x": 53.65,
-   "z": -150.53,
-   "leftWidthM": 15.0,
-   "rightWidthM": 15.0,
-   "centerDepthM": 2.8,
-   "leftEdgeDepthM": 1.5,
-   "rightEdgeDepthM": 1.5,
-   "speedLimitMps": 4.0
+   "x": 141.08,
+   "z": 1334.36,
+   "leftWidthM": 60.0,
+   "rightWidthM": 60.0,
+   "centerDepthM": 3.2,
+   "leftEdgeDepthM": 1.6,
+   "rightEdgeDepthM": 1.6,
+   "speedLimitMps": 1.2
   },
   {
-   "x": -2.0,
-   "z": -46.0,
-   "leftWidthM": 13.0,
-   "rightWidthM": 13.0,
-   "centerDepthM": 2.6,
-   "leftEdgeDepthM": 1.4,
-   "rightEdgeDepthM": 1.4,
-   "speedLimitMps": 3.4
+   "x": 0.0,
+   "z": 1283.0,
+   "leftWidthM": 18.0,
+   "rightWidthM": 18.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.3,
+   "rightEdgeDepthM": 1.3,
+   "speedLimitMps": 1.8
   },
   {
-   "x": 4.07,
-   "z": 197.15,
+   "x": -84.31,
+   "z": 1238.59,
    "leftWidthM": 10.0,
    "rightWidthM": 10.0,
    "centerDepthM": 2.4,
    "leftEdgeDepthM": 1.2,
    "rightEdgeDepthM": 1.2,
-   "speedLimitMps": 3.0
+   "speedLimitMps": 2.4
   },
   {
-   "x": -7.78,
-   "z": 353.24,
+   "x": -175.74,
+   "z": 1155.47,
    "leftWidthM": 10.0,
    "rightWidthM": 10.0,
    "centerDepthM": 2.4,
    "leftEdgeDepthM": 1.2,
    "rightEdgeDepthM": 1.2,
-   "speedLimitMps": 3.0
+   "speedLimitMps": 2.4
   },
   {
-   "x": -28.34,
-   "z": 471.03,
-   "leftWidthM": 10.0,
-   "rightWidthM": 10.0,
-   "centerDepthM": 2.4,
-   "leftEdgeDepthM": 1.2,
-   "rightEdgeDepthM": 1.2,
-   "speedLimitMps": 3.0
-  },
-  {
-   "x": -95.53,
-   "z": 571.78,
-   "leftWidthM": 10.0,
-   "rightWidthM": 10.0,
-   "centerDepthM": 2.4,
-   "leftEdgeDepthM": 1.2,
-   "rightEdgeDepthM": 1.2,
-   "speedLimitMps": 3.0
-  },
-  {
-   "x": -159.89,
-   "z": 660.42,
+   "x": -183.08,
+   "z": 1015.9,
    "leftWidthM": 10.0,
    "rightWidthM": 10.0,
    "centerDepthM": 2.4,
@@ -28903,8 +28883,8 @@
    "speedLimitMps": 3.0
   },
   {
-   "x": -183.08,
-   "z": 1015.9,
+   "x": -159.89,
+   "z": 660.42,
    "leftWidthM": 10.0,
    "rightWidthM": 10.0,
    "centerDepthM": 2.4,
@@ -28913,74 +28893,94 @@
    "speedLimitMps": 3.0
   },
   {
-   "x": -175.74,
-   "z": 1155.47,
+   "x": -95.53,
+   "z": 571.78,
    "leftWidthM": 10.0,
    "rightWidthM": 10.0,
    "centerDepthM": 2.4,
    "leftEdgeDepthM": 1.2,
    "rightEdgeDepthM": 1.2,
-   "speedLimitMps": 2.4
+   "speedLimitMps": 3.0
   },
   {
-   "x": -84.31,
-   "z": 1238.59,
+   "x": -28.34,
+   "z": 471.03,
    "leftWidthM": 10.0,
    "rightWidthM": 10.0,
    "centerDepthM": 2.4,
    "leftEdgeDepthM": 1.2,
    "rightEdgeDepthM": 1.2,
-   "speedLimitMps": 2.4
+   "speedLimitMps": 3.0
   },
   {
-   "x": 0.0,
-   "z": 1283.0,
-   "leftWidthM": 18.0,
-   "rightWidthM": 18.0,
+   "x": -7.78,
+   "z": 353.24,
+   "leftWidthM": 10.0,
+   "rightWidthM": 10.0,
    "centerDepthM": 2.4,
-   "leftEdgeDepthM": 1.3,
-   "rightEdgeDepthM": 1.3,
-   "speedLimitMps": 1.8
+   "leftEdgeDepthM": 1.2,
+   "rightEdgeDepthM": 1.2,
+   "speedLimitMps": 3.0
   },
   {
-   "x": 141.08,
-   "z": 1334.36,
-   "leftWidthM": 60.0,
-   "rightWidthM": 60.0,
-   "centerDepthM": 3.2,
-   "leftEdgeDepthM": 1.6,
-   "rightEdgeDepthM": 1.6,
-   "speedLimitMps": 1.2
+   "x": 4.07,
+   "z": 197.15,
+   "leftWidthM": 10.0,
+   "rightWidthM": 10.0,
+   "centerDepthM": 2.4,
+   "leftEdgeDepthM": 1.2,
+   "rightEdgeDepthM": 1.2,
+   "speedLimitMps": 3.0
   },
   {
-   "x": 282.34,
-   "z": 1375.59,
-   "leftWidthM": 60.0,
-   "rightWidthM": 60.0,
-   "centerDepthM": 3.2,
-   "leftEdgeDepthM": 1.6,
-   "rightEdgeDepthM": 1.6,
-   "speedLimitMps": 1.2
+   "x": -2.0,
+   "z": -46.0,
+   "leftWidthM": 13.0,
+   "rightWidthM": 13.0,
+   "centerDepthM": 2.6,
+   "leftEdgeDepthM": 1.4,
+   "rightEdgeDepthM": 1.4,
+   "speedLimitMps": 3.4
   },
   {
-   "x": 417.72,
-   "z": 1401.23,
-   "leftWidthM": 48.93354390195187,
-   "rightWidthM": 48.93354390195187,
-   "centerDepthM": 3.2,
-   "leftEdgeDepthM": 1.6,
-   "rightEdgeDepthM": 1.6,
-   "speedLimitMps": 1.2
-  },
-  {
-   "x": 470.0,
-   "z": 1406.0,
-   "leftWidthM": 30.0,
-   "rightWidthM": 30.0,
-   "centerDepthM": 3.0,
+   "x": 53.65,
+   "z": -150.53,
+   "leftWidthM": 15.0,
+   "rightWidthM": 15.0,
+   "centerDepthM": 2.8,
    "leftEdgeDepthM": 1.5,
    "rightEdgeDepthM": 1.5,
-   "speedLimitMps": 1.2
+   "speedLimitMps": 4.0
+  },
+  {
+   "x": 142.0,
+   "z": -185.4,
+   "leftWidthM": 15.0,
+   "rightWidthM": 15.0,
+   "centerDepthM": 2.8,
+   "leftEdgeDepthM": 1.5,
+   "rightEdgeDepthM": 1.5,
+   "speedLimitMps": 4.0
+  },
+  {
+   "x": 253.6,
+   "z": -229.44,
+   "leftWidthM": 15.0,
+   "rightWidthM": 15.0,
+   "centerDepthM": 2.8,
+   "leftEdgeDepthM": 1.5,
+   "rightEdgeDepthM": 1.5,
+   "speedLimitMps": 4.0
+  },
+  {
+   "x": 374.5,
+   "z": -277.15,
+   "leftWidthM": 15.0,
+   "rightWidthM": 15.0,
+   "centerDepthM": 2.8,
+   "leftEdgeDepthM": 1.5,
+   "rightEdgeDepthM": 1.5,
+   "speedLimitMps": 4.0
   }
  ],
  "landcover": [
@@ -32837,16 +32837,6 @@
    "heightM": 6.2
   },
   {
-   "name": "apartments",
-   "roof": "flat",
-   "x": 709.7,
-   "z": 1883.8,
-   "headingDeg": 75.0,
-   "lengthM": 67.4,
-   "widthM": 13.4,
-   "heightM": 16.7
-  },
-  {
    "name": "train_station",
    "roof": "pitched",
    "x": 702.2,
@@ -32877,16 +32867,6 @@
    "heightM": 19.0
   },
   {
-   "name": "apartments",
-   "roof": "pitched",
-   "x": 684.1,
-   "z": 1928.0,
-   "headingDeg": 75.0,
-   "lengthM": 98.6,
-   "widthM": 15.2,
-   "heightM": 6.2
-  },
-  {
    "name": "Церковь Алексия, митрополита Московского",
    "roof": "church",
    "x": 568.6,
@@ -32908,42 +32888,12 @@
   },
   {
    "name": "yes",
-   "roof": "flat",
-   "x": 531.0,
-   "z": 1985.6,
-   "headingDeg": 51.0,
-   "lengthM": 22.2,
-   "widthM": 27.6,
-   "heightM": 38.4
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 620.8,
-   "z": 1963.2,
-   "headingDeg": 51.0,
-   "lengthM": 22.2,
-   "widthM": 27.6,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
    "roof": "pitched",
    "x": 539.2,
    "z": 1615.0,
    "headingDeg": 39.0,
    "lengthM": 19.3,
    "widthM": 40.4,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 592.7,
-   "z": 1874.3,
-   "headingDeg": 75.0,
-   "lengthM": 38.5,
-   "widthM": 31.4,
    "heightM": 6.2
   },
   {
@@ -32959,72 +32909,12 @@
   {
    "name": "yes",
    "roof": "pitched",
-   "x": 574.0,
-   "z": 1920.7,
-   "headingDeg": 75.0,
-   "lengthM": 52.3,
-   "widthM": 12.4,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
    "x": 558.3,
    "z": 1704.6,
    "headingDeg": 36.0,
    "lengthM": 16.2,
    "widthM": 18.2,
    "heightM": 6.2
-  },
-  {
-   "name": "apartments",
-   "roof": "pitched",
-   "x": 782.3,
-   "z": 1952.3,
-   "headingDeg": 75.0,
-   "lengthM": 67.5,
-   "widthM": 15.9,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "flat",
-   "x": 490.4,
-   "z": 2044.0,
-   "headingDeg": 3.0,
-   "lengthM": 16.0,
-   "widthM": 57.0,
-   "heightM": 13.6
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 465.4,
-   "z": 1963.7,
-   "headingDeg": 3.0,
-   "lengthM": 12.8,
-   "widthM": 93.0,
-   "heightM": 6.2
-  },
-  {
-   "name": "apartments",
-   "roof": "flat",
-   "x": 796.3,
-   "z": 1906.4,
-   "headingDeg": 75.0,
-   "lengthM": 72.1,
-   "widthM": 16.8,
-   "heightM": 16.7
-  },
-  {
-   "name": "yes",
-   "roof": "flat",
-   "x": 375.1,
-   "z": 1951.7,
-   "headingDeg": 3.0,
-   "lengthM": 44.4,
-   "widthM": 12.8,
-   "heightM": 29.1
   },
   {
    "name": "yes",
@@ -33037,36 +32927,6 @@
    "heightM": 6.2
   },
   {
-   "name": "apartments",
-   "roof": "pitched",
-   "x": 725.4,
-   "z": 1980.7,
-   "headingDeg": 75.0,
-   "lengthM": 96.3,
-   "widthM": 14.8,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 628.1,
-   "z": 1905.7,
-   "headingDeg": 75.0,
-   "lengthM": 21.6,
-   "widthM": 28.1,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "flat",
-   "x": 565.3,
-   "z": 2031.2,
-   "headingDeg": 3.0,
-   "lengthM": 34.5,
-   "widthM": 56.1,
-   "heightM": 13.6
-  },
-  {
    "name": "yes",
    "roof": "pitched",
    "x": 501.0,
@@ -33075,36 +32935,6 @@
    "lengthM": 33.5,
    "widthM": 10.6,
    "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 393.4,
-   "z": 2012.8,
-   "headingDeg": 3.0,
-   "lengthM": 37.0,
-   "widthM": 21.3,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "flat",
-   "x": 486.5,
-   "z": 1886.7,
-   "headingDeg": 12.0,
-   "lengthM": 35.0,
-   "widthM": 143.9,
-   "heightM": 29.1
-  },
-  {
-   "name": "apartments",
-   "roof": "flat",
-   "x": 872.9,
-   "z": 1837.8,
-   "headingDeg": 63.0,
-   "lengthM": 12.8,
-   "widthM": 63.8,
-   "heightM": 16.7
   },
   {
    "name": "Дикси",
@@ -33137,36 +32967,6 @@
    "heightM": 6.2
   },
   {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 1019.4,
-   "z": 1711.9,
-   "headingDeg": 54.0,
-   "lengthM": 19.8,
-   "widthM": 44.1,
-   "heightM": 10.5
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 920.7,
-   "z": 1860.6,
-   "headingDeg": 48.0,
-   "lengthM": 17.9,
-   "widthM": 45.4,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 897.0,
-   "z": 1799.4,
-   "headingDeg": 60.0,
-   "lengthM": 19.0,
-   "widthM": 6.4,
-   "heightM": 6.2
-  },
-  {
    "name": "retail",
    "roof": "flat",
    "x": 570.1,
@@ -33185,26 +32985,6 @@
    "lengthM": 25.2,
    "widthM": 16.2,
    "heightM": 6.2
-  },
-  {
-   "name": "Часовня",
-   "roof": "pitched",
-   "x": 1008.7,
-   "z": 1756.7,
-   "headingDeg": 66.0,
-   "lengthM": 7.8,
-   "widthM": 9.4,
-   "heightM": 6.2
-  },
-  {
-   "name": "retail",
-   "roof": "pitched",
-   "x": 644.6,
-   "z": 1864.9,
-   "headingDeg": 75.0,
-   "lengthM": 19.3,
-   "widthM": 8.6,
-   "heightM": 7.4
   },
   {
    "name": "yes",
@@ -33274,26 +33054,6 @@
    "headingDeg": 39.0,
    "lengthM": 5.4,
    "widthM": 12.2,
-   "heightM": 6.2
-  },
-  {
-   "name": "residential",
-   "roof": "flat",
-   "x": 119.8,
-   "z": 1952.3,
-   "headingDeg": 24.0,
-   "lengthM": 25.0,
-   "widthM": 54.8,
-   "heightM": 26.0
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 187.7,
-   "z": 2013.8,
-   "headingDeg": 72.0,
-   "lengthM": 13.2,
-   "widthM": 28.2,
    "heightM": 6.2
   },
   {
@@ -33439,206 +33199,6 @@
   {
    "name": "yes",
    "roof": "pitched",
-   "x": 1044.7,
-   "z": 1671.4,
-   "headingDeg": 48.0,
-   "lengthM": 11.2,
-   "widthM": 8.2,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 971.9,
-   "z": 1737.4,
-   "headingDeg": 54.0,
-   "lengthM": 12.7,
-   "widthM": 23.6,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 952.4,
-   "z": 1699.5,
-   "headingDeg": 45.0,
-   "lengthM": 15.9,
-   "widthM": 5.8,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 937.9,
-   "z": 1709.8,
-   "headingDeg": 39.0,
-   "lengthM": 9.6,
-   "widthM": 8.6,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 914.2,
-   "z": 1674.9,
-   "headingDeg": 42.0,
-   "lengthM": 10.6,
-   "widthM": 13.5,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 894.5,
-   "z": 1695.5,
-   "headingDeg": 39.0,
-   "lengthM": 8.2,
-   "widthM": 8.6,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 903.6,
-   "z": 1743.7,
-   "headingDeg": 42.0,
-   "lengthM": 12.3,
-   "widthM": 10.1,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 921.9,
-   "z": 1728.8,
-   "headingDeg": 36.0,
-   "lengthM": 9.9,
-   "widthM": 11.8,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 860.2,
-   "z": 1767.8,
-   "headingDeg": 39.0,
-   "lengthM": 10.7,
-   "widthM": 9.0,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 852.0,
-   "z": 1727.8,
-   "headingDeg": 42.0,
-   "lengthM": 12.3,
-   "widthM": 12.2,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 809.6,
-   "z": 1762.7,
-   "headingDeg": 51.0,
-   "lengthM": 9.6,
-   "widthM": 7.6,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 795.7,
-   "z": 1774.9,
-   "headingDeg": 45.0,
-   "lengthM": 9.7,
-   "widthM": 5.7,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 822.1,
-   "z": 1800.4,
-   "headingDeg": 36.0,
-   "lengthM": 14.4,
-   "widthM": 9.3,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 834.8,
-   "z": 1743.0,
-   "headingDeg": 36.0,
-   "lengthM": 11.0,
-   "widthM": 10.6,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 842.6,
-   "z": 1782.9,
-   "headingDeg": 36.0,
-   "lengthM": 13.9,
-   "widthM": 15.4,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 820.4,
-   "z": 1870.5,
-   "headingDeg": 69.0,
-   "lengthM": 11.9,
-   "widthM": 8.4,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 783.2,
-   "z": 1864.3,
-   "headingDeg": 66.0,
-   "lengthM": 15.1,
-   "widthM": 8.2,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 793.7,
-   "z": 1829.7,
-   "headingDeg": 54.0,
-   "lengthM": 12.7,
-   "widthM": 6.4,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 804.7,
-   "z": 1818.4,
-   "headingDeg": 60.0,
-   "lengthM": 7.8,
-   "widthM": 11.4,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 773.8,
-   "z": 1800.8,
-   "headingDeg": 57.0,
-   "lengthM": 10.2,
-   "widthM": 9.2,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
    "x": 638.3,
    "z": 1769.6,
    "headingDeg": 36.0,
@@ -33654,46 +33214,6 @@
    "headingDeg": 51.0,
    "lengthM": 8.8,
    "widthM": 9.3,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 676.0,
-   "z": 1827.2,
-   "headingDeg": 66.0,
-   "lengthM": 10.3,
-   "widthM": 8.0,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 747.0,
-   "z": 1846.4,
-   "headingDeg": 66.0,
-   "lengthM": 17.9,
-   "widthM": 21.8,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 721.6,
-   "z": 1844.3,
-   "headingDeg": 69.0,
-   "lengthM": 10.7,
-   "widthM": 11.8,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 699.9,
-   "z": 1836.0,
-   "headingDeg": 72.0,
-   "lengthM": 10.1,
-   "widthM": 10.8,
    "heightM": 6.2
   },
   {
@@ -33889,51 +33409,11 @@
   {
    "name": "yes",
    "roof": "pitched",
-   "x": 361.1,
-   "z": 1909.5,
-   "headingDeg": 21.0,
-   "lengthM": 4.0,
-   "widthM": 14.4,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 265.8,
-   "z": 1935.8,
-   "headingDeg": 21.0,
-   "lengthM": 13.4,
-   "widthM": 19.5,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 174.7,
-   "z": 1949.0,
-   "headingDeg": 24.0,
-   "lengthM": 66.3,
-   "widthM": 14.6,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
    "x": 206.9,
    "z": 1906.3,
    "headingDeg": 18.0,
    "lengthM": 14.7,
    "widthM": 7.9,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 283.1,
-   "z": 2030.9,
-   "headingDeg": 90.0,
-   "lengthM": 30.8,
-   "widthM": 50.9,
    "heightM": 6.2
   },
   {
@@ -34009,46 +33489,6 @@
   {
    "name": "yes",
    "roof": "pitched",
-   "x": 977.4,
-   "z": 1579.7,
-   "headingDeg": 39.0,
-   "lengthM": 14.5,
-   "widthM": 10.5,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 950.8,
-   "z": 1635.2,
-   "headingDeg": 39.0,
-   "lengthM": 12.5,
-   "widthM": 13.5,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 944.8,
-   "z": 1615.5,
-   "headingDeg": 39.0,
-   "lengthM": 12.6,
-   "widthM": 17.9,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 952.4,
-   "z": 1566.7,
-   "headingDeg": 39.0,
-   "lengthM": 16.5,
-   "widthM": 16.2,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
    "x": 932.7,
    "z": 1534.6,
    "headingDeg": 39.0,
@@ -34104,86 +33544,6 @@
    "headingDeg": 42.0,
    "lengthM": 10.8,
    "widthM": 13.6,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 1022.7,
-   "z": 1653.9,
-   "headingDeg": 39.0,
-   "lengthM": 13.4,
-   "widthM": 13.3,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 999.2,
-   "z": 1618.6,
-   "headingDeg": 39.0,
-   "lengthM": 19.9,
-   "widthM": 12.5,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 935.5,
-   "z": 1655.3,
-   "headingDeg": 39.0,
-   "lengthM": 13.8,
-   "widthM": 16.1,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 984.0,
-   "z": 1689.8,
-   "headingDeg": 45.0,
-   "lengthM": 14.5,
-   "widthM": 12.3,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 1070.4,
-   "z": 1563.2,
-   "headingDeg": 63.0,
-   "lengthM": 11.4,
-   "widthM": 12.5,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 1096.2,
-   "z": 1577.1,
-   "headingDeg": 63.0,
-   "lengthM": 10.7,
-   "widthM": 10.4,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 1056.6,
-   "z": 1591.8,
-   "headingDeg": 60.0,
-   "lengthM": 11.9,
-   "widthM": 13.1,
-   "heightM": 6.2
-  },
-  {
-   "name": "yes",
-   "roof": "pitched",
-   "x": 1081.9,
-   "z": 1606.9,
-   "headingDeg": 60.0,
-   "lengthM": 13.6,
-   "widthM": 12.8,
    "heightM": 6.2
   },
   {
@@ -34556,6 +33916,411 @@
    "headingDeg": 9.7,
    "lengthM": 43.0,
    "widthM": 9.6
+  },
+  {
+   "name": "Marina finger 1",
+   "kind": "pier",
+   "x": 183.6,
+   "z": 1483.5,
+   "headingDeg": 220.2,
+   "lengthM": 55.0,
+   "widthM": 2.4
+  },
+  {
+   "name": "Marina berth 1-1",
+   "kind": "craft",
+   "x": 200.5,
+   "z": 1494.4,
+   "headingDeg": 310.2,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 1-2",
+   "kind": "craft",
+   "x": 191.6,
+   "z": 1501.9,
+   "headingDeg": 310.2,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 1-3",
+   "kind": "craft",
+   "x": 191.6,
+   "z": 1483.9,
+   "headingDeg": 310.2,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 1-4",
+   "kind": "craft",
+   "x": 182.7,
+   "z": 1491.4,
+   "headingDeg": 310.2,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 1-5",
+   "kind": "craft",
+   "x": 182.7,
+   "z": 1473.4,
+   "headingDeg": 310.2,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 1-6",
+   "kind": "craft",
+   "x": 173.8,
+   "z": 1480.9,
+   "headingDeg": 310.2,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 1-7",
+   "kind": "craft",
+   "x": 173.8,
+   "z": 1462.9,
+   "headingDeg": 310.2,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 1-8",
+   "kind": "craft",
+   "x": 165.0,
+   "z": 1470.4,
+   "headingDeg": 310.2,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina finger 2",
+   "kind": "pier",
+   "x": 207.9,
+   "z": 1464.0,
+   "headingDeg": 220.2,
+   "lengthM": 55.0,
+   "widthM": 2.4
+  },
+  {
+   "name": "Marina berth 2-1",
+   "kind": "craft",
+   "x": 224.8,
+   "z": 1474.9,
+   "headingDeg": 310.2,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 2-2",
+   "kind": "craft",
+   "x": 215.9,
+   "z": 1482.4,
+   "headingDeg": 310.2,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 2-3",
+   "kind": "craft",
+   "x": 215.9,
+   "z": 1464.4,
+   "headingDeg": 310.2,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 2-4",
+   "kind": "craft",
+   "x": 207.0,
+   "z": 1471.9,
+   "headingDeg": 310.2,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 2-5",
+   "kind": "craft",
+   "x": 207.0,
+   "z": 1453.9,
+   "headingDeg": 310.2,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 2-6",
+   "kind": "craft",
+   "x": 198.2,
+   "z": 1461.4,
+   "headingDeg": 310.2,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 2-7",
+   "kind": "craft",
+   "x": 198.1,
+   "z": 1443.4,
+   "headingDeg": 310.2,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 2-8",
+   "kind": "craft",
+   "x": 189.3,
+   "z": 1450.9,
+   "headingDeg": 310.2,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina finger 3",
+   "kind": "pier",
+   "x": 255.1,
+   "z": 1443.2,
+   "headingDeg": 184.8,
+   "lengthM": 55.0,
+   "widthM": 2.4
+  },
+  {
+   "name": "Marina berth 3-1",
+   "kind": "craft",
+   "x": 262.5,
+   "z": 1461.9,
+   "headingDeg": 274.8,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 3-2",
+   "kind": "craft",
+   "x": 251.0,
+   "z": 1462.9,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 3-3",
+   "kind": "craft",
+   "x": 261.4,
+   "z": 1448.2,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 3-4",
+   "kind": "craft",
+   "x": 249.8,
+   "z": 1449.2,
+   "headingDeg": 274.8,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 3-5",
+   "kind": "craft",
+   "x": 260.2,
+   "z": 1434.5,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 3-6",
+   "kind": "craft",
+   "x": 248.7,
+   "z": 1435.5,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 3-7",
+   "kind": "craft",
+   "x": 259.1,
+   "z": 1420.8,
+   "headingDeg": 274.8,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 3-8",
+   "kind": "craft",
+   "x": 247.5,
+   "z": 1421.8,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina finger 4",
+   "kind": "pier",
+   "x": 281.1,
+   "z": 1429.3,
+   "headingDeg": 184.8,
+   "lengthM": 55.0,
+   "widthM": 2.4
+  },
+  {
+   "name": "Marina berth 4-1",
+   "kind": "craft",
+   "x": 288.5,
+   "z": 1448.0,
+   "headingDeg": 274.8,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 4-2",
+   "kind": "craft",
+   "x": 276.9,
+   "z": 1448.9,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 4-3",
+   "kind": "craft",
+   "x": 287.3,
+   "z": 1434.3,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 4-4",
+   "kind": "craft",
+   "x": 275.8,
+   "z": 1435.2,
+   "headingDeg": 274.8,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 4-5",
+   "kind": "craft",
+   "x": 286.2,
+   "z": 1420.6,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 4-6",
+   "kind": "craft",
+   "x": 274.6,
+   "z": 1421.5,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 4-7",
+   "kind": "craft",
+   "x": 285.0,
+   "z": 1406.9,
+   "headingDeg": 274.8,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 4-8",
+   "kind": "craft",
+   "x": 273.5,
+   "z": 1407.8,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina finger 5",
+   "kind": "pier",
+   "x": 306.7,
+   "z": 1411.3,
+   "headingDeg": 184.8,
+   "lengthM": 55.0,
+   "widthM": 2.4
+  },
+  {
+   "name": "Marina berth 5-1",
+   "kind": "craft",
+   "x": 314.1,
+   "z": 1430.0,
+   "headingDeg": 274.8,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 5-2",
+   "kind": "craft",
+   "x": 302.5,
+   "z": 1431.0,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 5-3",
+   "kind": "craft",
+   "x": 312.9,
+   "z": 1416.3,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 5-4",
+   "kind": "craft",
+   "x": 301.4,
+   "z": 1417.3,
+   "headingDeg": 274.8,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 5-5",
+   "kind": "craft",
+   "x": 311.8,
+   "z": 1402.6,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 5-6",
+   "kind": "craft",
+   "x": 300.2,
+   "z": 1403.6,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 5-7",
+   "kind": "craft",
+   "x": 310.7,
+   "z": 1388.9,
+   "headingDeg": 274.8,
+   "lengthM": 11.5,
+   "widthM": 3.2
+  },
+  {
+   "name": "Marina berth 5-8",
+   "kind": "craft",
+   "x": 299.1,
+   "z": 1389.9,
+   "headingDeg": 274.8,
+   "lengthM": 9.5,
+   "widthM": 3.2
   }
  ],
  "ambientCurrentZMps": -0.15,

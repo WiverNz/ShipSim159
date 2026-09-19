@@ -5,9 +5,10 @@ scenario (`SerpukhovZatonScene`, geometry in `Assets/ShipSimulator/Data/Scenario
 **Nothing here is validated for maritime training.** Depths, currents, shoals and speed limits below
 are scenario design, not survey.
 
-The passage runs from the Oka, in through the mouth of the Nara, up the 2 km of navigable river and
-into the Serpukhov lay-up and repair basin: an artificial basin off the Nara near its confluence with
-the Oka, in Serpukhov, Moscow region.
+The passage starts at the head of the Serpukhov lay-up and repair basin, among the laid-up fleet,
+runs the length of the harbour past the barges, the passenger berth and the yacht marina, out
+through the basin's 55 m gate, down the 2 km of navigable Nara and into the Oka. The basin is an
+artificial one off the Nara near its confluence with the Oka, in Serpukhov, Moscow region.
 
 ## Published data
 
@@ -60,6 +61,12 @@ read across it, converted at 0.343 m per pixel. That gives 21 hulls: two cargo b
 alongside the north bank, a group of laid-up vessels of 30 to 45 m on the north-east shore, a
 floating dock of about 62 by 19 m, small craft, two mooring piers and a hulk on the west bank.
 
+The yacht harbour on the west shore is handled differently: only the span of bank it occupies is
+traced, and its five pontoon fingers are then laid out along the outward normal of the shoreline
+itself, with eight boats in the slips on each. That keeps them square to the water however the
+outline is re-extracted, and it avoids pretending to know where sixty individual boats lie. Forty
+five of the sixty six floating objects in the scene are those marina berths and fingers.
+
 What this is not: the positions are approximate, the sizes are read off a picture rather than from a
 register, **no vessel is identified and no type is established**, and laid-up craft move between
 seasons, so the arrangement is a snapshot of one image and not the state of the basin today. The
@@ -72,11 +79,11 @@ therefore carries no night beacons: the marks are painted day marks only, and th
 navigation-aid season ends on 31 October.
 
 - Edge buoys follow the Russian inland convention, which is read going **downstream**: red marks the
-  right edge, white the left. The scenario route runs up-river, so the red buoys stand on its left.
+  right edge, white the left. The passage runs downstream, so the red buoys stand to starboard of it.
 - Two axial marks stand on the axis of the entry from the Oka and at the basin entrance. The axial
   system is used for the starting point and the axis of a fairway, which is what both are.
-- One unlit leading line (front and rear boards) stands on the east bank in line with the entry leg
-  out of the Oka.
+- One unlit leading line (front and rear boards) stands on the east bank in line with the lower Nara
+  straight. Outbound it is a stern transit; inbound it leads a vessel in from the Oka.
 
 No public scheme of the actual buoy layout for this reach exists. The Moscow Canal daily bulletins do
 not list the Nara, and the positions of real marks live in the district's own records and in the

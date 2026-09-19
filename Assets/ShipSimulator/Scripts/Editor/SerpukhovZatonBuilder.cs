@@ -72,21 +72,21 @@ namespace ShipSimulator.Editor
             GorodetsScenarioController mission = missionObject.AddComponent<GorodetsScenarioController>();
             mission.Configure(ship, route, bathymetry, grounding, leadingLines);
             mission.ConfigurePhases(
-                new[] { 340f, 520f, 1050f, 1780f, 2010f, 2330f },
+                new[] { 70f, 330f, 470f, 620f, 1800f, 2320f },
                 new[]
                 {
-                    "Briefing", "Oka Approach", "Mouth Entry", "Nara Reach",
-                    "Upper Bend", "Basin Entrance", "Berthing", "Completed", "Failed"
+                    "Briefing", "Leaving the Lay-up Berth", "Basin", "Port and Marina",
+                    "Basin Entrance", "Nara Reach", "Oka Mouth", "Completed", "Failed"
                 },
                 new[]
                 {
                     "Prepare vessel",
-                    "Stem the Oka current and hold the 30 m channel up to the Nara mouth",
-                    "Turn to starboard into the Nara. The bar lies off the mouth",
-                    "20 m of marked water and unlit buoys: hold the axis",
-                    "Follow the bends and allow for bank effect in the narrow reach",
-                    "Slow down. The basin entrance is about 55 m wide",
-                    "Dead slow past the laid-up craft. Stop short of the head of the basin",
+                    "Let go and come clear of the laid-up barges",
+                    "Dead slow down the basin: moored craft both sides",
+                    "Past the passenger berth and the yacht harbour, mind your wash",
+                    "The gate is about 55 m wide: line her up early",
+                    "20 m of marked water and unlit buoys: hold the axis and watch the bends",
+                    "Turn to port out of the Nara and stem the Oka current",
                     "Passage complete.",
                     "Passage failed."
                 });
@@ -501,8 +501,8 @@ namespace ShipSimulator.Editor
         private static float Sqr(float value) => value * value;
 
         // Russian inland buoyage is read going downstream: the red right-edge buoys stand on the bank
-        // that is on your right when the current is behind you. This route runs up-river, so they sit
-        // on its left. The reach is third category, so nothing here is lit at night.
+        // that is on your right when the current is behind you. This passage runs downstream, so red
+        // sits to starboard of the route. The reach is third category: nothing here is lit at night.
         private static LeadingMarkPair[] BuildNavigation(FairwayRoute route, ScenarioGeometry geometry)
         {
             Transform root = new GameObject("Navigation").transform;
@@ -510,36 +510,37 @@ namespace ShipSimulator.Editor
             Material white = NavigationMaterial("NavigationWhite", new Color(0.9f, 0.9f, 0.82f));
             Material black = NavigationMaterial("MarkerBlack", new Color(0.03f, 0.03f, 0.03f));
 
-            for (float distance = 560f; distance < 1900f; distance += 135f)
+            for (float distance = 560f; distance < 1910f; distance += 135f)
             {
                 FairwayQuery query = route.QueryDistance(distance);
-                PlaceBuoy(root, query.Position - query.Right * query.Sample.leftWidthM, red, white,
+                PlaceBuoy(root, query.Position + query.Right * query.Sample.rightWidthM, red, white,
                     $"Unlit Right Red Buoy {distance:0000}");
-                PlaceBuoy(root, query.Position + query.Right * query.Sample.rightWidthM, white, black,
+                PlaceBuoy(root, query.Position - query.Right * query.Sample.leftWidthM, white, black,
                     $"Unlit Left White Buoy {distance:0000}");
             }
             // Axial marks: the system is used for the start point and the axis of a fairway, which is
-            // exactly what the entry from the Oka and the basin entrance are.
-            foreach (float distance in new[] { 430f, 1905f })
+            // exactly what the basin entrance and the Nara mouth are.
+            foreach (float distance in new[] { 478f, 1985f })
             {
                 FairwayQuery query = route.QueryDistance(distance);
                 PlaceBuoy(root, query.Position, white, red, $"Unlit Axial Buoy {distance:0000}");
             }
 
-            // The entry leading line stands where a real one does: on the bank beyond the leg, in line
-            // with it, so holding the marks in transit holds the course out of the Oka into the Nara.
-            FairwayQuery entry = route.QueryDistance(560f);
-            Vector3 onLine = entry.Position;
+            // The leading line for the mouth stands where a real one does: on the bank beyond the
+            // straight, in line with it. Outbound it is a stern transit, inbound it leads you in.
+            FairwayQuery straight = route.QueryDistance(1720f);
+            Vector3 onLine = straight.Position;
+            Vector3 upRiver = -straight.Tangent;
             while (geometry.SignedShoreDistance(onLine.x, onLine.z) < 45f && onLine.z < 900f)
-                onLine += entry.Tangent * 10f;
-            Transform front = CreateLeadingMark("Nara Entry Unlit Front Mark", root,
+                onLine += upRiver * 10f;
+            Transform front = CreateLeadingMark("Nara Mouth Unlit Front Mark", root,
                 Seat(geometry, onLine), 9f, white, black);
-            Transform rear = CreateLeadingMark("Nara Entry Unlit Rear Mark", root,
-                Seat(geometry, onLine + entry.Tangent * 200f), 15f, white, black);
-            var pairObject = new GameObject("Nara Entry Leading Line");
+            Transform rear = CreateLeadingMark("Nara Mouth Unlit Rear Mark", root,
+                Seat(geometry, onLine + upRiver * 200f), 15f, white, black);
+            var pairObject = new GameObject("Nara Mouth Leading Line");
             pairObject.transform.SetParent(root, false);
             LeadingMarkPair pair = pairObject.AddComponent<LeadingMarkPair>();
-            pair.Configure(front, rear, 150f, 520f);
+            pair.Configure(front, rear, 1650f, 1990f);
             return new[] { pair };
         }
 

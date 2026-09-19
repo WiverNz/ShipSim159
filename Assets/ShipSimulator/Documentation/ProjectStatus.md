@@ -95,8 +95,9 @@ specific to one ship: every vessel is a JSON specification checked by `VesselDat
   acquire the Gorodets leading line, pass Gorodets shoal, pass Upper Kochergino, pass Lower
   Kochergino, reach finish.
 - **River familiarisation**: straight reach with buoys, banks and current zones.
-- **Serpukhov zaton** (`Ship Simulator > Build Serpukhov Zaton Scenario`): 2.42 km from the Oka, in
-  through the mouth of the Nara and up into the Serpukhov lay-up basin. Shoreline traced from
+- **Serpukhov zaton** (`Ship Simulator > Build Serpukhov Zaton Scenario`): 2.42 km outbound from the
+  head of the Serpukhov lay-up basin, past the laid-up fleet, the passenger berth and the yacht
+  marina, out through the 55 m gate, down the Nara and into the Oka. Shoreline traced from
   OpenStreetMap water outlines; published channel dimensions (20 m on the Nara, 30 m on the Oka,
   100 m bend radius) with estimated navigation-season depths. Unlit marks only, because the reach is
   a third-category waterway. Restricted in the start menu to vessels within 40 m x 10 m x 1.6 m,

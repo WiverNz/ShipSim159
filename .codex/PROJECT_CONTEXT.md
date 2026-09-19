@@ -2,6 +2,36 @@
 
 Last updated: 2026-09-20
 
+## Serpukhov Zaton: Start Inside the Basin and a Yacht Marina, 2026-09-20
+
+The passage now runs outbound and begins where the interesting water is. It starts at the head of
+the basin among the laid-up fleet, runs the length of the harbour past the barges, the passenger
+berth and the yacht marina, out through the 55 m gate, down the Nara and into the Oka: 2416 m, the
+old route reversed with the basin end extended to the far corner. Starting on the Oka put every
+traced hull, the town and the marina 2.4 km along a passage nobody had reason to finish, which is
+why none of it had been seen.
+
+Reversing the direction is not just reversing the array. Russian inland buoyage is read going
+downstream, so the red right-edge marks moved from the route's port side to its starboard; the
+leading line for the mouth is now a stern transit and its active chainage moved with it; the axial
+marks, the buoy run and all six mission phases were re-chained to the new distances, and the mission
+wording is a departure rather than an arrival.
+
+The marina came out of the satellite crop: five pontoon fingers with boats in the slips. Only the
+span of bank it occupies is traced. The fingers are then laid out along the outward normal of the
+shoreline itself, which keeps them square to the water however the outline is re-extracted and
+avoids pretending to know where sixty individual boats lie. Forty five of the sixty six floating
+objects in the scene are marina berths and fingers.
+
+Two things the generator taught us. Walking a point out from the bank must follow the negative
+gradient of the shore distance; following the positive one walks inland forever, and the first run
+hung until it was killed. And the building catchment was keyed only to the fairway, so re-routing the
+passage silently dropped a third of the town; it is keyed to the shorelines as well now.
+
+Verified: EditMode 193 passed, PlayMode 39 passed, generator rerun end to end, scene rebuilt from the
+menu method and stills in Logs/Serpukhov/ looked at. The lay-up berth view now opens among rusty
+barges with the marina beyond, which is what was asked for.
+
 ## Grounding Contact Force, Foil Draft and a Shader Warning, 2026-09-20
 
 Three reports from playing the Serpukhov scene, all uncommitted like the rest.

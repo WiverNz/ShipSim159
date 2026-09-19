@@ -373,6 +373,53 @@ def moorings(cache, polys):
     return out
 
 
+
+# The yacht harbour on the west shore: five pontoon fingers with boats in the slips. Only the span
+# of shore they occupy is traced; each finger then runs out along the outward normal of the bank
+# itself, which keeps them square to the water however the outline is re-extracted.
+MARINA_SHORE = ((54.895516, 37.396645), (54.895685, 37.398577))
+MARINA_FINGERS = 5
+MARINA_FINGER_M = 55.0
+MARINA_BOATS_PER_FINGER = 8
+
+
+def marina(polys, flags):
+    root_a, root_b = (loc(*MARINA_SHORE[0]), loc(*MARINA_SHORE[1]))
+    out = []
+    for i in range(MARINA_FINGERS):
+        t = i / (MARINA_FINGERS - 1.0)
+        rx = root_a[0] + (root_b[0] - root_a[0]) * t
+        rz = root_a[1] + (root_b[1] - root_a[1]) * t
+        # Walk out from the bank until the water is deep enough to carry a finger.
+        gx = (signed_shore(rx + 1, rz, polys, flags) - signed_shore(rx - 1, rz, polys, flags)) * 0.5
+        gz = (signed_shore(rx, rz + 1, polys, flags) - signed_shore(rx, rz - 1, polys, flags)) * 0.5
+        norm = math.hypot(gx, gz) or 1.0
+        # The gradient grows towards the land, so the water is the other way.
+        nx, nz = -gx / norm, -gz / norm
+        for _ in range(40):
+            if signed_shore(rx, rz, polys, flags) <= -3.0:
+                break
+            rx, rz = rx + nx * 2.0, rz + nz * 2.0
+        else:
+            raise SystemExit("marina finger %d never reached the water" % (i + 1))
+        cx, cz = rx + nx * MARINA_FINGER_M * 0.5, rz + nz * MARINA_FINGER_M * 0.5
+        heading = math.degrees(math.atan2(nx, nz)) % 360.0
+        out.append({"name": "Marina finger %d" % (i + 1), "kind": "pier",
+                    "x": round(cx, 1), "z": round(cz, 1), "headingDeg": round(heading, 1),
+                    "lengthM": MARINA_FINGER_M, "widthM": 2.4})
+        for b in range(MARINA_BOATS_PER_FINGER):
+            along = (b // 2 + 0.6) / (MARINA_BOATS_PER_FINGER / 2.0) * MARINA_FINGER_M
+            side = 5.8 if b % 2 == 0 else -5.8
+            bx = rx + nx * along - nz * side
+            bz = rz + nz * along + nx * side
+            if signed_shore(bx, bz, polys, flags) > -2.0:
+                continue
+            out.append({"name": "Marina berth %d-%d" % (i + 1, b + 1), "kind": "craft",
+                        "x": round(bx, 1), "z": round(bz, 1),
+                        "headingDeg": round((heading + 90.0) % 360.0, 1),
+                        "lengthM": 9.5 if b % 3 else 11.5, "widthM": 3.2})
+    return out
+
 # ---------------------------------------------------------------------------
 # Relief, land cover and buildings
 # ---------------------------------------------------------------------------
@@ -437,12 +484,15 @@ def min_area_box(points):
     return cx, cz, (90.0 - degrees) % 360.0, du, dv
 
 
-def land_and_buildings(cache, route):
+def land_and_buildings(cache, route, shorelines):
     west, south, east, north = LANDCOVER_BBOX
     path = download(f"{OSM_API}/map.json?bbox={west},{south},{east},{north}", f"{cache}/landcover.json")
     data = json.load(open(path, encoding="utf-8"))
     nodes = {e["id"]: (e["lat"], e["lon"]) for e in data["elements"] if e["type"] == "node"}
-    route_points = [(s["x"], s["z"]) for s in route]
+    # Keyed to the water as well as the fairway, so re-routing the passage cannot quietly drop the
+    # port yard and the town that make the basin recognisable.
+    near_points = [(s["x"], s["z"]) for s in route]
+    near_points += [(p["x"], p["z"]) for sl in shorelines for p in sl["points"][::2]]
 
     cover, buildings = [], []
     for element in data["elements"]:
@@ -455,7 +505,7 @@ def land_and_buildings(cache, route):
         if "building" in tags:
             cx = sum(p[0] for p in points) / len(points)
             cz = sum(p[1] for p in points) / len(points)
-            if not any((cx - a) ** 2 + (cz - b) ** 2 < 650.0 ** 2 for a, b in route_points):
+            if not any((cx - a) ** 2 + (cz - b) ** 2 < 420.0 ** 2 for a, b in near_points):
                 continue
             bx, bz, heading, du, dv = min_area_box(points)
             if not 5 <= max(du, dv) <= 160:
@@ -510,17 +560,21 @@ def sample(x, z, half, centre_depth, edge_depth, limit):
             "rightEdgeDepthM": edge_depth, "speedLimitMps": limit}
 
 
+# The passage starts at the head of the basin among the laid-up fleet, runs the length of the
+# harbour past the barges, the port berth and the yacht marina, out through the 55 m gate, down the
+# marked Nara and into the Oka. Starting inside the basin puts everything worth seeing at the
+# beginning of the passage rather than 2.4 km along it.
 def fairway(nara_mid, basin_mid):
-    ox, oz = -44.0, -112.0
-    route = [sample(ox + OKA_DIR[0] * d, oz + OKA_DIR[1] * d, 15.0, 2.8, 1.5, 4.0)
-             for d in (450, 320, 200, 105)]
-    route.append(sample(-2.0, -46.0, 13.0, 2.6, 1.4, 3.4))
-    for x, z, _ in nara_mid[1:-1]:
-        route.append(sample(x, z, 10.0, 2.4, 1.2, 3.0 if z < 1050 else 2.4))
-    route.append(sample(0.0, 1283.0, 18.0, 2.4, 1.3, 1.8))
-    for x, z, half in basin_mid[1:-1]:
+    route = [sample(470.0, 1406.0, 30.0, 3.0, 1.5, 1.0)]
+    for x, z, half in reversed(basin_mid[1:-1]):
         route.append(sample(x, z, min(60.0, max(24.0, half - 8.0)), 3.2, 1.6, 1.2))
-    route.append(sample(470.0, 1406.0, 30.0, 3.0, 1.5, 1.2))
+    route.append(sample(0.0, 1283.0, 18.0, 2.4, 1.3, 1.8))
+    for x, z, _ in reversed(nara_mid[1:-1]):
+        route.append(sample(x, z, 10.0, 2.4, 1.2, 2.4 if z > 1050 else 3.0))
+    route.append(sample(-2.0, -46.0, 13.0, 2.6, 1.4, 3.4))
+    ox, oz = -44.0, -112.0
+    for d in (105, 200, 320, 450):
+        route.append(sample(ox + OKA_DIR[0] * d, oz + OKA_DIR[1] * d, 15.0, 2.8, 1.5, 4.0))
     return route
 
 
@@ -620,12 +674,12 @@ def build(cache):
     doc["elevation"] = elevation(cache, shorelines)
     print("land cover and buildings...")
     doc["route"] = fairway(nara_mid, basin_mid)
-    doc["landcover"], doc["buildings"] = land_and_buildings(cache, doc["route"])
+    doc["landcover"], doc["buildings"] = land_and_buildings(cache, doc["route"], shorelines)
     print("moored craft...")
-    doc["moorings"] = moorings(cache, polys)
+    flags = boundary_edges(polys)
+    doc["moorings"] = moorings(cache, polys) + marina(polys, flags)
     doc["ambientCurrentZMps"] = -0.15
     doc["shorelines"] = shorelines
-    flags = boundary_edges(polys)
     doc["landmarks"] = place_quays(polys, flags)
     doc["currentRegions"] = CURRENTS
     doc["hazards"] = HAZARDS

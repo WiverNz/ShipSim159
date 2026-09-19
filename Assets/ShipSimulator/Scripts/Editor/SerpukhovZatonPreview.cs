@@ -37,12 +37,12 @@ namespace ShipSimulator.Editor
             data.renderPostProcessing = true;
             data.antialiasing = AntialiasingMode.FastApproximateAntialiasing;
 
-            Capture(camera, "01-oka-approach", route, 60f, new Vector3(0f, 26f, -150f), 250f);
-            Capture(camera, "02-nara-mouth", route, 470f, new Vector3(0f, 34f, -190f), 330f);
-            Capture(camera, "03-nara-reach", route, 1100f, new Vector3(0f, 30f, -200f), 320f);
-            Capture(camera, "04-upper-bend", route, 1700f, new Vector3(0f, 40f, -230f), 380f);
-            Capture(camera, "05-basin-entrance", route, 1930f, new Vector3(0f, 45f, -240f), 400f);
-            Capture(camera, "06-basin-berths", route, 2200f, new Vector3(0f, 60f, -300f), 420f);
+            Capture(camera, "01-lay-up-berth", route, 15f, new Vector3(0f, 22f, -130f), 210f);
+            Capture(camera, "02-basin", route, 200f, new Vector3(0f, 44f, -260f), 380f);
+            Capture(camera, "03-port-and-marina", route, 390f, new Vector3(0f, 36f, -210f), 340f);
+            Capture(camera, "04-basin-entrance", route, 500f, new Vector3(0f, 32f, -190f), 320f);
+            Capture(camera, "05-nara-reach", route, 1200f, new Vector3(0f, 30f, -200f), 320f);
+            Capture(camera, "06-nara-mouth", route, 1940f, new Vector3(0f, 34f, -200f), 330f);
             if (vessel != null)
             {
                 camera.transform.position = vessel.transform.position + new Vector3(24f, 11f, -34f);

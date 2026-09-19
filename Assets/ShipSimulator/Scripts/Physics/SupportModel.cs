@@ -32,6 +32,42 @@ namespace ShipSimulator.Physics
             return Mathf.Lerp(1f, support.supportedResistanceFactor, progress) * Mathf.Lerp(1f, support.humpResistanceFactor, hump);
         }
 
+        // Fixed appendage geometry inferred from the published full-support draft. This is an
+        // estimate, shared by lift, clearance and bottom contact rather than a speed-dependent HUD floor.
+        public static float AppendageExtensionM(VesselParameters p) => Lifts(p.Data.support)
+            ? Mathf.Max(0f, p.Data.support.supportedDraftM -
+                p.LoadedDraft * (1f - p.Data.support.supportedWeightFraction)) : 0f;
+
+        public static Vector3 ContactPoint(VesselParameters p, int index) => new Vector3(
+            ((index & 1) == 0 ? -0.5f : 0.5f) * p.Data.dimensions.beamOverallM,
+            p.KeelLocalY - AppendageExtensionM(p),
+            p.Data.support.supportLongitudinalPositionM + ((index & 2) == 0 ? -0.25f : 0.25f) * p.Lpp);
+
+        // Four estimated support patches supply heave, pitch and roll feedback. Lift vanishes when
+        // a patch clears the surface, and point-velocity damping cannot lift a dry craft in free fall.
+        public static float Apply(VesselParameters p, Rigidbody body, Transform frame,
+            float waterLevel, float fraction)
+        {
+            if (fraction <= 0f) return 0f;
+            float targetDepth = p.Draft * (1f - fraction) + AppendageExtensionM(p);
+            float nominal = p.Mass * VesselParameters.Gravity * fraction / 4f;
+            float stiffness = nominal / Mathf.Max(targetDepth, 0.01f);
+            float damping = 2f * p.Data.hydrostatics.heaveDampingRatio *
+                Mathf.Sqrt(stiffness * p.Mass / 4f);
+            float total = 0f;
+            for (int i = 0; i < 4; i++)
+            {
+                Vector3 point = frame.TransformPoint(ContactPoint(p, i));
+                float depth = waterLevel - point.y;
+                if (depth <= 0f) continue;
+                float force = Mathf.Clamp(stiffness * depth - damping * body.GetPointVelocity(point).y,
+                    0f, 2f * nominal);
+                body.AddForceAtPosition(Vector3.up * force, point, ForceMode.Force);
+                total += force;
+            }
+            return total;
+        }
+
         // Depth of the deepest part below the waterline: the hull when floating, the foils or skegs once up.
         public static float SupportedDraftM(VesselSupport support, float speed)
         {

@@ -40,9 +40,15 @@ not an air-cushion craft.
 | Rated propeller speed | 1924.5 rpm | calibrated; the engines are rated 1700 rpm, so this is a model value that suits the generic propeller curves, not the real shaft speed |
 | Takeoff / full support speed | 8.0 / 13.0 m/s | estimated; no published takeoff speed was found |
 | Supported weight fraction | 0.93 | estimated: the hull leaves the water when foilborne |
-| Supported drag factor / hump | 0.35 / 1.35 | estimated from published hydrofoil resistance trends |
+| Supported drag factor / hump | 0.35 / 1.6 | estimated from published hydrofoil resistance trends |
 | Rudders | 2 x 0.6 m², span 0.9 m | estimated |
 | Windage areas | 22 / 120 m² | estimated from the cabin and hull profile |
+
+The estimated support centre is aligned longitudinally with the loaded centre of gravity for
+neutral trim. Four immersion-sensitive patches span half the perpendicular length and the
+overall beam; local vertical velocity damps heave, pitch and roll. This approximates ride-height
+stability, not measured foil or cushion behaviour. Clearance and bottom contact use the same
+appendage geometry inferred from full-support draft. See `ShipSimulator_Physics.md` for limits.
 
 ## Model
 

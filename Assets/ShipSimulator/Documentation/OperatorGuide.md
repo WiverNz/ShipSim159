@@ -24,9 +24,12 @@ hulls through the water and feel sluggish; through the takeoff range drag peaks,
 the foils or the cushion take the weight. Once supported they draw much less water, so shoals that
 stop a cargo ship can be crossed, and they answer the helm quickly.
 
-All three use the same controls. Camera views scale with the vessel's length and the
-navigator view sits in each vessel's wheelhouse. Particulars are published values;
-manoeuvring coefficients and the two generated models are estimates.
+All five use the same controls. Generated vessels have exterior camera positions fitted to their
+model bounds; the navigator view sits in each vessel's wheelhouse. Luch has one engine: either
+Q/Z or E/X operates the same telegraph. The speed readout shows the nominal foil/cushion transition,
+and draft/under-keel clearance follows the physical hull and appendages. Radar prediction shortens
+its horizon at high speed to keep the straight-ahead path within 300 m.
+Particulars are published values; manoeuvring coefficients and generated models are estimates.
 
 ## Menu, Settings and Saved Voyages
 

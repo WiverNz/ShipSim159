@@ -356,7 +356,9 @@ namespace ShipSimulator.Editor
             root.AddComponent<ShipPhysicsController>();
             VesselDimensions d = data.dimensions;
             float sideX = -(0.5f * form.Beam - 0.35f);
-            root.AddComponent<VesselLayout>().Configure(design.Id, d.lengthOverallM / 138.3f,
+            VesselLayout layout = root.AddComponent<VesselLayout>();
+            layout.ConfigureCameraViews(CameraViews(meshAsset.bounds));
+            layout.Configure(design.Id, d.lengthOverallM / 138.3f,
                 new Vector3(-1f, fixtures.WheelhouseFloor + 1.7f, fixtures.WheelhouseFront - 1f),
                 new Vector3(-1f, fixtures.WheelhouseFloor + 1.1f, fixtures.WheelhouseFront + 80f),
                 new Vector3(sideX, fixtures.WheelhouseFloor + 1.3f, fixtures.WheelhouseFront - 1.1f), fixtures.WheelhouseFloor + 0.3f,
@@ -373,6 +375,30 @@ namespace ShipSimulator.Editor
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, design.PrefabPath);
             Object.DestroyImmediate(root);
             return prefab;
+        }
+
+        // Orbit camera views for this model, in model metres and in the order ShipFollowCamera names them.
+        // Taken from the built silhouette so that every view stands clear of the hull, the cabin and the
+        // masts: scaling the default 507B set by length alone would put the near views inside a short
+        // passenger craft.
+        private static Vector3[] CameraViews(Bounds bounds)
+        {
+            float top = Mathf.Max(bounds.max.y, 1f);
+            float halfBeam = Mathf.Max(Mathf.Max(bounds.max.x, -bounds.min.x), 1f);
+            float bow = bounds.max.z;
+            float stern = bounds.min.z;
+            float length = Mathf.Max(bow - stern, 1f);
+            return new[]
+            {
+                new Vector3(halfBeam + 0.20f * length, 0.9f * top + 0.03f * length, stern - 0.45f * length),
+                new Vector3(0f, top + Mathf.Max(1.5f, 0.03f * length), -0.10f * length),
+                new Vector3(0f, top + 0.45f * length, -0.12f * length),
+                new Vector3(-(halfBeam + 0.25f * length), 0.6f * top, -0.08f * length),
+                new Vector3(halfBeam + 0.25f * length, 0.6f * top, -0.08f * length),
+                new Vector3(0f, 0.75f * top, bow + 0.22f * length),
+                new Vector3(0f, 0.80f * top, stern - 0.26f * length),
+                new Vector3(-(halfBeam + 0.12f * length), 0.45f * top, -0.18f * length)
+            };
         }
 
         private static void BuildHull(ProceduralMesh mesh, HullForm form)

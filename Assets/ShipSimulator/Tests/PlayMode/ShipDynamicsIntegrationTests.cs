@@ -31,6 +31,8 @@ namespace ShipSimulator.Tests
             yield return null;
         }
 
+        private static readonly string[] FastCraftFiles = { "Meteor342U.json", "Luch14352.json" };
+
         private static readonly string[] VesselFiles =
             { "VolgoDon507B.json", "VolgoBalt295AR.json", "Volgoneft1577.json", "Meteor342U.json", "Luch14352.json" };
 
@@ -41,7 +43,8 @@ namespace ShipSimulator.Tests
             ShipPhysicsController ship = CreateShip(data, float.PositiveInfinity, false);
             Run(ship, 60f);
 
-            Assert.That(ship.EffectiveDraftM, Is.EqualTo(data.dimensions.loadedDraftM).Within(0.06f));
+            Assert.That(ship.EffectiveDraftM, Is.EqualTo(data.dimensions.loadedDraftM +
+                SupportModel.AppendageExtensionM(ship.Parameters)).Within(0.06f));
             Assert.That(Vector3.Angle(ship.transform.up, Vector3.up), Is.LessThan(0.3f));
             yield return null;
         }
@@ -160,6 +163,73 @@ namespace ShipSimulator.Tests
             for (int i = 0; i < ship.EngineCount; i++)
                 Assert.That(ship.EngineCommand(i), Is.EqualTo(0.6f));
             Assert.That(ship.ActualThrottle, Is.EqualTo(0.4f).Within(1e-5f));
+            yield return null;
+        }
+
+        // Lifting the hull takes its waterplane with it, so without roll stiffness from the foils or the
+        // skegs a supported craft heels over and stays there.
+        [UnityTest]
+        public IEnumerator SupportedCraft_RightsItselfWithTheHullOutOfTheWater(
+            [ValueSource(nameof(FastCraftFiles))] string file)
+        {
+            VesselData data = LoadVessel(file);
+            ShipPhysicsController ship = CreateShip(data, float.PositiveInfinity, false);
+            ship.transform.rotation = Quaternion.AngleAxis(15f, Vector3.forward);
+            ship.Body.linearVelocity = ship.transform.forward * data.support.fullSupportSpeedMps * 1.2f;
+            ship.SetThrottleCommand(1f);
+            Run(ship, 60f);
+            Assert.That(ship.transform.position.y, Is.InRange(-0.1f, data.dimensions.loadedDraftM + 0.2f),
+                "The supported craft must remain at the water surface.");
+            Assert.That(Mathf.Abs(ship.Body.linearVelocity.y), Is.LessThan(0.1f));
+
+            Assert.That(ship.Diagnostics.SupportFraction,
+                Is.GreaterThan(0.9f * data.support.supportedWeightFraction), "The craft is supported.");
+            Assert.That(Vector3.Angle(ship.transform.up, Vector3.up), Is.LessThan(6f));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator SupportedCraft_AcceleratesSettlesAndReturnsToDisplacementDraft(
+            [ValueSource(nameof(FastCraftFiles))] string file)
+        {
+            VesselData data = LoadVessel(file);
+            ShipPhysicsController ship = CreateShip(data, float.PositiveInfinity, false);
+            Run(ship, 20f);
+            float restingDraft = ship.EffectiveDraftM;
+            ship.SetThrottleCommand(1f);
+            Run(ship, 180f);
+            Assert.That(ship.Diagnostics.SupportFraction, Is.GreaterThan(0.9f * data.support.supportedWeightFraction));
+            Assert.That(ship.EffectiveDraftM, Is.EqualTo(data.support.supportedDraftM).Within(0.15f));
+            Assert.That(Mathf.Abs(ship.Body.linearVelocity.y), Is.LessThan(0.05f));
+            Assert.That(Vector3.Angle(ship.transform.up, Vector3.up), Is.LessThan(3f));
+            Assert.That(ship.EffectiveDraftM, Is.LessThan(restingDraft - 0.1f));
+            ship.SetThrottleCommand(0f);
+            Run(ship, 300f);
+            Assert.That(ship.Diagnostics.SupportFraction, Is.LessThan(0.01f));
+            Assert.That(ship.EffectiveDraftM, Is.EqualTo(restingDraft).Within(0.08f));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator DryFoils_DoNotProduceLiftEvenWhileFalling()
+        {
+            ShipPhysicsController ship = CreateShip(LoadVessel("Meteor342U.json"), float.PositiveInfinity, false);
+            ship.transform.position = Vector3.up * 10f;
+            UnityEngine.Physics.SyncTransforms();
+            ship.Body.linearVelocity = new Vector3(0f, -5f, 18f);
+            ship.Simulate(Step);
+            Assert.That(ship.Diagnostics.SupportLiftN, Is.Zero);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator SubmergedFoils_DetectBottomBeforeTheHull()
+        {
+            ShipPhysicsController ship = CreateShip(LoadVessel("Meteor342U.json"), 1.8f, true);
+            ship.Grounding.Step(Step);
+            Assert.That(ship.Parameters.Draft, Is.LessThan(1.8f), "The hull clears this shoal.");
+            Assert.That(ship.Grounding.MinimumClearanceM, Is.LessThan(0f));
+            Assert.That(ship.Grounding.ContactNormalForceN, Is.GreaterThan(0f));
             yield return null;
         }
 

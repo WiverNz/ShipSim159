@@ -170,6 +170,15 @@ MonoBehaviour:
   aftMastheadSupportBaseY: 4.84
   sternLight: {x: 0, y: 2.44, z: -11.521}
   sternLightSupportBaseY: 1.24
+  cameraViews:
+  - {x: 6.944, y: 7.4075994, z: -22.595}
+  - {x: 0, y: 8.94, z: -2.372}
+  - {x: 0, y: 18.113998, z: -2.8463998}
+  - {x: -8.13, y: 4.4639997, z: -1.8975999}
+  - {x: 8.13, y: 4.4639997, z: -1.8975999}
+  - {x: 0, y: 5.58, z: 17.017399}
+  - {x: 0, y: 5.9519997, z: -18.0882}
+  - {x: -5.0464, y: 3.3479998, z: -4.2696}
 --- !u!1 &4513144818324131142
 GameObject:
   m_ObjectHideFlags: 0

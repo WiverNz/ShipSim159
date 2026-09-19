@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using ShipSimulator.Physics;
+using ShipSimulator.UI;
 using ShipSimulator.Visuals;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace ShipSimulator.Tests
 {
@@ -47,6 +50,51 @@ namespace ShipSimulator.Tests
 
             Assert.That(RiverLighting.Active.IsNight, Is.False);
             Assert.That(sun.intensity, Is.EqualTo(1.25f).Within(0.001f));
+        }
+
+        // The HUD creates the weather controller when a scene has none, so the lighting and its sky
+        // capture rig end up parented to the HUD object.
+        [UnityTest]
+        public IEnumerator SkyCaptureRig_SurvivesAHudRebuildOnTheSameObject()
+        {
+            GameObject shipObject = Track(TestVessel.Create(Vector3.zero));
+            GameObject hudObject = Track(new GameObject("TrainingUI"));
+            hudObject.AddComponent<WeatherController>();
+            ShipTelemetryUI hud = hudObject.AddComponent<ShipTelemetryUI>();
+            hud.SetShip(shipObject.GetComponent<ShipPhysicsController>());
+            yield return null;
+            yield return null;
+
+            Transform rig = hudObject.transform.Find("Sky capture camera");
+            Assert.That(rig, Is.Not.Null);
+            Assert.That(hudObject.GetComponentsInChildren<Text>().Length, Is.GreaterThan(0));
+
+            foreach (RectTransform instrument in hudObject.GetComponentsInChildren<RectTransform>())
+                if (instrument.parent == hudObject.transform) Object.Destroy(instrument.gameObject);
+            yield return null;
+            yield return null;
+
+            Assert.That(rig == null, Is.False, "The HUD destroyed a rig it did not create.");
+            Assert.That(hudObject.GetComponentsInChildren<Text>().Length, Is.GreaterThan(0),
+                "The HUD rebuilt its own instruments.");
+        }
+
+        [UnityTest]
+        public IEnumerator DetailedBuoy_LeavesNothingSolidForAShipToHit()
+        {
+            GameObject marker = Track(new GameObject("Right Red Buoy 01"));
+            GameObject placeholder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            placeholder.name = "Float";
+            placeholder.transform.SetParent(marker.transform, false);
+            Assert.That(marker.GetComponentsInChildren<Collider>().Length, Is.EqualTo(1));
+
+            marker.AddComponent<BuoyVisualRig>().Build(true);
+            yield return null;
+
+            foreach (Collider mark in marker.GetComponentsInChildren<Collider>())
+                Assert.That(mark.isTrigger, Is.True,
+                    "A buoy is a mark, not an obstacle that holds a loaded ship at full ahead.");
+            Assert.That(marker.transform.Find("Detailed buoy"), Is.Not.Null);
         }
 
         private GameObject Track(GameObject item)

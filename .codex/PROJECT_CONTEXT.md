@@ -2,6 +2,32 @@
 
 Last updated: 2026-09-19
 
+## Vessel Shakedown and Ride Height, 2026-09-19
+
+Continued the uncommitted vessel presentation work without committing or discarding it.
+`SupportModel.Apply` now distributes nominal lift over four immersion-sensitive patches,
+with vertical point-velocity damping. Dry patches produce no force; support no longer remains
+constant as the craft rises or pitches. Estimated support centres match loaded longitudinal
+CG for neutral trim. Physics changes remain Rigidbody forces only.
+
+`EffectiveDraftM` and grounding share fixed foil/skeg contact geometry, including when stopped,
+instead of flooring the displayed draft at a speed-dependent constant. The inferred Meteor
+appendage gives about 2.27 m afloat (published 2.35 m), and 1.2 m supported at full load;
+this is an explicit geometry estimate, not a validated foil/cushion solver.
+
+Preserved the pending displacement/immersion wake scaling, model-fitted exterior camera views,
+service-speed readout, support-state indicator, non-solid buoy detection colliders, HUD rebuild
+protection for the sky capture rig, and external time-scale readout refresh. Finished single-engine
+control help for Luch and bounded straight-ahead radar prediction to its actual viewport.
+The shakedown snaps each capture to its selected camera and checks physical hull rise as well as
+heel, wake amplitude and clearance. Interactive menu execution returns to the editor, not exit.
+
+Verification: PlayMode 32/32 (`TestResults/Shakedown-PlayMode.xml`), including takeoff, settled
+ride height, roll recovery, return to displacement draft, dry-foil force and foil bottom contact.
+EditMode 179/179 (`TestResults/Shakedown-EditMode.xml`), including wake, camera and radar checks.
+The graphics-enabled fleet shakedown is being rerun; record its outcome before calling visual
+verification complete. No manual half-hour pilot session has been performed by the agent.
+
 ## Graphics Phase 2, Steps 0 and 1, 2026-09-13
 
 Target: RTX 3060 at 1920x1080, selected by the user. Step 0 baseline and Step 1 water optics are

@@ -134,7 +134,7 @@
     "supportedDraftM": 0.45,
     "supportedResistanceFactor": 0.45,
     "humpResistanceFactor": 1.5,
-    "supportLongitudinalPositionM": 0.0,
+    "supportLongitudinalPositionM": -0.3,
     "liftPowerFraction": 0.35,
     "estimated": true
   },

@@ -164,10 +164,12 @@ namespace ShipSimulator.UI
 
             float driftAngle = Mathf.Atan2(localVelocity.x,
                 Mathf.Max(Mathf.Abs(localVelocity.z), 0.05f)) * Mathf.Rad2Deg;
+            string support = FormatSupportStatus(ship.Data != null ? ship.Data.support : null,
+                Vector3.Dot(ship.RelativeWaterVelocity, ship.transform.forward));
             speedText.text =
                 $"<size=14><color=#8AA0AD>SPEED</color></size>\n" +
                 $"<size=30><b>{speedMps * 1.943844f:F1}</b></size><size=15> kn</size>\n" +
-                $"<size=14><color=#8AA0AD>{speedMps * 3.6f:F1} km/h</color></size>";
+                $"<size=14><color=#8AA0AD>{speedMps * 3.6f:F1} km/h</color>{support}</size>";
             headingText.text =
                 $"<size=14><color=#8AA0AD>COURSE</color></size>\n" +
                 $"<size=30><b>{heading:000}°</b></size>\n" +
@@ -201,7 +203,8 @@ namespace ShipSimulator.UI
                   $"<size=15>{scenario.Instruction}</size>\n\n" +
                   $"<color=#8AA0AD>Score</color> <b>{scenario.Score:F0}/100</b>     " +
                   $"<color=#8AA0AD>Limit</color> <b>{scenario.LocalSpeedLimitMps * 3.6f:F0} km/h</b>"
-                : FormatObjectiveStatus(distance);
+                : FormatObjectiveStatus(distance,
+                    ship.Data != null ? ship.Data.controlLimits.maxLoadedSpeedMps : 0f);
             depthText.color = underKeel < 0.8f
                 ? HudTheme.Danger
                 : underKeel < 2f ? HudTheme.Warning : HudTheme.TextPrimary;
@@ -216,14 +219,19 @@ namespace ShipSimulator.UI
             UpdateMiniMap();
             UpdateDepthRadar(channelDepth);
             UpdateWarnings(speedMps, underKeel, current.magnitude);
+            UpdateTimeScaleText();
             if (weatherText != null && weather != null)
                 weatherText.text = weather.StatusText;
         }
 
         private void BuildInterface()
         {
+            // Instruments only. Other components park their own rigs on this object, because the HUD
+            // creates the weather controller when a scene has none, and that adds the lighting, which
+            // parents a sky capture camera here. Destroying those leaves them throwing for the rest of
+            // the session with no sky reflection.
             foreach (Transform child in transform)
-                Destroy(child.gameObject);
+                if (child is RectTransform) Destroy(child.gameObject);
 
             Canvas canvas = GetComponent<Canvas>();
             if (canvas == null) canvas = gameObject.AddComponent<Canvas>();
@@ -278,7 +286,7 @@ namespace ShipSimulator.UI
             helpText = Label(transform, string.Empty, 18, TextAnchor.MiddleCenter,
                 new Vector2(320f, 12f), new Vector2(-320f, -1016f));
             helpText.text =
-                "A/D  RUDDER   W/S  ENGINES   Q/Z  PORT   E/X  STBD   SPACE  STOP   1-9  CAMERAS\n" +
+                FormatEngineControls(ship.EngineCount) + "   SPACE  STOP   1-9  CAMERAS\n" +
                 "J/L  BOW THRUSTER   K  OFF   H HORN   M MAP   N DAY/NIGHT   T TIME   F2-F5 WEATHER   RMB ORBIT";
             helpText.gameObject.SetActive(false);
             Text helpPrompt = Label(transform, "F1  CONTROLS", 16, TextAnchor.LowerCenter,
@@ -788,9 +796,10 @@ namespace ShipSimulator.UI
             float predictedHeading = 0f;
             Vector2 predictedMeters = Vector2.zero;
 
+            float stepSeconds = RadarPredictionStepSeconds(
+                new Vector2(speed, sideSpeed).magnitude, radarPredictionSegments.Length);
             for (int i = 0; i < radarPredictionSegments.Length; i++)
             {
-                float stepSeconds = 2.5f;
                 predictedHeading += yawRate * stepSeconds;
                 Vector2 forward = new Vector2(
                     Mathf.Sin(predictedHeading), Mathf.Cos(predictedHeading));
@@ -898,6 +907,34 @@ namespace ShipSimulator.UI
             }
             telegraphIndices[engine] = clamped;
             ship.SetEngineCommand(engine, TelegraphValues[clamped]);
+        }
+
+        // A fast craft handles differently once the foils or the cushion carry it, and the lift is not
+        // visible from the bridge, so the speed block says which state the vessel is in.
+        public static string FormatEngineControls(int engineCount) => engineCount == 1
+            ? "A/D  RUDDER   W/S  ENGINE   Q/Z or E/X  TELEGRAPH"
+            : "A/D  RUDDER   W/S  ENGINES   Q/Z  PORT   E/X  STBD";
+
+        public static string FormatSupportStatus(VesselSupport support, float speedThroughWaterMps)
+        {
+            if (!SupportModel.Lifts(support)) return string.Empty;
+            float progress = SupportModel.Fraction(support, speedThroughWaterMps) /
+                support.supportedWeightFraction;
+            if (progress < 0.02f) return "   <color=#8AA0AD>HULLBORNE</color>";
+            string mode = support.mode == "hydrofoil" ? "FOILBORNE" : "CUSHIONBORNE";
+            string color = progress > 0.98f ? "#4DC76B" : "#E8B24D";
+            return $"   <color={color}>{mode} {progress * 100f:F0}%</color>";
+        }
+
+        // The predicted path is drawn at the fixed map scale, so a fixed time horizon leaves the radar as
+        // soon as the vessel is fast: 25 s at 18 m/s is 450 m against roughly 300 m of visible range. The
+        // horizon is bounded by distance instead, which leaves displacement ships at the full 25 s.
+        public static float RadarPredictionStepSeconds(float speedMps, int steps)
+        {
+            const float visibleRangeM = (150f - 8f - RadarVesselOffsetY) / MapPixelsPerMeter;
+            const float longestStep = 2.5f;
+            if (steps <= 0 || speedMps <= 0.1f) return longestStep;
+            return Mathf.Min(longestStep, visibleRangeM / (speedMps * steps));
         }
 
         public static string FormatBowThrusterStatus(bool fitted, float output)
@@ -1010,12 +1047,14 @@ namespace ShipSimulator.UI
                 $"<size=14>{viewIndex + 1}/{viewCount}</size>";
         }
 
-        public static string FormatObjectiveStatus(float distanceMeters)
+        // Outside a scenario the only limit is the vessel's own service speed, which differs by a factor
+        // of eight across the catalogue.
+        public static string FormatObjectiveStatus(float distanceMeters, float speedLimitMps)
         {
             return "<size=14><color=#56C7E6>OBJECTIVE</color></size>\n" +
                 "<size=23><b>Proceed to waypoint</b></size>\n\n" +
                 $"<color=#8AA0AD>Distance</color>  <b>{distanceMeters:F0} m</b>\n" +
-                "<color=#8AA0AD>Speed limit</color>  <b>8 km/h</b>";
+                $"<color=#8AA0AD>Service speed</color>  <b>{speedLimitMps * 3.6f:F0} km/h</b>";
         }
 
         // Calm nautical depth shading: muted, low-alpha zones that blend over the

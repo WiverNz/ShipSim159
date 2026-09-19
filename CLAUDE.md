@@ -153,6 +153,11 @@ steady ship running lights from four directions, writes `Logs/WaterWeather/` and
 `WATER_WEATHER|PASS`. Launch it with the same rendering-enabled batch flags.
 `BuoyGraphicsCheck.Run` captures detailed buoys by day and night, including near and distant
 flash on/off states, to `Logs/Buoys/` and ends with `BUOY_GRAPHICS|PASS`.
+`VesselShakedownCheck.Run` sails every catalogue vessel down the river reach at full ahead,
+steering to hold the channel, captures each one from six views with the HUD composited over
+the world, writes `Logs/Shakedown/shakedown.md` and ends with `VESSEL_SHAKEDOWN|PASS`. It is
+an automated complement to manual handling checks. Run it after changing a vessel, the HUD,
+the cameras or the wake; it does not establish subjective handling feel.
 `GraphicsPhaseTwoCheck.RunBefore` / `RunAfter` capture five views in five weather conditions at
 1920x1080 and write frame timing CSVs and temporal crops under `Logs/GraphicsPhaseTwo/`.
 They refuse to overwrite an existing before/after directory. `RunSkyProbe` checks the live sky
@@ -188,6 +193,7 @@ One thing about results that has already cost time here:
 | `Apply Graphics Phase One` | Configures desktop renderer features, vegetation LOD cross-fade, the post-processing profile and cameras for both scenes |
 | `Build Vessel Catalogue` | Regenerates the Volgo-Balt and Volgoneft models and prefabs, the vessel catalogue and previews in `Logs/Vessels/` |
 | `Run Virtual Sea Trials` | Runs standard manoeuvres for every vessel and writes `Logs/SeaTrials/sea-trials.md` |
+| `Run Vessel Shakedown` | Sails every catalogue vessel and captures it with the HUD in `Logs/Shakedown/` |
 | `Play Training Scene` / `Stop Play Mode` | Enter and leave Play Mode |
 
 These commands **regenerate scene-owned content**. A manual scene edit they overwrite must

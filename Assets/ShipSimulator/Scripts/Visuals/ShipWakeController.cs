@@ -9,8 +9,10 @@ namespace ShipSimulator.Visuals
     [RequireComponent(typeof(ShipPhysicsController))]
     public sealed class ShipWakeController : MonoBehaviour
     {
-        // Estimated visual scale, not a validated wave height model.
+        // Estimated visual scale, not a validated wave height model. Tuned on the Volgo-Don 507B,
+        // whose displacement-length ratio is the reference below.
         [SerializeField, Range(0f, 0.2f)] private float waveAmplitude = 0.07f;
+        [SerializeField] private float referenceDisplacementLengthRatio = 0.00255f;
         [SerializeField, Range(1, 4)] private int waterMeshDivisions = 3;
 
         private static readonly int PointsId = Shader.PropertyToID("_WakePoints");
@@ -74,7 +76,24 @@ namespace ShipSimulator.Visuals
             Shader.SetGlobalVector(BoundsId, bounds);
             Shader.SetGlobalVector(ShipId, new Vector4(center.x, center.y, forward.x, forward.y));
             Shader.SetGlobalVector(HullId, new Vector4(length * 0.5f, beam * 0.5f, speed, wash));
-            Shader.SetGlobalFloat(AmplitudeId, waveAmplitude);
+            Shader.SetGlobalFloat(AmplitudeId, waveAmplitude * AmplitudeScale(
+                ship.CurrentMassKg / Mathf.Max(ship.Data.hydrostatics.waterDensityKgM3, 1f),
+                length, SupportModel.Immersion(ship.Data.support, speed),
+                referenceDisplacementLengthRatio));
+        }
+
+        // The shader grows the wave height with speed squared alone, which holds for one hull but not
+        // across a fleet: a 138 m loaded cargo ship and a 24 m passenger craft do not raise the same wave
+        // at the same speed. Wave making follows how much water the hull pushes aside, so the tuned
+        // amplitude is scaled by the displacement-length ratio against the vessel it was tuned on, and by
+        // the share of the weight the hull still carries, which is what drops away when a fast craft rises
+        // onto its foils or cushion. Estimated visual scaling, not a validated wave height model.
+        public static float AmplitudeScale(float displacementVolumeM3, float lengthOverallM,
+            float hullImmersion, float referenceRatio)
+        {
+            if (lengthOverallM <= 0f || referenceRatio <= 0f) return hullImmersion;
+            float ratio = displacementVolumeM3 / (lengthOverallM * lengthOverallM * lengthOverallM);
+            return Mathf.Clamp(ratio / referenceRatio, 0.2f, 2f) * hullImmersion;
         }
 
         // The stored river meshes are too coarse to displace waves a few metres long, so the

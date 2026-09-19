@@ -113,9 +113,11 @@ namespace ShipSimulator.Physics
         private void BuildContactPoints()
         {
             VesselParameters p = ship.Parameters;
-            contactPoints = new Vector3[ContactLayout.Length];
+            contactPoints = new Vector3[ContactLayout.Length + (SupportModel.Lifts(p.Data.support) ? 4 : 0)];
             for (int i = 0; i < ContactLayout.Length; i++)
                 contactPoints[i] = new Vector3(ContactLayout[i].x * p.Beam, p.KeelLocalY, ContactLayout[i].y * p.Lpp);
+            for (int i = ContactLayout.Length; i < contactPoints.Length; i++)
+                contactPoints[i] = SupportModel.ContactPoint(p, i - ContactLayout.Length);
         }
 
         private void Stiffness(RiverBottomType bottom, out float stiffness, out float friction)

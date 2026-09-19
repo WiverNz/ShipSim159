@@ -72,6 +72,26 @@ namespace ShipSimulator.Tests
             Assert.That(layout.CameraScale, Is.EqualTo(dimensions.lengthOverallM / 138.3f).Within(1e-3f));
         }
 
+        [TestCase("volgobalt-295ar")]
+        [TestCase("volgoneft-1577")]
+        [TestCase("meteor-342u")]
+        [TestCase("luch-14352")]
+        public void GeneratedCameraViews_StandClearOfTheModel(string id)
+        {
+            VesselCatalogue.Entry entry = VesselCatalogue.Load().Find(id);
+            VesselLayout layout = entry.prefab.GetComponent<VesselLayout>();
+            Bounds bounds = entry.prefab.transform.Find("DetailedVisual")
+                .GetComponent<MeshFilter>().sharedMesh.bounds;
+
+            Assert.That(layout.CameraViews.Length, Is.EqualTo(8), "One offset per orbit view.");
+            foreach (Vector3 view in layout.CameraViews)
+                Assert.That(Vector3.Distance(bounds.ClosestPoint(view), view), Is.GreaterThan(1f),
+                    $"{id}: the view at {view} is inside or against its own model.");
+            Assert.That(layout.CameraViews[5].z, Is.GreaterThan(bounds.max.z), "The bow view clears the stem.");
+            Assert.That(layout.CameraViews[6].z, Is.LessThan(bounds.min.z), "The stern view clears the transom.");
+            Assert.That(layout.CameraViews[1].y, Is.GreaterThan(bounds.max.y), "The bridge view clears the mast.");
+        }
+
         [Test]
         public void SaveWithoutVesselId_RestoresTheOriginalVessel()
         {

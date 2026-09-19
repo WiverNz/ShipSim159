@@ -39,6 +39,8 @@ namespace ShipSimulator.Tests
                 buoy.Build(true);
                 Assert.That(owner.GetComponentsInChildren<Renderer>().Length, Is.EqualTo(count));
                 Assert.That(collider.enabled, Is.True);
+                // Kept for detection, but a mark does not stop a ship.
+                Assert.That(collider.isTrigger, Is.True);
                 Assert.That(owner.GetComponent<Renderer>().enabled, Is.False);
                 Assert.That(buoy.Floating.Find("Lantern glass"), Is.Not.Null);
                 Assert.That(buoy.Floating.Find("Painted steel"), Is.Not.Null);

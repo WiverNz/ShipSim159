@@ -174,11 +174,13 @@ namespace ShipSimulator.Tests
         [Test]
         public void HudStatusText_UsesReadableObjectiveAndCompactCameraLayout()
         {
-            string objective = ShipTelemetryUI.FormatObjectiveStatus(770f);
+            string objective = ShipTelemetryUI.FormatObjectiveStatus(770f, 5.14444f);
             string camera = ShipTelemetryUI.FormatCameraStatus("NAVIGATOR", 8, 9);
 
-            Assert.That(objective, Does.Contain("Speed limit"));
-            Assert.That(objective, Does.Contain("<b>8 km/h</b>"));
+            Assert.That(objective, Does.Contain("Service speed"));
+            // The vessel's own service speed, not one figure for a fleet that runs from 18 to 65 km/h.
+            Assert.That(objective, Does.Contain("<b>19 km/h</b>"));
+            Assert.That(ShipTelemetryUI.FormatObjectiveStatus(770f, 18.06f), Does.Contain("<b>65 km/h</b>"));
             Assert.That(objective, Does.Not.Contain("&lt;="));
             Assert.That(camera, Does.StartWith("CAMERA:"));
             Assert.That(camera, Does.Contain("NAVIGATOR"));

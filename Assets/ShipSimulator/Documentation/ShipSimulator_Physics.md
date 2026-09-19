@@ -121,8 +121,9 @@ Vessels with a `support` section stop floating on their hull as they gather way.
 fraction, zero below the takeoff speed and full at the support speed, says how much of the weight the
 air cushion or the foils carry. That fraction:
 
-- lifts the hull with a vertical force at the support position, so draft, trim and freeboard follow
-  from the same station hydrostatics as for any other vessel;
+- supplies nominal lift to four support patches; local immersion provides restoring heave, pitch
+  and roll forces and point velocity supplies damping. A dry patch supplies no lift. Hull
+  hydrostatics carry the remaining weight;
 - weakens everything the immersed hull does, scaling hull forces, squat and bank suction;
 - reshapes resistance: a hump through the takeoff range, then a fraction of the displacement drag
   once supported;
@@ -131,7 +132,13 @@ air cushion or the foils carry. That fraction:
 Rudders and propellers stay immersed and keep working, which is how both craft steer. Lift-fan power
 is taken off the delivered power before the propeller. The curve shape, the takeoff speeds and the
 supported drag factors are estimates of published trends, not measured data for these craft; foil
-lift distribution, banked turns and cushion pitch stability are not modelled.
+the four-patch lift distribution is an estimate, not foil hydrodynamics or a cushion pressure solver.
+Patch span is half the perpendicular length and the overall beam, centred at the support position.
+The support centre is aligned with the estimated loaded centre of gravity for neutral trim.
+Damping uses the existing heave damping ratio. Force per patch is capped at twice nominal lift.
+Appendage extension is inferred from full-support draft and the remaining loaded hull immersion;
+clearance and grounding sample the same fixed points, including at rest. This currently gives the
+Meteor about 2.27 m draft afloat rather than the published 2.35 m, pending measured geometry.
 
 Shallow water: the Lackenby speed loss is a subcritical regression, so it is faded out above the
 critical depth Froude number rather than extrapolated. Without that, a hydrofoil at 65 km/h in 4.6 m

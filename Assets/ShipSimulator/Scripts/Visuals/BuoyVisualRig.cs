@@ -14,6 +14,10 @@ namespace ShipSimulator.Visuals
         {
             if (floating != null) return;
             foreach (Renderer old in GetComponentsInChildren<Renderer>()) old.enabled = false;
+            // The placeholder primitives leave solid colliders where nothing is drawn any more, and a
+            // moored mark the size of a barrel then holds a loaded ship at full ahead. The shapes stay
+            // for anything that wants to detect a buoy; they no longer resolve contacts.
+            foreach (Collider mark in GetComponentsInChildren<Collider>()) mark.isTrigger = true;
             floating = new GameObject("Detailed buoy").transform;
             floating.SetParent(transform, false);
             phase = Mathf.Repeat(transform.position.x * 0.37f + transform.position.z * 0.13f, 6.28f);

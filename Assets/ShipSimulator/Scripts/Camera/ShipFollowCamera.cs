@@ -45,8 +45,14 @@ namespace ShipSimulator.CameraSystem
         public string ViewName => GetViewName(viewIndex);
         private bool IsNavigatorView => viewIndex == ViewCount - 1;
         private VesselLayout layout;
-        // Views are authored for the 507B; other vessels scale them by length and use their own bridge.
+        // Views are authored for the 507B; other vessels scale them by length and use their own bridge,
+        // or replace the set outright when their model knows its own silhouette.
         private float Scale => layout != null ? layout.CameraScale : 1f;
+        private Vector3[] ModelViews =>
+            layout != null && layout.CameraViews != null && localViews != null &&
+            layout.CameraViews.Length == localViews.Length
+                ? layout.CameraViews
+                : null;
         private Vector3 NavigatorPosition => layout != null ? layout.NavigatorEye : navigatorPosition;
         private Vector3 NavigatorLook => layout != null ? layout.NavigatorLookAt : navigatorLookOffset;
         private Vector3 LookOffset => lookOffset * Scale;
@@ -142,12 +148,19 @@ namespace ShipSimulator.CameraSystem
             }
         }
 
+        private Vector3 ViewOffset(int index)
+        {
+            Vector3[] model = ModelViews;
+            int clamped = Mathf.Clamp(index, 0, localViews.Length - 1);
+            return model != null ? model[clamped] : localViews[clamped] * Scale;
+        }
+
         private void ResetOrbitToView()
         {
             if (localViews == null || localViews.Length == 0) return;
 
-            Vector3 offset = localViews[Mathf.Clamp(viewIndex, 0, localViews.Length - 1)] * Scale;
-            orbitDistance = Mathf.Clamp(offset.magnitude, MinDistance, MaxDistance);
+            Vector3 offset = ViewOffset(viewIndex);
+            orbitDistance = Mathf.Clamp(offset.magnitude, MinDistance, Mathf.Max(MaxDistance, offset.magnitude));
             orbitYaw = Mathf.Atan2(offset.x, -offset.z) * Mathf.Rad2Deg;
             orbitPitch = Mathf.Clamp(
                 Mathf.Asin(offset.y / Mathf.Max(offset.magnitude, 0.001f)) * Mathf.Rad2Deg,

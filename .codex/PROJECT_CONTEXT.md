@@ -2,6 +2,21 @@
 
 Last updated: 2026-09-20
 
+## Serpukhov Mooring Collisions and Radar, 2026-09-20
+
+The scene builder now retains solid box colliders on moored hulls, superstructures,
+floating docks and pier parts. These are fixed obstacles with estimated geometry matching
+the existing visuals. Each of the 66 moorings has one `RadarObstacle` on its main hull or
+deck, rendered as a pale purple footprint using the collider dimensions and relative heading.
+The radar mask clips partial footprints at the viewport edge without hiding an entire hull
+when its centre goes off screen. The legend identifies craft and piers.
+
+Rebuilt the scene using the existing working-tree scenario JSON without changing that file.
+Verified: EditMode 197/197 and PlayMode 40/40, including side and end impacts at 25 m/s
+against every generated mooring's collision dimensions, plus head-up radar projection tests.
+Inspected the HUD capture at `Logs/Serpukhov/radar-moorings.png`.
+The full fleet shakedown also passed for all five playable vessels, with no compiler errors.
+
 ## Serpukhov Zaton: Start Inside the Basin and a Yacht Marina, 2026-09-20
 
 The passage now runs outbound and begins where the interesting water is. It starts at the head of

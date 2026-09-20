@@ -16,6 +16,58 @@ namespace ShipSimulator.Tests
         private const string GeometryPath = "Assets/ShipSimulator/Data/Scenarios/SerpukhovZaton.json";
 
         [Test]
+        public void Moorings_HaveSolidCollidersAndOneRadarFootprintPerObject()
+        {
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            Transform root = GameObject.Find("Laid-up craft").transform;
+            ScenarioGeometry geometry = ScenarioGeometry.Load(GeometryPath);
+            Assert.That(root.GetComponentsInChildren<RadarObstacle>().Length,
+                Is.EqualTo(geometry.moorings.Length));
+            foreach (Transform part in root)
+            {
+                BoxCollider collider = part.GetComponent<BoxCollider>();
+                Assert.That(collider, Is.Not.Null, part.name);
+                Assert.That(collider.enabled && !collider.isTrigger, Is.True, part.name);
+                Assert.That(collider.attachedRigidbody, Is.Null, "Moored objects stay fixed.");
+            }
+            foreach (ScenarioGeometry.Mooring mooring in geometry.moorings)
+            {
+                Transform hull = root.Find(mooring.name);
+                Assert.That(hull.GetComponent<RadarObstacle>(), Is.Not.Null, mooring.name);
+                Assert.That(Vector3.Distance(hull.position, mooring.Center), Is.LessThan(1f));
+                Assert.That(hull.localScale.z, Is.EqualTo(mooring.lengthM).Within(0.01f));
+                Assert.That(hull.localScale.x, Is.EqualTo(Mathf.Max(2.5f, mooring.widthM)).Within(0.01f));
+            }
+        }
+
+        [TestCase(0f, 90f, 82f, -82f, -90f)]
+        [TestCase(90f, 90f, 0f, 0f, 0f)]
+        [TestCase(180f, 90f, -82f, -82f, 90f)]
+        public void RadarFootprint_UsesHullDimensionsAndHeadUpPositionAndHeading(
+            float heading, float hullHeading, float x, float y, float angle)
+        {
+            var hull = new GameObject("Radar test hull");
+            try
+            {
+                hull.transform.position = new Vector3(110f, 0f, 20f);
+                hull.transform.rotation = Quaternion.Euler(0f, hullHeading, 0f);
+                hull.transform.localScale = new Vector3(12f, 3f, 70f);
+                RadarObstacle obstacle = hull.AddComponent<RadarObstacle>();
+                obstacle.Project(new Vector3(10f, 0f, 20f), heading, 0.82f, -82f,
+                    out Vector2 position, out Vector2 size, out float rotation);
+                Assert.That(position.x, Is.EqualTo(x).Within(0.001f));
+                Assert.That(position.y, Is.EqualTo(y).Within(0.001f));
+                Assert.That(size.x, Is.EqualTo(9.84f).Within(0.001f));
+                Assert.That(size.y, Is.EqualTo(57.4f).Within(0.001f));
+                Assert.That(rotation, Is.EqualTo(angle).Within(0.001f));
+            }
+            finally
+            {
+                Object.DestroyImmediate(hull);
+            }
+        }
+
+        [Test]
         public void ZatonScene_IsEnabledInBuildSettingsBehindTheTrainingScenes()
         {
             EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;

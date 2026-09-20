@@ -302,52 +302,53 @@ namespace ShipSimulator.Editor
                 switch (craft.kind)
                 {
                     case "pier":
-                        Box(root, craft.name, centre + Vector3.up * 0.9f,
+                        SolidBox(root, craft.name, centre + Vector3.up * 0.9f,
                             new Vector3(beam, 0.5f, length), rotation, deck);
                         int piles = Mathf.Max(3, Mathf.RoundToInt(length / 12f));
                         for (int i = 0; i < piles; i++)
-                            Box(root, craft.name + " pile " + (i + 1),
+                            SolidBox(root, craft.name + " pile " + (i + 1),
                                 centre + rotation * new Vector3(0f, 0.1f, (i / (piles - 1f) - 0.5f) * length * 0.92f),
                                 new Vector3(0.45f, 2.4f, 0.45f), rotation, steel);
                         break;
                     case "dock":
                         // A floating dock reads as an open box: two side walls on a submerged pontoon.
-                        Box(root, craft.name, centre + Vector3.up * 0.3f,
+                        SolidBox(root, craft.name, centre + Vector3.up * 0.3f,
                             new Vector3(beam, 2.4f, length), rotation, rust);
                         for (int side = -1; side <= 1; side += 2)
-                            Box(root, craft.name + (side < 0 ? " port wall" : " starboard wall"),
+                            SolidBox(root, craft.name + (side < 0 ? " port wall" : " starboard wall"),
                                 centre + rotation * new Vector3(side * (beam * 0.5f - 1.2f), 3.4f, 0f),
                                 new Vector3(2.4f, 5.6f, length * 0.92f), rotation, rust);
                         break;
                     case "craft":
-                        Box(root, craft.name, centre + Vector3.up * 0.25f,
+                        SolidBox(root, craft.name, centre + Vector3.up * 0.25f,
                             new Vector3(beam, 1.5f, length), rotation, paint);
-                        Box(root, craft.name + " cabin",
+                        SolidBox(root, craft.name + " cabin",
                             centre + rotation * new Vector3(0f, 1.6f, -length * 0.1f),
                             new Vector3(beam * 0.62f, 1.6f, length * 0.34f), rotation, paint);
                         break;
                     case "vessel":
-                        Box(root, craft.name, centre + Vector3.up * 0.1f,
+                        SolidBox(root, craft.name, centre + Vector3.up * 0.1f,
                             new Vector3(beam, 3.4f, length), rotation, RiverLandscapeBuilder.Range(random, 0f, 1f) < 0.45f ? rust : steel);
-                        Box(root, craft.name + " deckhouse",
+                        SolidBox(root, craft.name + " deckhouse",
                             centre + rotation * new Vector3(0f, 3.1f, -length * 0.22f),
                             new Vector3(beam * 0.72f, 3.0f, length * 0.3f), rotation, paint);
-                        Box(root, craft.name + " wheelhouse",
+                        SolidBox(root, craft.name + " wheelhouse",
                             centre + rotation * new Vector3(0f, 5.6f, -length * 0.18f),
                             new Vector3(beam * 0.45f, 2.2f, length * 0.13f), rotation, paint);
                         break;
                     default:
                         // Barge: a long low hull with cargo coamings and a small house aft.
-                        Box(root, craft.name, centre + Vector3.down * 0.2f,
+                        SolidBox(root, craft.name, centre + Vector3.down * 0.2f,
                             new Vector3(beam, 3.2f, length), rotation, rust);
-                        Box(root, craft.name + " coaming",
+                        SolidBox(root, craft.name + " coaming",
                             centre + rotation * new Vector3(0f, 1.9f, length * 0.06f),
                             new Vector3(beam * 0.82f, 1.4f, length * 0.68f), rotation, deck);
-                        Box(root, craft.name + " house",
+                        SolidBox(root, craft.name + " house",
                             centre + rotation * new Vector3(0f, 2.6f, -length * 0.41f),
                             new Vector3(beam * 0.55f, 2.6f, length * 0.12f), rotation, paint);
                         break;
                 }
+                root.Find(craft.name).gameObject.AddComponent<RadarObstacle>();
             }
         }
 
@@ -675,8 +676,14 @@ namespace ShipSimulator.Editor
             return material;
         }
 
-        private static void Box(Transform parent, string name, Vector3 center, Vector3 size,
+        private static void SolidBox(Transform parent, string name, Vector3 center, Vector3 size,
             Quaternion rotation, Material material)
+        {
+            Box(parent, name, center, size, rotation, material, true);
+        }
+
+        private static void Box(Transform parent, string name, Vector3 center, Vector3 size,
+            Quaternion rotation, Material material, bool solid = false)
         {
             GameObject box = GameObject.CreatePrimitive(PrimitiveType.Cube);
             box.name = name;
@@ -684,7 +691,7 @@ namespace ShipSimulator.Editor
             box.transform.SetPositionAndRotation(center, rotation);
             box.transform.localScale = size;
             box.GetComponent<Renderer>().sharedMaterial = material;
-            Object.DestroyImmediate(box.GetComponent<Collider>());
+            if (!solid) Object.DestroyImmediate(box.GetComponent<Collider>());
         }
 
         private static void Primitive(string name, PrimitiveType type, Transform parent,

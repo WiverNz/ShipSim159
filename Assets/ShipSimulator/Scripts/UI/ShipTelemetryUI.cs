@@ -57,6 +57,8 @@ namespace ShipSimulator.UI
         private ScenarioBathymetry scenarioBathymetry;
         private GorodetsScenarioController scenario;
         private readonly List<MapContact> mapContacts = new List<MapContact>();
+        private readonly List<(RadarObstacle Obstacle, RectTransform Rect)> radarObstacles =
+            new List<(RadarObstacle, RectTransform)>();
         private readonly List<MapLine> mapLines = new List<MapLine>();
         private readonly List<Vector3> radarTrack = new List<Vector3>();
         private readonly List<HudButton> telegraphButtons = new List<HudButton>();
@@ -423,6 +425,7 @@ namespace ShipSimulator.UI
 
         private void BuildMiniMap()
         {
+            radarObstacles.Clear();
             mapContacts.Clear();
             mapLines.Clear();
             radarTrack.Clear();
@@ -485,6 +488,15 @@ namespace ShipSimulator.UI
                 AddBuoy($"RightRedBuoy{i}", new Color(0.92f, 0.30f, 0.24f),
                     new Vector3(centerX - normal.x * width, 0f, z - normal.y * width));
             }
+            foreach (RadarObstacle obstacle in FindObjectsByType<RadarObstacle>(FindObjectsSortMode.None))
+            {
+                if (obstacle.gameObject.scene != gameObject.scene) continue;
+                RectTransform footprint = ImageRect(mapWorld, "Obstacle " + obstacle.name,
+                    new Color(0.88f, 0.76f, 0.95f), Vector2.zero, Vector2.one);
+                footprint.GetComponent<Image>().raycastTarget = false;
+                radarObstacles.Add((obstacle, footprint));
+            }
+
             mapWaypoint = AddMapContact("Waypoint", warningColor,
                 objectivePosition, new Vector2(22f, 22f));
             RectTransform waypointRing = ImageRect(mapWaypoint, "WaypointRing",
@@ -560,6 +572,18 @@ namespace ShipSimulator.UI
                 Vector2 start = RadarPosition(line.WorldStart, sin, cos);
                 Vector2 end = RadarPosition(line.WorldEnd, sin, cos);
                 SetRadarLine(line.Rect, start, end);
+            }
+            foreach (var contact in radarObstacles)
+            {
+                bool visible = contact.Obstacle != null && contact.Obstacle.isActiveAndEnabled;
+                contact.Rect.gameObject.SetActive(visible);
+                if (!visible) continue;
+                contact.Obstacle.Project(ship.transform.position, ship.transform.eulerAngles.y,
+                    MapPixelsPerMeter, RadarVesselOffsetY,
+                    out Vector2 position, out Vector2 size, out float angle);
+                contact.Rect.anchoredPosition = position;
+                contact.Rect.sizeDelta = size;
+                contact.Rect.localRotation = Quaternion.Euler(0f, 0f, angle);
             }
             UpdateRadarChannel(sin, cos);
             UpdateRadarTrack(sin, cos);
@@ -1038,7 +1062,7 @@ namespace ShipSimulator.UI
                 $"<color=#8AA0AD>DRAFT</color> {ship.EffectiveDraftM:F1} m\n" +
                 "<size=13><b><color=#46A6BC>SAFE</color>   " +
                 "<color=#D29B45>SHALLOW</color>   <color=#E04539>DANGER</color>   " +
-                "<color=#E8B24D>ROUTE</color></b></size>\n" +
+                "<color=#E8B24D>ROUTE</color>   <color=#E0C2F2>CRAFT / PIER</color></b></size>\n" +
                 "<size=12><color=#56C7E6>heading / predicted path</color>    " +
                 "<color=#E86054>red mark</color>   " +
                 "<color=#4DC76B>green mark</color></size>";

@@ -22,6 +22,9 @@ instrumentation.
 
 ## Features
 
+Windows release packaging and Unity license setup are documented in
+[`scripts/README.md`](scripts/README.md).
+
 - Data-driven vessels: each ship is a JSON specification plus a model prefab, so the same
   simulation runs any hull.
 - Detailed 138.3 m Volgo-Don 507B model integrated into Unity URP.

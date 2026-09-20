@@ -1065,6 +1065,23 @@ Latest verification after this work:
 - `Assets/ShipSimulator/Scripts/Physics/VesselDataValidator.cs`
 - `Assets/ShipSimulator/Scripts/Editor/VolgoDonModelIntegrator.cs`
 
+## Windows tag releases (2026-09-20)
+
+- Added `scripts/release.sh` for stable SemVer bumps or explicit versions, dry runs,
+  confirmation, annotated tags and optional branch-first, then tag push. It never edits project
+  versions or creates commits; real releases require a clean tree.
+- Added `.github/workflows/release.yml`: pushed `vX.Y.Z` tags build with GameCI and
+  Unity `6000.6.0f1`, targeting StandaloneWindows64 with the current Mono backend.
+  The complete build is zipped, extracted and checked before GitHub Release upload.
+- `scripts/release-smoke.sh` checks nonempty Windows player, UnityPlayer, Mono,
+  data and runtime assembly files. `scripts/README.md` documents license secrets,
+  first-release commands and the limits of file-layout verification.
+- Verified Bash syntax, workflow YAML parsing, ten mocked version/dirty-tree cases,
+  complete/missing/empty player fixtures and a ZIP extraction round trip. No Git
+  mutations, Unity build or GitHub workflow run were performed. The first remote
+  run must verify license activation and editor image availability; Windows gameplay
+  still needs a manual launch check. Existing SerpukhovZaton.json edits were preserved.
+
 ## Shared agent check tools (2026-09-20)
 
 - Moved reusable Unity launching and XML summaries to `Tools/shipsim-check.ps1` and

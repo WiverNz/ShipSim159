@@ -1154,3 +1154,29 @@ Latest verification after this work:
   a busy project, compiler errors, missing outputs and exit propagation. Actual FastCrafts
   dry-run and XML summary parsing passed. No Unity gameplay or rendering checks were run
   for this tooling-only change. Native macOS/Linux launching remains unsupported.
+
+## Authored Luch 14352 visual, 2026-09-20
+
+- Replaced only the Luch prefab visual with an actual Blender MCP-authored FBX, based on
+  the updated 14352 archive photograph (FleetPhoto 478451). Source:
+  `Art/Source/Luch14352/Luch14352.blend`; reference decisions and six retained renders
+  are alongside it. Export: `Assets/ShipSimulator/Models/Luch14352/Luch14352.fbx`.
+- LOD0/1/2: 59,946 / 26,974 / 7,930 triangles. LOD0 dimensions: 23.7201 m length,
+  4.5300 m outer beam, 5.1279 m including mast. Main hull beam 3.85 m; wheelhouse
+  top 3.60 m above baseline. The disputed beam definitions are documented as an
+  interpretation, not a verified source resolution. All LOD topology audits passed.
+- `Luch14352ModelIntegrator` preserves Rigidbody, physics scripts and three box
+  colliders, updates only `DetailedVisual` and model-dependent camera/light layout.
+  The procedural builder routes Luch through the integrator on catalogue rebuild.
+  Physics JSON and six serialized physics component blocks are unchanged.
+- Corrected source documentation: 14352 has one waterjet; 1.25 m is hull depth,
+  0.45 m is skeg height, published aft cushion draft is 0.60 m. Existing simulation
+  coefficients/dimensions remain explicitly estimated and were not recalibrated.
+- Verified Unity 6000.6.0f1 import, axes, unit scale, waterline and no reflection;
+  EditMode 199/199, PlayMode 40/40, FastCrafts shakedown PASS (both vessels). Luch
+  reached 6.79 m/s in the short reach, 99% configured cushion support, 0.21 m rise,
+  0.1 degree heel. Gameplay port/chase/navigator screenshots inspected. No compile,
+  shader or unexpected runtime exception errors in the four current check logs.
+- Detailed evidence and log paths: `Assets/ShipSimulator/Documentation/Luch14352_Sources.md`.
+  Underbody, jet details, hydraulics and small fittings are reconstructions; the
+  model is a game approximation, not a survey or training-validated vessel.

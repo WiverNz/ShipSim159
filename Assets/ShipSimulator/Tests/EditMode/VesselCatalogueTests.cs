@@ -45,7 +45,7 @@ namespace ShipSimulator.Tests
             VesselCatalogue.Entry entry = VesselCatalogue.Load().Find(id);
             VesselData data = entry.LoadData();
             VesselDimensions dimensions = data.dimensions;
-            Bounds bounds = entry.prefab.transform.Find("DetailedVisual").GetComponent<MeshFilter>().sharedMesh.bounds;
+            Bounds bounds = ModelBounds(entry.prefab);
             // Foils and skegs reach below the hull; displacement ships end at the keel.
             float appendage = SupportModel.Lifts(data.support) ? data.support.supportedDraftM : 0f;
 
@@ -81,8 +81,7 @@ namespace ShipSimulator.Tests
         {
             VesselCatalogue.Entry entry = VesselCatalogue.Load().Find(id);
             VesselLayout layout = entry.prefab.GetComponent<VesselLayout>();
-            Bounds bounds = entry.prefab.transform.Find("DetailedVisual")
-                .GetComponent<MeshFilter>().sharedMesh.bounds;
+            Bounds bounds = ModelBounds(entry.prefab);
 
             Assert.That(layout.CameraViews.Length, Is.EqualTo(8), "One offset per orbit view.");
             foreach (Vector3 view in layout.CameraViews)
@@ -101,10 +100,11 @@ namespace ShipSimulator.Tests
             var layout = prefab.GetComponent<VesselLayout>();
             var probe = new GameObject("Navigator obstruction probe");
             bool backfaces = UnityEngine.Physics.queriesHitBackfaces;
+            Mesh opaque = OpaqueModelMesh(prefab);
             try
             {
                 var collider = probe.AddComponent<MeshCollider>();
-                collider.sharedMesh = prefab.transform.Find("DetailedVisual").GetComponent<MeshFilter>().sharedMesh;
+                collider.sharedMesh = opaque;
                 UnityEngine.Physics.queriesHitBackfaces = true;
                 UnityEngine.Physics.SyncTransforms();
                 var direction = (layout.NavigatorLookAt - layout.NavigatorEye).normalized;
@@ -115,7 +115,57 @@ namespace ShipSimulator.Tests
             {
                 UnityEngine.Physics.queriesHitBackfaces = backfaces;
                 UnityEngine.Object.DestroyImmediate(probe);
+                UnityEngine.Object.DestroyImmediate(opaque);
             }
+        }
+
+        private static IEnumerable<MeshFilter> ModelMeshes(GameObject prefab)
+        {
+            Transform visual = prefab.transform.Find("DetailedVisual");
+            LODGroup group = visual.GetComponent<LODGroup>();
+            if (group != null)
+            {
+                foreach (Renderer renderer in group.GetLODs()[0].renderers)
+                    yield return renderer.GetComponent<MeshFilter>();
+            }
+            else
+            {
+                foreach (MeshFilter filter in visual.GetComponentsInChildren<MeshFilter>())
+                    yield return filter;
+            }
+        }
+
+        private static Bounds ModelBounds(GameObject prefab)
+        {
+            var bounds = new Bounds(Vector3.zero, Vector3.zero);
+            foreach (MeshFilter filter in ModelMeshes(prefab))
+                foreach (Vector3 vertex in filter.sharedMesh.vertices)
+                    bounds.Encapsulate(prefab.transform.InverseTransformPoint(filter.transform.TransformPoint(vertex)));
+            return bounds;
+        }
+
+        private static Mesh OpaqueModelMesh(GameObject prefab)
+        {
+            var vertices = new List<Vector3>();
+            var triangles = new List<int>();
+            foreach (MeshFilter filter in ModelMeshes(prefab))
+            {
+                int offset = vertices.Count;
+                foreach (Vector3 vertex in filter.sharedMesh.vertices)
+                    vertices.Add(prefab.transform.InverseTransformPoint(filter.transform.TransformPoint(vertex)));
+                Material[] materials = filter.GetComponent<Renderer>().sharedMaterials;
+                for (int submesh = 0; submesh < filter.sharedMesh.subMeshCount; submesh++)
+                {
+                    // Authored glazing is transparent; a real window is not an opaque obstruction.
+                    if (materials[submesh].renderQueue >= (int)UnityEngine.Rendering.RenderQueue.Transparent) continue;
+                    foreach (int index in filter.sharedMesh.GetTriangles(submesh)) triangles.Add(offset + index);
+                }
+            }
+            var mesh = new Mesh { indexFormat = UnityEngine.Rendering.IndexFormat.UInt32 };
+            mesh.SetVertices(vertices);
+            mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateBounds();
+            return mesh;
         }
 
         [TestCase("meteor-342u")]

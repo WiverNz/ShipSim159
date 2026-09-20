@@ -319,6 +319,8 @@ namespace ShipSimulator.Editor
 
         public static GameObject Build(Design design)
         {
+            // The authored 14352 model owns its visual hierarchy; keep catalogue rebuilds on that path.
+            if (design.Id == Luch.Id) return Luch14352ModelIntegrator.UpdatePrefab();
             TextAsset json = AssetDatabase.LoadAssetAtPath<TextAsset>(design.JsonPath);
             if (json == null) throw new InvalidOperationException("Vessel data not found: " + design.JsonPath);
             VesselData data = JsonUtility.FromJson<VesselData>(json.text);

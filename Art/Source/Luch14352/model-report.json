@@ -1,0 +1,75 @@
+{
+  "units": "metres",
+  "blender_axes": "+Y forward, +X starboard, +Z up",
+  "waterline_z": 0,
+  "baseline_z": -0.66,
+  "wheelhouse_top_above_baseline": 3.6,
+  "lods": [
+    {
+      "name": "Luch14352_LOD0",
+      "triangles": 59946,
+      "dimensions_xyz": [
+        4.53000020980835,
+        23.720083236694336,
+        5.127925276756287
+      ],
+      "min_xyz": [
+        -2.265000104904175,
+        -11.845999717712402,
+        -0.6543744802474976
+      ],
+      "max_xyz": [
+        2.265000104904175,
+        11.874083518981934,
+        4.473550796508789
+      ],
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Luch14352_LOD1",
+      "triangles": 26974,
+      "dimensions_xyz": [
+        4.529115915298462,
+        23.715173721313477,
+        5.128339409828186
+      ],
+      "min_xyz": [
+        -2.2645888328552246,
+        -11.845264434814453,
+        -0.654788613319397
+      ],
+      "max_xyz": [
+        2.2645270824432373,
+        11.869909286499023,
+        4.473550796508789
+      ],
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0
+    },
+    {
+      "name": "Luch14352_LOD2",
+      "triangles": 7930,
+      "dimensions_xyz": [
+        4.53000020980835,
+        23.70599937438965,
+        5.133550822734833
+      ],
+      "min_xyz": [
+        -2.265000104904175,
+        -11.845999717712402,
+        -0.6600000262260437
+      ],
+      "max_xyz": [
+        2.265000104904175,
+        11.859999656677246,
+        4.473550796508789
+      ],
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0
+    }
+  ]
+}

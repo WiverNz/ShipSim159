@@ -925,6 +925,8 @@ namespace ShipSimulator.Editor
         // Updates an existing asset in place so prefab and scene references keep their GUIDs.
         private static T SaveAsset<T>(T asset, string path) where T : Object
         {
+            // The importer warns when the main object name differs from the file name.
+            asset.name = System.IO.Path.GetFileNameWithoutExtension(path);
             T existing = AssetDatabase.LoadAssetAtPath<T>(path);
             if (existing == null)
             {

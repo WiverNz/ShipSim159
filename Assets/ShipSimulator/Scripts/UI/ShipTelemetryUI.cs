@@ -113,16 +113,16 @@ namespace ShipSimulator.UI
                 ship.gameObject.AddComponent<ShipWakeController>();
             if (ship.GetComponent<NavigationLightRig>() == null)
                 ship.gameObject.AddComponent<NavigationLightRig>();
-            dayNight = FindFirstObjectByType<DayNightController>();
+            dayNight = FindAnyObjectByType<DayNightController>();
             simulationTime = GetComponent<SimulationTimeController>();
             if (simulationTime == null)
                 simulationTime = gameObject.AddComponent<SimulationTimeController>();
             weather = FindAnyObjectByType<WeatherController>();
             if (weather == null)
                 weather = gameObject.AddComponent<WeatherController>();
-            scenarioRoute = FindFirstObjectByType<FairwayRoute>();
-            scenarioBathymetry = FindFirstObjectByType<ScenarioBathymetry>();
-            scenario = FindFirstObjectByType<GorodetsScenarioController>();
+            scenarioRoute = FindAnyObjectByType<FairwayRoute>();
+            scenarioBathymetry = FindAnyObjectByType<ScenarioBathymetry>();
+            scenario = FindAnyObjectByType<GorodetsScenarioController>();
             if (dayNight == null)
                 dayNight = gameObject.AddComponent<DayNightController>();
             GameObject navigation = GameObject.Find("Navigation");
@@ -488,7 +488,7 @@ namespace ShipSimulator.UI
                 AddBuoy($"RightRedBuoy{i}", new Color(0.92f, 0.30f, 0.24f),
                     new Vector3(centerX - normal.x * width, 0f, z - normal.y * width));
             }
-            foreach (RadarObstacle obstacle in FindObjectsByType<RadarObstacle>(FindObjectsSortMode.None))
+            foreach (RadarObstacle obstacle in FindObjectsByType<RadarObstacle>())
             {
                 if (obstacle.gameObject.scene != gameObject.scene) continue;
                 RectTransform footprint = ImageRect(mapWorld, "Obstacle " + obstacle.name,
@@ -1144,7 +1144,7 @@ namespace ShipSimulator.UI
 
         private void EnsureEventSystem()
         {
-            if (FindFirstObjectByType<EventSystem>() != null) return;
+            if (FindAnyObjectByType<EventSystem>() != null) return;
             GameObject eventSystem = new GameObject("EventSystem");
             eventSystem.AddComponent<EventSystem>();
             eventSystem.AddComponent<InputSystemUIInputModule>();

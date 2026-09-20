@@ -62,12 +62,18 @@ float RiverCloudDensity(float2 p, float coverage)
     float threshold = lerp(0.62,0.2,coverage);
     return smoothstep(threshold,threshold + 0.22,shape);
 }
+// Single exit point on purpose: with an early return for the disabled case the GLSL
+// translator reports the result as potentially uninitialized in the CloudCookie kernel.
 half RiverCloudShadow(float3 world, float3 sun)
 {
-    if (_RiverCloudShadowDisable > 0.5) return 1;
-    float3 settings = _RiverCloudSettings.w > 0 ? _RiverCloudSettings.xyz : float3(0.45,1,1);
-    float coverage = saturate(lerp(settings.x,1,_RiverCloudWeather));
-    float2 p = RiverCloudCoordinates(world,sun,settings.y,settings.z);
-    return 1 - RiverCloudDensity(p,coverage) * 0.58 * smoothstep(0,0.15,sun.y);
+    half transmittance = 1;
+    if (_RiverCloudShadowDisable <= 0.5)
+    {
+        float3 settings = _RiverCloudSettings.w > 0 ? _RiverCloudSettings.xyz : float3(0.45,1,1);
+        float coverage = saturate(lerp(settings.x,1,_RiverCloudWeather));
+        float2 p = RiverCloudCoordinates(world,sun,settings.y,settings.z);
+        transmittance = 1 - RiverCloudDensity(p,coverage) * 0.58 * smoothstep(0,0.15,sun.y);
+    }
+    return transmittance;
 }
 #endif

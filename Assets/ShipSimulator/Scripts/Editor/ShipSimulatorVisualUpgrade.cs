@@ -431,8 +431,7 @@ namespace ShipSimulator.Editor
 
         private static void ConfigureNavigation(Scene scene)
         {
-            foreach (Light light in UnityEngine.Object.FindObjectsByType<Light>(
-                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (Light light in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsInactive.Include))
             {
                 if (light.gameObject.scene == scene && light.type != LightType.Directional)
                     light.shadows = LightShadows.None;

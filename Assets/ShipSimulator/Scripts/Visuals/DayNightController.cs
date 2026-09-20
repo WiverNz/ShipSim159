@@ -21,8 +21,7 @@ namespace ShipSimulator.Visuals
 
         private void Awake()
         {
-            foreach (Light light in FindObjectsByType<Light>(
-                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (Light light in FindObjectsByType<Light>(FindObjectsInactive.Include))
             {
                 if (light.type == LightType.Directional)
                 {
@@ -87,8 +86,7 @@ namespace ShipSimulator.Visuals
                 navigationLenses[i].enabled = night;
             for (int i = 0; i < navigationFlashers.Count; i++)
                 navigationFlashers[i].SetNight(night);
-            foreach (NavigationLightRig rig in FindObjectsByType<NavigationLightRig>(
-                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+            foreach (NavigationLightRig rig in FindObjectsByType<NavigationLightRig>(FindObjectsInactive.Include))
                 rig.SetNight(night);
             WeatherController weather = FindAnyObjectByType<WeatherController>();
             if (weather != null) weather.RefreshVisuals();

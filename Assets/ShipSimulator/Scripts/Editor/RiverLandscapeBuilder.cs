@@ -60,7 +60,14 @@ namespace ShipSimulator.Editor
             {
                 Mesh mesh = BankMesh(scene.name + (side < 0 ? "Left" : "Right"), route, side, start, end);
                 GameObject bank = MeshObject(side < 0 ? "Left natural bank" : "Right natural bank", root, mesh, ground);
-                if (!gorodets) bank.AddComponent<MeshCollider>().sharedMesh = mesh;
+                if (!gorodets)
+                {
+                    bank.AddComponent<MeshCollider>().sharedMesh = mesh;
+                    // Store the cooked collision data in the asset: the player build warns that it
+                    // will stop cooking mesh colliders for us.
+                    UnityEngine.Physics.BakeMesh(mesh.GetEntityId(), false);
+                    EditorUtility.SetDirty(mesh);
+                }
             }
             Transform water = environment.Find("RiverWater");
             water.localPosition = Vector3.zero;
@@ -344,6 +351,8 @@ namespace ShipSimulator.Editor
         internal static Mesh SaveMesh(string name, Mesh mesh)
         {
             string path = Root + "/" + name + ".asset";
+            // The importer warns when the main object name differs from the file name.
+            mesh.name = name;
             Mesh existing = AssetDatabase.LoadAssetAtPath<Mesh>(path);
             if (existing == null) AssetDatabase.CreateAsset(mesh, path);
             else

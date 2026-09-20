@@ -2,6 +2,38 @@
 
 Last updated: 2026-09-20
 
+## Release Workflow Failure and Build Warnings, 2026-09-20
+
+The v0.1.1 release run failed while packaging: `zip` could not create the archive because
+`game-ci/unity-builder` runs Unity in a container as root, so `build/` came back owned by root.
+The workflow now passes the runner's `uid:gid` as `chownFilesTo`, which makes the builder hand
+the build path and the project path back to the runner account.
+
+Actions bumped off the deprecated Node 20 runtime: `actions/checkout@v5`,
+`game-ci/unity-builder@v5` and `softprops/action-gh-release@v3`, all drop-in for the inputs used
+here. A `Library` cache (`actions/cache@v5`) answers the builder's own first-build warning.
+
+Build warnings cleared in the project itself:
+
+- The obsolete `FindFirstObjectByType` and `FindObjectsSortMode` overloads were replaced with
+  `FindAnyObjectByType` and the sort-mode-free `FindObjectsByType` overloads in `ShipTelemetryUI`,
+  `DayNightController`, `ShipSimulatorVisualUpgrade` and `VesselDataValidationTests`.
+- `RiverCloudShadow` now has a single exit point. Its early return for the disabled case made the
+  GLSL translator report the result as potentially uninitialized in the `CloudCookie` kernel, which
+  only shows up on the Linux build agent.
+- Sixty-eight generated mesh assets carried a main object name that differed from their file name,
+  which the importer warns about on every build. `RiverLandscapeBuilder.SaveMesh` and
+  `ProceduralVesselBuilder.SaveAsset` now name the object after the file, and the committed assets
+  were corrected in place, so no geometry changed.
+- The river bank meshes are the only generated meshes with a `MeshCollider`, and the player build
+  warns that it will stop cooking collision for them. The landscape builder now pre-bakes them with
+  `Physics.BakeMesh`. This one is unverified: it takes effect the next time
+  `Upgrade Water And Landscape` runs, and the warning stays in CI until those two assets are rebuilt.
+
+Verified: compile clean (exit 0, no `error [A-Z]`, no `warning CS`), EditMode 197/197,
+PlayMode 40/40. The GL shader warning and the workflow changes can only be confirmed by the next
+tagged release run.
+
 ## Serpukhov Mooring Collisions and Radar, 2026-09-20
 
 The scene builder now retains solid box colliders on moored hulls, superstructures,

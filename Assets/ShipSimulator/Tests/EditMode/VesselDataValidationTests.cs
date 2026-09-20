@@ -70,9 +70,9 @@ namespace ShipSimulator.Tests
                 "Assets/ShipSimulator/Scenes/RiverTrainingScene.unity",
                 OpenSceneMode.Single);
 
-            ShipTelemetryUI hud = Object.FindFirstObjectByType<ShipTelemetryUI>();
-            ShipPhysicsController ship = Object.FindFirstObjectByType<ShipPhysicsController>();
-            ShipFollowCamera camera = Object.FindFirstObjectByType<ShipFollowCamera>();
+            ShipTelemetryUI hud = Object.FindAnyObjectByType<ShipTelemetryUI>();
+            ShipPhysicsController ship = Object.FindAnyObjectByType<ShipPhysicsController>();
+            ShipFollowCamera camera = Object.FindAnyObjectByType<ShipFollowCamera>();
 
             Assert.That(scene.IsValid(), Is.True);
             Assert.That(hud, Is.Not.Null);

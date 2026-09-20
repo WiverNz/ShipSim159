@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           lfs: true
@@ -35,8 +35,22 @@ jobs:
             exit 1
           fi
 
+      # The builder runs Unity in a container as root, so the workspace comes back owned by
+      # root unless it is told which account the runner uses.
+      - name: Resolve runner ownership
+        id: owner
+        run: echo "user=$(id -u):$(id -g)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore Unity library
+        uses: actions/cache@v5
+        with:
+          path: Library
+          key: Library-StandaloneWindows64-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-StandaloneWindows64-
+
       - name: Build Windows player
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v5
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
@@ -48,6 +62,7 @@ jobs:
           buildName: ShipSim159
           buildsPath: build
           versioning: None
+          chownFilesTo: ${{ steps.owner.outputs.user }}
 
       - name: Verify and package complete player
         env:
@@ -60,7 +75,7 @@ jobs:
           bash scripts/release-smoke.sh --pkg-dir "$RUNNER_TEMP/release-check"
 
       - name: Publish GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: build/ShipSim159-${{ github.ref_name }}-windows-x64.zip
           fail_on_unmatched_files: true

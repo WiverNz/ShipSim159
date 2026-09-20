@@ -1067,6 +1067,20 @@ Latest verification after this work:
 
 ## Windows tag releases (2026-09-20)
 
+- Release version integration: `PlayerSettings.bundleVersion` in
+  `ProjectSettings/ProjectSettings.asset` is now the single version source. Both release
+  scripts bump that value, commit only that file as `Release vX.Y.Z`, verify the committed
+  value, then tag and optionally push branch before tag. Dry runs are side-effect free.
+  This supersedes the earlier tag-derived, no-commit release behavior below.
+- CI rejects tag/bundle-version mismatches before building and uses GameCI
+  `versioning: None` to preserve the committed setting. The menu displays
+  `v{Application.version}` in muted text at the lower-right of its panel.
+- Verified: 10 Bash/CI regression tests and 9 native Windows PowerShell release tests
+  using copied settings and fake Git executables, including commit/tag/push failures,
+  version-only staging/commit, dry-run immutability and LF/CRLF preservation. Unity
+  PlayMode passed 40/40, including the version-label assertion; inspected
+  `Logs/MenuScreenshots/menu-start.png` and confirmed the unobtrusive `v0.1.0` label.
+  No actual release commit, tag, push or hosted CI build was performed.
 - Added native Windows PowerShell equivalents, `scripts/release.ps1` and
   `scripts/release-smoke.ps1`, preserving the Bash scripts and their argument names.
   PowerShell usage and process-local execution policy examples are in `scripts/README.md`.

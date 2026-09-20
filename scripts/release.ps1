@@ -5,19 +5,25 @@ $PSNativeCommandUseErrorActionPreference = $false
 function Show-Usage {
     @'
 Usage: .\scripts\release.ps1 [patch|minor|major|X.Y.Z] [options]
-Create an annotated release tag on the current commit. Default bump: patch.
+Update Unity's bundleVersion, commit Release vX.Y.Z, then tag it. Default bump: patch.
   -n, --dry-run       Print the plan without changing anything (allows a dirty tree).
   -y, --yes           Skip confirmation.
       --push          Push the current branch to origin, then the new tag.
   -m, --message TEXT  Tag message (default: Release vX.Y.Z).
   -h, --help          Show this help.
-Versions come from the highest local vX.Y.Z tag, or 0.0.0 if none exist.
-Fetch origin's tags before releasing. This script never edits files or commits.
+Versions come from PlayerSettings.bundleVersion in ProjectSettings/ProjectSettings.asset.
+Fetch origin's tags before releasing. Only the version settings file is committed.
 '@
 }
 
 function Test-Version([string]$Value) {
     return $Value -cmatch '\A(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\z'
+}
+
+function Get-BundleVersion([string]$Text) {
+    $lines = [regex]::Matches($Text, '(?m)^[ \t]*bundleVersion:[^\r\n]*')
+    if ($lines.Count -ne 1) { throw 'expected exactly one bundleVersion in ProjectSettings/ProjectSettings.asset' }
+    return ($lines[0].Value -replace '^[ \t]*bundleVersion:[ \t]*', '').Trim()
 }
 
 function Invoke-ReleaseGit {
@@ -71,13 +77,11 @@ try {
             [Console]::Error.WriteLine('warning: working tree is dirty; a real release would be refused')
         }
 
-        $current = '0.0.0'
-        $tags = Invoke-ReleaseGit @('for-each-ref', '--sort=-version:refname', '--format=%(refname:strip=2)', 'refs/tags/v*')
-        foreach ($tag in $tags.Output) {
-            if ([string]$tag -cnotmatch '\Av') { continue }
-            $candidate = ([string]$tag).Substring(1)
-            if (Test-Version $candidate) { $current = $candidate; break }
-        }
+        $settings = 'ProjectSettings/ProjectSettings.asset'
+        $settingsPath = Join-Path (Get-Location).Path $settings
+        $settingsText = [IO.File]::ReadAllText($settingsPath)
+        $current = Get-BundleVersion $settingsText
+        if (!(Test-Version $current)) { throw "bundleVersion is not stable SemVer: $current" }
         $parts = @($current.Split('.') | ForEach-Object { [bigint]::Parse($_) })
         if (!$spec) { $spec = 'patch' }
         switch -CaseSensitive ($spec) {
@@ -104,10 +108,10 @@ try {
             if ($remote.ExitCode -ne 0) { throw 'origin remote is required for --push' }
         }
         if (!$message) { $message = "Release v$new" }
-        $commit = Invoke-ReleaseGit @('rev-parse', 'HEAD')
         Write-Output "Current: $current"
         Write-Output "Release: v$new"
-        Write-Output "Commit: $($commit.Output -join '')"
+        Write-Output "File: $settings"
+        Write-Output "Commit: Release v$new"
         Write-Output "Message: $message"
         Write-Output "Push to origin: $([int]$doPush)"
         if ($dryRun) {
@@ -115,10 +119,22 @@ try {
             exit 0
         }
         if (!$assumeYes) {
-            $answer = Read-Host 'Create this release tag? [y/N]'
+            $answer = Read-Host 'Update bundleVersion, commit and tag this release? [y/N]'
             if ($answer -cnotmatch '\A[Yy]\z') { throw 'aborted' }
         }
 
+        $updated = [regex]::Replace($settingsText, '(?m)^([ \t]*)bundleVersion:[^\r\n]*', "`${1}bundleVersion: $new")
+        $bytes = [IO.File]::ReadAllBytes($settingsPath)
+        $hasBom = $bytes.Length -ge 3 -and $bytes[0] -eq 239 -and $bytes[1] -eq 187 -and $bytes[2] -eq 191
+        [IO.File]::WriteAllText($settingsPath, $updated, [Text.UTF8Encoding]::new($hasBom))
+        $result = Invoke-ReleaseGit @('add', '--', $settings)
+        $result.Output | Write-Output
+        $result = Invoke-ReleaseGit @('commit', '--only', '-m', "Release v$new", '--', $settings)
+        $result.Output | Write-Output
+        $committed = Invoke-ReleaseGit @('show', "HEAD:$settings")
+        if ((Get-BundleVersion ($committed.Output -join "`n")) -cne $new) {
+            throw "committed bundleVersion does not match v$new"
+        }
         $result = Invoke-ReleaseGit @('tag', '-a', "v$new", '-m', $message)
         $result.Output | Write-Output
         if ($doPush) {
@@ -129,7 +145,9 @@ try {
             $result.Output | Write-Output
         }
         else {
-            Write-Output "Push when ready: git push origin refs/tags/v${new}:refs/tags/v$new"
+            $branch = Invoke-ReleaseGit @('symbolic-ref', '--short', 'HEAD')
+            Write-Output "Push when ready:`n  git push origin $($branch.Output -join '')"
+            Write-Output "  git push origin refs/tags/v${new}:refs/tags/v$new"
         }
     }
     finally {

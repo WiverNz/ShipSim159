@@ -29,6 +29,11 @@ jobs:
           [[ "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
           version=$(awk '/^m_EditorVersion:/ {gsub(/\r/, ""); print $2}' ProjectSettings/ProjectVersion.txt)
           [[ "$version" == '6000.6.0f1' ]]
+          bundle_version=$(awk '/^[ \t]*bundleVersion:/ {count++; value=$0; sub(/^[ \t]*bundleVersion:[ \t]*/, "", value); sub(/[ \t\r]+$/, "", value)} END {if (count != 1) exit 1; print value}' ProjectSettings/ProjectSettings.asset)
+          if [[ "${RELEASE_TAG#v}" != "$bundle_version" ]]; then
+            echo "Tag $RELEASE_TAG does not match PlayerSettings.bundleVersion ($bundle_version)" >&2
+            exit 1
+          fi
 
       - name: Build Windows player
         uses: game-ci/unity-builder@v4
@@ -42,7 +47,7 @@ jobs:
           targetPlatform: StandaloneWindows64
           buildName: ShipSim159
           buildsPath: build
-          versioning: Tag
+          versioning: None
 
       - name: Verify and package complete player
         env:

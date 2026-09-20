@@ -506,6 +506,9 @@ namespace ShipSimulator.UI
             heading = Label(layout, "", 38, White, 882, 108, 500, 64, FontStyle.Bold);
             pageRoot = Rect(layout, "Menu page", 885, 206, 480, 560);
             status = Label(layout, "", 16, Muted, 885, 787, 478, 72);
+            Text version = Label(layout, "v" + Application.version, 14, Muted, 885, 859, 478, 25);
+            version.name = "Game version";
+            version.alignment = TextAnchor.MiddleRight;
         }
 
         private Button ActionButton(string title, string detail, float y, Action action, bool primary = false, bool enabled = true)

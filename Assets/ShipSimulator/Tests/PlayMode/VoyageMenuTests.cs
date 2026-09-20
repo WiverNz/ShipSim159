@@ -76,6 +76,10 @@ namespace ShipSimulator.Tests
             Assert.That(VoyageMenu.IsOpen, Is.True);
             Assert.That(Time.timeScale, Is.Zero);
             Assert.That(AudioListener.pause, Is.True);
+            Text version = menu.transform.Find("Maritime Menu/Bridge layout/Game version").GetComponent<Text>();
+            Assert.That(version.text, Is.EqualTo("v" + Application.version));
+            Assert.That(version.gameObject.activeInHierarchy, Is.True);
+            Assert.That(version.raycastTarget, Is.False);
             ShipPhysicsController ship = Object.FindAnyObjectByType<ShipPhysicsController>();
             Vector3 position = ship.Body.position;
             yield return new WaitForSecondsRealtime(0.1f);

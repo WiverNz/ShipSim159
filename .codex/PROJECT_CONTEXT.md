@@ -25,10 +25,17 @@ Build warnings cleared in the project itself:
   which the importer warns about on every build. `RiverLandscapeBuilder.SaveMesh` and
   `ProceduralVesselBuilder.SaveAsset` now name the object after the file, and the committed assets
   were corrected in place, so no geometry changed.
-- The river bank meshes are the only generated meshes with a `MeshCollider`, and the player build
-  warns that it will stop cooking collision for them. The landscape builder now pre-bakes them with
-  `Physics.BakeMesh`. This one is unverified: it takes effect the next time
-  `Upgrade Water And Landscape` runs, and the warning stays in CI until those two assets are rebuilt.
+- "Pre-baked collision is disabled on 2 mesh(es)" is left as it is. The two meshes are the
+  `RiverTrainingScene` banks, the only `MeshCollider`s in any scene, and in that scene they are the
+  only thing that stops the ship at the bank: it has no bathymetry or grounding controller, unlike
+  Gorodets, which uses those and no mesh collision at all. There is no supported way to silence it
+  for these two. Pre-baked collision is a model importer setting and a generated `.asset` mesh has no
+  importer; `Physics.BakeMesh` in the editor was measured to write nothing into the asset, and the
+  `MeshUtility.SetPreBakeCollisionMesh` binding is not reachable, even by reflection. Unity 6.6 still
+  cooks the data at build time, so the player is unaffected today. When a future editor stops doing
+  that, the answer is either to give the river scene the Gorodets treatment (bathymetry plus
+  grounding, no bank mesh colliders, 57600 triangles of collision geometry gone) or to cook at load
+  with a background `Physics.BakeMesh` call.
 
 Verified: compile clean (exit 0, no `error [A-Z]`, no `warning CS`), EditMode 197/197,
 PlayMode 40/40. The GL shader warning and the workflow changes can only be confirmed by the next

@@ -1067,6 +1067,13 @@ Latest verification after this work:
 
 ## Windows tag releases (2026-09-20)
 
+- Added native Windows PowerShell equivalents, `scripts/release.ps1` and
+  `scripts/release-smoke.ps1`, preserving the Bash scripts and their argument names.
+  PowerShell usage and process-local execution policy examples are in `scripts/README.md`.
+  Verified under Windows PowerShell 5.1: real Git dry run, mocked SemVer/argument and
+  preflight checks, branch-before-tag push ordering and failure handling, caller-directory
+  restoration, plus complete/missing/empty build fixtures with spaces and brackets in paths.
+  Git mutations were mocked throughout those regression checks; no tags or pushes were made.
 - Added `scripts/release.sh` for stable SemVer bumps or explicit versions, dry runs,
   confirmation, annotated tags and optional branch-first, then tag push. It never edits project
   versions or creates commits; real releases require a clean tree.

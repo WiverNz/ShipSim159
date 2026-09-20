@@ -1,8 +1,11 @@
 # Windows releases
 
-Run these Bash scripts from WSL, Git Bash or Linux. `release.sh` follows FlightTrace's
-plan, confirmation, annotated tag and optional push flow. Versions come from tags;
-it does not edit Unity settings or create commits. Stable `X.Y.Z` versions only.
+Use `release.ps1` and `release-smoke.ps1` in native Windows PowerShell 5.1 or PowerShell 7,
+or the Bash equivalents in WSL, Git Bash or Linux. The PowerShell scripts use the same
+arguments, including double-hyphen options; no WSL or Git Bash is needed. Release creation
+requires Git on PATH. Both release scripts follow FlightTrace's plan, confirmation,
+annotated tag and optional push flow. Versions come from tags; the scripts do not edit
+Unity settings or create commits. Stable `X.Y.Z` versions only.
 
 ## One-time GitHub setup
 
@@ -24,7 +27,23 @@ needed: the workflow uses the automatic `GITHUB_TOKEN` with `contents: write`.
 
 Review and commit the release implementation and intended game changes yourself.
 The tagged commit must contain `.github/workflows/release.yml`. Start from a clean
-working tree on a branch with full history, and fetch remote tags before choosing a version:
+working tree on a branch with full history, and fetch remote tags before choosing a version.
+From the repository root in Windows PowerShell:
+
+```powershell
+git fetch origin --tags
+.\scripts\release.ps1 0.1.0 --dry-run --push
+.\scripts\release.ps1 0.1.0 --push
+```
+
+If Windows blocks local scripts under its default execution policy, invoke the script
+with a process-local policy, as with the repository's other Windows tooling:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File .\scripts\release.ps1 0.1.0 --dry-run --push
+```
+
+From Bash:
 
 ```bash
 git fetch origin --tags
@@ -46,6 +65,18 @@ directly instead of rerunning a version bump. If the branch push failed, push th
 branch successfully before pushing the existing release tag. Dry runs never change files, refs or
 remotes and allow a dirty tree with a warning; real releases reject it.
 
+PowerShell examples for subsequent release previews:
+
+```powershell
+.\scripts\release.ps1 patch --dry-run
+.\scripts\release.ps1 minor -n
+.\scripts\release.ps1 major --dry-run
+.\scripts\release.ps1 1.2.3 --dry-run --push -m "Release notes"
+```
+
+Both implementations also support `-y` for `--yes`, `-m` for `--message`, and
+`-h` / `--help`. The release script resolves the repository from its own location.
+
 ## Build and verification
 
 A pushed `v*` tag starts `.github/workflows/release.yml`. It rejects tags outside
@@ -60,7 +91,7 @@ An editor upgrade also requires updating the workflow's version and guard. CI ne
 the matching GameCI editor image and a working Unity license; the first remote run
 must establish that these are available for this project.
 
-`release-smoke.sh` rejects missing or empty executable, UnityPlayer, Mono runtime,
+`release-smoke.sh` and `release-smoke.ps1` reject missing or empty executable, UnityPlayer, Mono runtime,
 player data and project runtime assembly files. The workflow ZIPs the entire build
 directory, including DLLs, data, streaming assets and other generated companion files,
 extracts the ZIP, then repeats the check before publishing the GitHub Release.
@@ -69,9 +100,22 @@ The asset is `ShipSim159-vX.Y.Z-windows-x64.zip`. Extract the whole ZIP and run
 
 To check an existing Windows build locally:
 
+```powershell
+.\scripts\release-smoke.ps1 --pkg-dir .\build\StandaloneWindows64
+.\scripts\release-smoke.ps1 --pkg-dir 'C:\Builds\ShipSim159 release'
+```
+
+Or from Bash:
+
 ```bash
 bash scripts/release-smoke.sh --pkg-dir build/StandaloneWindows64
 ```
+
+Both smoke scripts default to `build/StandaloneWindows64` relative to the current
+directory, accept `-h` / `--help`, and return 0 on success, 1 for missing or empty
+build files, and 2 for invalid arguments. The PowerShell smoke script needs no Git
+or Unity installation and supports the same `-ExecutionPolicy RemoteSigned` launcher
+shown above if local execution policy requires it.
 
 This is a file-layout check, not a gameplay or graphics test. Playability still
 needs a Windows launch check; a successful layout check does not establish it.

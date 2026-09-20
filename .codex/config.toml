@@ -1,6 +1,14 @@
 [mcp_servers.mcp-unity]
-command = "node"
-args = ["Library/PackageCache/com.gamelovers.mcp-unity@cce8b57de9cb/Server~/build/index.js"]
+command = "powershell.exe"
+args = [
+  "-NoProfile",
+  "-Command",
+  "node 'Library/PackageCache/com.gamelovers.mcp-unity@382a43a30f4d/Server~/build/index.js'"
+]
+
+[mcp_servers.mcp-unity.env]
+MCP_UNITY_SETTINGS_PATH = "ProjectSettings/McpUnitySettings.json"
+MCP_UNITY_AUTH_TOKEN_PATH = "Library/McpUnity/bridge-token"
 
 [mcp_servers.mcp-unity.tools.recompile_scripts]
 approval_mode = "approve"
@@ -27,4 +35,7 @@ approval_mode = "approve"
 approval_mode = "approve"
 
 [mcp_servers.mcp-unity.tools.save_scene]
+approval_mode = "approve"
+
+[mcp_servers.mcp-unity.tools.get_play_mode_status]
 approval_mode = "approve"

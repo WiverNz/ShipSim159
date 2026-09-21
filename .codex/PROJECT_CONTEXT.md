@@ -1180,3 +1180,72 @@ Latest verification after this work:
 - Detailed evidence and log paths: `Assets/ShipSimulator/Documentation/Luch14352_Sources.md`.
   Underbody, jet details, hydraulics and small fittings are reconstructions; the
   model is a game approximation, not a survey or training-validated vessel.
+
+## Authored Meteor 342U visual, 2026-09-20
+
+- Replaced only the Meteor prefab visual with a Blender MCP-authored FBX. Source:
+  `Art/Source/Meteor342U/Meteor342U.blend`, rebuilt end to end by seven numbered
+  passes plus `common.py`; reference decisions, the two-state captures and twelve
+  retained renders sit alongside it. Export:
+  `Assets/ShipSimulator/Models/Meteor342U/Meteor342U.fbx`.
+- Identification: FleetPhoto lists exactly one 342U, yard 062 `Meteor-191`, built
+  31.07.1984 as 342E, modernised in the early 1990s, renamed `Prepodobnyy Serafim`
+  in 2006. Hull, foils and arrangement come from the project 342 family general
+  arrangement (Ris. 139) and foil drawings (Ris. 140); appearance is checked against
+  twenty-six photographs of that ship plus a CC BY-SA Wikimedia foilborne shot and a
+  RussianShips bow-on view. No external feature could be attributed to the
+  modernisation, so nothing was invented to separate 342U from 342E.
+- Ris. 139 was calibrated three independent ways that agreed at 31.58 px/m: the
+  station scale, the 9.5 m foil span in plan and the 1.05 m hull draft in profile.
+  Every hull line table was measured off it rather than guessed.
+- LOD0/1/2: 46,830 / 21,073 / 7,582 triangles, 9.54 x 34.60 x 7.54 m. The model
+  reproduces published LOA 34.6 m, foil span 9.5 m, height above baseline 6.25 m,
+  draft afloat 2.35 m, hull draft 1.05 m, freeboard 0.42 m, and 0.71 m five-bladed
+  propellers at the JSON shaft positions.
+- Finding recorded but not applied: the plan gives a hull moulded breadth near 6.0 m
+  and extreme breadth over the side decks near 6.7 m, against the 5.2 m estimate in
+  `Meteor342U.json`. Recalibrating hydrostatics is outside an art replacement, so the
+  physics JSON is untouched.
+- `Meteor342UModelIntegrator` preserves the Rigidbody, physics scripts and three box
+  colliders and updates only `DetailedVisual` and the model-dependent camera/light
+  layout. It refuses the import if the exported axes are reflected or if the exported
+  propeller landmark disagrees with the JSON. The procedural builder routes Meteor
+  through the integrator on catalogue rebuild.
+- Navigation light layout corrected: the after masthead light now sits on the mast
+  above the forward one on the bow saloon roof, which the catalogue test requires.
+- Verified: batch compile exit 0 with no `error [A-Z]`; EditMode 199/199; PlayMode
+  40/40; `METEOR_MODEL|PASS`; FastCrafts shakedown PASS with the Meteor at 24.8 kn,
+  99 per cent foil support, 1.04 m hull rise, 0.1 degree heel, no collision;
+  `MENU_SMOKE|PASS`. Displacement and foilborne attitudes were checked against a
+  water plane using the measured hull rise.
+- Evidence and log paths: `Assets/ShipSimulator/Documentation/Meteor342U_Sources.md`
+  and `Art/Source/Meteor342U/README.md`. Foil sections, propeller blade shape, mast
+  and fitting sizes and the interior proxy are reconstructions; the model is a game
+  approximation, not a survey or training-validated vessel.
+
+## Meteor visual correction after user review, 2026-09-21
+
+- Supersedes the earlier visual-quality and exact-reconstruction claims above. The old
+  uncommitted source had a missing wheelhouse shell, overwritten saloon glazing faces,
+  excessive cabin height, small side windows and an unsupported tall bow railing.
+- Rechecked the Meteor-191/Prepodobnyy Serafim photographs, the Alexxx1979 Wikimedia
+  foilborne photograph and Ris. 139 family illustration. The latter is a model-building
+  reference, not a dimensioned shipyard plan. Cabin and fitting dimensions are estimates.
+- Rebuilt the saloon surfaces and swept wheelhouse with explicit glazing panels; lowered
+  and rounded the cabin, raised the bow deck, enlarged side windows, corrected paint
+  bands, raft placement, foil-support paint and underbody colour. Retained hull/foil
+  sections and the lightweight interior are approximate. No physics recalibration.
+- Added Blender regression checks for missing glass, bridge roof, outward glass normals,
+  patch-corner holes, landmarks and navigator sightline. The old eye was behind a new
+  pillar; the exported camera landmark now looks through the clear front windscreen.
+- Saved the revised source in the user's open Blender session and exported the FBX.
+  LOD0/1/2: 76,926 / 34,615 / 9,620 triangles, eleven material slots, zero degenerate
+  triangles. The render shell is not watertight. Lights use exported source landmarks.
+- Final Unity import exit 0 and METEOR_MODEL|PASS; EditMode 199/199; PlayMode 40/40;
+  FastCrafts shakedown PASS for both vessels. Meteor 12.74 m/s, 99% configured support,
+  1.04 m rise in the short test reach. Six physics/collider component blocks match HEAD
+  exactly; vessel JSON unchanged. git diff --check passed.
+- Current evidence and limits: Art/Source/Meteor342U/README.md and
+  Assets/ShipSimulator/Documentation/Meteor342U_Sources.md. Current preview:
+  Art/Source/Meteor342U/Previews/corrected-quarter.png. Historical source backup:
+  Logs/Meteor342U/before-correction.blend. All changes remain uncommitted.

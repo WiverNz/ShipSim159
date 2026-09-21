@@ -69,3 +69,6 @@ Desktop.ini
 
 # Download cache for Tools/serpukhov_zaton_geometry.py
 /Tools/.cache/
+
+# Blender writes a .blend1 backup beside every saved source file
+*.blend1

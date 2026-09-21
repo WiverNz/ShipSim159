@@ -1,0 +1,165 @@
+{
+  "vessel": "Meteor project 342U",
+  "units": "metres",
+  "blender_axes": "+Y forward, +X starboard, +Z up",
+  "waterline_z": 0.0,
+  "baseline_z": -1.05,
+  "origin": "midship on the loaded waterline",
+  "source_objects": 139,
+  "lods": [
+    {
+      "name": "Meteor342U_LOD0",
+      "triangles": 76926,
+      "vertices": 45106,
+      "dimensions_xyz": [
+        9.54,
+        34.6,
+        7.5432
+      ],
+      "min_xyz": [
+        -4.77,
+        -17.3,
+        -2.35
+      ],
+      "max_xyz": [
+        4.77,
+        17.3,
+        5.1932
+      ],
+      "boundary_edges": 12756,
+      "nonmanifold_edges": 12958,
+      "degenerate_faces": 0,
+      "material_slots": 11
+    },
+    {
+      "name": "Meteor342U_LOD1",
+      "triangles": 34615,
+      "vertices": 21525,
+      "dimensions_xyz": [
+        9.54,
+        34.6,
+        7.5432
+      ],
+      "min_xyz": [
+        -4.77,
+        -17.3,
+        -2.35
+      ],
+      "max_xyz": [
+        4.77,
+        17.3,
+        5.1932
+      ],
+      "boundary_edges": 7853,
+      "nonmanifold_edges": 8081,
+      "degenerate_faces": 0,
+      "material_slots": 11
+    },
+    {
+      "name": "Meteor342U_LOD2",
+      "triangles": 9620,
+      "vertices": 7307,
+      "dimensions_xyz": [
+        9.54,
+        34.6032,
+        7.4904
+      ],
+      "min_xyz": [
+        -4.77,
+        -17.3,
+        -2.35
+      ],
+      "max_xyz": [
+        4.77,
+        17.3032,
+        5.1404
+      ],
+      "boundary_edges": 4748,
+      "nonmanifold_edges": 4878,
+      "degenerate_faces": 0,
+      "material_slots": 11
+    }
+  ],
+  "landmarks": {
+    "Waterline": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Light_Port": [
+      -2.2979,
+      10.3,
+      2.2926
+    ],
+    "Light_MastheadFwd": [
+      0.0,
+      12.8,
+      3.1918
+    ],
+    "Light_MastheadAft": [
+      0.0,
+      6.97,
+      4.56
+    ],
+    "Light_Stern": [
+      0.0,
+      -16.3,
+      1.4429
+    ],
+    "BowReference": [
+      0.0,
+      17.3,
+      0.0
+    ],
+    "SternReference": [
+      0.0,
+      -17.3,
+      0.0
+    ],
+    "StarboardReference": [
+      3.0,
+      0.0,
+      0.0
+    ],
+    "UpReference": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "CameraNavigator": [
+      -0.38,
+      9.2,
+      3.23
+    ],
+    "PropPoint_S": [
+      1.6,
+      -13.5,
+      -1.78
+    ],
+    "PropPoint_P": [
+      -1.6,
+      -13.5,
+      -1.78
+    ],
+    "FoilPoint_Bow": [
+      0.0,
+      8.4,
+      -2.14
+    ],
+    "FoilPoint_Stern": [
+      0.0,
+      -12.6,
+      -1.8
+    ]
+  },
+  "published_controls": {
+    "length_overall_m": 34.6,
+    "breadth_over_foils_m": 9.5,
+    "height_above_baseline_m": 6.25,
+    "draft_afloat_over_foils_m": 2.35,
+    "hull_draft_loaded_m": 1.05,
+    "freeboard_m": 0.42,
+    "propeller_diameter_m": 0.71,
+    "propeller_blades": 5
+  }
+}

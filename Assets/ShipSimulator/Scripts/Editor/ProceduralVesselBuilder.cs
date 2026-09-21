@@ -319,8 +319,10 @@ namespace ShipSimulator.Editor
 
         public static GameObject Build(Design design)
         {
-            // The authored 14352 model owns its visual hierarchy; keep catalogue rebuilds on that path.
+            // The authored 14352 and 342U models own their visual hierarchy; keep catalogue rebuilds
+            // on that path so a rebuild cannot restore the old generated mesh.
             if (design.Id == Luch.Id) return Luch14352ModelIntegrator.UpdatePrefab();
+            if (design.Id == Meteor.Id) return Meteor342UModelIntegrator.UpdatePrefab();
             TextAsset json = AssetDatabase.LoadAssetAtPath<TextAsset>(design.JsonPath);
             if (json == null) throw new InvalidOperationException("Vessel data not found: " + design.JsonPath);
             VesselData data = JsonUtility.FromJson<VesselData>(json.text);

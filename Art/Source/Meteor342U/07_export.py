@@ -117,12 +117,19 @@ for level, ratio in ((0, 1.0), (1, 0.45), (2, 0.16)):
         mod = ob.modifiers.new('Distance simplification', 'DECIMATE')
         # Collapse crosses glass/paint boundaries and turns windows into long shards.
         mod.decimate_type = 'DISSOLVE'
-        mod.angle_limit = math.radians(.6 if level == 1 else 2.5)
+        mod.angle_limit = math.radians(.6 if level == 1 else 1.0)
         mod.delimit = {'MATERIAL'}
         mod.use_dissolve_boundaries = False
         bpy.ops.object.modifier_apply(modifier=mod.name)
     tri = ob.modifiers.new('Export triangles', 'TRIANGULATE')
     bpy.ops.object.modifier_apply(modifier=tri.name)
+    # Dissolved polygons can contain collinear corners after triangulation.
+    clean = bmesh.new()
+    clean.from_mesh(ob.data)
+    bmesh.ops.delete(clean, geom=[f for f in clean.faces if f.calc_area() < 1e-12],
+                     context='FACES')
+    clean.to_mesh(ob.data)
+    clean.free()
 
     # A planar metre UV channel for future material authoring. No reference
     # photograph is used as a texture anywhere in this model.

@@ -98,9 +98,9 @@ Eleven material slots are shared by the three LOD meshes.
 
 | LOD | Triangles | Vertices | Open edges | Degenerate triangles |
 |---|---:|---:|---:|---:|
-| 0 | 68,596 | 35,975 | 2,796 | 0 |
-| 1 | 25,245 | 13,706 | 1,541 | 0 |
-| 2 | 14,057 | 7,278 | 315 | 0 |
+| 0 | 69,994 | 36,673 | 2,784 | 0 |
+| 1 | 24,994 | 13,577 | 1,524 | 0 |
+| 2 | 16,971 | 8,800 | 443 | 0 |
 
 `model-report.json` records export bounds and counts. `geometry-validation.json`
 records closed hull/foil topology, root embedding and shared cabin seams. The hull
@@ -148,3 +148,27 @@ The pre-correction Blender scene was saved to the ignored
 `Logs/Meteor342U/before-correction.blend` before editing.
 
 The pre-repair scene is retained at `Logs/Meteor342U/before-geometry-repair.blend`.
+
+## Reference appearance review, 2026-10-18
+
+The roof machinery cover now spans estimated stations 19.8 to 24.9 m aft
+of the stem, with tapered ends, replacing the 9.7 m cover. Two tapered
+ventilation trunks with blue bands flank it at estimated station 21.3 m.
+These reproduce visible features of Meteor-191 (Prepodobnyy Serafim),
+without claiming surveyed dimensions. See MODEL_PROVENANCE.md section 15.
+`Previews/reference-quarter.png` and `reference-side.png` supersede the
+roof appearance in the repair captures. The geometry repair remains in place.
+
+## Silhouette revision after Meteor-247 comparison, 2026-10-18
+
+The bow roof now starts lower and rises into the saloon; bow mullions rake aft.
+Side window heads extend to section height 2.46 instead of 1.95, revealing the
+curved shoulder below the roof band. The wheelhouse base is wider and longer,
+giving its front and rear a gentler slope without moving the navigator marker.
+The aft cabin crown stays at 2.72 m and the visor rises only 0.18 m instead
+of 0.70 m. These are estimated visual proportions from the user's reference.
+`Previews/silhouette-{side,quarter,afloat}.png` supersede earlier silhouette views.
+The afloat view uses the loaded waterline, not a simulated foilborne attitude.
+LOD2 dissolution now uses 1 degree to retain the thin paint band. Export removes
+zero-area triangles generated at collinear dissolved corners and still checks
+material-area drift and nondegenerate output. Source and defect guards pass.

@@ -100,7 +100,9 @@ def validate_geometry():
 
     # Rays through the former nose slit and the rear glazing gaps must hit real closures.
     for name, start, direction in (
-        ('Cabin_FrontClosure', Vector((0, 18, 1.65)), Vector((0,-1,0))),
+        ('Cabin_FrontClosure', Vector((0, 18,
+            (context['deck_z'](context['SUP_FWD']) +
+             context['roof_crown_z'](context['SUP_FWD'])) / 2)), Vector((0,-1,0))),
         ('SternScreen_Frames', Vector((0, -18, .7)), Vector((0,1,0)))):
         ev = objects[name].evaluated_get(deps)
         assert ev.ray_cast(start,direction)[0], name + ': end gap'

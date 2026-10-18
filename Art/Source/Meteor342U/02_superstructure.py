@@ -80,17 +80,20 @@ add_mirror(deck)
 
 # ------------------------------------------------- engine casing on the roof
 
-CASING = [(18.6, 0.0), (19.3, 0.64), (20.4, 0.88), (26.4, 0.88), (27.6, 0.62),
-          (28.3, 0.0)]
+# Estimated from the classic general arrangement and Meteor-191 photographs.
+CASING = [(19.8, 0.0), (20.3, 0.64), (20.9, 0.88), (23.6, 0.88), (24.4, 0.62),
+          (24.9, 0.0)]
 CAS_SECTION = [(1.00, 0.00), (0.99, 0.14), (0.93, 0.26), (0.78, 0.35),
                (0.50, 0.40), (0.00, 0.42)]
-stations = [18.6 + 0.35 * i for i in range(int((28.3 - 18.6) / 0.35) + 1)] + [28.3]
+stations = sorted(set([19.8 + 0.25 * i for i in range(21)] +
+                      [a for a, _ in CASING]))
 verts, faces = [], []
 ring = len(CAS_SECTION)
 for a in stations:
     w = lerp_table(CASING, a)
     for (frac, h) in CAS_SECTION:
-        verts.append((max(w * frac, 0.0), y_of(a), roof_crown_z(a) - 0.06 + h))
+        verts.append((max(w * frac, 0.0), y_of(a),
+                      roof_crown_z(a) - 0.06 + h * min(1.0, w / .64)))
 for s in range(len(stations) - 1):
     for i in range(ring - 1):
         p, q = s * ring + i, (s + 1) * ring + i
@@ -110,8 +113,8 @@ add_mirror(casing)
 
 VIS_PLAN = [(SUP_AFT, 1.000), (32.0, 0.86), (32.9, 0.66), (33.7, 0.40),
             (34.2, 0.18), (VISOR_TIP, 0.02)]
-VIS_RISE = [(SUP_AFT, 0.0), (32.0, 0.20), (32.9, 0.38), (33.7, 0.54),
-            (34.2, 0.64), (VISOR_TIP, 0.70)]
+VIS_RISE = [(SUP_AFT, 0.0), (32.0, 0.04), (32.9, 0.08), (33.7, 0.12),
+            (34.2, 0.16), (VISOR_TIP, 0.18)]
 vis_stations = [SUP_AFT + 0.25 * i
                 for i in range(int((VISOR_TIP - SUP_AFT) / 0.25) + 1)] + [VISOR_TIP]
 base_ring = roof_ring(SUP_AFT)

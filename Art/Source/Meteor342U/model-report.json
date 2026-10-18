@@ -5,12 +5,12 @@
   "waterline_z": 0.0,
   "baseline_z": -1.05,
   "origin": "midship on the loaded waterline",
-  "source_objects": 165,
+  "source_objects": 167,
   "lods": [
     {
       "name": "Meteor342U_LOD0",
-      "triangles": 68596,
-      "vertices": 35975,
+      "triangles": 69994,
+      "vertices": 36673,
       "dimensions_xyz": [
         9.5443,
         34.6,
@@ -26,19 +26,19 @@
         17.3,
         5.1953
       ],
-      "boundary_edges": 2796,
-      "nonmanifold_edges": 3061,
+      "boundary_edges": 2784,
+      "nonmanifold_edges": 3047,
       "degenerate_faces": 0,
       "material_slots": 11,
       "protected_material_area_drift": {
-        "Meteor_Glass": 8.475031881927109e-05,
-        "Meteor_SecondaryPaint": 5.462545890733139e-06
+        "Meteor_Glass": 4.3347856678144225e-05,
+        "Meteor_SecondaryPaint": 5.2229472056186665e-06
       }
     },
     {
       "name": "Meteor342U_LOD1",
-      "triangles": 25245,
-      "vertices": 13706,
+      "triangles": 24994,
+      "vertices": 13577,
       "dimensions_xyz": [
         9.5443,
         34.6,
@@ -54,19 +54,19 @@
         17.3,
         5.1953
       ],
-      "boundary_edges": 1541,
-      "nonmanifold_edges": 1778,
+      "boundary_edges": 1524,
+      "nonmanifold_edges": 1758,
       "degenerate_faces": 0,
       "material_slots": 11,
       "protected_material_area_drift": {
-        "Meteor_Glass": 8.633157988402473e-05,
-        "Meteor_SecondaryPaint": 0.00011951455821623824
+        "Meteor_Glass": 4.374647839289203e-05,
+        "Meteor_SecondaryPaint": 0.00012453491663910743
       }
     },
     {
       "name": "Meteor342U_LOD2",
-      "triangles": 14057,
-      "vertices": 7278,
+      "triangles": 16971,
+      "vertices": 8800,
       "dimensions_xyz": [
         9.5443,
         34.6,
@@ -82,13 +82,13 @@
         17.3,
         5.1435
       ],
-      "boundary_edges": 315,
-      "nonmanifold_edges": 441,
+      "boundary_edges": 443,
+      "nonmanifold_edges": 576,
       "degenerate_faces": 0,
       "material_slots": 11,
       "protected_material_area_drift": {
-        "Meteor_Glass": 8.927874278175096e-05,
-        "Meteor_SecondaryPaint": 0.0058530269047198935
+        "Meteor_Glass": 1.0304063557620147e-05,
+        "Meteor_SecondaryPaint": 0.0005513529065385159
       }
     }
   ],
@@ -106,7 +106,7 @@
     "Light_MastheadFwd": [
       0.0,
       12.8,
-      3.1918
+      3.1753
     ],
     "Light_MastheadAft": [
       0.0,

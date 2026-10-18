@@ -1272,3 +1272,35 @@ Latest verification after this work:
   Source backup: Logs/Meteor342U/before-geometry-repair.blend. Current review images:
   Art/Source/Meteor342U/Previews/repair-final-* and repair-unity-*. Updated the README,
   vessel sources and the user's existing MODEL_PROVENANCE.md without discarding edits.
+
+
+## Meteor reference appearance review, 2026-10-18
+
+Compared classic Meteor illustrations and the 2016 Meteor-191 photograph.
+Shortened and tapered the central roof cover; added paired blue-banded ventilation
+trunks. Dimensions are photo estimates. MODEL_PROVENANCE.md section 15 records
+sources and limits. Blender source, FBX and Unity prefab updated through the
+registered Blender MCP and Unity integrator. Geometry regression guards pass;
+Unity integration and FastCrafts both pass. Meteor: 12.72 m/s, 99% foil support,
+1.04 m rise. Physics components and colliders unchanged. LOD triangles:
+68554 / 25215 / 14008. Previews/reference-{quarter,side}.png show the revision.
+Backup: Logs/Meteor342U/ReferenceReview/before-reference-adjustment.blend.
+Exact hull/window/foil reconstruction remains approximate. No commits.
+
+
+## Meteor silhouette revision, 2026-10-18
+
+After user supplied MeteorHydrofoil.jpg (Meteor-247), corrected main silhouette:
+lower bow roof nose, aft-raked bow mullions, window heads raised from 1.95 to
+2.46 section units, wider/longer wheelhouse base, flat aft cabin crown and visor
+rise reduced from .70 to .18 m. Photo-derived estimates, not exact reconstruction.
+MCP reconnected after user reopened Blender; all scene operations used registered
+Blender MCP. Backup: Logs/Meteor342U/ReferenceReview/before-silhouette.blend.
+Source guards and four defect regressions pass. LOD export removes zero-area
+triangles after triangulation; LOD2 dissolution reduced to 1 degree to preserve
+paint area. LOD counts 69994 / 24994 / 16971. Saved blend and FBX, Unity prefab
+integrated. silhouette-import-final.log reports PASS, exit 0, no compile errors.
+FastCrafts check-FastCrafts-20261018-210448-756.log passed both vessels, exit 0.
+Meteor 12.72 m/s, 99% support, 1.04 m rise. Physics/colliders unchanged.
+Previews/silhouette-{quarter,side,afloat}.png are current. Provenance section 16
+and README describe limits. Changes remain uncommitted.

@@ -71,7 +71,7 @@ livery without a name or board number.
 |---|---|
 | Editable source | `Art/Source/Meteor342U/Meteor342U.blend` |
 | Runtime export | `Assets/ShipSimulator/Models/Meteor342U/Meteor342U.fbx` |
-| LOD triangles | 68,596 / 25,245 / 14,057 |
+| LOD triangles | 69,994 / 24,994 / 16,971 |
 | Material slots | 11, URP Lit, created in `Models/Meteor342U/BlenderMaterials` |
 | Model dimensions | 9.54 x 34.60 x 7.54 m over mast and foils |
 
@@ -94,7 +94,7 @@ The revised source scripts reproduce the repair. No vessel physics values change
 
 LOD simplification now preserves material boundaries. Ratio-based collapse visibly
 stretched windows across the hull in Unity, so it was replaced with planar dissolution.
-LOD0/1/2 contain 68,596 / 25,245 / 14,057 triangles, with zero degenerate triangles.
+LOD0/1/2 contain 69,994 / 24,994 / 16,971 triangles, with zero degenerate triangles.
 The hull and foil components are closed individually; the export still contains separate
 render assemblies and must not be used as a displacement or structural model.
 
@@ -167,3 +167,35 @@ The September 20 results below describe the previous visual revision.
 
 These are automated checks. They do not establish subjective handling feel, and nothing here is
 validated for maritime training.
+
+## Reference appearance update, 2026-10-18
+
+Compared the classic Meteor arrangement illustration with the
+[2016 photograph of Meteor-191](https://commons.wikimedia.org/wiki/File:Lake_Ladoga._Valaam._Meteor_hydrofoil_P7170383_2200.jpg).
+Shortened and tapered the central roof cover and added the paired blue-banded
+ventilation trunks. Their dimensions are photo-derived estimates. Source links,
+limitations and exact changes are in `Art/Source/Meteor342U/MODEL_PROVENANCE.md`,
+section 15. The physics data, colliders and attachment landmarks were not changed.
+Geometry validation and all four deliberate-defect regression checks passed.
+
+Final verification: Unity integration `METEOR_MODEL|PASS`, exit 0 and no
+compile errors in `Logs/Meteor342U/reference-import-final.log`.
+FastCrafts passed both vessels, exit 0, in
+`Logs/check-FastCrafts-20261018-205433-823.log`; Meteor reached 12.72 m/s,
+99% foil support and 1.04 m hull rise. Prefab rigidbody, collider and physics
+component blocks match the previous revision. Blender and Unity quarter views
+were inspected. These checks do not validate real maritime handling.
+
+## Silhouette revision verification, 2026-10-18
+
+Following the user's Meteor-247 photograph, lowered the bow roof nose, raked
+bow mullions, raised side window heads, widened the wheelhouse base and flattened
+the aft roof/visor. These are photo-based estimates; see provenance section 16.
+LOD triangles: 69,994 / 24,994 / 16,971. LOD2 uses 1-degree dissolution to retain
+paint boundaries. Source validation, four defect regressions and export area/
+degenerate-triangle checks pass. Unity import passed with exit 0 and no compile
+errors (`Logs/Meteor342U/silhouette-import-final.log`). FastCrafts passed both
+vessels with exit 0 (`Logs/check-FastCrafts-20261018-210448-756.log`), Meteor
+12.72 m/s, 99% foil support and 1.04 m rise. Physics component and collider blocks
+match HEAD. Blender afloat/quarter views and Unity import view were inspected.
+Current previews: `Art/Source/Meteor342U/Previews/silhouette-*.png`.

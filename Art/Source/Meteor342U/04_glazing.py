@@ -84,10 +84,10 @@ for a, b in zip(bow_edges, bow_edges[1:]):
     panel(a, b, .11, 2.47, margin=.042, radius=.075)
 panel(6.90, 8.08, .05, 2.45, margin=.075, radius=.13)
 for i in range(7):
-    panel(9.55+i*1.08, 9.55+(i+1)*1.08, .34, 1.95, radius=.14)
+    panel(9.55+i*1.08, 9.55+(i+1)*1.08, .34, 2.46, margin=.045, radius=.14)
 panel(18.03,18.65,1.14,1.82,margin=.025,radius=.28)
 for i in range(5):
-    panel(23.60+i*1.02,23.60+(i+1)*1.02,.34,1.95,radius=.14)
+    panel(23.60+i*1.02,23.60+(i+1)*1.02,.34,2.46,margin=.045,radius=.14)
 
 
 def rounded(bounds, inset=0):
@@ -99,7 +99,11 @@ def rounded(bounds, inset=0):
                        (left+r,bottom+r,180),(right-r,bottom+r,270)):
         for i in range(7):
             t=math.radians(angle+i*15)
-            points.append((x+r*math.cos(t),y+r*math.sin(t)))
+            u, v = x+r*math.cos(t), y+r*math.sin(t)
+            # Bow mullions rake aft with the curved windscreen.
+            if bounds[1] < 6.70:
+                u += .32 * v / 2.835
+            points.append((u,v))
     return points
 
 
@@ -160,8 +164,8 @@ front.build('Cabin_FrontClosure',HULL)
 
 # A closed, swept wheelhouse with real front, rear, side and roof panels.
 # Each cross-section has the same perimeter topology, including chamfered corners.
-base_half = [(0,6.68), (0.80,6.75), (1.28,7.45), (1.40,8.25),
-             (1.40,9.15), (1.30,9.85), (0.94,10.65), (0,10.76)]
+base_half = [(0,6.35), (0.80,6.45), (1.38,7.25), (1.50,8.25),
+             (1.50,9.15), (1.40,10.05), (0.94,10.85), (0,10.96)]
 top_half = [(0,7.40), (0.75,7.43), (1.12,7.78), (1.20,8.30),
             (1.20,9.12), (1.12,9.57), (0.80,9.98), (0,10.02)]
 base_plan=base_half + [(-x,a) for x,a in reversed(base_half[1:-1])]

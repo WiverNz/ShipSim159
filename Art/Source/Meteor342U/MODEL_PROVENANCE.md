@@ -410,3 +410,47 @@ mutating temporary mesh copies and restoring the source. `Previews/repair-final-
 shows this revision. The README and model report supersede earlier geometry counts.
 The separate render assemblies are not a single watertight displacement model; no
 structural joint design or newly measured vessel dimensions are claimed.
+
+## 15. Reference appearance review, 2026-10-18
+
+Sources inspected:
+
+- [Classic Meteor general arrangement, Ris. 139](https://www.modelizd.ru/ship/modern/imageinfo/3330/2),
+  a reproduced model-building illustration, used for relative machinery-cover
+  length and the pointed aft canopy plan, not measured 342U dimensions.
+- [Templates and foil arrangement, Ris. 140](https://www.modelizd.ru/ship/modern/imageinfo/3330/3),
+  used as family-level visual context, not a reason to alter simulation forces.
+- [Meteor-191 / Prepodobnyy Serafim, 17 July 2016](https://commons.wikimedia.org/wiki/File:Lake_Ladoga._Valaam._Meteor_hydrofoil_P7170383_2200.jpg),
+  photograph by Alexxx1979, CC BY-SA 4.0. Shows paired tapered roof ventilation
+  trunks with blue bands and a short rounded central machinery cover.
+  The photograph remains a research reference in ignored Logs; it is not packed
+  into the model, used as a texture, or redistributed in committed previews.
+- [SPK Fleet Meteor archive](https://www.spkfleet.ru/meteor.htm), links to shipyard
+  general arrangement 342E-020-048 and foil arrangement 342E-021-035.
+  Their Mail cloud pages returned a service error during this review, so their
+  drawing contents were not used.
+
+Pass 2 shortens the cover from 9.7 to 5.1 m and tapers both width and height
+at its ends. Pass 5 adds paired trunks at a=21.3 m, x=+/-1.62 m, height
+0.76 m above the roof crown, with buried bases. These are estimated art
+proportions inferred from perspective photographs, not shipyard measurements.
+The drawing supports the existing pointed aft canopy plan. Cabin windows,
+hull sections and foil geometry remain approximate and were not rescaled from
+one perspective photograph. Exact 342U reconstruction remains unverified.
+
+The pre-edit source is saved as
+`Logs/Meteor342U/ReferenceReview/before-reference-adjustment.blend`.
+Current authored renders are `Previews/reference-quarter.png` and
+`Previews/reference-side.png`. No external geometry or photo texture was imported.
+
+## 16. Meteor-247 silhouette comparison, 2026-10-18
+
+The user supplied [MeteorHydrofoil.jpg](https://commons.wikimedia.org/wiki/File:MeteorHydrofoil.jpg),
+a photograph of Meteor-247 at Peterhof uploaded by Leonard G., licensed CC SA 1.0.
+It is retained only in ignored research Logs, not used as a model texture.
+The comparison exposed the oversized white strip above the side windows,
+upright bow profile and excessive aft canopy rise. The README records the
+resulting estimated controls. We retain Meteor-191 fittings and livery rather
+than claiming this is a replica of Meteor-247. Perspective, loading condition,
+and vessel-specific equipment differ. Exact survey accuracy remains unverified.
+Backup: `Logs/Meteor342U/ReferenceReview/before-silhouette.blend`.

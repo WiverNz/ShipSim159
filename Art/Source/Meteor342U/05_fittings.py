@@ -107,6 +107,31 @@ for i in range(19):
     cap.parent = root
     add_mirror(cap)
 
+# Paired tapered ventilation trunks visible in the 2016 Meteor-191 photograph.
+# Dimensions and station are photo estimates; rings share their paint borders.
+for sign, side in ((1, 'S'), (-1, 'P')):
+    a, x = 21.3, sign * 1.62
+    z = roof_crown_z(a)
+    verts, faces = [], []
+    levels = [(-.18, .62, .82), (.28, .54, .65),
+              (.47, .50, .58), (.76, .43, .43)]
+    for h, half_w, half_l in levels:
+        verts.extend([(x+dx*half_w, y_of(a+.22*h)+dy*half_l, z+h)
+                      for dx, dy in ((-1,-1), (1,-1), (1,1), (-1,1))])
+    faces.append((3,2,1,0))
+    for ring in range(len(levels)-1):
+        for j in range(4):
+            p, q = ring*4+j, ring*4+(j+1)%4
+            faces.append((p,q,q+4,p+4))
+    faces.append((12,13,14,15))
+    trunk = new_mesh('RoofIntake_'+side, verts, faces, model, smooth=False)
+    trunk.parent = root
+    assign(trunk, [HULL, BLUE, DARK])
+    for polygon in trunk.data.polygons:
+        polygon.material_index = 1 if 5 <= polygon.index <= 8 else 0
+    trunk.data.polygons[-1].material_index = 2
+    recalc(trunk)
+
 # ------------------------------------------------------ wheelhouse mast group
 MAST_A = 9.95
 mast_base = WH_TOP - 0.03

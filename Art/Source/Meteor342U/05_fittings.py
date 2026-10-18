@@ -22,7 +22,7 @@ DARK = bpy.data.materials['Meteor_InteriorDark']
 LIGHTS = bpy.data.materials['Meteor_Lights']
 GLASS = bpy.data.materials['Meteor_Glass']
 
-PREFIX = ('Paint_', 'Roof_Vent', 'Mast', 'Radar', 'Antenna', 'Searchlight',
+PREFIX = ('Paint_Deck', 'Paint_Boot', 'Roof_Vent', 'Mast', 'Radar', 'Antenna', 'Searchlight',
           'Railing', 'LifeRaft', 'Fender', 'Bollard', 'NavLight', 'Handrail',
           'RoofIntake', 'Ladder', 'Landmark_', 'Anchor', 'Light_', 'EngineHatch', 'RaftStrap')
 EXACT = ('Waterline', 'BowReference', 'SternReference', 'StarboardReference',
@@ -63,20 +63,7 @@ def strip(name, samples, mat, offset=0.014, thickness=0.016):
     return ob
 
 
-# ------------------------------------------------------ superstructure band
-verts, faces = [], []
-for i in range(149):
-    a = SUP_FWD + (SUP_AFT - SUP_FWD) * i / 148
-    for h in (2.30, 2.51):
-        x, y, z = sup_xyz(a, sup_frac_at(h), h)
-        verts.append((x + 0.020, y, z))
-    if i:
-        p = 2 * (i - 1)
-        faces.append((p, p + 1, p + 3, p + 2))
-band = new_mesh('Paint_SheerBand', verts, faces, model)
-band.parent = root
-assign(band, [BLUE])
-add_mirror(band)
+# The cabin sheer band shares the glazing triangulation in pass 4.
 
 # ------------------------------------------------------ deck edge band
 band = []
@@ -128,7 +115,7 @@ mast = tube('Mast', model, (0.0, y_of(MAST_A), mast_base),
 mast.parent = root
 for i, sign in enumerate((1.0, -1.0)):
     whip = tube('Antenna%d' % i, model,
-                (sign * 0.95, y_of(MAST_A + 0.15), mast_base - 0.02),
+                (sign * 0.70, y_of(9.65), mast_base - 0.02),
                 (sign * 1.18, y_of(MAST_A + 0.65), mast_base + 1.37),
                 0.022, 0.010, STEEL, 6)
     whip.parent = root
@@ -154,6 +141,10 @@ for i, sign in enumerate((1.0, -1.0)):
                 (sign * 0.52, y_of(7.11), mast_base + 0.08),
                 (sign * 0.52, y_of(7.07), mast_base + 0.08), 0.086, 0.086, LIGHTS, 10)
     lens.parent = root
+    support = tube('SearchlightMount%d' % i, model,
+                   (sign*.52, y_of(7.43), WH_TOP-.04),
+                   (sign*.52, y_of(7.22), mast_base+.06), .035, .035, HULL, 8)
+    support.parent = root
 
 # Vertical ladder on the after face of the wheelhouse.
 for i in range(2):
@@ -226,6 +217,11 @@ for v in hr.data.skin_vertices[0].data:
     v.radius = (0.026, 0.026)
 assign(hr, [STEEL])
 add_mirror(hr)
+for i,(x,y,z) in enumerate(hand):
+    bracket=tube('HandrailBracket%02d' % i,model,
+                 (x-.22,y,z),(x,y,z),.018,.018,STEEL,8)
+    bracket.parent=root
+    add_mirror(bracket)
 
 
 # ------------------------------------------------------ life rafts
@@ -240,6 +236,12 @@ for i, a in enumerate((9.30, 10.75, 28.0, 29.45)):
                  (0.66, 1.10, 0.09), STEEL)
     cradle.parent = root
     add_mirror(cradle)
+    for j, shift in enumerate((-.42, .42)):
+        arm = tube('LifeRaftBracket%d_%d' % (i,j), model,
+                   (lerp_table(B_SUP,a)-.08,y_of(a+shift),deck_z(a)+.18),
+                   (x,y_of(a+shift),z-.30), .045,.045,STEEL,8)
+        arm.parent=root
+        add_mirror(arm)
 
 
 # Canister retaining straps and machinery access door.

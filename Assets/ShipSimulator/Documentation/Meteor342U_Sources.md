@@ -71,7 +71,7 @@ livery without a name or board number.
 |---|---|
 | Editable source | `Art/Source/Meteor342U/Meteor342U.blend` |
 | Runtime export | `Assets/ShipSimulator/Models/Meteor342U/Meteor342U.fbx` |
-| LOD triangles | 76,926 / 34,615 / 9,620 |
+| LOD triangles | 68,596 / 25,245 / 14,057 |
 | Material slots | 11, URP Lit, created in `Models/Meteor342U/BlenderMaterials` |
 | Model dimensions | 9.54 x 34.60 x 7.54 m over mast and foils |
 
@@ -80,7 +80,42 @@ The retained appendages reach 2.35 m below the loaded waterline. Cabin heights, 
 windows, fittings and paint boundaries are estimated from photographs and an illustrated
 family arrangement, not a dimensioned shipyard plan. The rendered hull breadth is near
 6.0 m, against the existing 5.2 m physics estimate. Physics and handling were not recalibrated.
-See `Art/Source/Meteor342U/README.md` for reference links and reconstruction limits.
+See `Art/Source/Meteor342U/README.md` for reference links and reconstruction limits, and
+`Art/Source/Meteor342U/MODEL_PROVENANCE.md` for the full record of which source supplied
+which figure, how the general arrangement drawing was calibrated, and how the model is built.
+
+## Geometry repair, 2026-10-18
+
+Closed the hull stem/deck, cabin front and aft screen; fitted all foil support roots
+against the actual local hull surface; rebuilt cabin glass, surrounds and paint with
+shared curved seams. Corrected interior ceiling protrusions, deck overlap, foil tips,
+shaft/hub and rudder connections, propeller blade rotation and missing fitting brackets.
+The revised source scripts reproduce the repair. No vessel physics values changed.
+
+LOD simplification now preserves material boundaries. Ratio-based collapse visibly
+stretched windows across the hull in Unity, so it was replaced with planar dissolution.
+LOD0/1/2 contain 68,596 / 25,245 / 14,057 triangles, with zero degenerate triangles.
+The hull and foil components are closed individually; the export still contains separate
+render assemblies and must not be used as a displacement or structural model.
+
+Verification:
+
+- `METEOR_SOURCE|PASS` and `METEOR_GEOMETRY|PASS`; zero internal cabin seam boundaries.
+  Measured strut-root embedding is 0.063 to 0.123 m in the evaluated hull.
+- `test_geometry.py`: four deliberate defect cases rejected (hull hole, detached root,
+  displaced glass and protruding ceiling), with temporary mesh copies restored afterwards.
+- Unity final import: exit 0, `METEOR_MODEL|PASS`, no compiler errors in
+  `Logs/Meteor342U/geometry-repair-import-lods.log`. LOD0/1/2 images inspected.
+- EditMode: 199/199, `TestResults/check-EditMode-20261018-144334-448.xml`.
+- Final FastCrafts: exit 0, both vessels passed,
+  `Logs/check-FastCrafts-20261018-145907-552.log`. Meteor reached 12.74 m/s,
+  99% support, 1.04 m hull rise and 0.1 degree heel. Runtime port/navigator views inspected.
+- Six serialized physics/collider blocks match HEAD, and `Meteor342U.json` is unchanged.
+- Eleven Blender control/detail renders and a complete overview inspected; current images
+  are `Art/Source/Meteor342U/Previews/repair-final-*` and `repair-unity-*`.
+- Original scene backup: `Logs/Meteor342U/before-geometry-repair.blend`.
+
+The results below describe earlier visual revisions.
 
 ## Visual correction, 2026-09-21
 

@@ -24,7 +24,9 @@ HULL = bpy.data.materials['Meteor_HullPaint']
 NAMES = ('FrontFoil', 'FrontFoil_Struts', 'FrontFoil_OuterStruts', 'FrontFoil_Fins',
          'RearFoil', 'RearFoil_Struts', 'RearFoil_InnerStruts', 'RudderArm',
          'PropShaft_S', 'PropShaft_P', 'Propeller_S', 'Propeller_P',
-         'Rudder_S', 'Rudder_P', 'ShaftBossing')
+         'Rudder_S', 'Rudder_P', 'ShaftBossing_S', 'ShaftBossing_P',
+         'PropHub_S', 'PropHub_P', 'RudderArm_S', 'RudderArm_P',
+         'RudderStock_S', 'RudderStock_P')
 for name in NAMES:
     if name in bpy.data.objects:
         bpy.data.objects.remove(bpy.data.objects[name], do_unlink=True)
@@ -43,12 +45,17 @@ def loft(name, sections, closed_ring=True, smooth=True, cap_ends=True):
             faces.append((p, s * ring + j, (s + 1) * ring + j, q))
     if cap_ends and closed_ring:
         for s, flip in ((0, True), (len(sections) - 1, False)):
+            if all(abs(p[0]) < 1e-7 for p in sections[s]):
+                continue
             base = s * ring
             fan = [base + i for i in range(ring)]
             faces.append(tuple(reversed(fan)) if flip else tuple(fan))
     ob = new_mesh(name, verts, faces, model, smooth=smooth)
     ob.parent = root
     recalc(ob)
+    if name.endswith('Struts'):
+        ob['hull_root_indices'] = [v.index for v in ob.data.vertices
+                                  if any((v.co - Vector(p)).length < 1e-5 for p in sections[0])]
     return ob
 
 
@@ -67,6 +74,16 @@ def strut_section(z, y_le, half_x, chord, thick, segments=10):
     """Closed aerofoil ring in the YZ plane, a vertical strut at half_x."""
     ring = foil_ring(chord, thick, segments)
     return [(half_x + t, y_le - c, z) for (c, t) in ring]
+
+
+def seated_root(section):
+    """Embed the complete root ring in the local hull, not the centreline keel."""
+    result = []
+    for x, y, _ in section:
+        a = a_of(y)
+        x = min(x, lerp_table(B_HULL, a) - .10)
+        result.append((x, y, hull_z_at_x(a, x) + .12))
+    return result
 
 
 # --------------------------------------------------------------- bow foil
@@ -95,11 +112,12 @@ verts, faces = [], []
 for i, (dz, scale) in enumerate([(0.0, 1.0), (-0.37, 0.55)]):
     le = BF_TIP_LE
     for (c, t) in foil_ring(0.75 * scale, 0.10, 8):
-        verts.append((BF_TIP + 0.02, y_of(le) - c, BF_Z + 0.16 + dz))
+        verts.append((BF_TIP - 0.015 + t, y_of(le) - c, BF_Z + 0.16 + dz))
 ring = len(verts) // 2
 for i in range(ring):
     j = (i + 1) % ring
     faces.append((i, j, ring + j, ring + i))
+faces.extend([tuple(reversed(range(ring))), tuple(range(ring, 2 * ring))])
 fins = new_mesh('FrontFoil_Fins', verts, faces, model)
 fins.parent = root
 recalc(fins)
@@ -118,6 +136,7 @@ for (t, chord, le, thick, x) in [
         (1.00, 1.15, 8.52, 0.250, BF_STRUT_X)]:
     z = lerp_table(Z_KEEL, 8.4) - t * (lerp_table(Z_KEEL, 8.4) - BF_Z)
     sections.append(strut_section(z, y_of(le), x, chord, thick))
+sections[0] = seated_root(sections[0])
 struts = loft('FrontFoil_Struts', sections)
 assign(struts, [HULL])
 add_mirror(struts)
@@ -128,6 +147,7 @@ for (t, chord, le, x, z) in [
         (0.0, 1.55, 8.30, 2.62, -0.86), (0.4, 1.35, 8.42, 2.90, -1.40),
         (0.75, 1.20, 8.50, 3.10, -1.82), (1.0, 1.10, 8.55, 3.22, -2.12)]:
     sections.append(strut_section(z, y_of(le), x, chord, 0.16))
+sections[0] = seated_root(sections[0])
 outer = loft('FrontFoil_OuterStruts', sections)
 assign(outer, [HULL])
 add_mirror(outer)
@@ -157,6 +177,7 @@ for (t, chord, le, x, z) in [
         (0.0, 1.80, 28.95, 2.72, -0.52), (0.3, 1.55, 29.10, 3.02, -0.95),
         (0.6, 1.35, 29.22, 3.26, -1.38), (1.0, 1.20, 29.32, 3.35, -1.78)]:
     sections.append(strut_section(z, y_of(le), x, chord, 0.17))
+sections[0] = seated_root(sections[0])
 rear_struts = loft('RearFoil_Struts', sections)
 assign(rear_struts, [HULL])
 add_mirror(rear_struts)
@@ -167,6 +188,7 @@ for (t, chord, le, z) in [(0.0, 2.40, 28.85, lerp_table(Z_KEEL, 29.6)),
                           (0.35, 2.05, 29.00, -1.15), (0.7, 1.65, 29.20, -1.52),
                           (1.0, 1.45, 29.30, -1.78)]:
     sections.append(strut_section(z, y_of(le), SHAFT_X, chord, 0.20))
+sections[0] = seated_root(sections[0])
 rear_inner = loft('RearFoil_InnerStruts', sections)
 assign(rear_inner, [HULL])
 add_mirror(rear_inner)
@@ -175,10 +197,10 @@ add_mirror(rear_inner)
 # --------------------------------------------------------------- shafting
 
 SHAFT_EXIT = 26.9             # SHAFT_X, PROP_A and PROP_Z come from common.py
-exit_z = lerp_table(Z_KEEL, SHAFT_EXIT) + 0.06
+exit_z = hull_z_at_x(SHAFT_EXIT, SHAFT_X) + 0.06
 for side, sign in (('S', 1.0), ('P', -1.0)):
     p0 = (sign * SHAFT_X, y_of(SHAFT_EXIT - 0.9), exit_z + 0.16)
-    p1 = (sign * SHAFT_X, y_of(PROP_A - 0.30), PROP_Z + 0.03)
+    p1 = (sign * SHAFT_X, y_of(PROP_A - 0.10), PROP_Z + 0.01)
     shaft = tube('PropShaft_' + side, model, p0, p1, 0.115, 0.075, STEEL, 12)
     shaft.parent = root
     boss = tube('ShaftBossing_' + side, model,
@@ -201,8 +223,10 @@ for side, sign in (('S', 1.0), ('P', -1.0)):
             cz = math.cos(ang) * r
             cx = math.sin(ang) * r * sign
             for s in (-1.0, 1.0):
-                verts.append((sign * SHAFT_X + cx, hub_y + s * chord * 0.5 * math.cos(twist)
-                              - s * 0.0, PROP_Z + cz + s * chord * 0.5 * math.sin(twist)))
+                tangent = s * chord * .5 * math.cos(twist)
+                verts.append((sign * SHAFT_X + cx + math.cos(ang) * tangent * sign,
+                              hub_y + s * chord * .5 * math.sin(twist),
+                              PROP_Z + cz - math.sin(ang) * tangent))
         for i in range(4):
             p = base + i * 2
             faces.append((p, p + 1, p + 3, p + 2))
@@ -232,11 +256,11 @@ for side, sign in (('S', 1.0), ('P', -1.0)):
     assign(rud, [STEEL])
     arm = tube('RudderArm_' + side, model,
                (sign * SHAFT_X, y_of(30.6), -1.72),
-               (sign * SHAFT_X, y_of(RUD_A - 0.4), -1.24), 0.10, 0.09, FOIL, 10)
+               (sign * SHAFT_X, y_of(32.34), -1.20), 0.10, 0.09, FOIL, 10)
     arm.parent = root
     stock = tube('RudderStock_' + side, model,
                  (sign * SHAFT_X, y_of(32.34), -1.06),
-                 (sign * SHAFT_X, y_of(32.34), lerp_table(Z_KEEL, 32.34) + 0.02),
+                 (sign * SHAFT_X, y_of(32.34), hull_z_at_x(32.34, SHAFT_X) + 0.12),
                  0.075, 0.075, STEEL, 10)
     stock.parent = root
 

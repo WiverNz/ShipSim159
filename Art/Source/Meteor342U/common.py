@@ -53,6 +53,7 @@ def recalc(ob, dist=1e-5):
     bm.from_mesh(ob.data)
     bmesh.ops.remove_doubles(bm, verts=list(bm.verts), dist=dist)
     bmesh.ops.dissolve_degenerate(bm, edges=list(bm.edges), dist=1e-7)
+    bmesh.ops.delete(bm, geom=[f for f in bm.faces if f.calc_area() < 1e-12], context='FACES')
     bmesh.ops.recalc_face_normals(bm, faces=list(bm.faces))
     bm.to_mesh(ob.data)
     bm.free()
@@ -154,7 +155,7 @@ B_HULL = [(0.00, 0.035), (0.50, 0.42), (1.00, 0.86), (1.50, 1.24), (2.00, 1.56),
           (3.00, 2.02), (4.00, 2.33), (5.00, 2.55), (6.00, 2.71), (7.00, 2.82),
           (8.00, 2.90), (9.00, 2.95), (10.00, 2.98), (12.00, 3.00), (24.00, 3.00),
           (26.00, 2.99), (28.00, 2.94), (29.50, 2.84), (31.00, 2.58),
-          (32.00, 2.22), (33.00, 1.62), (34.00, 0.78), (34.60, 0.05)]
+          (32.00, 2.22), (33.00, 1.62), (34.00, 0.78), (34.60, 0.0)]
 
 Z_DECK = [(0.00, 1.40), (1.00, 1.35), (2.00, 1.30), (5.50, 1.20),
           (6.80, 1.10), (8.20, 0.42), (27.00, 0.42), (29.00, 0.47),
@@ -213,6 +214,17 @@ def hull_section(a):
 
 def hull_bottom_z(a):
     return lerp_table(Z_KEEL, a)
+
+
+def hull_z_at_x(a, x):
+    """Actual bottom/side height at a support's transverse position."""
+    pts = hull_section(a)
+    x = abs(x)
+    for (x0, z0), (x1, z1) in zip(pts, pts[1:]):
+        if x <= x1:
+            t = (x - x0) / max(x1 - x0, 1e-9)
+            return z0 + (z1 - z0) * t
+    raise ValueError('Support lies outside hull at station %.3f, x %.3f' % (a, x))
 
 
 # --------------------------------------------------------- superstructure

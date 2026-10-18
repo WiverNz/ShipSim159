@@ -79,12 +79,32 @@ for s in range(len(STATIONS) - 1):
     for i in range(ring - 1):
         p, q = s * ring + i, (s + 1) * ring + i
         faces.append((p, p + 1, q + 1, q))
+# Close the finite-width stem and stern against the mirror plane.
+for s in (0, len(STATIONS) - 1):
+    if deck_z(STATIONS[s]) - hull_bottom_z(STATIONS[s]) < 1e-6:
+        continue
+    centre = len(verts)
+    verts.append((0.0, y_of(STATIONS[s]), deck_z(STATIONS[s])))
+    faces.append(tuple([s * ring + i for i in range(ring)] + [centre]))
+# A continuous deck lid also closes the shell beneath the cabin.
+for s in range(len(STATIONS) - 1):
+    c0 = len(verts)
+    verts.extend([(0, y_of(STATIONS[s]), deck_z(STATIONS[s])),
+                  (0, y_of(STATIONS[s + 1]), deck_z(STATIONS[s + 1]))])
+    faces.append((s * ring + ring - 1, c0, c0 + 1, (s + 1) * ring + ring - 1))
 hull = new_mesh('Hull', verts, faces, model)
 hull.parent = root
 recalc(hull)
 assign(hull, [HULL, MATS['Meteor_Underbody']])
+bm = bmesh.new()
+bm.from_mesh(hull.data)
+bmesh.ops.bisect_plane(bm, geom=list(bm.verts)+list(bm.edges)+list(bm.faces),
+                      dist=1e-7, plane_co=(0,0,.10), plane_no=(0,0,1))
+bm.to_mesh(hull.data)
+bm.free()
+hull.data.update()
 for poly in hull.data.polygons:
-    if max(hull.data.vertices[i].co.z for i in poly.vertices) < 0.10:
+    if poly.center.z < 0.10:
         poly.material_index = 1
 add_mirror(hull)
 

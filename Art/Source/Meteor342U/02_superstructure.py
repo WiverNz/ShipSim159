@@ -50,21 +50,29 @@ add_mirror(sup)
 # ------------------------------------------------- weather deck
 
 verts, faces = [], []
-walk = [a for a in STATIONS if 1.0 <= a <= 34.2]
+walk = sorted(set(STATIONS + [SUP_FWD, SUP_AFT]))
 for a in walk:
     y = y_of(a)
-    zd = lerp_table(Z_DECK, a)
-    inner = lerp_table(B_SUP, a) - 0.02 if SUP_FWD <= a <= SUP_AFT else 0.0
+    zd = lerp_table(Z_DECK, a) + .008
+    inner = 0.0
     verts.append((max(inner, 0.0), y, zd))
     verts.append((lerp_table(B_HULL, a) + lerp_table(LEDGE, a), y, zd))
 for s in range(len(walk) - 1):
     p, q = s * 2, (s + 1) * 2
     faces.append((p, p + 1, q + 1, q))
+top_faces = list(faces)
+count = len(verts)
+verts += [(x,y,z-.06) for x,y,z in verts]
+faces += [tuple(count+i for i in reversed(f)) for f in top_faces]
+# Vertical edge thickness preserves the stem/stern length on the sheer slope.
+from collections import Counter
+edges = Counter(tuple(sorted((f[i], f[(i+1)%len(f)])))
+                for f in top_faces for i in range(len(f)))
+for (i,j), uses in edges.items():
+    if uses == 1 and not (abs(verts[i][0])<1e-7 and abs(verts[j][0])<1e-7):
+        faces.append((i,j,count+j,count+i))
 deck = new_mesh('Deck_Weather', verts, faces, model, smooth=False)
 deck.parent = root
-sol = deck.modifiers.new('Deck thickness', 'SOLIDIFY')
-sol.thickness = 0.06
-sol.offset = 1.0
 recalc(deck)
 assign(deck, [DECK])
 add_mirror(deck)

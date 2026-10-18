@@ -1249,3 +1249,26 @@ Latest verification after this work:
   Assets/ShipSimulator/Documentation/Meteor342U_Sources.md. Current preview:
   Art/Source/Meteor342U/Previews/corrected-quarter.png. Historical source backup:
   Logs/Meteor342U/before-correction.blend. All changes remain uncommitted.
+
+## Meteor geometry repair after user inspection, 2026-10-18
+
+- Closed the hull stem and deck, cabin nose and aft screen. Fitted every mirrored
+  foil strut root to the evaluated hull surface, with 0.063 to 0.123 m embedding.
+- Replaced mismatched glazing patches with shared constrained triangulation of glass,
+  frames, shell and sheer paint. Fixed ceiling/seat protrusions, deck overlap, stepped
+  hull paint, foil tips, shaft/hub gaps, rudder connections and fitting brackets.
+- Source regression checks pass; four deliberate defects are rejected on temporary
+  meshes. Closed hull/foil components have no nonmanifold edges; the cabin skin has
+  no internal boundary edges. The complete render assembly is not a displacement solid.
+- Unity previews exposed glass shards from collapse decimation. Distance LODs now use
+  material-delimited planar dissolution, with glass/paint area guards. Final counts:
+  68,596 / 25,245 / 14,057 triangles; zero degenerate triangles. LOD images inspected.
+- Saved source, regenerated FBX and reintegrated the prefab. Import exit 0 and
+  METEOR_MODEL|PASS in Logs/Meteor342U/geometry-repair-import-lods.log. EditMode 199/199
+  in TestResults/check-EditMode-20261018-144334-448.xml. Final FastCrafts exit 0 and
+  VESSEL_SHAKEDOWN|PASS for both craft in Logs/check-FastCrafts-20261018-145907-552.log.
+  Meteor: 12.74 m/s, 99% support, 1.04 m rise, 0.1 degree heel. No physics recalibration.
+- Six physics/collider prefab blocks match HEAD; vessel JSON unchanged. No commits.
+  Source backup: Logs/Meteor342U/before-geometry-repair.blend. Current review images:
+  Art/Source/Meteor342U/Previews/repair-final-* and repair-unity-*. Updated the README,
+  vessel sources and the user's existing MODEL_PROVENANCE.md without discarding edits.

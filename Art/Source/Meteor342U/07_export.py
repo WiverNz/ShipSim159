@@ -102,13 +102,24 @@ for level, ratio in ((0, 1.0), (1, 0.45), (2, 0.16)):
 
     bm = bmesh.new()
     bm.from_mesh(data)
+    # Shared cabin seams must stay welded when the distance LODs collapse edges.
+    bmesh.ops.remove_doubles(bm, verts=list(bm.verts), dist=2e-5)
+    bmesh.ops.dissolve_degenerate(bm, edges=list(bm.edges), dist=1e-7)
     # Preserve the authored outward winding of open glass and shell panels.
     bm.to_mesh(data)
     bm.free()
 
+    protected = {mats.index(bpy.data.materials[name]): name
+                 for name in ('Meteor_Glass', 'Meteor_SecondaryPaint')}
+    before_area = {index: sum(p.area for p in data.polygons if p.material_index == index)
+                   for index in protected}
     if ratio < 1.0:
         mod = ob.modifiers.new('Distance simplification', 'DECIMATE')
-        mod.ratio = ratio
+        # Collapse crosses glass/paint boundaries and turns windows into long shards.
+        mod.decimate_type = 'DISSOLVE'
+        mod.angle_limit = math.radians(.6 if level == 1 else 2.5)
+        mod.delimit = {'MATERIAL'}
+        mod.use_dissolve_boundaries = False
         bpy.ops.object.modifier_apply(modifier=mod.name)
     tri = ob.modifiers.new('Export triangles', 'TRIANGULATE')
     bpy.ops.object.modifier_apply(modifier=tri.name)
@@ -116,6 +127,12 @@ for level, ratio in ((0, 1.0), (1, 0.45), (2, 0.16)):
     # A planar metre UV channel for future material authoring. No reference
     # photograph is used as a texture anywhere in this model.
     data = ob.data
+    area_drift = {}
+    for index, material_name in protected.items():
+        after_area = sum(p.area for p in data.polygons if p.material_index == index)
+        drift = abs(after_area / before_area[index] - 1)
+        assert drift < .02, name + ': damaged glass/paint boundary: ' + material_name
+        area_drift[material_name] = drift
     uv = data.uv_layers.new(name='Planar_Metres')
     for p in data.polygons:
         axis = max(range(3), key=lambda i: abs(p.normal[i]))
@@ -146,6 +163,7 @@ for level, ratio in ((0, 1.0), (1, 0.45), (2, 0.16)):
         'nonmanifold_edges': nonmanifold,
         'degenerate_faces': degenerate,
         'material_slots': len(data.materials)})
+    report['lods'][-1]['protected_material_area_drift'] = area_drift
     ob.select_set(False)
 
 report['landmarks'] = {ob.name: [round(v, 4) for v in ob.matrix_world.translation]

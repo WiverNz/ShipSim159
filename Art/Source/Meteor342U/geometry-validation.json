@@ -1,0 +1,56 @@
+{
+  "closed_parts": {
+    "Hull": {
+      "nonmanifold_edges": 0,
+      "outward_volume": 209.18876400891537
+    },
+    "FrontFoil": {
+      "nonmanifold_edges": 0,
+      "outward_volume": 0.7537746988843423
+    },
+    "RearFoil": {
+      "nonmanifold_edges": 0,
+      "outward_volume": 0.8643957238197454
+    },
+    "FrontFoil_Fins": {
+      "nonmanifold_edges": 0,
+      "outward_volume": 0.016838221103705142
+    },
+    "FrontFoil_Struts": {
+      "nonmanifold_edges": 0,
+      "outward_volume": 1.8544590378281014
+    },
+    "FrontFoil_OuterStruts": {
+      "nonmanifold_edges": 0,
+      "outward_volume": 0.7926797784054452
+    },
+    "RearFoil_Struts": {
+      "nonmanifold_edges": 0,
+      "outward_volume": 0.9124897624538062
+    },
+    "RearFoil_InnerStruts": {
+      "nonmanifold_edges": 0,
+      "outward_volume": 1.6283993034892843
+    }
+  },
+  "root_embedding_m": {
+    "FrontFoil_Struts": [
+      0.11410975456237793,
+      0.12000995874404907
+    ],
+    "FrontFoil_OuterStruts": [
+      0.10355645418167114,
+      0.11986520886421204
+    ],
+    "RearFoil_Struts": [
+      0.06250695884227753,
+      0.12281867861747742
+    ],
+    "RearFoil_InnerStruts": [
+      0.10157114267349243,
+      0.12257137894630432
+    ]
+  },
+  "cabin_internal_boundary_edges": 0,
+  "status": "PASS"
+}

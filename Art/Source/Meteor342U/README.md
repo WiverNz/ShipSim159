@@ -3,9 +3,13 @@
 Editable source: `Meteor342U.blend`. Runtime export:
 `Assets/ShipSimulator/Models/Meteor342U/Meteor342U.fbx`.
 The source is a reference-based game reconstruction, not a surveyed replica or
-training-validated vessel. The original uncommitted model was revised on 2026-09-21.
+training-validated vessel. The source was revised on 2026-09-21 and repaired geometrically on 2026-10-18.
 
 ## Identification and references
+
+`MODEL_PROVENANCE.md` holds the long form: every source and what it supplied, the numerical
+calibration of the general arrangement drawing, the measured hull and photograph readings,
+the tools used, and a pass by pass account of how the model is built.
 
 - [FleetPhoto vessel card](https://fleetphoto.ru/vessel/1361/) identifies
   `Prepodobnyy Serafim`, formerly `Meteor-191`, as project 342U, built in 1984,
@@ -37,7 +41,7 @@ Boolean operations on the open wheelhouse half-shell also produced invalid resul
 The corrected source has:
 
 - A raised bow saloon deck falling to the lower boarding and side decks.
-- A lower cabin roof with curved shoulders and eight wrap-around bow panes per side.
+- A lower cabin roof with curved shoulders and seven wrap-around bow panes per side.
 - Seven larger rounded middle saloon windows, a machinery porthole and access hatch,
   five aft saloon windows and a glazed stern screen.
 - A complete swept wheelhouse with a roof, opaque sill and fourteen glazing panels.
@@ -89,26 +93,58 @@ builder delegates to the integrator, preserving this model on a catalogue rebuil
 
 ## Geometry audit
 
-LOD0 bounds are 9.5400 x 34.6000 x 7.5432 m, including foils and mast.
+LOD0 bounds are 9.5443 x 34.6000 x 7.5453 m, including foils and mast.
 Eleven material slots are shared by the three LOD meshes.
 
 | LOD | Triangles | Vertices | Open edges | Degenerate triangles |
 |---|---:|---:|---:|---:|
-| 0 | 76,926 | 45,106 | 12,756 | 0 |
-| 1 | 34,615 | 21,525 | 7,853 | 0 |
-| 2 | 9,620 | 7,307 | 4,748 | 0 |
+| 0 | 68,596 | 35,975 | 2,796 | 0 |
+| 1 | 25,245 | 13,706 | 1,541 | 0 |
+| 2 | 14,057 | 7,278 | 315 | 0 |
 
-`model-report.json` records the complete bounds, landmarks and geometry counts.
-This is a collection of render surfaces, with open shell, glazing and fitting edges;
-it is not a watertight solid and must not be used to calculate displacement.
+`model-report.json` records export bounds and counts. `geometry-validation.json`
+records closed hull/foil topology, root embedding and shared cabin seams. The hull
+and seven mirrored foil/support components are closed individually; separate fittings,
+interior surfaces and overlapping assemblies make the complete export a render model,
+not a single watertight displacement solid.
+
+## Geometry repair, 2026-10-18
+
+- Closed the finite-width stem, hull deck and cabin ends, and collapsed the degenerate
+  stern section to its centreline endpoint. The weather deck now reaches both ends.
+- Replaced independently tessellated window surrounds with a single constrained
+  triangulation for shell, frames, glass and the blue sheer band. All section bends
+  and longitudinal table knots are included, so their shared edges follow the cabin.
+- Fitted the complete roots of all four mirrored strut groups to the local hull surface,
+  with measured embedding of 0.063 to 0.123 m. Fixed foil tip plates, shaft/hub gaps,
+  rudder supports and the rotation of the five propeller blades.
+- Corrected the interior ceiling's height-coordinate conversion and sampled its curve
+  densely enough to remain inside the cabin. Seats are checked across their full width.
+- Removed coplanar deck surfaces, stepped underbody paint and detached paint strips.
+  Added visible raft and handrail brackets and seated bridge fittings.
+- Welded shared seams before LOD simplification; source parts remain editable.
+  Distant LODs dissolve nearly coplanar faces with material boundaries protected,
+  avoiding the glass shards produced by ratio-based collapse. Export checks the
+  glass and blue-paint surface areas against their unsimplified inputs.
+
+`validate_model.py` rejects open hull/foil shells, inward normals, detached strut roots,
+internal cabin boundary edges, protruding interior geometry and degenerate triangles.
+`test_geometry.py` deliberately introduces four defects on temporary mesh copies and
+verifies that each guard fails, then restores and validates the intact source.
+Run it with the same `exec(compile(...))` pattern as the numbered passes.
+Root attachment is an overlapping render assembly, not a structural engineering joint.
 
 ## Review and verification
 
-`Previews/corrected-quarter.png` is the current overall review. The `final-*` images
-and both `state-*` images show the revised source. The historical
+`Previews/repair-final-*.png` are the current geometry review, including bow, stern,
+underside and window/foil details. `corrected-quarter.png`, `final-*` and `state-*`
+are historical September captures. The historical
 `compare-side-with-photo.png` is the before-correction comparison, retained for context.
-The `unity-front-quarter.png` and `game-*` previews are refreshed after Unity checks.
+The `repair-unity-*` previews show the current imported model and distance LODs.
+Earlier `unity-front-quarter.png` and `game-*` images remain historical.
 Current verification results are in
 `Assets/ShipSimulator/Documentation/Meteor342U_Sources.md`.
 The pre-correction Blender scene was saved to the ignored
 `Logs/Meteor342U/before-correction.blend` before editing.
+
+The pre-repair scene is retained at `Logs/Meteor342U/before-geometry-repair.blend`.

@@ -5,79 +5,91 @@
   "waterline_z": 0.0,
   "baseline_z": -1.05,
   "origin": "midship on the loaded waterline",
-  "source_objects": 139,
+  "source_objects": 165,
   "lods": [
     {
       "name": "Meteor342U_LOD0",
-      "triangles": 76926,
-      "vertices": 45106,
+      "triangles": 68596,
+      "vertices": 35975,
       "dimensions_xyz": [
-        9.54,
+        9.5443,
         34.6,
-        7.5432
+        7.5453
       ],
       "min_xyz": [
-        -4.77,
+        -4.7721,
         -17.3,
         -2.35
       ],
       "max_xyz": [
-        4.77,
+        4.7721,
         17.3,
-        5.1932
+        5.1953
       ],
-      "boundary_edges": 12756,
-      "nonmanifold_edges": 12958,
+      "boundary_edges": 2796,
+      "nonmanifold_edges": 3061,
       "degenerate_faces": 0,
-      "material_slots": 11
+      "material_slots": 11,
+      "protected_material_area_drift": {
+        "Meteor_Glass": 8.475031881927109e-05,
+        "Meteor_SecondaryPaint": 5.462545890733139e-06
+      }
     },
     {
       "name": "Meteor342U_LOD1",
-      "triangles": 34615,
-      "vertices": 21525,
+      "triangles": 25245,
+      "vertices": 13706,
       "dimensions_xyz": [
-        9.54,
+        9.5443,
         34.6,
-        7.5432
+        7.5453
       ],
       "min_xyz": [
-        -4.77,
+        -4.7721,
         -17.3,
         -2.35
       ],
       "max_xyz": [
-        4.77,
+        4.7721,
         17.3,
-        5.1932
+        5.1953
       ],
-      "boundary_edges": 7853,
-      "nonmanifold_edges": 8081,
+      "boundary_edges": 1541,
+      "nonmanifold_edges": 1778,
       "degenerate_faces": 0,
-      "material_slots": 11
+      "material_slots": 11,
+      "protected_material_area_drift": {
+        "Meteor_Glass": 8.633157988402473e-05,
+        "Meteor_SecondaryPaint": 0.00011951455821623824
+      }
     },
     {
       "name": "Meteor342U_LOD2",
-      "triangles": 9620,
-      "vertices": 7307,
+      "triangles": 14057,
+      "vertices": 7278,
       "dimensions_xyz": [
-        9.54,
-        34.6032,
-        7.4904
+        9.5443,
+        34.6,
+        7.4935
       ],
       "min_xyz": [
-        -4.77,
+        -4.7721,
         -17.3,
         -2.35
       ],
       "max_xyz": [
-        4.77,
-        17.3032,
-        5.1404
+        4.7721,
+        17.3,
+        5.1435
       ],
-      "boundary_edges": 4748,
-      "nonmanifold_edges": 4878,
+      "boundary_edges": 315,
+      "nonmanifold_edges": 441,
       "degenerate_faces": 0,
-      "material_slots": 11
+      "material_slots": 11,
+      "protected_material_area_drift": {
+        "Meteor_Glass": 8.927874278175096e-05,
+        "Meteor_SecondaryPaint": 0.0058530269047198935
+      }
     }
   ],
   "landmarks": {

@@ -41,15 +41,16 @@ def inner(a, h):
 verts, faces = [], []
 stations = []
 for (a0, a1) in SALOONS:
-    n = max(3, int((a1 - a0) / 1.1))
+    n = max(3, math.ceil((a1 - a0) / .20))
     stations += [a0 + (a1 - a0) * i / n for i in range(n + 1)]
-stations = sorted(set(round(a, 3) for a in stations))
+    stations += [a for table in (B_SUP, Z_DECK, H_SCALE) for a, _ in table if a0 < a < a1]
+stations = sorted(set(stations))
 for a in stations:
     hs = lerp_table(H_SCALE, a)
     zf = deck_z(a) + FLOOR_H
     zh = deck_z(a) + min(HEAD_H * hs, HEAD_H)
-    verts.extend([(0.0, y_of(a), zf), (inner(a, FLOOR_H), y_of(a), zf),
-                  (inner(a, min(HEAD_H * hs, HEAD_H)), y_of(a), zh),
+    verts.extend([(0.0, y_of(a), zf), (inner(a, FLOOR_H / hs), y_of(a), zf),
+                  (inner(a, (zh-deck_z(a))/hs), y_of(a), zh),
                   (0.0, y_of(a), zh)])
 for s in range(len(stations) - 1):
     a_mid = 0.5 * (stations[s] + stations[s + 1])
@@ -72,8 +73,8 @@ for (a0, a1) in SALOONS:
         zf = deck_z(a) + FLOOR_H
         zh = deck_z(a) + min(HEAD_H * hs, HEAD_H)
         base = len(verts)
-        verts.extend([(0.0, y_of(a), zf), (inner(a, FLOOR_H), y_of(a), zf),
-                      (inner(a, min(HEAD_H * hs, HEAD_H)), y_of(a), zh),
+        verts.extend([(0.0, y_of(a), zf), (inner(a, FLOOR_H / hs), y_of(a), zf),
+                      (inner(a, (zh-deck_z(a))/hs), y_of(a), zh),
                       (0.0, y_of(a), zh)])
         faces.append((base, base + 1, base + 2, base + 3))
 bulk = new_mesh('InteriorProxy_Bulkheads', verts, faces, model, smooth=False)
@@ -116,7 +117,8 @@ for (a0, a1) in SALOONS:
     for r in range(rows):
         a = a0 + 0.55 + r * 0.76
         zf = deck_z(a) + FLOOR_H
-        width = inner(a, 0.75)
+        width = min(inner(sample, (zf+.52-deck_z(sample))/lerp_table(H_SCALE,sample))
+                    for sample in (a-.22,a,a+.22))
         if width < 0.9:
             continue
         for x in (width * 0.40, width * 0.78):

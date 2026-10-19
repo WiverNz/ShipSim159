@@ -54,11 +54,24 @@ namespace ShipSimulator.Editor
             importer.importNormals = ModelImporterNormals.Import;
             importer.SaveAndReimport();
             var source = AssetDatabase.LoadAssetAtPath<GameObject>(ModelPath);
+            // Finish imports before loading prefab contents; reimports can reset instance overrides.
+            var materials = new Dictionary<string, Material>();
+            foreach (Material slot in source.GetComponentsInChildren<Renderer>().SelectMany(r => r.sharedMaterials))
+            {
+                string key = slot.name.Split('.')[0];
+                if (!materials.ContainsKey(key)) materials.Add(key, CreateMaterial(key));
+            }
             var contents = PrefabUtility.LoadPrefabContents(PrefabPath);
             try
             {
                 Transform old = contents.transform.Find("DetailedVisual");
                 if (old != null) Object.DestroyImmediate(old.gameObject);
+                foreach (Transform child in contents.transform.Cast<Transform>().ToArray())
+                {
+                    Object original = PrefabUtility.GetCorrespondingObjectFromSource(child.gameObject);
+                    if (original != null && AssetDatabase.GetAssetPath(original) == ModelPath)
+                        Object.DestroyImmediate(child.gameObject);
+                }
                 var visual = (GameObject)PrefabUtility.InstantiatePrefab(source, contents.transform);
                 visual.name = "DetailedVisual";
                 visual.transform.localPosition = Vector3.zero;
@@ -79,7 +92,6 @@ namespace ShipSimulator.Editor
 
                 foreach (LODGroup existing in visual.GetComponentsInChildren<LODGroup>())
                     Object.DestroyImmediate(existing);
-                var materials = new Dictionary<string, Material>();
                 var lods = new LOD[3];
                 float[] transitions = { 0.30f, 0.12f, 0.008f };
                 for (int i = 0; i < lods.Length; i++)
@@ -89,12 +101,7 @@ namespace ShipSimulator.Editor
                     for (int m = 0; m < slots.Length; m++)
                     {
                         string key = slots[m].name.Split('.')[0];
-                        if (!materials.TryGetValue(key, out Material material))
-                        {
-                            material = CreateMaterial(key);
-                            materials.Add(key, material);
-                        }
-                        slots[m] = material;
+                        slots[m] = materials[key];
                     }
                     renderer.sharedMaterials = slots;
                     lods[i] = new LOD(transitions[i], new[] { renderer });
@@ -121,6 +128,8 @@ namespace ShipSimulator.Editor
                 });
                 if (visual.GetComponentsInChildren<Collider>().Length != 0)
                     throw new InvalidOperationException("The render model must not introduce physics colliders.");
+                if (contents.GetComponentsInChildren<Renderer>().Length != 3)
+                    throw new InvalidOperationException("Duplicate Luch render hierarchy.");
                 GameObject result = PrefabUtility.SaveAsPrefabAsset(contents, PrefabPath);
                 AssetDatabase.SaveAssets();
                 return result;
@@ -149,10 +158,11 @@ namespace ShipSimulator.Editor
             {
                 "Paint_Ivory" => (new Color(.90f, .91f, .89f), .12f, .66f),
                 "Paint_DeckTeal" => (new Color(.28f, .52f, .55f), .15f, .60f),
+                "Deck_Nonslip" => (new Color(.30f, .47f, .48f), 0f, .22f),
                 "Paint_HullCharcoal" => (new Color(.20f, .24f, .26f), .22f, .68f),
                 "Skeg_Rubber" => (new Color(.14f, .16f, .17f), 0f, .27f),
                 "Rail_Aluminium" => (new Color(.72f, .75f, .77f), .75f, .71f),
-                "Glass_BlueGrey" => (new Color(.22f, .35f, .39f, .72f), .12f, .87f),
+                "Glass_BlueGrey" => (new Color(.38f, .45f, .47f, .40f), 0f, .88f),
                 "Interior_Seats" => (new Color(.39f, .50f, .54f), 0f, .2f),
                 "Lights_WarmLens" => (new Color(.93f, .89f, .76f), .05f, .81f),
                 _ => (new Color(.20f, .25f, .27f), 0f, .25f)
@@ -160,6 +170,20 @@ namespace ShipSimulator.Editor
             material.SetColor("_BaseColor", color);
             material.SetFloat("_Metallic", metallic);
             material.SetFloat("_Smoothness", smoothness);
+            string textureRoot = "Assets/ShipSimulator/Models/Luch14352/Textures/" + name;
+            if (File.Exists(textureRoot + "_BaseColor.png"))
+            {
+                material.SetTexture("_BaseMap", ImportTexture(textureRoot + "_BaseColor.png", true, false));
+                material.SetColor("_BaseColor", Color.white);
+                material.SetTexture("_MetallicGlossMap", ImportTexture(textureRoot + "_MetalSmooth.png", false, false));
+                material.SetTexture("_BumpMap", ImportTexture(textureRoot + "_Normal.png", false, true));
+                material.SetFloat("_Metallic", 1f);
+                material.SetFloat("_Smoothness", 1f);
+                material.SetFloat("_SmoothnessTextureChannel", 0f);
+                material.SetFloat("_BumpScale", 1f);
+                material.EnableKeyword("_METALLICSPECGLOSSMAP");
+                material.EnableKeyword("_NORMALMAP");
+            }
             if (name == "Glass_BlueGrey")
             {
                 material.SetFloat("_Surface", 1);
@@ -173,6 +197,23 @@ namespace ShipSimulator.Editor
             }
             EditorUtility.SetDirty(material);
             return material;
+        }
+
+        private static Texture2D ImportTexture(string path, bool srgb, bool normal)
+        {
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+            var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (importer == null) throw new InvalidOperationException("Missing Luch texture: " + path);
+            importer.textureType = normal ? TextureImporterType.NormalMap : TextureImporterType.Default;
+            importer.sRGBTexture = srgb;
+            importer.alphaSource = TextureImporterAlphaSource.FromInput;
+            importer.alphaIsTransparency = false;
+            importer.wrapMode = TextureWrapMode.Repeat;
+            importer.mipmapEnabled = true;
+            importer.anisoLevel = 4;
+            importer.maxTextureSize = 1024;
+            importer.SaveAndReimport();
+            return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
         }
 
         private static void RenderReview(GameObject prefab)

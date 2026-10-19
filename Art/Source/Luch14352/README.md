@@ -74,14 +74,14 @@ Dimensions include mast and fittings, reported as length x width x height:
 
 | LOD | Triangles | Dimensions, m | Open/non-manifold edges | Degenerate triangles |
 |---|---:|---|---:|---:|
-| 0 | 59,946 | 23.7201 x 4.5300 x 5.1279 | 0 / 0 | 0 |
-| 1 | 26,974 | 23.7152 x 4.5291 x 5.1283 | 0 / 0 | 0 |
-| 2 | 7,930 | 23.7060 x 4.5300 x 5.1336 | 0 / 0 | 0 |
+| 0 | 65,148 | 23.7200 x 4.5300 x 5.1279 | 0 / 0 | 0 |
+| 1 | 29,316 | 23.7188 x 4.5291 x 5.1279 | 0 / 0 | 0 |
+| 2 | 7,820 | 23.7200 x 4.5300 x 5.1336 | 0 / 0 | 0 |
 
 See `model-report.json` for raw Blender measurements. Small differences follow bevels and
 LOD simplification. LOD2 removes fine fittings and seat detail and omits bevels; aggressive
 collapse was rejected because it opened thin geometry. Each export has one mesh renderer
-with ten material slots. Separate constructed parts can intersect at intended joints;
+with eleven material slots. Separate constructed parts can intersect at intended joints;
 the vessel is not a single watertight solid suitable for hydrostatic volume calculations.
 
 ## Unity integration
@@ -114,3 +114,54 @@ model views and LOD1/LOD2 comparisons. Runtime shakedown captures are under `Log
 These output directories are ignored by Git. Six final Blender renders are also retained
 in this source folder's `Previews` directory. Test and runtime verification results are
 recorded in `Assets/ShipSimulator/Documentation/Luch14352_Sources.md`.
+
+## Reference reconstruction, 2026-10-19
+
+The user confirmed the 1994 project 14352 appearance. `04_reference_shape.py`
+rebuilds the rounded bow stations, foredeck outline, cambered light roof and
+wheelhouse body/glazing from common perimeter controls. Rounded bridge windows,
+clipped forward corners and swept rear shoulders replace the square box and
+separate cheek plates. The isolated forward window plus eight saloon panes per
+side is retained. Neutral glazing replaces saturated teal.
+
+`03_finish_export.py` invokes the reference pass and validation automatically,
+then regenerates LODs and named landmarks without duplicates. For an existing
+source scene, rerun pass 3 through registered Blender MCP. A fresh scene uses
+passes 1, 2 and 3 in order. Pass 4 is independently rerunnable.
+`validate_model.py` checks closed main shells, outward volumes, window count,
+forward-window clearance and wheelhouse height. `test_geometry.py` introduces
+an open hull and removes glazing on temporary copies to prove the guards.
+Export requires zero boundary/nonmanifold edges and zero degenerate triangles.
+
+`MODEL_PROVENANCE.md` records evidence and remaining limits. New review images
+are `Previews/reference-*.png`; earlier `final-*` images are historical.
+Backup: `Logs/Luch14352/ReferenceReview/before-reference-rebuild.blend`.
+
+## PBR material pass, 2026-10-19
+
+`05_materials.py` creates seven deterministic original 1024 x 1024 tile sets:
+ivory paint, teal paint, charcoal hull paint, non-slip deck, rubber, aluminium
+and seat fabric. Each has base color, tangent normal and packed metal/smoothness
+maps (R metallic, A smoothness); the Blender shader decodes the same maps as URP.
+The generator uses periodic noise, physical relief depths and a two-metre UV tile.
+Paint includes restrained streaking and surface variation; bare aluminium has
+brushing, rubber has fine wear and the exposed deck uses a separate grip material.
+Glass uses neutral tint and adjusted transparency, not an opaque photo texture.
+
+No external texture pack, generated AI image or reference-photo texture was used.
+These are original procedural assets, reproducible from the checked-in script.
+The PNG files and Unity .meta files are runtime assets in Models/Luch14352/Textures.
+Only base color is imported as sRGB; normals and packed masks are linear, repeating,
+mipmapped with anisotropic filtering. Eleven material slots are used per LOD.
+The final export uses 65,148 / 29,316 / 7,820 triangles; the far LOD was reduced to
+meet its existing 8,000-triangle budget, with closed geometry checks still passing.
+`03_finish_export.py` applies materials on each rebuild. Unity's integrator binds
+all maps by material name. The material integration test verifies UVs, texture
+presence, import color space, normal type and shader keywords across all LODs.
+
+Texture-review images are `Previews/textured-quarter.png` and
+`Previews/textured-bow-detail.png`. Backup: Logs/Luch14352/ReferenceReview/before-textures.blend.
+
+LOD2 omits distant railings, searchlights and small mast fittings instead of
+collapsing thin shells. Texture imports finish before prefab editing to prevent
+model reimports from resetting instance overrides or duplicating visuals.

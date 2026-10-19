@@ -1304,3 +1304,47 @@ FastCrafts check-FastCrafts-20261018-210448-756.log passed both vessels, exit 0.
 Meteor 12.72 m/s, 99% support, 1.04 m rise. Physics/colliders unchanged.
 Previews/silhouette-{quarter,side,afloat}.png are current. Provenance section 16
 and README describe limits. Changes remain uncommitted.
+
+
+## Luch 14352 reference reconstruction, 2026-10-19
+
+User confirmed the 1994 version, not older 14351 or modern Luch concept.
+Primary reference Vympel archive photo 478451; bureau specification and family
+arrangement provide controls. New 04_reference_shape.py rebuilds rounded bow,
+foredeck, shallow cambered light roof and closed swept wheelhouse with rounded
+glazing and clipped corners. 03_finish_export.py invokes this pass and validation,
+regenerating existing LODs/landmarks without duplicates. Source and FBX saved.
+validate_model.py checks shells, window count/clearance, roof height; temporary
+open-hull/missing-glass mutations prove guards in test_geometry.py. All pass.
+LOD triangles 65148 / 29316 / 9888, zero open/nonmanifold edges or degenerates.
+Unity integration reference-import.log passed, exit 0, no compile errors.
+FastCrafts check-FastCrafts-20261019-222401-638.log passed both vessels, exit 0;
+Luch 6.81 m/s, 99% support, .21 m rise. Physics/colliders unchanged against HEAD.
+Previews/reference-*.png are current. MODEL_PROVENANCE.md records estimation
+limits. Backup Logs/Luch14352/ReferenceReview/before-reference-rebuild.blend.
+All Blender operations used registered MCP. Changes remain uncommitted.
+
+
+## Luch PBR texture verification, 2026-10-19
+
+Seven original deterministic 1024px material sets (21 PNGs) now cover paint,
+non-slip deck, rubber, aluminium and fabric. Base color, normal and packed
+metal/smoothness maps use matching two-metre UVs in Blender and Unity. Glass
+has neutral tint and reduced opacity. Source script: 05_materials.py. Runtime
+PNGs and Unity metadata are in Models/Luch14352/Textures; no external image license.
+
+Texture imports now finish before prefab editing, preventing instance overrides
+from being reset by reimport. Imported duplicates from the intermediate run were
+removed; the final prefab has one DetailedVisual and three renderers. Physics
+components/colliders match HEAD. LOD2 omits fine railings/lights and uses 7,820
+triangles with no open/nonmanifold edges or degenerates. LOD0/1: 65,148 / 29,316.
+Unity textures-checked.log import passed, exit 0, no compile errors. All 200
+EditMode tests passed in check-EditMode-20261019-223113-246.xml, including map
+presence, UV, color-space, normal importer, shader-keyword and renderer-count checks.
+FastCrafts passed both vessels, exit 0, in check-FastCrafts-20261019-223158-397.log.
+Luch reached 6.81 m/s with 99% support and .21 m rise. Blender close-up and Unity
+LOD previews were inspected. Textured source is saved with relative image paths
+and material preview enabled. Previews/textured-{quarter,bow-detail}.png show
+this revision. Colors and wear are authored estimates, not surveyed paint data.
+
+Changes remain uncommitted.

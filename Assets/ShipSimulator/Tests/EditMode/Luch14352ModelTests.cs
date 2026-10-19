@@ -10,6 +10,35 @@ namespace ShipSimulator.Tests
     public sealed class Luch14352ModelTests
     {
         [Test]
+        public void TexturedMaterials_UseColorAndLinearPbrMapsOnEveryLod()
+        {
+            GameObject prefab = VesselCatalogue.Load().Find("luch-14352").prefab;
+            Assert.That(prefab.GetComponentsInChildren<Renderer>().Length, Is.EqualTo(3));
+            foreach (LOD lod in prefab.GetComponentInChildren<LODGroup>().GetLODs())
+            {
+                var renderer = lod.renderers.Single();
+                Mesh mesh = renderer.GetComponent<MeshFilter>().sharedMesh;
+                Assert.That(mesh.uv.Length, Is.EqualTo(mesh.vertexCount));
+                foreach (string name in new[] { "Paint_Ivory", "Deck_Nonslip", "Skeg_Rubber", "Rail_Aluminium" })
+                {
+                    Material material = renderer.sharedMaterials.Single(m => m.name == name);
+                    foreach (string property in new[] { "_BaseMap", "_MetallicGlossMap", "_BumpMap" })
+                    {
+                        Texture texture = material.GetTexture(property);
+                        Assert.That(texture, Is.Not.Null, name + property);
+                        var importer = (TextureImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(texture));
+                        Assert.That(importer.sRGBTexture, Is.EqualTo(property == "_BaseMap"));
+                        Assert.That(importer.wrapMode, Is.EqualTo(TextureWrapMode.Repeat));
+                        if (property == "_BumpMap")
+                            Assert.That(importer.textureType, Is.EqualTo(TextureImporterType.NormalMap));
+                    }
+                    Assert.That(material.IsKeywordEnabled("_NORMALMAP"), Is.True);
+                    Assert.That(material.IsKeywordEnabled("_METALLICSPECGLOSSMAP"), Is.True);
+                }
+            }
+        }
+
+        [Test]
         public void AuthoredVisual_PreservesPhysicsAndUsesThreeImportedLods()
         {
             GameObject prefab = VesselCatalogue.Load().Find("luch-14352").prefab;

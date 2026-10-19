@@ -116,3 +116,47 @@ Logs: `Logs/luch-import-final.log`, `Logs/check-EditMode-20260920-160659-487.log
 `Logs/check-FastCrafts-20260920-161004-378.log`. Test XML files have matching names in
 `TestResults`. No compile, shader, or unexpected runtime exception errors were found
 in these checks. Gameplay handling remains the existing prototype approximation.
+
+
+## Reference reconstruction, 2026-10-19
+
+The user confirmed the 1994 project 14352 appearance. Compared Vympel's archive
+photo https://fleetphoto.ru/photo/478451/, the bureau specifications and the
+previously downloaded SPK Fleet family arrangement. Rebuilt rounded bow/foredeck,
+cambered light roof, clipped wheelhouse corners, rounded glazing and swept rear
+shoulders. Local radii and color remain estimates; see
+`Art/Source/Luch14352/MODEL_PROVENANCE.md` for evidence and limitations.
+
+LOD triangles: 65,148 / 29,316 / 9,888; all have zero boundary edges, nonmanifold
+edges and degenerate triangles. Length is 23.72 m; the previous documented beam
+interpretation remains. Source geometry guards and two deliberate-defect tests
+pass. Unity import passed with exit 0 and no compile errors in
+`Logs/Luch14352/reference-import.log`. FastCrafts passed both vessels with exit 0
+in `Logs/check-FastCrafts-20261019-222401-638.log`; Luch reached 6.81 m/s,
+99% support and .21 m rise. Prefab physics/controller/collider blocks match HEAD.
+Blender and Unity quarter/LOD views were inspected. These automated prototype
+checks do not establish real maritime handling accuracy. Current authored
+renders: `Art/Source/Luch14352/Previews/reference-*.png`.
+
+
+## Luch PBR texture verification, 2026-10-19
+
+Seven original deterministic 1024px material sets (21 PNGs) now cover paint,
+non-slip deck, rubber, aluminium and fabric. Base color, normal and packed
+metal/smoothness maps use matching two-metre UVs in Blender and Unity. Glass
+has neutral tint and reduced opacity. Source script: 05_materials.py. Runtime
+PNGs and Unity metadata are in Models/Luch14352/Textures; no external image license.
+
+Texture imports now finish before prefab editing, preventing instance overrides
+from being reset by reimport. Imported duplicates from the intermediate run were
+removed; the final prefab has one DetailedVisual and three renderers. Physics
+components/colliders match HEAD. LOD2 omits fine railings/lights and uses 7,820
+triangles with no open/nonmanifold edges or degenerates. LOD0/1: 65,148 / 29,316.
+Unity textures-checked.log import passed, exit 0, no compile errors. All 200
+EditMode tests passed in check-EditMode-20261019-223113-246.xml, including map
+presence, UV, color-space, normal importer, shader-keyword and renderer-count checks.
+FastCrafts passed both vessels, exit 0, in check-FastCrafts-20261019-223158-397.log.
+Luch reached 6.81 m/s with 99% support and .21 m rise. Blender close-up and Unity
+LOD previews were inspected. Textured source is saved with relative image paths
+and material preview enabled. Previews/textured-{quarter,bow-detail}.png show
+this revision. Colors and wear are authored estimates, not surveyed paint data.

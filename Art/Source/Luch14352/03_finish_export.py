@@ -17,15 +17,28 @@ for v in bpy.data.objects['Deck_Obnose'].data.vertices:
 engine=bpy.data.objects['EngineRoom']
 for v in engine.data.vertices:
     if v.co.y < -9.99 and v.co.z>1:v.co.z=.72
-next(n for n in glass.node_tree.nodes if n.type=='BSDF_PRINCIPLED').inputs['Transmission Weight'].default_value=.15
+exec(compile(open(BASE+'/Art/Source/Luch14352/04_reference_shape.py',
+                  encoding='utf-8').read(),'04_reference_shape.py','exec'))
+exec(compile(open(BASE+'/Art/Source/Luch14352/validate_model.py',
+                  encoding='utf-8').read(),'validate_model.py','exec'))
+exec(compile(open(BASE+'/Art/Source/Luch14352/05_materials.py',
+                  encoding='utf-8').read(),'05_materials.py','exec'),{})
 scene.eevee.taa_render_samples=96
 for name,position in [('BowReference',(0,11.86,0)),('SternReference',(0,-11.56,0)),('StarboardReference',(2.265,0,0)),('UpReference',(0,0,1)),('Waterline',(0,0,0)),('CameraNavigator',(-.65,9.18,2.38)),('WaterJetPoint',(0,-11.76,-.12))]:
+    if bpy.data.objects.get(name):
+        bpy.data.objects.remove(bpy.data.objects[name],do_unlink=True)
     o=bpy.data.objects.new(name,None);model.objects.link(o);o.parent=root;o.location=position
 
 for name,loc in [('port',(-32,0,1.3)),('starboard',(32,0,1.3)),('front-quarter',(22,30,12)),('rear-quarter',(-23,-30,12)),('top-front',(13,17,30)),('skegs',(-17,-24,-8))]:
     view('final-'+name,loc)
 
-export=bpy.data.collections.new('GameReady_LODs');scene.collection.children.link(export)
+export=bpy.data.collections.get('GameReady_LODs')
+if export:
+    for ob in list(export.objects):
+        bpy.data.objects.remove(ob,do_unlink=True)
+    export.hide_render=False;export.hide_viewport=False
+else:
+    export=bpy.data.collections.new('GameReady_LODs');scene.collection.children.link(export)
 deps=bpy.context.evaluated_depsgraph_get()
 source=[o for o in model.objects if o.type in {'MESH','FONT'}]
 materials=[]
@@ -44,6 +57,8 @@ for level,ratio in [(0,1.0),(1,.45),(2,1.0)]:
         bpy.context.view_layer.update();deps=bpy.context.evaluated_depsgraph_get()
     verts=[];faces=[];indices=[];smooth=[]
     for ob in source:
+        if level==2 and ob.name.startswith(('Railings_','Searchlight_','Mast_Brace','Mast_Crossbar','Antenna')):
+            continue
         if level==2 and any(s in ob.name for s in ['InteriorProxy_Seat','InteriorProxy_Back','Wiper','DoorHandle','DoorSeam','WindowTransom','WindowSeal','Roof_Handrail','EngineRoom_Strake','EngineRoom_VentLouvre','MooringCleat','BowRamp_HydraulicCylinder','BowRamp_Tread','IntakeGrille','Cushion_SealRib','Nameplate']):continue
         ev=ob.evaluated_get(deps);data=ev.to_mesh();offset=len(verts)
         clean=bmesh.new();clean.from_mesh(data)
@@ -75,12 +90,14 @@ for level,ratio in [(0,1.0),(1,.45),(2,1.0)]:
     for p in data.polygons:
         axis=max(range(3),key=lambda i:abs(p.normal[i]));a,b=[i for i in range(3) if i!=axis]
         for li in p.loop_indices:
-            co=data.vertices[data.loops[li].vertex_index].co;uv.data[li].uv=(co[a]/8,co[b]/8)
+            co=data.vertices[data.loops[li].vertex_index].co;uv.data[li].uv=(co[a]/2,co[b]/2)
     bm=bmesh.new();bm.from_mesh(data)
     boundary=sum(1 for e in bm.edges if e.is_boundary)
     nonmanifold=sum(1 for e in bm.edges if not e.is_manifold)
     degenerate=sum(1 for f in bm.faces if f.calc_area()<1e-12)
     bm.free()
+    assert boundary == 0 and nonmanifold == 0, ob.name+': open export geometry'
+    assert degenerate == 0, ob.name+': degenerate export triangles'
     points=[ob.matrix_world@v.co for v in data.vertices]
     minimum=[min(v[i] for v in points) for i in range(3)];maximum=[max(v[i] for v in points) for i in range(3)]
     report['lods'].append({'name':ob.name,'triangles':len(data.polygons),'dimensions_xyz':[maximum[i]-minimum[i] for i in range(3)],'min_xyz':minimum,'max_xyz':maximum,'boundary_edges':boundary,'nonmanifold_edges':nonmanifold,'degenerate_faces':degenerate})

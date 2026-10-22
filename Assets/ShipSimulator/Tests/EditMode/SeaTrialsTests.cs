@@ -10,11 +10,11 @@ namespace ShipSimulator.Tests
     {
         private const float Deep = float.PositiveInfinity;
 
-        // Published loaded service speeds: 507B 10 kn (MEB), Volgo-Balt 2-95A/R 10 kn (FleetPhoto, korabel.ru),
+        // Published loaded service speeds: 507B 20 km/h (archive doc257 p3), Volgo-Balt 2-95A/R 10 kn (FleetPhoto, korabel.ru),
         // Volgoneft 1577 20 km/h (korabel.ru, FleetPhoto).
         private static readonly object[] PublishedSpeeds =
         {
-            new object[] { VesselFixtures.VolgoDonFile, 10f },
+            new object[] { VesselFixtures.VolgoDonFile, 20f / 1.852f },
             new object[] { VesselFixtures.VolgoBaltFile, 10f },
             new object[] { VesselFixtures.VolgoneftFile, 20f / 1.852f }
         };
@@ -107,6 +107,7 @@ namespace ShipSimulator.Tests
             VesselParameters p = VesselFixtures.Parameters(file);
             ZigZagResult ten = ManoeuvringTrials.ZigZag(p, 10f, Deep);
             ZigZagResult twenty = ManoeuvringTrials.ZigZag(p, 20f, Deep);
+            Assert.That(ten.Completed && twenty.Completed, Is.True, "Both zigzags must finish, not time out with zero overshoot.");
 
             Assert.That(ten.FirstOvershootDeg, Is.InRange(0f, ManoeuvringTrials.ImoFirstOvershootLimitDeg(ten.LengthOverSpeedS)));
             Assert.That(ten.SecondOvershootDeg, Is.InRange(0f, ManoeuvringTrials.ImoSecondOvershootLimitDeg(ten.LengthOverSpeedS)));

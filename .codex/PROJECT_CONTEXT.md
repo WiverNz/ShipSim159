@@ -1,5 +1,36 @@
 # ShipSim159 Project Context
 
+## Volgo-Don 507B Part 6, 2026-10-22
+
+Part 6 complete. Do not start Part 7 until requested. Current handling guide:
+`Art/Source/VolgoDon507B/PART6_REVIEW.md`; checklist and source README updated.
+Optional steeringNozzle JSON replaces generic rudder forces for 507B with signed
+jet deflection and dissipative passive cross-flow. PropellerY reaches total sway.
+Other vessels keep the legacy MMG path. Existing independent engine/reversal
+logic, shared helm actuator, Rigidbody, controls, animations and saves retained.
+
+Active 507B physics: archive D=1.8 m, bow waterjet=72 kW / .710 m, nozzle geometry
+1.84 x 1.66 m; authored shaft/nozzle x=-64.65, y=+/-3.6 m. Shaft setpoint375rpm
+assumes direct drive from the documented engine rating, ratio unconfirmed.
+KQ=0.8 of old curves, KT unchanged, CR=.0001005; coefficients remain estimates.
+Nozzle deflection=1, passive area=3.0544, slope=3. Bow high-speed floor=0.
+6750 t / 3.53 m baseline retained; archive 507B 6678 t / 3.5 m conflict remains.
+
+Deep-water final: 19.80 km/h, shaft341.9rpm /91.2% load, crash stop718.5m/286s,
+tactical618.2m, steady-turn499.8m. Speed agrees approximately; stopping agreement
+is worse than baseline and archive510m/210s. Do not claim full-scale validation.
+Raw before/after and original vessel JSON retained alongside the report.
+Editor VolgoDonHandlingReview.After reruns trials and requires unchanged metrics
+for other four playable ships and KVLCC2. Before refuses to overwrite baseline.
+Trial completion flags prevent timeouts masquerading as completed manoeuvres.
+
+Verification: EditMode217/217 TestResults/check-EditMode-20261022-195651-185.xml;
+PlayMode40/40 TestResults/check-PlayMode-20261022-195740-130.xml; handling runner
+PASS exit0 Logs/VolgoDon507B/part6-after.log; five-vessel shakedown PASS exit0
+Logs/check-Shakedown-20261022-195829-086.log. Initial KQ=.6 candidate failed
+efficiency/bollard checks and was discarded; existing bounds remain unchanged.
+Source geometry, FBX, materials, prefab and other vessel specifications unchanged.
+
 ## Volgo-Don 507B Part 5, 2026-10-22
 
 Part 5 complete. Do not start Part 6 until requested. Current guide:

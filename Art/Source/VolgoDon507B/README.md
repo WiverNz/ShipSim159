@@ -1,6 +1,14 @@
 # Volgo-Don 507B editable source
 
-## Current milestone: Part 5
+## Current milestone: Part 6
+
+Read [PART6_REVIEW.md](PART6_REVIEW.md) for the optional steering-nozzle force
+model, archived propulsion particulars, estimated calibration, reproducible
+handling comparison and limitations. Current full speed is about 19.8 km/h;
+stopping and turning remain approximate and do not match the archive figures.
+Blender geometry and exports are unchanged by this physics stage.
+
+## Part 5 integration record
 
 The Part 4 source and geometry are now integrated into the existing playable
 prefab. Read [PART5_REVIEW.md](PART5_REVIEW.md) for HUD controls, physics-driven

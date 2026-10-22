@@ -4,6 +4,7 @@ namespace ShipSimulator.Physics
 {
     public struct TurningCircleResult
     {
+        public bool Completed;
         public float ApproachSpeedMps;
         public float AdvanceM;
         public float TransferM;
@@ -14,6 +15,7 @@ namespace ShipSimulator.Physics
 
     public struct ZigZagResult
     {
+        public bool Completed;
         public float FirstOvershootDeg;
         public float SecondOvershootDeg;
         public float InitialTurningDistanceM;
@@ -22,6 +24,7 @@ namespace ShipSimulator.Physics
 
     public struct StoppingResult
     {
+        public bool Completed;
         public float TrackReachM;
         public float HeadReachM;
         public float LateralDeviationM;
@@ -81,6 +84,7 @@ namespace ShipSimulator.Physics
             float speed = Mathf.Sqrt(ship.SurgeSpeed * ship.SurgeSpeed + ship.SwaySpeed * ship.SwaySpeed);
             result.SteadySpeedMps = speed;
             result.SteadyTurningDiameterM = 2f * speed / yaw;
+            result.Completed = Mathf.Abs(ship.HeadingRad) >= 4f * Mathf.PI;
             return result;
         }
 
@@ -124,6 +128,7 @@ namespace ShipSimulator.Physics
                     }
                 }
             }
+            result.Completed = phase == 3;
             return result;
         }
 
@@ -134,6 +139,7 @@ namespace ShipSimulator.Physics
             while (ship.TimeS < 3000f && ship.SurgeSpeed > 0f) ship.Step(StepS);
             return new StoppingResult
             {
+                Completed = ship.SurgeSpeed <= 0f,
                 TrackReachM = ship.PathLengthM,
                 HeadReachM = ship.Position.y,
                 LateralDeviationM = Mathf.Abs(ship.Position.x),

@@ -1,5 +1,36 @@
 # Volgo-Don Project 507B: Sources and Data Status
 
+## Part 6 handling configuration, 2026-10-22
+
+The active JSON now uses the archived 1.8 m screws, steerable nozzles and
+72 kW / 710 mm bow waterjet particulars. This section supersedes the historical
+parameter table below. Full provenance, trial conditions, before/after results
+and unresolved discrepancies are in
+[PART6_REVIEW.md](../../../../Art/Source/VolgoDon507B/PART6_REVIEW.md).
+
+The 375 rpm engine rating is published, but the main-shaft reduction ratio is
+not established. Using 375 rpm as the shaft setpoint assumes direct drive;
+it is not a measured propeller rating. Estimated open-water torque coefficients
+are 0.8 times the former curves, with thrust curves unchanged. Residual resistance
+C_R is calibrated to 0.0001005. Deep-water equilibrium is 341.9 rpm,
+91.2% delivered-power load and 19.80 km/h. Existing bollard-pull and open-water
+efficiency bounds pass without being relaxed.
+Nozzle coefficients (unit jet deflection, 3.0544 m2 passive area, slope 3.0)
+are estimates; the area is diameter times length from page 7. Axial/lateral
+positions -64.65 / +/-3.6 m follow the authored model, not surveyed offsets.
+
+The waterjet retains the existing actuator-disc force surrogate with 0.62 figure
+of merit, 5 s ramp, 1 m/s speed-loss scale and zero high-speed floor. These are
+not measured pump or jet curves. Position +60 m and axis 1.1 m above keel are
+estimates. The original immersion ramp is conservative and will be reviewed
+with loading in Part 7. The engine delays, inertia, hull derivatives and
+6750 t / 3.53 m prototype loading condition are retained. Archive page 3 assigns
+6678 t / 3.5 m to 507B; the current condition is not asserted to reproduce that trial.
+
+Only ganged nozzle control is implemented; the archive also describes separate
+control. Independent engine commands and existing actual-RPM mechanism visuals
+remain active. The generic MMG rudder forces are bypassed for this vessel.
+
 ## Part 3 visual candidate, 2026-10-22
 
 The separate improved candidate now uses four-bladed 1.8 m steel propellers,
@@ -88,7 +119,7 @@ Values for these fields in the JSON are marked `estimated: true` and exist only
 to make the prototype executable. They require calibration against trials,
 drawings, manoeuvring booklets, or class documentation before training use.
 
-## Estimated manoeuvring parameters
+## Historical estimated manoeuvring parameters, before Part 6
 
 All values below are estimates for the manoeuvring model described in
 `ShipSimulator_Physics.md`. None is measured on a Project 507B vessel.

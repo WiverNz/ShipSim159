@@ -36,6 +36,7 @@ namespace ShipSimulator.Physics
         public HullForces Hull;
         public float ResistanceX;
         public float PropellerX;
+        public float PropellerY;
         public float PropellerN;
         public float RudderX;
         public float RudderY;
@@ -141,6 +142,7 @@ namespace ShipSimulator.Physics
 
             // Wake fraction falls as the stern sweeps sideways (MMG 2015); no hull wake leads a propeller astern.
             VesselPropeller propeller = data.propeller;
+            bool nozzles = data.steeringNozzle != null && data.steeringNozzle.enabled;
             float wake = 0f;
             if (u > 0f)
             {
@@ -161,8 +163,18 @@ namespace ShipSimulator.Physics
                 PropellerTorqueNm[i] = torque;
                 propellerCoefficient[i] = coefficient;
                 float effective = (1f - propeller.thrustDeduction) * thrust;
-                output.PropellerX += effective;
-                output.PropellerN += -propeller.lateralPositionsM[i] * effective;
+                if (nozzles)
+                {
+                    Vector2 force = SteeringNozzleModel.Thrust(data.steeringNozzle, effective, RudderAngleRad);
+                    output.PropellerX += force.x;
+                    output.PropellerY += force.y;
+                    output.PropellerN += propeller.longitudinalPositionsM[i] * force.y - propeller.lateralPositionsM[i] * force.x;
+                }
+                else
+                {
+                    output.PropellerX += effective;
+                    output.PropellerN += -propeller.lateralPositionsM[i] * effective;
+                }
             }
 
             output.SupportFraction = SupportModel.Fraction(data.support, u);
@@ -179,6 +191,18 @@ namespace ShipSimulator.Physics
             for (int j = 0; j < RudderNormalForceN.Length; j++)
             {
                 int shaft = rudderPropeller[j];
+                if (nozzles)
+                {
+                    float xNozzle = data.rudder.longitudinalPositionM;
+                    float yNozzle = data.rudder.lateralPositionsM[j];
+                    Vector2 force = SteeringNozzleModel.Passive(data.steeringNozzle, p.Rho,
+                        new Vector2(u - r * yNozzle, v + r * xNozzle), RudderAngleRad);
+                    RudderNormalForceN[j] = Vector2.Dot(force, new Vector2(Mathf.Sin(RudderAngleRad), Mathf.Cos(RudderAngleRad)));
+                    output.RudderX += force.x;
+                    output.RudderY += force.y;
+                    output.RudderN += xNozzle * force.y - yNozzle * force.x;
+                    continue;
+                }
                 RudderForces rudderForces = RudderModel.Evaluate(p, data.rudder.lateralPositionsM[j], u, v, r,
                     RudderAngleRad, Shafts[shaft].Rps, propellerCoefficient[shaft], advance);
                 RudderNormalForceN[j] = rudderForces.NormalForceN;
@@ -201,7 +225,7 @@ namespace ShipSimulator.Physics
             }
 
             float x = output.Hull.X + output.ResistanceX + output.PropellerX + output.RudderX + output.WindX + input.ExternalX;
-            float y = output.Hull.Y + output.RudderY + output.WindY + output.BankY + output.ThrusterY + input.ExternalY;
+            float y = output.Hull.Y + output.PropellerY + output.RudderY + output.WindY + output.BankY + output.ThrusterY + input.ExternalY;
             float n = output.Hull.N + output.PropellerN + output.RudderN + output.WindN + output.BankN + output.ThrusterN +
                 input.ExternalN;
             output.TotalX = x;

@@ -40,6 +40,7 @@ namespace ShipSimulator.Physics
         public VesselPropeller propeller;
         public VesselRudder rudder;
         public VesselBowThruster bowThruster;
+        public VesselSteeringNozzle steeringNozzle;
         public VesselSupport support;
         public VesselWindage windage;
         public VesselRestrictedWater restrictedWater;

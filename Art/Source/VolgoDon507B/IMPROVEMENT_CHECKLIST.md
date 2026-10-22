@@ -271,24 +271,30 @@ only when requested; force-model and calibration changes are not included here.
 
 ## Part 6: Propulsion, steerable nozzles and handling
 
-Dependencies: Parts 1 and 5. Status: not started.
+Dependencies: Parts 1 and 5. Status: complete, 2026-10-22. See PART6_REVIEW.md.
 
-- [ ] Preserve or complete independent engine commands using the existing shaft
+- [x] Preserve or complete independent engine commands using the existing shaft
   models, including acceleration, reversal delays and differential thrust.
-- [ ] Review steerable-nozzle force representation. Model thrust deflection and
+- [x] Review steerable-nozzle force representation. Model thrust deflection and
   speed-dependent steering without double-counting generic rudder forces.
-- [ ] Reconcile diameter, RPM, power and speed with the selected configuration;
+- [x] Reconcile diameter, RPM, power and speed with the selected configuration;
   changing diameter alone invalidates the previous thrust calibration.
-- [ ] Retain physically meaningful inertia and long acceleration/stopping response.
-- [ ] Verify bow-thruster applicability and document estimated power, geometry,
+- [x] Retain physically meaningful inertia and long acceleration/stopping response.
+- [x] Verify bow-thruster applicability and document estimated power, geometry,
   immersion and forward-speed effectiveness where sources are incomplete.
-- [ ] Run repeatable ahead/astern, differential thrust, low/high-speed turns,
+- [x] Run repeatable ahead/astern, differential thrust, low/high-speed turns,
   zigzag and stopping trials with specified load, depth and environmental conditions.
-- [ ] Compare with trustworthy trial data if available; otherwise report internal
+- [x] Compare with trustworthy trial data if available; otherwise report internal
   consistency and approximate calibration, not proven full-scale accuracy.
 
 Acceptance: parameter provenance, force-model regression tests, before/after trial
 results and no regressions for other vessels or the KVLCC2 benchmark.
+
+Evidence: 217/217 EditMode, 40/40 PlayMode, five-vessel runtime shakedown PASS.
+Other four playable vessels and KVLCC2 match every stored pre-change trial metric.
+Full speed is 19.8 km/h; stopping and turning remain approximate and differ
+substantially from archive figures. These discrepancies, the assumed shaft ratio
+and the retained loading-condition conflict are explicit in PART6_REVIEW.md.
 
 ## Part 7: Cargo, ballast and loading-dependent behavior
 

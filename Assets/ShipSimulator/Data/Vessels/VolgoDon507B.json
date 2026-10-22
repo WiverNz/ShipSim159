@@ -43,7 +43,7 @@
     "wettedSurfaceM2": 0.0,
     "formFactor": 1.30,
     "correlationAllowance": 0.0004,
-    "residualResistanceCoefficient": 0.000516,
+    "residualResistanceCoefficient": 0.0001005,
     "estimated": true
   },
   "hull": {
@@ -79,7 +79,7 @@
     "powerPerEngineW": 662000.0,
     "gearEfficiency": 0.92,
     "shaftEfficiency": 0.98,
-    "ratedPropellerRpm": 257.4,
+    "ratedPropellerRpm": 375.0,
     "shaftInertiaKgM2": 2500.0,
     "governorBandFraction": 0.01,
     "rpmRampSecondsFullRange": 15.0,
@@ -90,13 +90,13 @@
   },
   "propeller": {
     "count": 2,
-    "diameterM": 2.1,
-    "longitudinalPositionsM": [-55.0, -55.0],
-    "lateralPositionsM": [-4.0, 4.0],
+    "diameterM": 1.8,
+    "longitudinalPositionsM": [-64.65, -64.65],
+    "lateralPositionsM": [-3.6, 3.6],
     "aheadThrustCoefficients": [0.33, -0.25, -0.12],
-    "aheadTorqueCoefficients": [0.042, -0.022, -0.012],
+    "aheadTorqueCoefficients": [0.0336, -0.0176, -0.0096],
     "asternThrustCoefficients": [0.23, -0.20, -0.10],
-    "asternTorqueCoefficients": [0.036, -0.018, -0.010],
+    "asternTorqueCoefficients": [0.0288, -0.0144, -0.0080],
     "wakeFraction": 0.20,
     "thrustDeduction": 0.20,
     "wakeDriftC1": 2.0,
@@ -109,8 +109,8 @@
     "rateDegPerSecond": 2.5,
     "areaPerRudderM2": 5.5,
     "spanM": 2.6,
-    "longitudinalPositionM": -57.0,
-    "lateralPositionsM": [-4.0, 4.0],
+    "longitudinalPositionM": -64.65,
+    "lateralPositionsM": [-3.6, 3.6],
     "normalForceSlope": 0.0,
     "stallAngleDeg": 32.0,
     "postStallNormalCoefficient": 1.1,
@@ -123,16 +123,23 @@
     "flowStraighteningLeverPrime": -0.8,
     "estimated": true
   },
+  "steeringNozzle": {
+    "enabled": true,
+    "thrustDeflectionFactor": 1.0,
+    "passiveAreaM2": 3.0544,
+    "passiveNormalSlope": 3.0,
+    "estimated": true
+  },
   "bowThruster": {
     "fitted": true,
-    "powerW": 160000,
-    "tunnelDiameterM": 1.0,
+    "powerW": 72000,
+    "tunnelDiameterM": 0.710,
     "longitudinalPositionM": 60.0,
     "axisHeightAboveKeelM": 1.1,
     "figureOfMerit": 0.62,
     "rampSecondsToFull": 5.0,
     "speedLossReferenceMps": 1.0,
-    "minimumSpeedEffectiveness": 0.3,
+    "minimumSpeedEffectiveness": 0.0,
     "estimated": true
   },
   "windage": {
@@ -156,7 +163,7 @@
     "estimated": true
   },
   "controlLimits": {
-    "maxLoadedSpeedMps": 5.14444,
+    "maxLoadedSpeedMps": 5.55556,
     "throttleCommandRatePerSecond": 0.2,
     "rudderCommandRatePerSecond": 0.35
   },
@@ -167,6 +174,8 @@
     "trainingValidated": false
   },
   "sourceReferences": [
+    "https://russrivership.ru/public/files/doc257.pdf",
+    "https://www.wartsila.com/encyclopedia/term/steering-nozzle",
     "https://fleetphoto.ru/projects/1697",
     "https://mebspb.com/dry/507B.html",
     "https://www.korabel.ru/fleet/info/7075.html",

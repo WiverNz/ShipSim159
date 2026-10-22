@@ -3,7 +3,8 @@
 The vessel model follows the literature-based roadmap in `ShipDynamicsRealismApproach.md`
 (phases 1 to 6). It is a formula-based prototype: the equations are published ones, but most
 Project 507B coefficients are estimates (see `VolgoDon507B_Sources.md`), and nothing here is
-calibrated against 507B trials or validated for maritime training.
+validated against controlled 507B trials or for maritime training. Service-speed
+calibration alone does not validate manoeuvring behavior.
 
 ## Vessels
 
@@ -18,6 +19,31 @@ published loaded speed, the propellers absorb full delivered power and their thr
 resistance. Everything else is estimated.
 
 ## Structure
+
+### Optional steerable nozzles (Volgo-Don 507B)
+
+`steeringNozzle.enabled` selects fixed-shaft, deflected-jet steering instead of
+the generic MMG rudder. For effective signed shaft thrust T and actual helm angle
+delta, force is `(T cos(k delta), -T sin(k delta))` in forward/starboard axes.
+Its moment is `x Fy - y Fx`; `PropellerY` is included in total sway force.
+Astern thrust reverses the jet reaction. Each shaft still has its own governor,
+torque balance, reversal interlock and throttle input. The nozzle is not an
+azimuthing shaft or a new propulsion controller.
+
+Passive nozzle/stabilizer force uses local velocity `(u-r*y, v+r*x)` and normal
+`n=(sin(delta), cos(delta))`: `F=-0.5*rho*A*C*|V|*(V dot n)*n`.
+Consequently `F dot V <= 0`, including reverse flow; it produces no force at
+rest and permits steering while coasting. The generic rudder/slipstream force
+is not added on this path. The shared helm actuator retains angle/rate limits.
+Absent/disabled nozzle data keeps the original MMG force calculation.
+
+These are tunable lumped approximations, not measured duct coefficients or a
+four-quadrant propeller model. The 507B torque curves and assumed shaft rating
+were reconciled with archived geometry and service speed in Part 6; the general
+calibration description above does not imply full rated-power absorption for
+this vessel. See `VolgoDon507B_Sources.md` and the Part 6 report. Existing bow
+thruster disc theory approximates the archived waterjet; it does not resolve
+pump head, inlet losses or its actual outlet geometry.
 
 The vessel is a Unity `Rigidbody`; no script moves or rotates it directly. The hydrodynamics
 live in plain C# classes under `Scripts/Physics/`, so EditMode tests and the virtual sea trials

@@ -90,6 +90,18 @@ namespace ShipSimulator.Physics
                 !Finite(rd.flowStraighteningLeverPrime))
                 return Fail("Rudder configuration is invalid.", out error);
 
+            VesselSteeringNozzle nozzle = data.steeringNozzle;
+            if (nozzle != null && nozzle.enabled)
+            {
+                if (!InRange(nozzle.thrustDeflectionFactor, 0f, 1f) || !Positive(nozzle.passiveAreaM2) ||
+                    !Positive(nozzle.passiveNormalSlope) || rd.count != p.count)
+                    return Fail("Steering nozzles require valid coefficients and one nozzle per shaft.", out error);
+                for (int i = 0; i < p.count; i++)
+                    if (Mathf.Abs(rd.lateralPositionsM[i] - p.lateralPositionsM[i]) > .01f ||
+                        Mathf.Abs(rd.longitudinalPositionM - p.longitudinalPositionsM[i]) > .01f)
+                        return Fail("Steering nozzle and shaft positions must coincide.", out error);
+            }
+
             VesselBowThruster bt = data.bowThruster;
             if (bt != null && bt.fitted &&
                 (!Positive(bt.powerW) || !Positive(bt.tunnelDiameterM) ||

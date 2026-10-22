@@ -1,0 +1,1194 @@
+{
+  "scene": "VolgoDon507B_Audit",
+  "objects": [
+    {
+      "name": "ship_type_507_radar.001",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        -41.810001373291016,
+        4.2900004386901855,
+        10.8100004196167
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        -4.290007591247559,
+        24.189998626708984,
+        14.510000228881836
+      ],
+      "materials": [
+        "ship_type_507_detali"
+      ],
+      "vertices": 32,
+      "faces": 28,
+      "triangles": 28,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 28,
+      "boundary_edges": 32,
+      "nonmanifold_edges": 32,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -5.250338077545166,
+        24.087446212768555,
+        14.457627296447754
+      ],
+      "bounds_max": [
+        -3.2881579399108887,
+        24.332979202270508,
+        14.562373161315918
+      ]
+    },
+    {
+      "name": "ship_type_507_radar",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        -43.81999969482422,
+        -3.4100000858306885,
+        10.8100004196167
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        3.409992218017578,
+        22.18000030517578,
+        14.510000228881836
+      ],
+      "materials": [
+        "ship_type_507_detali"
+      ],
+      "vertices": 32,
+      "faces": 28,
+      "triangles": 28,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 28,
+      "boundary_edges": 32,
+      "nonmanifold_edges": 32,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        2.4496617317199707,
+        22.07744789123535,
+        14.457627296447754
+      ],
+      "bounds_max": [
+        4.411841869354248,
+        22.322980880737305,
+        14.562373161315918
+      ]
+    },
+    {
+      "name": "ship_type_507_interior",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_interior"
+      ],
+      "vertices": 571,
+      "faces": 656,
+      "triangles": 656,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 656,
+      "boundary_edges": 456,
+      "nonmanifold_edges": 456,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -4.455293655395508,
+        18.895275115966797,
+        10.848628997802734
+      ],
+      "bounds_max": [
+        4.455277919769287,
+        25.408031463623047,
+        13.022747039794922
+      ]
+    },
+    {
+      "name": "ship_type_507_lights",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_lights"
+      ],
+      "vertices": 104,
+      "faces": 90,
+      "triangles": 90,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 90,
+      "boundary_edges": 104,
+      "nonmanifold_edges": 104,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -7.345109939575195,
+        7.325193881988525,
+        8.170470237731934
+      ],
+      "bounds_max": [
+        7.345114707946777,
+        120.45960998535156,
+        14.992454528808594
+      ]
+    },
+    {
+      "name": "ship_type_507_rubka_detali",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_rubka_detali"
+      ],
+      "vertices": 6035,
+      "faces": 6894,
+      "triangles": 6894,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 6894,
+      "boundary_edges": 4696,
+      "nonmanifold_edges": 4696,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -7.253017902374268,
+        8.516386985778809,
+        5.380721569061279
+      ],
+      "bounds_max": [
+        7.253005027770996,
+        26.6878719329834,
+        15.05703067779541
+      ]
+    },
+    {
+      "name": "ship_type_507_hull_detali",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_hull"
+      ],
+      "vertices": 770,
+      "faces": 790,
+      "triangles": 790,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 790,
+      "boundary_edges": 652,
+      "nonmanifold_edges": 652,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -8.08304500579834,
+        -0.6668487787246704,
+        0.9301165342330933
+      ],
+      "bounds_max": [
+        8.08304500579834,
+        133.61080932617188,
+        7.466531753540039
+      ]
+    },
+    {
+      "name": "ship_type_507_boats",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_boats"
+      ],
+      "vertices": 3494,
+      "faces": 3951,
+      "triangles": 3951,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 3951,
+      "boundary_edges": 2955,
+      "nonmanifold_edges": 2979,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -7.843136310577393,
+        9.271005630493164,
+        8.059815406799316
+      ],
+      "bounds_max": [
+        7.911513805389404,
+        16.12809944152832,
+        11.998505592346191
+      ]
+    },
+    {
+      "name": "ship_type_507_rudder.001",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        -61.90454864501953,
+        -3.4978065490722656,
+        -0.05659031867980957
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        3.4977943897247314,
+        4.095451354980469,
+        3.643409252166748
+      ],
+      "materials": [
+        "ship_type_507_hull"
+      ],
+      "vertices": 152,
+      "faces": 140,
+      "triangles": 140,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 140,
+      "boundary_edges": 156,
+      "nonmanifold_edges": 156,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        2.0260088443756104,
+        1.9362621307373047,
+        -0.07070314139127731
+      ],
+      "bounds_max": [
+        4.969579219818115,
+        4.44480562210083,
+        3.3539676666259766
+      ]
+    },
+    {
+      "name": "ship_type_507_rudder",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        -61.89899826049805,
+        3.4760000705718994,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        -3.4760122299194336,
+        4.101001739501953,
+        3.700000047683716
+      ],
+      "materials": [
+        "ship_type_507_hull"
+      ],
+      "vertices": 152,
+      "faces": 140,
+      "triangles": 140,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 140,
+      "boundary_edges": 156,
+      "nonmanifold_edges": 156,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -4.947797775268555,
+        1.941812515258789,
+        -0.014112344942986965
+      ],
+      "bounds_max": [
+        -2.0042271614074707,
+        4.4503560066223145,
+        3.4105584621429443
+      ]
+    },
+    {
+      "name": "lod_1_turbine1.001",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        -60.099998474121094,
+        -3.4700000286102295,
+        -2.450000047683716
+      ],
+      "rotation": [
+        1.0658544269404047e-08,
+        -0.1745329350233078,
+        1.5707963705062866
+      ],
+      "scale": [
+        1.4000000953674316,
+        1.399999976158142,
+        1.4000000953674316
+      ],
+      "world_origin": [
+        3.4699881076812744,
+        5.900001525878906,
+        1.2499995231628418
+      ],
+      "materials": [
+        "ship_gms_axalp_main"
+      ],
+      "vertices": 85,
+      "faces": 84,
+      "triangles": 84,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 84,
+      "boundary_edges": 72,
+      "nonmanifold_edges": 72,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        2.2722373008728027,
+        3.2941322326660156,
+        0.13433237373828888
+      ],
+      "bounds_max": [
+        4.364890098571777,
+        5.900001525878906,
+        2.293710708618164
+      ]
+    },
+    {
+      "name": "lod_1_turbine1",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        -60.099998474121094,
+        3.4700000286102295,
+        -2.450000047683716
+      ],
+      "rotation": [
+        1.0658544269404047e-08,
+        -0.1745329350233078,
+        1.5707963705062866
+      ],
+      "scale": [
+        1.4000000953674316,
+        1.399999976158142,
+        1.4000000953674316
+      ],
+      "world_origin": [
+        -3.4700119495391846,
+        5.900001525878906,
+        1.25
+      ],
+      "materials": [
+        "ship_gms_axalp_main"
+      ],
+      "vertices": 85,
+      "faces": 84,
+      "triangles": 84,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 84,
+      "boundary_edges": 72,
+      "nonmanifold_edges": 72,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -4.667762756347656,
+        3.2941322326660156,
+        0.13433285057544708
+      ],
+      "bounds_max": [
+        -2.5751099586486816,
+        5.900001525878906,
+        2.2937111854553223
+      ]
+    },
+    {
+      "name": "ship_type_507_hold_detali",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_hold"
+      ],
+      "vertices": 5304,
+      "faces": 4848,
+      "triangles": 4848,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 4848,
+      "boundary_edges": 5424,
+      "nonmanifold_edges": 5424,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -6.379745006561279,
+        27.719087600708008,
+        5.529181957244873
+      ],
+      "bounds_max": [
+        6.379748344421387,
+        117.60315704345703,
+        6.722141742706299
+      ]
+    },
+    {
+      "name": "ship_type_507_hold",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_hold"
+      ],
+      "vertices": 195,
+      "faces": 144,
+      "triangles": 144,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 144,
+      "boundary_edges": 194,
+      "nonmanifold_edges": 194,
+      "loose_vertices": 0,
+      "degenerate_faces": 9,
+      "bounds_min": [
+        -6.000007629394531,
+        26.79764747619629,
+        4.4687910079956055
+      ],
+      "bounds_max": [
+        6.0000104904174805,
+        118.65087890625,
+        6.721939563751221
+      ]
+    },
+    {
+      "name": "ship_type_507_rubka",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_rubka"
+      ],
+      "vertices": 2106,
+      "faces": 2608,
+      "triangles": 2608,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 2608,
+      "boundary_edges": 1600,
+      "nonmanifold_edges": 1620,
+      "loose_vertices": 0,
+      "degenerate_faces": 6,
+      "bounds_min": [
+        -7.986939430236816,
+        -0.5343490839004517,
+        4.612194538116455
+      ],
+      "bounds_max": [
+        7.986940383911133,
+        133.9006805419922,
+        13.3601655960083
+      ]
+    },
+    {
+      "name": "ship_type_507_pipes",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_detali"
+      ],
+      "vertices": 3834,
+      "faces": 5022,
+      "triangles": 5022,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 5022,
+      "boundary_edges": 2630,
+      "nonmanifold_edges": 2632,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -7.871650695800781,
+        -0.4356323182582855,
+        5.169217109680176
+      ],
+      "bounds_max": [
+        7.875473976135254,
+        133.44259643554688,
+        15.826355934143066
+      ]
+    },
+    {
+      "name": "ship_type_507_deck",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_deck"
+      ],
+      "vertices": 338,
+      "faces": 348,
+      "triangles": 348,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 348,
+      "boundary_edges": 322,
+      "nonmanifold_edges": 326,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -7.986939430236816,
+        -0.5343490839004517,
+        4.4687910079956055
+      ],
+      "bounds_max": [
+        7.986940383911133,
+        133.16232299804688,
+        13.3601655960083
+      ]
+    },
+    {
+      "name": "ship_type_507_detali",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_detali"
+      ],
+      "vertices": 13437,
+      "faces": 15922,
+      "triangles": 15922,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 15922,
+      "boundary_edges": 10066,
+      "nonmanifold_edges": 10076,
+      "loose_vertices": 96,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -7.898894786834717,
+        -0.49545443058013916,
+        3.883044958114624
+      ],
+      "bounds_max": [
+        7.898895263671875,
+        132.44259643554688,
+        15.895500183105469
+      ]
+    },
+    {
+      "name": "ship_type_507_hull",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": [
+        "ship_type_507_hull"
+      ],
+      "vertices": 367,
+      "faces": 544,
+      "triangles": 544,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 544,
+      "boundary_edges": 177,
+      "nonmanifold_edges": 180,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -7.986939907073975,
+        -0.6122986078262329,
+        -0.0017119715921580791
+      ],
+      "bounds_max": [
+        7.986939907073975,
+        133.61666870117188,
+        7.6024065017700195
+      ]
+    },
+    {
+      "name": "proxy",
+      "type": "MESH",
+      "parent": "ship_type_507_lod_0",
+      "location": [
+        1.0,
+        7.549806468887255e-08,
+        3.799999952316284
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -1.570796012878418
+      ],
+      "scale": [
+        8.0,
+        67.0,
+        7.5
+      ],
+      "world_origin": [
+        4.061011225076072e-07,
+        67.0,
+        7.5
+      ],
+      "materials": [
+        "proxy_mat"
+      ],
+      "vertices": 8,
+      "faces": 6,
+      "triangles": 12,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "custom_normals": true,
+      "smooth_faces": 6,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "loose_vertices": 0,
+      "degenerate_faces": 0,
+      "bounds_min": [
+        -8.000008583068848,
+        -9.536744300930877e-07,
+        -6.039844606675615e-07
+      ],
+      "bounds_max": [
+        8.000008583068848,
+        134.0,
+        15.000000953674316
+      ]
+    },
+    {
+      "name": "ship_type_507_lod_0",
+      "type": "EMPTY",
+      "parent": "ship_type_507",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": []
+    },
+    {
+      "name": "ship_type_507",
+      "type": "EMPTY",
+      "parent": null,
+      "location": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "rotation": [
+        7.549789415861596e-08,
+        3.851849293353988e-15,
+        1.5707961320877075
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "world_origin": [
+        0.0,
+        66.0,
+        3.6999998092651367
+      ],
+      "materials": []
+    }
+  ],
+  "images": [
+    {
+      "name": "ship_type_507_boats_ao.dds",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_boats_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_boats_ao.dds.001",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_boats_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_deck_ao.dds",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_deck_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_deck_ao.dds.001",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_deck_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_detali_ao.dds",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_detali_ao.dds",
+      "size": [
+        1024,
+        1024
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_detali_ao.dds.001",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_detali_ao.dds",
+      "size": [
+        1024,
+        1024
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_hold_ao.dds",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_hold_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_hold_ao.dds.001",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_hold_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_hull_ao.dds",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_hull_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_hull_ao.dds.001",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_hull_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_interior_ao.dds",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_interior_ao.dds",
+      "size": [
+        1024,
+        1024
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_interior_ao.dds.001",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_interior_ao.dds",
+      "size": [
+        1024,
+        1024
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_lights.hdr",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_lights.hdr",
+      "size": [
+        256,
+        256
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_rubka_ao.dds",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_rubka_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_rubka_ao.dds.001",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_rubka_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_rubka_detali_ao.dds",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_rubka_detali_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    },
+    {
+      "name": "ship_type_507_rubka_detali_ao.dds.001",
+      "path": "G:/Projects/ShipSim159/Assets/ShipSimulator/Models/VolgoDon507\\ship_type_507_rubka_detali_ao.dds",
+      "size": [
+        2048,
+        2048
+      ],
+      "exists": true
+    }
+  ],
+  "visible_bounds_min": [
+    -8.08304500579834,
+    -0.6668487787246704,
+    -0.07070314139127731
+  ],
+  "visible_bounds_max": [
+    8.08304500579834,
+    133.9006805419922,
+    15.895500183105469
+  ],
+  "diagnostic_weld_only": {
+    "ship_type_507_hull": {
+      "diagnostic_weld_boundary_edges": 52,
+      "diagnostic_weld_nonmanifold_edges": 58
+    },
+    "ship_type_507_rubka": {
+      "diagnostic_weld_boundary_edges": 376,
+      "diagnostic_weld_nonmanifold_edges": 419
+    },
+    "ship_type_507_hold": {
+      "diagnostic_weld_boundary_edges": 122,
+      "diagnostic_weld_nonmanifold_edges": 122
+    },
+    "ship_type_507_rudder": {
+      "diagnostic_weld_boundary_edges": 42,
+      "diagnostic_weld_nonmanifold_edges": 48
+    },
+    "lod_1_turbine1": {
+      "diagnostic_weld_boundary_edges": 18,
+      "diagnostic_weld_nonmanifold_edges": 18
+    }
+  }
+}

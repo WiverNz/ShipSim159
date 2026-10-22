@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "meshes": 18,
+  "rebuilt_components": [
+    {
+      "name": "VD507B_lod_1_turbine1.001",
+      "triangles": 2152,
+      "nonmanifold_edges": 0
+    },
+    {
+      "name": "VD507B_lod_1_turbine1",
+      "triangles": 2152,
+      "nonmanifold_edges": 0
+    },
+    {
+      "name": "VD507B_rudder.001",
+      "triangles": 3016,
+      "nonmanifold_edges": 0
+    },
+    {
+      "name": "VD507B_rudder",
+      "triangles": 3016,
+      "nonmanifold_edges": 0
+    }
+  ],
+  "propeller_checks": [
+    {
+      "name": "VD507B_lod_1_turbine1.001",
+      "radius_m": 0.8999380356291105,
+      "radial_clearance_m": 0.020061964370889585
+    },
+    {
+      "name": "VD507B_lod_1_turbine1",
+      "radius_m": 0.8999374519200367,
+      "radial_clearance_m": 0.020062548079963327
+    }
+  ],
+  "triangles": 52187,
+  "bounds_xyz": [
+    16.700000762939453,
+    138.29998016357422,
+    16.165147066116333
+  ],
+  "main_deck_z": 1.97,
+  "hull_keel_z": -3.53,
+  "packed_images": 33,
+  "uv_regression": "PASS",
+  "degenerate_triangles": 0
+}

@@ -79,8 +79,8 @@ namespace ShipSimulator.Editor
             GameObject contents = PrefabUtility.LoadPrefabContents(VolgoDonPrefabPath);
             try
             {
-                if (contents.GetComponent<VesselLayout>() != null) return;
-                contents.AddComponent<VesselLayout>();
+                VolgoDonModelIntegrator.AddDetailedVisual(contents);
+                if (contents.GetComponent<VesselLayout>() == null) contents.AddComponent<VesselLayout>();
                 PrefabUtility.SaveAsPrefabAsset(contents, VolgoDonPrefabPath);
             }
             finally

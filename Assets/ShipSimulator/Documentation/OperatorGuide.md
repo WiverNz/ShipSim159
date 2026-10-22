@@ -169,3 +169,16 @@ Run EditMode and PlayMode suites from `Window > General > Test Runner`.
 Latest verified result (2026-09-12): EditMode `30/30`, PlayMode `8/8`.
 The dedicated menu smoke check also passed save/load across both scenarios.
 The landscape smoke check passed daylight, rain/fog and night rendering with reflections.
+
+## Volgo-Don deck machinery
+
+The Volgo-Don 507B has a DECK MACHINERY panel above the weather controls. CLOSE
+stows its hatch covers; HALF OPEN opens both holds halfway; FORE OPEN and AFT OPEN
+fully expose one hold. Transitions lift, slide and stack the covers, including
+returning through the half-open arrangement when changing holds. Machinery follows
+simulation time, pauses with the voyage and resumes its saved movement after load.
+
+UNSEAT / STOW ANCHORS only moves the anchors a short distance from their stowed
+positions. It does not pay out chain or anchor the vessel to the riverbed. Propeller
+rotation follows actual shaft RPM and nozzle rotation follows actual steering.
+Day/night controls continue to operate the ship's five sector navigation lights.

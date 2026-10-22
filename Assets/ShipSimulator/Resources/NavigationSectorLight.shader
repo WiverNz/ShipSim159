@@ -27,7 +27,8 @@ Shader "ShipSimulator/NavigationSectorLight"
                 center += normalize(_WorldSpaceCameraPos-center) * length(UNITY_MATRIX_M._m00_m10_m20) * _LensOffset;
                 float3 viewer=TransformWorldToObject(_WorldSpaceCameraPos);
                 o.bearing=atan2(viewer.x,viewer.z)*180/PI;
-                float metersPerPixel=2*max(-TransformWorldToView(center).z,0.1)/max(abs(UNITY_MATRIX_P._m11)*_ScreenParams.y,1);
+                float projectedDepth=lerp(max(-TransformWorldToView(center).z,0.1),1,unity_OrthoParams.w);
+                float metersPerPixel=2*projectedDepth/max(abs(UNITY_MATRIX_P._m11)*_ScreenParams.y,1);
                 float diameter=max(length(UNITY_MATRIX_M._m00_m10_m20),metersPerPixel*2.2);
                 o.world=center+UNITY_MATRIX_V[0].xyz*input.positionOS.x*diameter+UNITY_MATRIX_V[1].xyz*input.positionOS.y*diameter;
                 o.positionCS=TransformWorldToHClip(o.world);

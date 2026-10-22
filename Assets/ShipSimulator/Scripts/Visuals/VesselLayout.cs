@@ -20,6 +20,8 @@ namespace ShipSimulator.Visuals
         [SerializeField] private float aftMastheadSupportBaseY = 12.4f;
         [SerializeField] private Vector3 sternLight = new Vector3(0f, 8.5f, -67f);
         [SerializeField] private float sternLightSupportBaseY = 6.6f;
+        [SerializeField, Min(0)] private float navigationLightIntensityScale = 1;
+        [SerializeField, Min(0)] private float navigationLightRangeScale = 1;
         [Header("Orbit camera views, in model metres. Empty means the camera scales its own set by length.")]
         [SerializeField] private Vector3[] cameraViews = new Vector3[0];
 
@@ -37,6 +39,14 @@ namespace ShipSimulator.Visuals
         public Vector3 SternLight => sternLight;
         public float SternLightSupportBaseY => sternLightSupportBaseY;
         public Vector3[] CameraViews => cameraViews;
+        public float NavigationLightIntensityScale => navigationLightIntensityScale;
+        public float NavigationLightRangeScale => navigationLightRangeScale;
+
+        public void ConfigureNavigationSpill(float intensityScale, float rangeScale)
+        {
+            navigationLightIntensityScale = Mathf.Max(0, intensityScale);
+            navigationLightRangeScale = Mathf.Max(0, rangeScale);
+        }
 
         // A superstructure does not grow with the hull, so scaling the default views by length alone puts
         // the near views inside a short vessel's cabin. Models that know their own silhouette author the

@@ -76,8 +76,9 @@ namespace ShipSimulator.Visuals
             Light light = lightObject.AddComponent<Light>();
             light.type = LightType.Point;
             light.color = color;
-            light.intensity = intensity;
-            light.range = range;
+            VesselLayout layout = GetComponent<VesselLayout>();
+            light.intensity = intensity * layout.NavigationLightIntensityScale;
+            light.range = range * layout.NavigationLightRangeScale;
             light.shadows = LightShadows.None;
             light.enabled = false;
             Cubemap cookie = NavigationLightSectors.CreateCookie(sectorCenter, sectorArc);

@@ -1,0 +1,23 @@
+{
+  "reference": "doc257.pdf pages 5, 7",
+  "changes": [
+    {
+      "side": "port",
+      "propeller_diameter_m": 1.8,
+      "blades": 4,
+      "pitch_m": 1.52,
+      "nozzle_throat_m": 1.84,
+      "nozzle_length_m": 1.66,
+      "radial_clearance_m": 0.02
+    },
+    {
+      "side": "starboard",
+      "propeller_diameter_m": 1.8,
+      "blades": 4,
+      "pitch_m": 1.47,
+      "nozzle_throat_m": 1.84,
+      "nozzle_length_m": 1.66,
+      "radial_clearance_m": 0.02
+    }
+  ]
+}

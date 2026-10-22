@@ -1,5 +1,143 @@
 # ShipSim159 Project Context
 
+## Volgo-Don 507B Part 5, 2026-10-22
+
+Part 5 complete. Do not start Part 6 until requested. Current guide:
+`Art/Source/VolgoDon507B/PART5_REVIEW.md`. The existing playable prefab now uses
+the Part 4 candidate; original FBX/materials and vessel JSON unchanged. Repeated
+integration preserves physics/Rigidbody serialization and original colliders.
+The existing integrator and catalogue builder install one visual/rig. Menu item
+Restore Legacy Volgo-Don Visual restores the original visual; a later normal
+integration/build selects improved geometry again. Pre-integration checkpoint:
+Logs/VolgoDon507B/before-part5.prefab. Blender source/FBX unchanged in this part.
+
+VesselMechanisms follows each actual signed shaft RPM and actual rudder angle.
+Filtered Hatches.anim/Anchors.anim exclude root and propulsion curves. HUD commands
+go through ShipPhysicsController. Hatch transitions route through half-open stacks;
+anchor control only unseats/stows (no chain payout or holding force). Estimated
+40/45/5 second machinery rates are configurable. Optional MechanismSave persists
+progress/targets/shaft phase; old saves default closed/stowed. Reset also stows.
+Existing navigation-light rig reused with layout-specific local spill reduction;
+navigator eye corrected to authored bridge glazing. Eight silent AudioPoints added.
+
+Verification: repeated integration PASS, exit 0 in
+Logs/VolgoDon507B/part5-integration-final.log. Final EditMode 209/209:
+TestResults/check-EditMode-20261022-194058-156.xml. PlayMode 40/40:
+TestResults/check-PlayMode-20261022-185803-807.xml. Five-vessel shakedown PASS,
+exit 0 in Logs/VolgoDon507B/part5-shakedown.log (before final spill adjustment).
+Menu smoke extended to machinery/HUD/cross-vessel save restoration. Captures:
+Art/Source/VolgoDon507B/Previews/part5-runtime-*.png and Logs/Shakedown/.
+46/47 baseline resources unchanged; only playable prefab intentionally differs.
+All new Unity assets have metadata. No force-model/parameter changes, commits or push.
+Navigation lens shader now handles orthographic pixel sizing (previously inflated
+distant light discs); rendering regressions cover both camera projections. Forward/
+aft mastheads use 9.3/12.4 m elevations. Common hatch opening samples frames 90-210
+to skip the review clip's idle lead-in. These final changes are covered by EditMode
+and the final scene smoke check, after the earlier PlayMode/shakedown runs.
+Final scene smoke PASS, actual exit 0, no compiler errors:
+Logs/VolgoDon507B/part5-runtime-final.log. Verified HUD callbacks, both full-open
+holds, anchor release, lights and cross-scene/vessel save restoration. Corrected
+night capture visually inspected; git diff --check clean.
+
+## Volgo-Don 507B Part 4, 2026-10-22
+
+Part 4 complete. Do not start Part 5 until requested. See
+`Art/Source/VolgoDon507B/PART4_REVIEW.md` for artifacts, references and limitations.
+Source/candidate paths unchanged; 49 meshes, 53,130 triangles, 15 independent
+mechanism controls with `mechanisms.json` in source and candidate directories.
+Original hatch/anchor/windlass geometry separated, props/nozzles rigged; actual
+hold openings and approximate interior linings added. Archive p.4 lift/slide/stack
+sequence demonstrated, nozzle travel +/-35 degrees. Anchor preview only unseats
+the stowed geometry; chain payout and missing jack/hydraulic details deferred.
+
+Registered Blender MCP used throughout, source saved and independently reopened.
+`part4_validate.py` PASS: 541 hatch frames, 720 propeller/nozzle configurations,
+minimum stacked gap 0.08054 m, deliberate collision regression detected. Export
+must disable experimental bake_space_transform for animated children. Unity mesh
+attachment regression added after screenshots exposed that export failure.
+Final review PASS, exit 0, no compiler errors:
+`Logs/VolgoDon507B/part4-candidate-final.log`. Final open-hold/nozzle images reviewed.
+All 200 EditMode tests passed in
+`TestResults/check-EditMode-20261022-183641-410.xml`.
+Original playable integration and physics unchanged; no runtime shakedown for
+uninstalled candidate. Source checkpoint: Logs/VolgoDon507B/before-part4.blend.
+Current scripts: part4_rig.py (one-time Part 3 conversion), part4_validate.py,
+part4_finish.py. Do not apply historical mutation scripts to the current rig.
+
+## Volgo-Don 507B Part 3, 2026-10-22
+
+Part 3 complete. Do not start Part 4 until requested. Current source/candidate
+paths are unchanged. `Art/Source/VolgoDon507B/PART3_REVIEW.md` records comparisons,
+source decisions, PBR provenance, texture-density limits and reproduction steps.
+Backup: `Logs/VolgoDon507B/before-part3.blend`. All Blender work used registered MCP.
+An initial connection-reset handshake cleared on the same registered server.
+
+Ray-tested side deck corrected from Z=2.143 to 1.97 m, preserving underwater hull
+and keel -3.53 m. Source now has 52,187 triangles, 18 meshes, 12 materials. Replaced
+only the coarse propellers/nozzles: four blades, 1.8 m diameter, 1.52/1.47 m pitch,
+0.62 expanded-area target; smooth ducts 1.84 m clear throat and 1.66 m length.
+Measured blade radius 0.89994 m, radial clearance 0.02006 m. New components are
+closed/manifold with no degenerates. Sections, handedness, bearings and stock
+positions are estimates, not fabrication-accurate. Retained hull station shapes.
+
+Eight atlas-derived PBR sets add geometry-directed wear, normal, roughness and
+R-metallic/A-smoothness maps. Paint is dielectric; steel screws metallic. Bridge
+glass is transparent. Source images packed and standalone reopen checked. Low
+accommodation atlas density and inherited color/AO remain documented limitations.
+No photographic pixels or external texture licenses introduced.
+
+Unity final candidate review PASS, actual exit 0, no compiler errors in
+`Logs/VolgoDon507B/part3-final.log`. EditMode 200/200 in
+`TestResults/check-EditMode-20261022-074354-836.xml`. Source validation and temporary
+oversized-blade/broken-UV regression mutations pass. All 47 original hashes match;
+new asset metadata complete. Active prefab, vessel JSON, physics and catalogue
+unchanged. No runtime shakedown for the uninstalled visual candidate. No commit.
+Next: Part 4 mechanism separation, pivots, hatch travel and motion-clearance checks.
+
+## Volgo-Don 507B Part 2, 2026-10-22
+
+Part 2 complete. Do not start Part 3 until requested. Source and comparison views:
+`Art/Source/VolgoDon507B/README.md`. Independently reopened editable source:
+`Art/Source/VolgoDon507B/VolgoDon507B.blend`. Candidate export:
+`Assets/ShipSimulator/Models/VolgoDon507B_Improved/VolgoDon507B.fbx`.
+
+Corrected inverted atlas V coordinates, preserved original UVs in channel 2,
+removed 22 zero-area triangles, retained custom normals and hard edges. Source
+has 18 local meshes, nine packed images and 42,299 triangles. Overall length/beam
+138.3/16.7 m, hull keel -3.53 m. Dedicated opaque first-pass glazing covers 30
+bridge panes; URP materials distinguish paint, decks and propeller metal. Legacy
+radar animation disabled to preserve normalized placement. Registered Blender
+MCP used throughout. Source validation and Unity candidate review PASS, exit 0:
+`Logs/VolgoDon507B/candidate-final.log`. All 200 EditMode tests passed in
+`TestResults/check-EditMode-20261022-072713-430.xml`. All 47 original resource
+hashes match the baseline. New candidate resources have Unity metadata.
+
+The visual candidate prefab is separate; active prefab, original FBX, physics
+and catalogue remain unchanged. No runtime shakedown for this uninstalled visual.
+Classic two-covered-hold configuration retained, exact vessel identity unknown.
+Hull sections, coarse three-bladed propellers, faceted nozzles, detailed PBR maps
+and transparent glazing remain Part 3. Anchoring/mooring islands and covers are
+editable within existing meshes; independent mechanisms/pivots remain Part 4.
+README and AUDIT document limitations and before/after images. No commit or push.
+
+## Volgo-Don 507B Part 1 Audit, 2026-10-21
+
+The staged work is tracked in `Art/Source/VolgoDon507B/IMPROVEMENT_CHECKLIST.md`.
+Part 1 is complete; do not start Part 2 until requested. See `AUDIT.md`,
+`MODEL_PROVENANCE.md`, geometry JSON, original-asset checksums and eight previews.
+The classic two-covered-hold configuration matches the existing model; exact
+vessel identity is unknown. The archive mixes 1565/507B values. Its newly checked
+propeller/nozzle/thruster data is documented in VolgoDon507B_Sources.md, with no
+JSON parameter changes. Model has 42,321 visible triangles and 15 degenerate faces.
+Clay/textured comparison indicates major UV/texture-dependent superstructure
+patchwork, so do not assume a global normal recalculation will fix it.
+Existing physics includes independent engines and approximate loading; nozzle
+forces, tank state and hatch mechanisms need later work. Original assets/code
+unchanged. Runtime tests not run for this documentation-only audit. Blender MCP
+worked despite addon protocol 13/server expectation 14; isolated audit scene
+created and the original unsaved scene preserved. No production blend/FBX yet.
+
+
 Last updated: 2026-09-20
 
 ## Release Workflow Failure and Build Warnings, 2026-09-20

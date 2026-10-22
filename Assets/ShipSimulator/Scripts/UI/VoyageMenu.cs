@@ -301,6 +301,7 @@ namespace ShipSimulator.UI
                 throttle = ship.ThrottleCommand, actualThrottle = ship.ActualThrottle,
                 rudder = ship.RudderCommand, rudderAngle = ship.RudderAngleDeg,
                 engineCommands = ship.CaptureEngineCommands(), shaftRps = ship.CaptureShaftRps(),
+                mechanisms = ship.Mechanisms?.CaptureState(),
                 bowThrusterCommand = ship.BowThrusterCommand, bowThrusterOutput = ship.BowThrusterOutput,
                 simulationScale = open ? resumeScale : Time.timeScale,
                 night = FindAnyObjectByType<DayNightController>()?.IsNight ?? false,
@@ -325,6 +326,7 @@ namespace ShipSimulator.UI
             if (VesselSwap.IdOf(ship) != save.VesselIdOrDefault)
                 throw new InvalidOperationException("The saved vessel is not the one in this scenario.");
             ship.RestoreVoyage(save);
+            ship.Mechanisms?.RestoreState(save.mechanisms);
             ship.Grounding?.RestoreState(save.grounding);
             FindAnyObjectByType<GorodetsScenarioController>()?.RestoreState(save.mission);
             FindAnyObjectByType<WeatherController>()?.Configure(save.windDirection, save.windSpeed, save.rain, save.fog);

@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "actual_blade_components": 4,
+  "oversized_blade_rejected": true,
+  "broken_uv_rejected": true,
+  "transparent_glass": true,
+  "packed_images": true,
+  "reopened_file": "G:\\Projects\\ShipSim159\\Art\\Source\\VolgoDon507B\\VolgoDon507B.blend"
+}

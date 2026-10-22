@@ -1,0 +1,84 @@
+# Volgo-Don 507B Model Provenance
+
+## Part 3 derivatives, 2026-10-22
+
+Localized geometry and deterministic material scripts are original project work.
+Propeller count/diameter/pitch/area ratio and nozzle diameter/length use doc257.pdf
+pages 5 and 7. Blade sections, handedness, shaft positions, duct profile, stocks
+and stabilizers are approximations. Above-water geometry was corrected to the
+5.5 m keel-to-side-deck depth target while retaining the 3.53 m baseline draft.
+This does not resolve the separate archive draft/displacement conflict.
+
+Eight new material sets derive color from the existing atlases and add authored
+geometry-directed wear plus linear normal/roughness/metallic-smoothness maps.
+No new third-party pixels or AI-generated assets were introduced. Legacy atlas
+licensing remains as recorded below. See PART3_REVIEW.md for reference decisions,
+estimates, source scripts, resource budgets and verification.
+
+## Part 2 derivatives, 2026-10-22
+
+`VolgoDon507B.blend` and the separate `VolgoDon507B_Improved` Unity candidate derive
+from the preserved legacy FBX. Changes comprise UV V-orientation correction,
+local degenerate-face removal, dimension/datum normalization, collection grouping
+and material assignments. The PNG atlases are conversions of the legacy DDS/HDR
+resources, not new artwork. Glazing and scalar material responses are authored
+for this first pass. No third-party photograph pixels were incorporated.
+See README.md and the two Part 2 JSON reports for changes and verification.
+
+Recorded 2026-10-21, Part 1 audit.
+
+## Existing assets
+
+The repository context identifies the model as an import from the owner's earlier
+CRYENGINE project `G:\Projects\VolgoDon159`, originally
+`Assets\props\volgo_don\volgo_don.fbx`. The current preserved model is
+`Assets/ShipSimulator/Models/VolgoDon507/volgo_don.fbx`.
+Its original author and redistribution license were not established by this audit;
+do not invent an attribution or describe the legacy mesh/textures as newly authored.
+All 47 original model-folder files, vessel JSON and prefab included in the baseline
+inventory are identified by SHA-256 in `baseline-checksums.json`.
+
+## Chosen representation
+
+Classic unshortened Project 507B with two covered cargo holds, based on the
+existing geometry and the source review in `AUDIT.md`. Exact vessel identity and
+livery date remain unknown. The model is not claimed to reproduce Volgo-Don 185
+or the early open-hold Volgo-Don 25.
+
+## Research resources
+
+Primary archive: https://russrivership.ru/public/files/doc257.pdf
+
+Secondary project/vessel identification:
+
+- https://fleetphoto.ru/projects/1697/
+- https://fleetphoto.ru/vessel/4152/
+- https://fleetphoto.ru/vessel/12387/
+- https://fleetphoto.ru/photo/550661/ (Pantikapey, 11 July 2026)
+- https://www.volgaflot.com/commerce/
+- https://alshipping.ru/type-volgo-don/
+
+Access date: 2026-10-21. The archive and photograph were reviewed from temporary
+downloads, not incorporated into textures or redistributed in this folder.
+Rights to third-party photographs remain with their authors. Any future imported
+PBR resources need their own origin, license, attribution and modification record.
+
+## Audit-generated artifacts
+
+`audit-baseline.json` records an unmodified FBX import through registered Blender
+MCP. `Previews/baseline-*.png` are diagnostic renders of that imported geometry,
+with local relinking of the existing color textures, audit lights and a separate
+clay-material comparison. They are not photographs or evidence of a completed
+appearance upgrade. No source `.blend` or replacement FBX is claimed in Part 1.
+# Part 4 mechanism addendum, 2026-10-22
+
+The current rig retains and separates existing covers, anchors and windlass drive
+parts, plus Part 3 propellers/nozzles. Archive doc257.pdf p.4 supports the
+lift/slide/stack sequence; p.7 supports +/-35 degree nozzle travel. Pivot locations,
+lift strokes, tracks and hold interior geometry are model-derived estimates.
+Twelve identifiable legacy jack positions are retained versus 16 vertical and
+four horizontal jacks in the archive. Missing positions, detailed hydraulics and
+anchor chain payout remain unresolved. Anchor motion is a short unseating preview.
+No new external textures were introduced. See PART4_REVIEW.md and mechanisms.json
+for current controls, confidence, screenshots and validation evidence.
+

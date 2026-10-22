@@ -69,6 +69,7 @@ namespace ShipSimulator.UI
         private readonly int[] telegraphIndices = { 3, 3 };
 
         public ShipPhysicsController Ship => ship;
+        private Text machineryText;
         private float MaxRudderDeg => ship.Data != null ? ship.Data.rudder.maxAngleDeg : 35f;
 
         // Effective only before Start, which builds the HUD for the vessel it has then.
@@ -154,6 +155,13 @@ namespace ShipSimulator.UI
                 return;
             }
             UpdateKeyboardShortcuts();
+            if (machineryText != null && ship.Mechanisms != null)
+            {
+                var machinery = ship.Mechanisms;
+                machineryText.text = "DECK MACHINERY\n" + machinery.Target +
+                    (machinery.IsMoving ? " | MOVING" : " | READY") +
+                    (machinery.AnchorsReleased ? "\nAnchors released from stow" : "\nAnchors stowed");
+            }
 
             float speedMps = ship.Body.linearVelocity.magnitude;
             float heading = ship.transform.eulerAngles.y;
@@ -268,6 +276,7 @@ namespace ShipSimulator.UI
             BuildCameraControls(transform as RectTransform);
             BuildTimeControls();
             BuildWeatherControls();
+            BuildMachineryControls();
 
             warningPanel = Panel("Warnings",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
@@ -400,6 +409,26 @@ namespace ShipSimulator.UI
                 () => SetTimeScale(2f));
             Button(block, "4x", new Vector2(110f, 0f), new Vector2(58f, 34f),
                 () => SetTimeScale(4f));
+        }
+
+        private void BuildMachineryControls()
+        {
+            machineryText = null;
+            if (ship.Mechanisms == null || !ship.Mechanisms.IsConfigured) return;
+            RectTransform block = AnchoredPanel("MachineryBlock", Vector2.zero, Vector2.zero, Vector2.zero,
+                new Vector2(20, 326), new Vector2(330, 174));
+            machineryText = Label(block, "DECK MACHINERY", 14, TextAnchor.UpperCenter,
+                new Vector2(8, 76), new Vector2(-8, -8));
+            Button(block, "CLOSE", new Vector2(-80, -4), new Vector2(145, 30),
+                () => ship.SetHatchPosition(HatchPosition.Closed));
+            Button(block, "HALF OPEN", new Vector2(80, -4), new Vector2(145, 30),
+                () => ship.SetHatchPosition(HatchPosition.HalfOpen));
+            Button(block, "FORE OPEN", new Vector2(-80, -39), new Vector2(145, 30),
+                () => ship.SetHatchPosition(HatchPosition.ForwardOpen));
+            Button(block, "AFT OPEN", new Vector2(80, -39), new Vector2(145, 30),
+                () => ship.SetHatchPosition(HatchPosition.AftOpen));
+            Button(block, "UNSEAT / STOW ANCHORS", new Vector2(0, -74), new Vector2(305, 30),
+                () => ship.SetAnchorsReleased(!ship.Mechanisms.AnchorsReleased));
         }
 
         private void BuildWeatherControls()

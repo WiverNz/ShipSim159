@@ -1,7 +1,10 @@
 using System;
 using System.IO;
+using System.Linq;
 using ShipSimulator.Physics;
 using ShipSimulator.UI;
+using ShipSimulator.Visuals;
+using UnityEngine.UI;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -58,6 +61,7 @@ namespace ShipSimulator.Editor
                         menu.StartVoyage("RiverTrainingScene");
                         if (!menu.HasVoyage || VoyageMenu.IsOpen) return;
                         menu.OpenPause();
+                        ReviewMechanisms(UnityEngine.Object.FindAnyObjectByType<ShipPhysicsController>());
                         var save = menu.CaptureSave();
                         save.position = new Vector3(2, save.position.y, 35);
                         save.throttle = 0.5f;
@@ -95,6 +99,9 @@ namespace ShipSimulator.Editor
                             throw new Exception("Cross-scene load did not restore the saved vessel.");
                         if (Mathf.Abs(ship.ActualThrottle - 0.35f) > 0.05f)
                             throw new Exception("Cross-scene load lost engine response state.");
+                        if (ship.Mechanisms == null || ship.Mechanisms.Target != HatchPosition.ForwardOpen ||
+                            Mathf.Abs(ship.Mechanisms.Opening - .625f) > .02f || !ship.Mechanisms.AnchorsReleased)
+                            throw new Exception("Cross-scene load lost deck machinery state.");
                         menu.HandleEscape();
                         if (Time.timeScale != 2) throw new Exception("Resume lost saved simulation speed.");
                         Debug.Log("MENU_SMOKE|PASS: start, save, change scenario and vessel, load, pause and resume");
@@ -108,6 +115,70 @@ namespace ShipSimulator.Editor
                 Debug.LogException(error);
                 SessionState.SetBool(ActiveKey, false);
                 EditorApplication.Exit(1);
+            }
+        }
+
+        private static void ReviewMechanisms(ShipPhysicsController ship)
+        {
+            var rig = ship.Mechanisms;
+            if (rig == null || !rig.IsConfigured) throw new Exception("Playable vessel has no mechanism bindings.");
+            Vector3 position = ship.transform.position;
+            Quaternion rotation = ship.transform.rotation;
+            var camera = new GameObject("Mechanism runtime review").AddComponent<Camera>();
+            var hud = UnityEngine.Object.FindAnyObjectByType<ShipTelemetryUI>().GetComponent<Canvas>();
+            CanvasGroup hudGroup = hud.GetComponent<CanvasGroup>();
+            float previousAlpha = hudGroup != null ? hudGroup.alpha : 1;
+            try
+            {
+                if (hudGroup != null) hudGroup.alpha = 1;
+                camera.farClipPlane = 3000;
+                camera.orthographic = true;
+                camera.orthographicSize = 55;
+                camera.transform.position = ship.transform.TransformPoint(new Vector3(115, 115, 65));
+                camera.transform.LookAt(ship.transform.TransformPoint(new Vector3(0, 0, 5)));
+                hud.renderMode = RenderMode.ScreenSpaceCamera;
+                hud.worldCamera = camera;
+                hud.planeDistance = 1;
+                foreach (Text text in hud.GetComponentsInChildren<Text>())
+                {
+                    text.font?.RequestCharactersInTexture(text.text, Mathf.RoundToInt(text.fontSize * text.pixelsPerUnit), text.fontStyle);
+                    text.SetAllDirty();
+                }
+                Canvas.ForceUpdateCanvases();
+                Directory.CreateDirectory("Art/Source/VolgoDon507B/Previews");
+                foreach (HatchPosition target in new[] { HatchPosition.ForwardOpen, HatchPosition.AftOpen, HatchPosition.Closed })
+                {
+                    string caption = target == HatchPosition.ForwardOpen ? "FORE OPEN" : target == HatchPosition.AftOpen ? "AFT OPEN" : "CLOSE";
+                    hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == caption).OnPointerClick(null);
+                    if (rig.Target != target) throw new Exception("HUD machinery command did not reach the vessel.");
+                    for (int i = 0; i < 240; i++) rig.Advance(1, 0, 0, 0);
+                    if (rig.IsMoving) throw new Exception("Hatches never reached " + target);
+                    LandscapePreview.Render(camera, "Art/Source/VolgoDon507B/Previews/part5-runtime-" + target + ".png");
+                }
+                var lights = ship.GetComponent<NavigationLightRig>();
+                lights.EnsureCreated();
+                lights.SetNight(true);
+                int enabledLights = 0;
+                foreach (Light light in ship.GetComponentsInChildren<Light>())
+                    if (light.enabled && light.cookie != null) enabledLights++;
+                if (enabledLights != 5) throw new Exception("Expected five sector navigation lights.");
+                UnityEngine.Object.FindAnyObjectByType<DayNightController>().Apply(true);
+                LandscapePreview.Render(camera, "Art/Source/VolgoDon507B/Previews/part5-runtime-night.png");
+                UnityEngine.Object.FindAnyObjectByType<DayNightController>().Apply(false);
+                ship.SetHatchPosition(HatchPosition.ForwardOpen);
+                hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == "UNSEAT / STOW ANCHORS").OnPointerClick(null);
+                rig.Advance(25, 0, 0, 0);
+                if (Vector3.Distance(position, ship.transform.position) > .001f ||
+                    Quaternion.Angle(rotation, ship.transform.rotation) > .01f)
+                    throw new Exception("Machinery changed vessel root pose.");
+                Debug.Log("VOLGODON_RUNTIME|PASS: hatch states, anchor release, root invariance, sector lights and captures");
+            }
+            finally
+            {
+                hud.renderMode = RenderMode.ScreenSpaceOverlay;
+                hud.worldCamera = null;
+                if (hudGroup != null) hudGroup.alpha = previousAlpha;
+                UnityEngine.Object.DestroyImmediate(camera.gameObject);
             }
         }
     }

@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "editable_meshes": 18,
+  "packed_images": 9,
+  "triangles": 42299,
+  "bounds_xyz": [
+    16.700000762939453,
+    138.29999542236328,
+    16.409052848815918
+  ],
+  "hull_keel_z": -3.5299999713897705,
+  "uv_flip_regression": "PASS",
+  "degenerate_triangles": 0,
+  "legacy_animation": false,
+  "file": "G:\\Projects\\ShipSim159\\Art\\Source\\VolgoDon507B\\VolgoDon507B.blend"
+}

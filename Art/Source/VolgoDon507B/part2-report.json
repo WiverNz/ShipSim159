@@ -1,0 +1,90 @@
+{
+  "normalization": {
+    "x": 1.0330282444827685,
+    "y": 1.0277367967560336,
+    "z": 1.0277367967560336,
+    "keel_before": -0.0017114327056333423
+  },
+  "uv_correction": "V = 1 - V, original retained in LegacyUV",
+  "objects": [
+    {
+      "name": "VD507B_radar.001",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_radar",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_interior",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_lights",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_rubka_detali",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_hull_detali",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_boats",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_rudder.001",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_rudder",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_lod_1_turbine1.001",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_lod_1_turbine1",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_hold_detali",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_hold",
+      "removed_degenerate_faces": 16
+    },
+    {
+      "name": "VD507B_rubka",
+      "removed_degenerate_faces": 6
+    },
+    {
+      "name": "VD507B_pipes",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_deck",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_detali",
+      "removed_degenerate_faces": 0
+    },
+    {
+      "name": "VD507B_hull",
+      "removed_degenerate_faces": 0
+    }
+  ],
+  "glass_pane_triangles": 60,
+  "triangles": 42299,
+  "bounds": {
+    "length": 138.3,
+    "beam": 16.7,
+    "hull_keel": -3.53
+  }
+}

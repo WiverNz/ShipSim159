@@ -1,0 +1,936 @@
+{
+  "version": 1,
+  "stage": 4,
+  "source_axes": "+X starboard, +Y bow, +Z up",
+  "units": "metres, degrees",
+  "reference": "doc257.pdf pp.4,7,8",
+  "mechanisms": [
+    {
+      "name": "Propeller_Port",
+      "path": "Mechanisms/Propeller_Port",
+      "kind": "rotation",
+      "source_axis": [
+        0,
+        1,
+        0
+      ],
+      "rest_position": [
+        -3.5999999046325684,
+        -64.6500015258789,
+        -2.180000066757202
+      ],
+      "limits": {
+        "continuous": true
+      },
+      "binding": "shaft_angle_port",
+      "confidence": "Shaft center from Part 3; ahead handedness must be calibrated in Part 5",
+      "unity_rest_position": [
+        -3.5999999046325684,
+        -2.180000066757202,
+        -64.6500015258789
+      ],
+      "unity_axis": [
+        0,
+        0,
+        -1
+      ]
+    },
+    {
+      "name": "Nozzle_Port",
+      "path": "Mechanisms/Nozzle_Port",
+      "kind": "rotation",
+      "source_axis": [
+        0,
+        0,
+        1
+      ],
+      "rest_position": [
+        -3.5999999046325684,
+        -64.6500015258789,
+        0.2800000011920929
+      ],
+      "limits": {
+        "minimum_deg": -35,
+        "maximum_deg": 35
+      },
+      "binding": "nozzle_angle_port",
+      "confidence": "Page 7 travel; stock position estimated",
+      "unity_rest_position": [
+        -3.5999999046325684,
+        0.2800000011920929,
+        -64.6500015258789
+      ],
+      "unity_axis": [
+        0,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "Propeller_Starboard",
+      "path": "Mechanisms/Propeller_Starboard",
+      "kind": "rotation",
+      "source_axis": [
+        0,
+        1,
+        0
+      ],
+      "rest_position": [
+        3.5999999046325684,
+        -64.6500015258789,
+        -2.180000066757202
+      ],
+      "limits": {
+        "continuous": true
+      },
+      "binding": "shaft_angle_starboard",
+      "confidence": "Shaft center from Part 3; ahead handedness must be calibrated in Part 5",
+      "unity_rest_position": [
+        3.5999999046325684,
+        -2.180000066757202,
+        -64.6500015258789
+      ],
+      "unity_axis": [
+        0,
+        0,
+        -1
+      ]
+    },
+    {
+      "name": "Nozzle_Starboard",
+      "path": "Mechanisms/Nozzle_Starboard",
+      "kind": "rotation",
+      "source_axis": [
+        0,
+        0,
+        1
+      ],
+      "rest_position": [
+        3.5999999046325684,
+        -64.6500015258789,
+        0.2800000011920929
+      ],
+      "limits": {
+        "minimum_deg": -35,
+        "maximum_deg": 35
+      },
+      "binding": "nozzle_angle_starboard",
+      "confidence": "Page 7 travel; stock position estimated",
+      "unity_rest_position": [
+        3.5999999046325684,
+        0.2800000011920929,
+        -64.6500015258789
+      ],
+      "unity_axis": [
+        0,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "Hatch_AftOuter",
+      "path": "Mechanisms/Hatch_AftOuter",
+      "kind": "lift_and_slide",
+      "source_axis": [
+        0,
+        1,
+        0
+      ],
+      "rest_position": [
+        0.0,
+        -29.341703414916992,
+        2.6500000953674316
+      ],
+      "limits": {
+        "lift_max_m": 1.05,
+        "travel_estimated": true
+      },
+      "binding": "hatch_sequence",
+      "confidence": "Page 4 sequence; measured legacy panel lengths and estimated strokes",
+      "unity_rest_position": [
+        0.0,
+        2.6500000953674316,
+        -29.341703414916992
+      ],
+      "unity_axis": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Hatch_AftInner",
+      "path": "Mechanisms/Hatch_AftInner",
+      "kind": "lift_and_slide",
+      "source_axis": [
+        0,
+        1,
+        0
+      ],
+      "rest_position": [
+        0.0,
+        -6.765067100524902,
+        2.6500000953674316
+      ],
+      "limits": {
+        "lift_max_m": 1.05,
+        "travel_estimated": true
+      },
+      "binding": "hatch_sequence",
+      "confidence": "Page 4 sequence; measured legacy panel lengths and estimated strokes",
+      "unity_rest_position": [
+        0.0,
+        2.6500000953674316,
+        -6.765067100524902
+      ],
+      "unity_axis": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Hatch_ForeInner",
+      "path": "Mechanisms/Hatch_ForeInner",
+      "kind": "lift_and_slide",
+      "source_axis": [
+        0,
+        1,
+        0
+      ],
+      "rest_position": [
+        0.0,
+        21.371139526367188,
+        2.6500000953674316
+      ],
+      "limits": {
+        "lift_max_m": 1.05,
+        "travel_estimated": true
+      },
+      "binding": "hatch_sequence",
+      "confidence": "Page 4 sequence; measured legacy panel lengths and estimated strokes",
+      "unity_rest_position": [
+        0.0,
+        2.6500000953674316,
+        21.371139526367188
+      ],
+      "unity_axis": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Hatch_ForeOuter",
+      "path": "Mechanisms/Hatch_ForeOuter",
+      "kind": "lift_and_slide",
+      "source_axis": [
+        0,
+        1,
+        0
+      ],
+      "rest_position": [
+        0.0,
+        43.259788513183594,
+        2.6500000953674316
+      ],
+      "limits": {
+        "lift_max_m": 1.05,
+        "travel_estimated": true
+      },
+      "binding": "hatch_sequence",
+      "confidence": "Page 4 sequence; measured legacy panel lengths and estimated strokes",
+      "unity_rest_position": [
+        0.0,
+        2.6500000953674316,
+        43.259788513183594
+      ],
+      "unity_axis": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "JackLift_AftOuter",
+      "path": "Mechanisms/JackLift_AftOuter",
+      "kind": "lift",
+      "source_axis": [
+        0,
+        0,
+        1
+      ],
+      "rest_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "limits": {
+        "minimum_m": 0,
+        "maximum_m": 1.05
+      },
+      "binding": "outer_panel_lift",
+      "confidence": "Existing visible jack heads; fixed pedestals retained",
+      "unity_rest_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unity_axis": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "JackLift_ForeOuter",
+      "path": "Mechanisms/JackLift_ForeOuter",
+      "kind": "lift",
+      "source_axis": [
+        0,
+        0,
+        1
+      ],
+      "rest_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "limits": {
+        "minimum_m": 0,
+        "maximum_m": 1.05
+      },
+      "binding": "outer_panel_lift",
+      "confidence": "Existing visible jack heads; fixed pedestals retained",
+      "unity_rest_position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unity_axis": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "name": "Anchor_Stern",
+      "path": "Mechanisms/Anchor_Stern",
+      "kind": "unseat",
+      "source_axis": [
+        0,
+        0,
+        -1
+      ],
+      "rest_position": [
+        -0.0005979388952255249,
+        -68.88340759277344,
+        1.4893039464950562
+      ],
+      "limits": {
+        "unseat_m": 0.35,
+        "payout_enabled": false
+      },
+      "binding": "anchor_unseat_stern",
+      "confidence": "Original anchor separated; payout chain routing/catenary deliberately deferred",
+      "unity_rest_position": [
+        -0.0005979388952255249,
+        1.4893039464950562,
+        -68.88340759277344
+      ],
+      "unity_axis": [
+        0,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "Anchor_Port",
+      "path": "Mechanisms/Anchor_Port",
+      "kind": "unseat",
+      "source_axis": [
+        0,
+        0,
+        -1
+      ],
+      "rest_position": [
+        -2.0281105041503906,
+        65.95973205566406,
+        2.589531660079956
+      ],
+      "limits": {
+        "unseat_m": 0.35,
+        "payout_enabled": false
+      },
+      "binding": "anchor_unseat_port",
+      "confidence": "Original anchor separated; payout chain routing/catenary deliberately deferred",
+      "unity_rest_position": [
+        -2.0281105041503906,
+        2.589531660079956,
+        65.95973205566406
+      ],
+      "unity_axis": [
+        0,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "Anchor_Starboard",
+      "path": "Mechanisms/Anchor_Starboard",
+      "kind": "unseat",
+      "source_axis": [
+        0,
+        0,
+        -1
+      ],
+      "rest_position": [
+        2.026567220687866,
+        66.00843811035156,
+        2.594261884689331
+      ],
+      "limits": {
+        "unseat_m": 0.35,
+        "payout_enabled": false
+      },
+      "binding": "anchor_unseat_starboard",
+      "confidence": "Original anchor separated; payout chain routing/catenary deliberately deferred",
+      "unity_rest_position": [
+        2.026567220687866,
+        2.594261884689331,
+        66.00843811035156
+      ],
+      "unity_axis": [
+        0,
+        -1,
+        0
+      ]
+    },
+    {
+      "name": "Windlass_Port",
+      "path": "Mechanisms/Windlass_Port",
+      "kind": "rotation",
+      "source_axis": [
+        1,
+        0,
+        0
+      ],
+      "rest_position": [
+        -1.813474178314209,
+        57.50545120239258,
+        4.045493125915527
+      ],
+      "limits": {
+        "continuous": true
+      },
+      "binding": "anchor_windlass_angle",
+      "confidence": "Retained circular drive cheeks; gearing and chain speed uncalibrated",
+      "unity_rest_position": [
+        -1.813474178314209,
+        4.045493125915527,
+        57.50545120239258
+      ],
+      "unity_axis": [
+        -1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "Windlass_Starboard",
+      "path": "Mechanisms/Windlass_Starboard",
+      "kind": "rotation",
+      "source_axis": [
+        1,
+        0,
+        0
+      ],
+      "rest_position": [
+        3.2079620361328125,
+        57.5028076171875,
+        4.009070873260498
+      ],
+      "limits": {
+        "continuous": true
+      },
+      "binding": "anchor_windlass_angle",
+      "confidence": "Retained circular drive cheeks; gearing and chain speed uncalibrated",
+      "unity_rest_position": [
+        3.2079620361328125,
+        4.009070873260498,
+        57.5028076171875
+      ],
+      "unity_axis": [
+        -1,
+        0,
+        0
+      ]
+    }
+  ],
+  "states": [
+    {
+      "name": "closed",
+      "frame": 1,
+      "offsets": {}
+    },
+    {
+      "name": "lift_outer",
+      "frame": 100,
+      "offsets": {
+        "Hatch_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "Hatch_ForeOuter": [
+          0,
+          -1.2697885131835918,
+          1.05
+        ],
+        "JackLift_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "JackLift_ForeOuter": [
+          0,
+          0,
+          1.05
+        ]
+      }
+    },
+    {
+      "name": "release_inner",
+      "frame": 120,
+      "offsets": {
+        "Hatch_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "Hatch_ForeOuter": [
+          0,
+          -1.2697885131835918,
+          1.05
+        ],
+        "JackLift_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "JackLift_ForeOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "Hatch_AftInner": [
+          0,
+          0,
+          0.25
+        ],
+        "Hatch_ForeInner": [
+          0,
+          0,
+          0.25
+        ]
+      }
+    },
+    {
+      "name": "slide_under",
+      "frame": 180,
+      "offsets": {
+        "Hatch_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "Hatch_ForeOuter": [
+          0,
+          -1.2697885131835918,
+          1.05
+        ],
+        "JackLift_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "JackLift_ForeOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "Hatch_AftInner": [
+          0,
+          -22.57663631439209,
+          0.25
+        ],
+        "Hatch_ForeInner": [
+          0,
+          20.618860473632814,
+          0.25
+        ]
+      }
+    },
+    {
+      "name": "both_half_open",
+      "frame": 210,
+      "offsets": {
+        "Hatch_AftOuter": [
+          0,
+          0,
+          0.93
+        ],
+        "Hatch_ForeOuter": [
+          0,
+          -1.2697885131835918,
+          0.93
+        ],
+        "JackLift_AftOuter": [
+          0,
+          0,
+          0
+        ],
+        "JackLift_ForeOuter": [
+          0,
+          0,
+          0
+        ],
+        "Hatch_AftInner": [
+          0,
+          -22.57663631439209,
+          0.25
+        ],
+        "Hatch_ForeInner": [
+          0,
+          20.618860473632814,
+          0.25
+        ]
+      }
+    },
+    {
+      "name": "fore_open",
+      "frame": 300,
+      "offsets": {
+        "Hatch_AftOuter": [
+          0,
+          0,
+          0.93
+        ],
+        "Hatch_ForeOuter": [
+          0,
+          -49.359788513183595,
+          0.93
+        ],
+        "JackLift_AftOuter": [
+          0,
+          0,
+          0
+        ],
+        "JackLift_ForeOuter": [
+          0,
+          0,
+          0
+        ],
+        "Hatch_AftInner": [
+          0,
+          -22.57663631439209,
+          0.25
+        ],
+        "Hatch_ForeInner": [
+          0,
+          -27.47113952636719,
+          0.25
+        ]
+      }
+    },
+    {
+      "name": "both_half_open_return",
+      "frame": 390,
+      "offsets": {
+        "Hatch_AftOuter": [
+          0,
+          0,
+          0.93
+        ],
+        "Hatch_ForeOuter": [
+          0,
+          -1.2697885131835918,
+          0.93
+        ],
+        "JackLift_AftOuter": [
+          0,
+          0,
+          0
+        ],
+        "JackLift_ForeOuter": [
+          0,
+          0,
+          0
+        ],
+        "Hatch_AftInner": [
+          0,
+          -22.57663631439209,
+          0.25
+        ],
+        "Hatch_ForeInner": [
+          0,
+          20.618860473632814,
+          0.25
+        ]
+      }
+    },
+    {
+      "name": "aft_open",
+      "frame": 480,
+      "offsets": {
+        "Hatch_AftOuter": [
+          0,
+          48.291703414916995,
+          0.93
+        ],
+        "Hatch_ForeOuter": [
+          0,
+          -1.2697885131835918,
+          0.93
+        ],
+        "JackLift_AftOuter": [
+          0,
+          0,
+          0
+        ],
+        "JackLift_ForeOuter": [
+          0,
+          0,
+          0
+        ],
+        "Hatch_AftInner": [
+          0,
+          25.7150671005249,
+          0.25
+        ],
+        "Hatch_ForeInner": [
+          0,
+          20.618860473632814,
+          0.25
+        ]
+      }
+    },
+    {
+      "name": "both_half_open_again",
+      "frame": 570,
+      "offsets": {
+        "Hatch_AftOuter": [
+          0,
+          0,
+          0.93
+        ],
+        "Hatch_ForeOuter": [
+          0,
+          -1.2697885131835918,
+          0.93
+        ],
+        "JackLift_AftOuter": [
+          0,
+          0,
+          0
+        ],
+        "JackLift_ForeOuter": [
+          0,
+          0,
+          0
+        ],
+        "Hatch_AftInner": [
+          0,
+          -22.57663631439209,
+          0.25
+        ],
+        "Hatch_ForeInner": [
+          0,
+          20.618860473632814,
+          0.25
+        ]
+      }
+    },
+    {
+      "name": "lift_to_unstack",
+      "frame": 600,
+      "offsets": {
+        "Hatch_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "Hatch_ForeOuter": [
+          0,
+          -1.2697885131835918,
+          1.05
+        ],
+        "JackLift_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "JackLift_ForeOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "Hatch_AftInner": [
+          0,
+          -22.57663631439209,
+          0.25
+        ],
+        "Hatch_ForeInner": [
+          0,
+          20.618860473632814,
+          0.25
+        ]
+      }
+    },
+    {
+      "name": "slide_closed",
+      "frame": 660,
+      "offsets": {
+        "Hatch_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "Hatch_ForeOuter": [
+          0,
+          -1.2697885131835918,
+          1.05
+        ],
+        "JackLift_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "JackLift_ForeOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "Hatch_AftInner": [
+          0,
+          0,
+          0.25
+        ],
+        "Hatch_ForeInner": [
+          0,
+          0,
+          0.25
+        ]
+      }
+    },
+    {
+      "name": "lower_inner",
+      "frame": 680,
+      "offsets": {
+        "Hatch_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "Hatch_ForeOuter": [
+          0,
+          -1.2697885131835918,
+          1.05
+        ],
+        "JackLift_AftOuter": [
+          0,
+          0,
+          1.05
+        ],
+        "JackLift_ForeOuter": [
+          0,
+          0,
+          1.05
+        ]
+      }
+    },
+    {
+      "name": "closed_return",
+      "frame": 710,
+      "offsets": {}
+    },
+    {
+      "name": "anchors_unseated",
+      "frame": 740,
+      "offsets": {
+        "Anchor_Port": [
+          -0.22,
+          0.14,
+          -0.23
+        ],
+        "Anchor_Starboard": [
+          0.22,
+          0.14,
+          -0.23
+        ],
+        "Anchor_Stern": [
+          0,
+          -0.25,
+          -0.24
+        ]
+      }
+    },
+    {
+      "name": "nozzles_port_limit",
+      "frame": 30
+    },
+    {
+      "name": "nozzles_starboard_limit",
+      "frame": 60
+    }
+  ],
+  "apertures": [
+    [
+      -5.72,
+      5.72,
+      -40.8,
+      3.82
+    ],
+    [
+      -5.72,
+      5.72,
+      10.09,
+      53.35
+    ]
+  ],
+  "panel_ranges": {
+    "AftOuter": [
+      -40.92372512817383,
+      -17.759681701660156
+    ],
+    "AftInner": [
+      -17.469127655029297,
+      3.938993453979492
+    ],
+    "ForeInner": [
+      9.971630096435547,
+      32.77064895629883
+    ],
+    "ForeOuter": [
+      33.042354583740234,
+      53.47721862792969
+    ]
+  },
+  "estimated_strokes": {
+    "outer_lift_m": 1.05,
+    "inner_rolling_lift_m": 0.25,
+    "outer_stacked_lift_m": 0.93
+  },
+  "derived_geometry": {
+    "JackRods_AftOuter": "scale Z = 1 + JackLift_AftOuter lift / 0.31",
+    "JackRods_ForeOuter": "scale Z = 1 + JackLift_ForeOuter lift / 0.31"
+  },
+  "anchor_limit": "Unseat preview only; no seabed deployment or chain payout is claimed",
+  "hydraulics_limit": "Twelve inherited jack pedestals; archive lists sixteen vertical and four horizontal jacks. Unlocated missing units are not invented.",
+  "fps": 24,
+  "frame_start": 1,
+  "frame_end": 770,
+  "timing": "Accelerated review sequence, not calibrated machinery rates",
+  "unity_axes": "+X starboard, +Z bow, +Y up",
+  "import_note": "FBX root aligned by existing datums; preserve hierarchy and sample the review clip"
+}

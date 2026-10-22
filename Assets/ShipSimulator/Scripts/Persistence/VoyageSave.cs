@@ -36,6 +36,7 @@ namespace ShipSimulator.Persistence
         public CameraSave camera = new CameraSave();
         public MissionSave mission = new MissionSave();
         public GroundingSave grounding = new GroundingSave();
+        public MechanismSave mechanisms;
 
         public string VesselIdOrDefault =>
             string.IsNullOrEmpty(vesselId) ? ShipSimulator.Physics.VesselCatalogue.DefaultVesselId : vesselId;
@@ -45,6 +46,7 @@ namespace ShipSimulator.Persistence
 
         public void Validate()
         {
+            mechanisms?.Validate();
             if (version != 1) throw new InvalidDataException("This save uses an unsupported version.");
             if (!IsVoyageScene(scene)) throw new InvalidDataException("The saved scenario is unavailable.");
             if (!DateTime.TryParse(savedUtc, out _)) throw new InvalidDataException("The save date is missing or invalid.");

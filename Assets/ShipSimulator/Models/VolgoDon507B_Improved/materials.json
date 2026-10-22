@@ -1,0 +1,187 @@
+{
+  "materials": [
+    {
+      "name": "VD507B_Glass",
+      "color": [
+        0.09,
+        0.15,
+        0.18,
+        0.32
+      ],
+      "metallic": 0.0,
+      "smoothness": 0.88,
+      "texture": "",
+      "normal": "",
+      "metallicSmoothness": "",
+      "transparent": true
+    },
+    {
+      "name": "VD507B_NozzlePaint",
+      "color": [
+        0.1599999964237213,
+        0.03200000151991844,
+        0.02199999988079071,
+        1.0
+      ],
+      "metallic": 0.0,
+      "smoothness": 0.42000001668930054,
+      "texture": "",
+      "normal": "",
+      "metallicSmoothness": "",
+      "transparent": false
+    },
+    {
+      "name": "VD507B_boats",
+      "color": [
+        0.23999999463558197,
+        0.25999999046325684,
+        0.2800000011920929,
+        1.0
+      ],
+      "metallic": 0,
+      "smoothness": 1,
+      "texture": "VD507B_boats_P3_BaseColor.png",
+      "normal": "VD507B_boats_Normal.png",
+      "metallicSmoothness": "VD507B_boats_MetallicSmoothness.png",
+      "transparent": false
+    },
+    {
+      "name": "VD507B_deck",
+      "color": [
+        0.23999999463558197,
+        0.25999999046325684,
+        0.2800000011920929,
+        1.0
+      ],
+      "metallic": 0,
+      "smoothness": 1,
+      "texture": "VD507B_deck_P3_BaseColor.png",
+      "normal": "VD507B_deck_Normal.png",
+      "metallicSmoothness": "VD507B_deck_MetallicSmoothness.png",
+      "transparent": false
+    },
+    {
+      "name": "VD507B_detali",
+      "color": [
+        0.23999999463558197,
+        0.25999999046325684,
+        0.2800000011920929,
+        1.0
+      ],
+      "metallic": 0,
+      "smoothness": 1,
+      "texture": "VD507B_detali_P3_BaseColor.png",
+      "normal": "VD507B_detali_Normal.png",
+      "metallicSmoothness": "VD507B_detali_MetallicSmoothness.png",
+      "transparent": false
+    },
+    {
+      "name": "VD507B_hold",
+      "color": [
+        0.23999999463558197,
+        0.25999999046325684,
+        0.2800000011920929,
+        1.0
+      ],
+      "metallic": 0,
+      "smoothness": 1,
+      "texture": "VD507B_hold_P3_BaseColor.png",
+      "normal": "VD507B_hold_Normal.png",
+      "metallicSmoothness": "VD507B_hold_MetallicSmoothness.png",
+      "transparent": false
+    },
+    {
+      "name": "VD507B_hull",
+      "color": [
+        0.23999999463558197,
+        0.25999999046325684,
+        0.2800000011920929,
+        1.0
+      ],
+      "metallic": 0,
+      "smoothness": 1,
+      "texture": "VD507B_hull_P3_BaseColor.png",
+      "normal": "VD507B_hull_Normal.png",
+      "metallicSmoothness": "VD507B_hull_MetallicSmoothness.png",
+      "transparent": false
+    },
+    {
+      "name": "VD507B_interior",
+      "color": [
+        0.23999999463558197,
+        0.25999999046325684,
+        0.2800000011920929,
+        1.0
+      ],
+      "metallic": 0,
+      "smoothness": 1,
+      "texture": "VD507B_interior_P3_BaseColor.png",
+      "normal": "VD507B_interior_Normal.png",
+      "metallicSmoothness": "VD507B_interior_MetallicSmoothness.png",
+      "transparent": false
+    },
+    {
+      "name": "VD507B_lights",
+      "color": [
+        0.23999999463558197,
+        0.25999999046325684,
+        0.2800000011920929,
+        1.0
+      ],
+      "metallic": 0.0,
+      "smoothness": 0.5200000107288361,
+      "texture": "VD507B_lights_BaseColor.png",
+      "normal": "",
+      "metallicSmoothness": "",
+      "transparent": false
+    },
+    {
+      "name": "VD507B_rubka",
+      "color": [
+        0.23999999463558197,
+        0.25999999046325684,
+        0.2800000011920929,
+        1.0
+      ],
+      "metallic": 0,
+      "smoothness": 1,
+      "texture": "VD507B_rubka_P3_BaseColor.png",
+      "normal": "VD507B_rubka_Normal.png",
+      "metallicSmoothness": "VD507B_rubka_MetallicSmoothness.png",
+      "transparent": false
+    },
+    {
+      "name": "VD507B_rubka_detali",
+      "color": [
+        0.23999999463558197,
+        0.25999999046325684,
+        0.2800000011920929,
+        1.0
+      ],
+      "metallic": 0,
+      "smoothness": 1,
+      "texture": "VD507B_rubka_detali_P3_BaseColor.png",
+      "normal": "VD507B_rubka_detali_Normal.png",
+      "metallicSmoothness": "VD507B_rubka_detali_MetallicSmoothness.png",
+      "transparent": false
+    },
+    {
+      "name": "VD507B_ship_gms_axalp_main",
+      "color": [
+        0.23999999463558197,
+        0.27000001072883606,
+        0.2800000011920929,
+        1.0
+      ],
+      "metallic": 0.8500000238418579,
+      "smoothness": 0.699999988079071,
+      "texture": "",
+      "normal": "",
+      "metallicSmoothness": "",
+      "transparent": false
+    }
+  ],
+  "stage": 4,
+  "triangles": 53130,
+  "meshCount": 49
+}

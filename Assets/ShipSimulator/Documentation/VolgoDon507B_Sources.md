@@ -1,5 +1,48 @@
 # Volgo-Don Project 507B: Sources and Data Status
 
+## Part 3 visual candidate, 2026-10-22
+
+The separate improved candidate now uses four-bladed 1.8 m steel propellers,
+left/right pitch 1.52/1.47 m and an expanded blade-area ratio target of 0.62
+(archive page 5). Rounded ducts use the page 7 length 1.66 m and interpret the
+1.84 m diameter as clear throat diameter. Sections, shaft alignment, handedness
+and stabilizers remain authored approximations. A measured visual side-deck
+height correction gives 5.5 m keel-to-side-deck depth at the retained 3.53 m draft.
+Neither the playable model nor physics JSON was changed. The archive loading
+conflicts below remain unresolved. Reference comparison, PBR provenance and
+screenshots: `Art/Source/VolgoDon507B/PART3_REVIEW.md`.
+
+## Archive audit addendum, 2026-10-21
+
+The [nine-page archive](https://russrivership.ru/public/files/doc257.pdf) was
+visually inspected. It combines projects 1565 and 507B: page 3 assigns the first
+slash-separated value to 1565, the second to 507B. Do not silently transfer the
+first value to this vessel. Existing JSON remains unchanged pending calibration.
+
+| Page | Verified observation / implication |
+|---|---|
+| 1 | General arrangement; use for assembly placement, not precise offsets |
+| 2 | Lines plan explicitly labelled 507, only family-level hull guidance |
+| 3 | Paired loaded displacement 6750/6678 t and mean draft 3.53/3.5 m; conflicts with the current baseline |
+| 3 | Loaded speed 20 km/h; ballasted 21.2 km/h; stopping and turning figures lack sufficient trial conditions for direct validation |
+| 4 | Covers lift, overlap and translate by winch; no hinged opening |
+| 5 | Two 1.8 m, four-bladed steel propellers; left/right pitch 1.52/1.47 m; engine rating 375 rpm is not automatically shaft RPM |
+| 6 | Fuel and ballast compartment tables available for later loading work |
+| 7 | Two steerable nozzles, 1.84 m diameter, 1.66 m long; combined/separate control; waterjet-type thruster, 710 mm tube, 72 kW |
+| 8 | Equipment and weight tables need variant-aware interpretation |
+| 9 | Vessel list, not identification of the FBX |
+
+Selected modelling configuration: classic two-covered-hold 507B, supported by the
+mesh layout and [project history](https://fleetphoto.ru/projects/1697/). Exact
+vessel and date remain unconfirmed. The generic tunnel-disc thruster and MMG rudder
+models are approximations, not implementations of the archived machinery.
+
+The historical tables below predate this archive review. Statements that no public
+propeller geometry or bow-thruster data was found are superseded by this addendum;
+their numerical JSON values remain estimates. See the detailed
+[Part 1 audit](../../../../Art/Source/VolgoDon507B/AUDIT.md) for mesh measurements,
+architecture, photographs, discrepancies and the reversible upgrade sequence.
+
 This file distinguishes published vessel particulars from prototype calibration
 assumptions. Values vary between individual vessels and later conversions. The
 prototype represents an unshortened, river-service Project 507B baseline.
@@ -85,4 +128,29 @@ All values below are estimates for the manoeuvring model described in
 The KVLCC2 benchmark file (`KVLCC2_MMG_Benchmark.json`) holds the published MMG coefficient set
 used to check the implementation, not Project 507B data. Its resistance C_R, propeller K_Q fit and
 engine power are chosen so the benchmark reaches its 15.5 kn design speed.
+
+# Part 4 mechanism candidate, 2026-10-22
+
+Archive doc257.pdf p.4 supports lifting extreme covers, sliding middle covers
+underneath, lowering and paired movement. Page 7 supports +/-35 degree nozzle
+travel. The candidate implements that sequence; actual strokes, pivot positions,
+tracks and visible hold interiors are estimated from the model. Twelve legacy
+jack positions are retained; the remaining locations needed for the documented
+16 vertical and four horizontal jacks are not invented. Detailed hydraulics and
+full anchor chain payout remain deferred. Anchor movement only previews unseating.
+See Art/Source/VolgoDon507B/PART4_REVIEW.md and mechanisms.json. This is still a
+separate visual candidate; playable integration and physics remain unchanged.
+
+# Part 5 playable visual integration, 2026-10-22
+
+The Part 4 visual is now installed in the existing playable prefab. Shaft RPM and
+actual rudder angle drive the visual controls; this does not revise the generic
+rudder force model. Cargo/ballast and nozzle thrust calibration remain later parts.
+Navigation fixture positions and local spill are model-derived visual estimates.
+Bridge glass bounds measured through Blender MCP are source X +/-4.578 m,
+Y -48.946 to -42.531 m, Z 8.620 to 9.579 m; the Unity navigator eye is
+(-1.8, 9.1, -43.3) m. Opposite shaft visual rotation matches the authored mirrored
+pitch, not independently verified historical handedness. Machinery rates are
+estimated 40 s opening, 45 s paired travel and 5 s unseating. Full anchor payout
+and holding forces remain absent. See Art/Source/VolgoDon507B/PART5_REVIEW.md.
 

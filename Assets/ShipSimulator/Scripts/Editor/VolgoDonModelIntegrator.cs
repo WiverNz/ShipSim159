@@ -40,7 +40,7 @@ namespace ShipSimulator.Editor
                 root.name = "VolgoDon507B";
                 RemovePlaceholderVisuals(root);
                 AddDetailedVisual(root);
-                EnsureCollisionHull(root);
+                if (root.transform.Find("CollisionHull") == null) EnsureCollisionHull(root);
                 HideControlMarkers(root);
                 PrefabUtility.SaveAsPrefabAsset(root, VesselPrefabPath);
             }
@@ -53,6 +53,19 @@ namespace ShipSimulator.Editor
             AssetDatabase.SaveAssets();
             RenderPreview();
             Debug.Log("[VolgoDon Model] Detailed model integrated into " + VesselPrefabPath);
+        }
+
+        [MenuItem("Ship Simulator/Restore Legacy Volgo-Don Visual")]
+        public static void RestoreLegacyPrefab()
+        {
+            GameObject root = PrefabUtility.LoadPrefabContents(VesselPrefabPath);
+            try
+            {
+                if (!AddLegacyVisual(root)) throw new InvalidOperationException("Legacy model is missing.");
+                PrefabUtility.SaveAsPrefabAsset(root, VesselPrefabPath);
+            }
+            finally { PrefabUtility.UnloadPrefabContents(root); }
+            AssetDatabase.SaveAssets();
         }
 
         [MenuItem("Ship Simulator/Render Detailed Vessel Preview")]
@@ -100,7 +113,7 @@ namespace ShipSimulator.Editor
             image.ReadPixels(new Rect(0, 0, 1200, 700), 0, 0);
             image.Apply();
 
-            string previewPath = "G:/tmp/volgodon507_preview.png";
+            string previewPath = "Logs/VolgoDon507B/part5-integrated.png";
             Directory.CreateDirectory(Path.GetDirectoryName(previewPath));
             File.WriteAllBytes(previewPath, image.EncodeToPNG());
 
@@ -156,6 +169,14 @@ namespace ShipSimulator.Editor
 
         public static bool AddDetailedVisual(GameObject vesselRoot)
         {
+            if (VolgoDonMechanismIntegration.Install(vesselRoot)) return true;
+            return AddLegacyVisual(vesselRoot);
+        }
+
+        public static bool AddLegacyVisual(GameObject vesselRoot)
+        {
+            var rig = vesselRoot.GetComponent<ShipSimulator.Visuals.VesselMechanisms>();
+            if (rig != null) Object.DestroyImmediate(rig);
             GameObject source = AssetDatabase.LoadAssetAtPath<GameObject>(ModelPath);
             if (source == null) return false;
 

@@ -85,6 +85,10 @@ namespace ShipSimulator.Physics
         public float BowThrusterCommand => bowThrusterCommand;
         public float BowThrusterOutput => HasBowThruster ? model.BowThruster.Output : 0f;
         public float BowThrusterThrustN => HasBowThruster ? model.BowThruster.ThrustN : 0f;
+        public ShipSimulator.Visuals.VesselMechanisms Mechanisms => GetComponent<ShipSimulator.Visuals.VesselMechanisms>();
+
+        public void SetHatchPosition(ShipSimulator.Visuals.HatchPosition target) => Mechanisms?.SetHatches(target);
+        public void SetAnchorsReleased(bool released) => Mechanisms?.SetAnchorsReleased(released);
 
         private void Awake()
         {
@@ -279,6 +283,7 @@ namespace ShipSimulator.Physics
             externalX = externalY = externalN = 0f;
             model?.RestoreActuators(0f, null);
             model?.BowThruster?.Restore(0f);
+            Mechanisms?.RestoreState(null);
         }
 
         public void RestoreVoyage(ShipSimulator.Persistence.VoyageSave save)

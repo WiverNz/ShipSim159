@@ -1,5 +1,29 @@
 # ShipSim159 Project Context
 
+## Volgo-Don Part 12, 2026-10-24
+
+Part 12 complete. Read `Art/Source/VolgoDon507B/PART12_REVIEW.md`. Propulsion audit and
+matched archive comparison with sensitivity sweeps (`VolgoDonPropulsionReview.Run`,
+`part12-trials-{before,after}.json`): loaded 19.76 vs 20 km/h, unfitted ballast 3828 t
+21.19 vs 21.2 km/h; no coefficient refitted. Crash stop 716 m / 285 s stays: reversal is
+15 s / 81 m, 510 m would need about +50% astern thrust; archive conditions unstated (half
+ahead gives 428 m, ballast 488 m). Steady turn 462 m vs undefined 320 m; dt 0.025-0.1 agree.
+`propellerAxisHeightAboveKeelM` 1.0 -> 1.35 m; dynamic propeller immersion for vessels with
+loading. Only the 507B lightship sea-trial row changed.
+
+Open-hold water fix: the river plane passed through the hull. `HullWaterMask.shader` quads in
+the hatch openings set stencil bit 8, `RiverWater.shader` skips it; `HoldInteriorVisual` draws
+nominal 1.6 t/m3 bulk cargo heaps from compartment masses (no mass/colliders), installed by
+`VolgoDonHoldIntegration` (called from the mechanism integration). Measured hold space 5194 m3
+vs archive 6370 m3, unresolved. Captures `Previews/part12-{before,after}-hold-*.png`.
+
+Grounding fix: 507B contact points were up to 1.5 m (bow) and 2.2 m (stern) below the real
+hull, and friction crept below its limit. Now section-grid contacts plus propeller tips,
+modulus/bearing pressure along hull normals, and an impulse Coulomb friction solve for all
+vessels (no creep, no energy gain). Light touches and a slow partial entry back off under full
+astern; firmer/hard groundings hold until draft is reduced. `GroundingRecoveryTests`.
+EditMode 245/245, PlayMode 68/68, sea trials PASS, Shakedown 5/5 PASS, Menu PASS. No commit/push.
+
 ## Volgo-Don Part 11, 2026-10-23
 
 Part 11 complete. Read `Art/Source/VolgoDon507B/PART11_REVIEW.md`. The 507B now floats

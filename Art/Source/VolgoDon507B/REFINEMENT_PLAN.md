@@ -1,6 +1,6 @@
 # Volgo-Don 507B: remaining fidelity work
 
-Created: 2026-10-23. Parts 9-11 complete; Parts 12-17 not started.
+Created: 2026-10-23. Parts 9-12 complete; Parts 13-17 not started.
 
 This continues Parts 1-8 of [IMPROVEMENT_CHECKLIST.md](IMPROVEMENT_CHECKLIST.md).
 The baseline and known discrepancies are recorded in [PART8_REVIEW.md](PART8_REVIEW.md).
@@ -37,7 +37,7 @@ precision. A completed prototype feature is not validated maritime training.
 | 9 | Reference and variant decision package | Existing Parts 1-8 | Complete, 2026-10-23 |
 | 10 | Hull sections and corrected editable geometry | 9 | Complete with documented trace discrepancy, 2026-10-23 |
 | 11 | Section-based hydrostatics and loading response | 10 | Complete, 2026-10-23; estimated lightship LCG and no free-surface correction |
-| 12 | Propulsion, stopping and steering calibration | 9, 11 | Not started |
+| 12 | Propulsion, stopping and steering calibration | 9, 11 | Complete, 2026-10-24; audit with no refit, stop and turning published as envelopes; open-hold water and refloating fixes |
 | 13 | Evidence-based machinery rates and detail corrections | 9; reconcile with 12 | Not started |
 | 14 | Anchor holding and mooring prototype | 11, 12, 13 | Not started |
 | 15 | Licensed machinery and water audio | 12, 13 | Not started |
@@ -124,16 +124,22 @@ Unsupported stability effects remain visible in the documentation.
 
 ## Part 12: propulsion and manoeuvring calibration
 
-- [ ] Verify engine/shaft RPM relationship, reversal delay, propeller handedness,
+Result: [PART12_REVIEW.md](PART12_REVIEW.md). Loaded speed -1.2% and the unfitted
+ballast check -0.05% against the archive; no coefficient refitted. The 716 m stop
+is explained by unstated archive conditions, not fitted. Separately requested fixes:
+river water no longer shows in open holds (stencil mask, nominal cargo heaps) and
+refloating uses real-bottom contact points and non-creeping Coulomb friction.
+
+- [x] Verify engine/shaft RPM relationship, reversal delay, propeller handedness,
   thrust locations, nozzle angle limits and applicable thruster configuration.
-- [ ] Establish identical initial speed, loading, water depth and manoeuvre
+- [x] Establish identical initial speed, loading, water depth and manoeuvre
   procedure before comparing the simulator with any published trial.
-- [ ] Calibrate steady resistance/thrust first, acceleration and reversal next,
+- [x] Calibrate steady resistance/thrust first, acceleration and reversal next,
   then stopping, turning, zigzag and differential-thrust response.
-- [ ] Use documented parameter bounds and sensitivity sweeps. Keep separate
+- [x] Use documented parameter bounds and sensitivity sweeps. Keep separate
   calibration cases and validation cases; avoid fitting one stopping number at
   the expense of all other behaviour.
-- [ ] Repeat deep/shallow-water and loaded/ballast cases, timestep convergence
+- [x] Repeat deep/shallow-water and loaded/ballast cases, timestep convergence
   checks and all other-vessel regression trials.
 
 Deliverables: before/after trial tables, parameter provenance and calibration

@@ -211,10 +211,13 @@ namespace ShipSimulator.Physics
                 StationSwayCurrent = SampleCurrentShear(midship, forward, right, current),
                 ExternalX = externalX,
                 ExternalY = externalY,
-                ExternalN = externalN
+                ExternalN = externalN,
+                HasPropellerImmersion = loading != null,
+                PropellerImmersion = loading != null ? LocalPropellerImmersion() : 1f
             };
             externalX = externalY = externalN = 0f;
             diagnostics = model.Step(input, dt);
+            if (grounding != null && grounding.isActiveAndEnabled) grounding.ResolveFriction(model, ref diagnostics, dt);
 
             body.AddForce(forward * diagnostics.GravityCentreAccelerationX + right * diagnostics.GravityCentreAccelerationY,
                 ForceMode.Acceleration);
@@ -261,6 +264,22 @@ namespace ShipSimulator.Physics
             externalX += fx;
             externalY += fy;
             externalN += Vector3.Dot(offset, forward) * fy - Vector3.Dot(offset, right) * fx;
+        }
+
+        // Fraction of the propeller disc below the local water surface in the hull's present attitude, lowered by
+        // the stern squat of the previous step, as the still-water value is for the loading condition.
+        private float LocalPropellerImmersion()
+        {
+            VesselPropeller propeller = data.propeller;
+            float axis = parameters.KeelLocalY + data.loading.propellerAxisHeightAboveKeelM;
+            float sum = 0f;
+            for (int i = 0; i < propeller.count; i++)
+            {
+                Vector3 hub = transform.TransformPoint(propeller.lateralPositionsM[i], axis, propeller.longitudinalPositionsM[i]);
+                float depth = waterLevel - diagnostics.SternSquatM - hub.y;
+                sum += Mathf.Clamp01((depth + 0.5f * propeller.diameterM) / propeller.diameterM);
+            }
+            return propeller.count > 0 ? sum / propeller.count : 1f;
         }
 
         private float KeelDepth(float localZ)
@@ -463,10 +482,11 @@ namespace ShipSimulator.Physics
             Gizmos.color = Color.green;
             Gizmos.DrawRay(transform.position, relativeWaterVelocity * 5f);
             VesselPropeller propeller = data.propeller;
+            float axis = LoadingModel.Supported(data) ? data.loading.propellerAxisHeightAboveKeelM : 1f;
             Gizmos.color = Color.red;
             for (int i = 0; i < propeller.count; i++)
             {
-                Vector3 position = transform.TransformPoint(propeller.lateralPositionsM[i], parameters.KeelLocalY + 1f,
+                Vector3 position = transform.TransformPoint(propeller.lateralPositionsM[i], parameters.KeelLocalY + axis,
                     propeller.longitudinalPositionsM[i]);
                 Gizmos.DrawRay(position, transform.forward * model.PropellerThrustN[i] / 50000f);
             }

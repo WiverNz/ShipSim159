@@ -1,6 +1,15 @@
 # Volgo-Don 507B editable source
 
-## Current milestone: Part 11 section hydrostatics
+## Current milestone: Part 12 propulsion audit, holds and refloating
+
+Part 12 is complete. Read [PART12_REVIEW.md](PART12_REVIEW.md). Propulsion, stopping and
+steering were audited against matched archive conditions without refitting coefficients;
+the propeller axis is now 1.35 m above keel and its immersion follows the hull attitude.
+Open holds mask the river surface and show nominal cargo from the loading model; grounding
+contact uses the real bottom and non-creeping Coulomb friction. The blend and FBX exports
+are unchanged; `VolgoDonHoldIntegration` adds the hold component to the prefab.
+
+## Part 11 section hydrostatics
 
 Part 11 is implemented. Read [PART11_REVIEW.md](PART11_REVIEW.md). The 507B now floats on
 an offset table derived from the closed hydrostatic surface (`part11_hydrostatics.py`,

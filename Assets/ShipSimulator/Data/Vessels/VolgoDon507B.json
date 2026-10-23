@@ -27,7 +27,7 @@
   "loading": {
     "enabled": true,
     "lightshipCentreLocalM": {"x": 0, "y": 0, "z": -21.9},
-    "propellerAxisHeightAboveKeelM": 1.0,
+    "propellerAxisHeightAboveKeelM": 1.35,
     "maximumTransferSpeedMps": 0.3,
     "estimated": true,
     "compartments": [

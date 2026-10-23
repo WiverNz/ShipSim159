@@ -85,7 +85,8 @@ run them without a scene:
    (it stays the source of truth, including after collisions);
 2. samples the effective current, relative wind, depth under the hull and the water flow area on
    each side;
-3. steps grounding contact, then `ManoeuvringModel`, which returns body accelerations;
+3. steps grounding contact, then `ManoeuvringModel`, which returns body accelerations, and adds
+   the bottom friction impulse to them;
 4. applies them with `AddForce(..., ForceMode.Acceleration)` at the centre of gravity and
    `AddTorque(up * r_dot, ForceMode.Acceleration)` for yaw;
 5. applies station buoyancy, heave and roll damping and the heel moments as ordinary forces.
@@ -233,10 +234,23 @@ and limits: `Art/Source/VolgoDon507B/PART11_REVIEW.md`.
 
 ## Grounding
 
-`GroundingController` checks ten keel points against bathymetry (or the controller's depth
-provider). Penetration gives a spring-damper normal force by bottom type (silt, sand, rock), and
-Coulomb friction limited by that force resists horizontal motion. Friction goes through the
-manoeuvring solve, so it acts against the added mass too.
+`GroundingController` checks contact points against bathymetry (or the controller's depth
+provider). A vessel with a section table (the 507B) uses a grid over its real bottom from the
+table plus the propeller tip circles; its bed reaction is an estimated modulus times penetration
+over each point's area, capped by a bearing pressure, along the local hull surface normal.
+Other vessels keep ten keel-level points with a per-point spring-damper. Soil values by bottom
+type (silt, sand, rock) are estimates.
+
+Coulomb friction, limited by mu times each point's reaction, is solved after the manoeuvring
+step as an impulse: each point receives at most the force that would stop it, iterated over the
+points with the solve's added-mass response (`ManoeuvringModel.ExternalAcceleration`). Below the
+limit the hull stays put without creeping; friction never reverses a point or adds energy.
+Whether full astern can work a ship off is therefore the holding force against the effective
+thrust, (1 - t) T, shown on the HUD. Details and measured cases:
+`Art/Source/VolgoDon507B/PART12_REVIEW.md`.
+
+For a vessel with a loading model the propeller immersion follows the actual hub depth each step
+(trim, heel, heave, stern squat); the pure simulator keeps the still-water value.
 
 ## Virtual sea trials
 

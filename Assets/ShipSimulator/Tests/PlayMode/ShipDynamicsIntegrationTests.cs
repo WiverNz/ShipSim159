@@ -383,10 +383,17 @@ namespace ShipSimulator.Tests
             // Moving the centre of mass about 20 m aft may round the pose in its last bits; it must not jump.
             Assert.That(Vector3.Distance(ship.Body.position, position), Is.LessThan(1e-4f));
             Run(ship, 120);
-            // The light ship trims by the stern, so its aft keel sets the clearance.
-            float aftDraft = ship.Parameters.DraftAt(-.46f * ship.Parameters.Lpp);
-            Assert.That(aftDraft, Is.LessThan(2.4f));
-            Assert.That(ship.Grounding.MinimumClearanceM, Is.EqualTo(2.5f - aftDraft).Within(.1f));
+            // The light ship trims by the stern; the deepest point of the real bottom or the propeller tips,
+            // at its still-water draft and trim, sets the clearance.
+            VesselParameters p = ship.Parameters;
+            float deepest = 0f;
+            for (int i = 0; i < ship.Grounding.ContactPointCount; i++)
+            {
+                Vector3 point = ship.Grounding.ContactPoint(i);
+                deepest = Mathf.Max(deepest, p.DraftAt(point.z) - (point.y - p.KeelLocalY));
+            }
+            Assert.That(deepest, Is.LessThan(2.4f));
+            Assert.That(ship.Grounding.MinimumClearanceM, Is.EqualTo(2.5f - deepest).Within(.1f));
             Assert.That(ship.Grounding.ContactNormalForceN, Is.Zero);
             yield return null;
         }

@@ -41,6 +41,13 @@ Shader "ShipSimulator/RiverWater"
             Blend SrcAlpha OneMinusSrcAlpha
             ZWrite On
             Cull Back
+            // HullWaterMask marks open holds with this bit; river water never draws inside a hull.
+            Stencil
+            {
+                Ref 0
+                ReadMask 8
+                Comp Equal
+            }
 
             HLSLPROGRAM
             #pragma vertex Vert
@@ -55,6 +62,12 @@ Shader "ShipSimulator/RiverWater"
             ZWrite Off
             ZTest LEqual
             ColorMask RG
+            Stencil
+            {
+                Ref 0
+                ReadMask 8
+                Comp Equal
+            }
             HLSLPROGRAM
             #pragma vertex WaterMotionVert
             #pragma fragment WaterMotionFrag

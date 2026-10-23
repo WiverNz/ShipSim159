@@ -97,6 +97,35 @@ namespace ShipSimulator.Physics
         public float Weight(int station) => weights[station];
         public float StripX(int strip) => stripX[strip];
 
+        // Height above the keel of the hull surface at body z and |x|, from the nearest stations on either side;
+        // NaN where neither section reaches that far out below the cap.
+        public float BottomHeightAt(float z, float halfOffset)
+        {
+            VesselSectionStation[] stations = Table.stations;
+            int upper = 1;
+            while (upper < stationZ.Length - 1 && stationZ[upper] < z) upper++;
+            float t = Mathf.Clamp01(Mathf.InverseLerp(stationZ[upper - 1], stationZ[upper], z));
+            float a = SectionBottom(stations[upper - 1], halfOffset);
+            float b = SectionBottom(stations[upper], halfOffset);
+            if (float.IsNaN(a)) return t > 0.5f ? b : float.NaN;
+            if (float.IsNaN(b)) return t < 0.5f ? a : float.NaN;
+            return a + t * (b - a);
+        }
+
+        private float SectionBottom(VesselSectionStation station, float halfOffset)
+        {
+            float[] h = station.heightsAboveKeelM;
+            float[] b = station.halfBreadthsM;
+            for (int i = 0; i < h.Length; i++)
+            {
+                if (b[i] < halfOffset) continue;
+                if (i == 0) return h[0];
+                float s = (halfOffset - b[i - 1]) / Mathf.Max(b[i] - b[i - 1], 1e-6f);
+                return h[i - 1] + s * (h[i] - h[i - 1]);
+            }
+            return float.NaN;
+        }
+
         // Area and keel moment of one column's section below immersion h, and its waterline breadth.
         // Immersion above the cap adds nothing: the surface ends at the deck.
         public void Lookup(int station, int strip, float h, out float columnArea, out float columnMoment, out float breadth)

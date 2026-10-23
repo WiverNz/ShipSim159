@@ -39,6 +39,7 @@ namespace ShipSimulator.Editor
             ConfigureLayout(root);
             AddAudioPoints(visual);
             VolgoDonLodIntegration.Install(visual);
+            VolgoDonHoldIntegration.Install(root);
             return true;
         }
 

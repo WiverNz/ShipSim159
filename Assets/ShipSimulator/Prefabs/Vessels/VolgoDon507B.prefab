@@ -7278,6 +7278,7 @@ GameObject:
   - component: {fileID: 969267071402974813}
   - component: {fileID: 3018345653806199697}
   - component: {fileID: 626150771699953496}
+  - component: {fileID: 738119879087824275}
   m_Layer: 0
   m_Name: VolgoDon507B
   m_TagString: Untagged
@@ -7340,7 +7341,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 43cc2e01153437346a62596f9d234b83, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipSimulator.Physics.VesselDataLoader
   vesselJson: {fileID: 4900000, guid: d43ca2617eb34f642b9b5654a65ac002, type: 3}
 --- !u!114 &969267071402974813
@@ -7353,7 +7354,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fc0f77ea359fb8498ce3d44ad6eeb68, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipSimulator.Physics.ShipPhysicsController
   waterLevel: 0
   ambientCurrentMps: {x: 0, y: 0, z: 0.35}
@@ -7369,7 +7370,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 765d9147f2ee4ab4381d4a2b486577eb, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.VesselLayout
   vesselId: volgodon-507b
   cameraScale: 1
@@ -7396,7 +7397,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2c9b9acbec0bf24599011779d0f001a, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.VesselMechanisms
   visual: {fileID: 7343597604241516996}
   hatchClip: {fileID: 7400000, guid: 1ee25ac93d3d6414da7e67fe4006a067, type: 2}
@@ -7422,6 +7423,35 @@ MonoBehaviour:
   openingSeconds: 40
   traverseSeconds: 45
   anchorReleaseSeconds: 5
+--- !u!114 &738119879087824275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4893004279475231000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bc8c6292a5c7ac45948696c20214168, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.HoldInteriorVisual
+  bulkDensityKgM3: 1600
+  shoulderM: 0.6
+  material: {fileID: 2100000, guid: 5214b34a98ad0474584e2a8a30f3496f, type: 2}
+  waterMask: {fileID: 2100000, guid: eb61727b32e21f7458c883c2a0658562, type: 2}
+  holds:
+  - name: Fore
+    compartment: 0
+    floorCentre: {x: 0, y: -2.6000009, z: 31.719995}
+    footprint: {x: 11.380001, y: 43.199993}
+    maxHeightM: 4.899999
+    maskHeight: 2.5499985
+  - name: Aft
+    compartment: 1
+    floorCentre: {x: 0, y: -2.5999947, z: -18.489998}
+    footprint: {x: 11.380001, y: 44.559998}
+    maxHeightM: 4.899999
+    maskHeight: 2.5500045
 --- !u!1 &4947832897156137506
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,6 +23,9 @@ namespace ShipSimulator.Physics
         public float ExternalX;
         public float ExternalY;
         public float ExternalN;
+        // Immersion of the propellers in the hull's actual attitude; otherwise the still-water value is used.
+        public bool HasPropellerImmersion;
+        public float PropellerImmersion;
     }
 
     public struct ManoeuvringOutput
@@ -160,13 +163,14 @@ namespace ShipSimulator.Physics
             }
             float advance = u * (1f - wake);
             output.AdvanceSpeed = advance;
+            float propellerImmersion = input.HasPropellerImmersion ? Mathf.Clamp01(input.PropellerImmersion) : p.PropellerImmersion;
 
             for (int i = 0; i < Shafts.Length; i++)
             {
                 float thrust = PropellerModel.Evaluate(propeller, p.Rho, Shafts[i].Rps, advance,
                     out float torque, out float coefficient) * data.calibration.thrustMultiplier;
-                thrust *= p.PropellerImmersion;
-                torque *= p.PropellerImmersion;
+                thrust *= propellerImmersion;
+                torque *= propellerImmersion;
                 PropellerThrustN[i] = thrust;
                 PropellerTorqueNm[i] = torque;
                 propellerCoefficient[i] = coefficient;
@@ -204,7 +208,7 @@ namespace ShipSimulator.Physics
                     float xNozzle = data.rudder.longitudinalPositionM;
                     float yNozzle = data.rudder.lateralPositionsM[j];
                     Vector2 force = SteeringNozzleModel.Passive(data.steeringNozzle, p.Rho,
-                        new Vector2(u - r * yNozzle, v + r * xNozzle), RudderAngleRad) * p.PropellerImmersion;
+                        new Vector2(u - r * yNozzle, v + r * xNozzle), RudderAngleRad) * propellerImmersion;
                     RudderNormalForceN[j] = Vector2.Dot(force, new Vector2(Mathf.Sin(RudderAngleRad), Mathf.Cos(RudderAngleRad)));
                     output.RudderX += force.x;
                     output.RudderY += force.y;
@@ -252,6 +256,25 @@ namespace ShipSimulator.Physics
             output.BowSquatM *= immersion;
             output.SternSquatM *= immersion;
             return output;
+        }
+
+        // Horizontal accelerations of the centre of gravity and yaw caused by one more force and moment about
+        // midship, at the depth of the last step. The solve is linear in the forces, so contact forces found
+        // after the step can be added to its result.
+        public void ExternalAcceleration(float x, float y, float n, out float gravityX, out float gravityY, out float yaw)
+        {
+            VesselParameters p = Parameters;
+            float m = p.Mass;
+            float my = p.SwayAddedMass * cachedFactors.SwayAddedMass;
+            float jz = p.YawAddedInertia * cachedFactors.YawAddedInertia;
+            float xg = p.CentreOfGravityX;
+            float yawInertia = p.YawInertiaAtG + xg * xg * m + jz;
+            float coupling = xg * m;
+            float determinant = (m + my) * yawInertia - coupling * coupling;
+            float sway = (y * yawInertia - coupling * n) / determinant;
+            yaw = ((m + my) * n - coupling * y) / determinant;
+            gravityX = x / (m + p.SurgeAddedMass);
+            gravityY = sway + xg * yaw;
         }
 
         private void Solve(float u, float v, float r, float x, float y, float n, in DepthFactors depth, ref ManoeuvringOutput output)

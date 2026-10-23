@@ -1,5 +1,27 @@
 # Volgo-Don Project 507B: Sources and Data Status
 
+## Part 12 propulsion, contact and hold data, 2026-10-24
+
+See `Art/Source/VolgoDon507B/PART12_REVIEW.md`. No hydrodynamic coefficient was
+refitted. Changed value: `loading.propellerAxisHeightAboveKeelM` 1.0 -> 1.35 m,
+derived from the authored shaft axis (source landmarks -2.18 minus -3.53 m).
+Archive comparison, matched to deep water: loaded speed 19.76 against 20.0 km/h
+(calibration case), archive ballast 3828 t 21.19 against 21.2 km/h (independent,
+not fitted), ballast mean draft 2.05 against 2.11 m. Crash stop 716 m / 285 s against
+510 m / 210 s is not fitted: the archive omits approach speed, loading and depth;
+the model gives 428 m from half ahead and 488 m in the ballast condition. Turning
+462 m steady diameter against an undefined 320 m. Engine ratio, reversal timings,
+astern curves and nozzle coefficients remain estimated.
+
+Grounding soil values (estimated): section-contact modulus 0.5 / 1.5 / 20 MN/m3,
+bearing 30 kPa / 150 kPa / 5 MPa and friction 0.25 / 0.35 / 1.0 for silt, sand and
+rock. Friction follows the middle of the U.S. Navy Salvor's Handbook static ranges
+(mud 0.2-0.3, sand 0.3-0.4, rock 0.8-1.5), read from a secondary copy.
+
+Hold visual: clear hold space measured from the authored meshes, 2557 m3 forward and
+2637 m3 aft to the closed covers (5194 m3, 18% under the archive 6370 m3, unresolved).
+Nominal bulk cargo density 1600 kg/m3 (estimate; no historical cargo is modelled).
+
 ## Part 11 section hydrostatics, 2026-10-23
 
 `hydrostatics.sectionTable` is derived (D) from the Part 10 closed hydrostatic surface,

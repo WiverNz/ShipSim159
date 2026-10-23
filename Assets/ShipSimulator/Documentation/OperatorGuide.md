@@ -26,6 +26,21 @@ commands; older saves use the default inventory. Tank groups and rates are
 estimates, not an operational loading booklet. See
 `Art/Source/VolgoDon507B/PART7_REVIEW.md` for limits and test conditions.
 
+Open holds show the cargo actually carried in each hold as a heap of nominal bulk
+cargo (an estimated 1.6 t/m3 sand/gravel class, not a documented cargo); an empty
+hold shows its dry floor. The river surface no longer shows inside the hull.
+
+## Aground
+
+The HUD shows the bottom's holding force in kN next to the grounding warning.
+Full astern works the ship off only while that force stays below the effective
+astern push, about 106 kN for the loaded 507B: a drift or very slow touch on a
+gentle sand bank. A firmer entry holds her; reduce draft (discharge or deballast
+the end that is aground), wait for different water levels, or treat it as needing
+assistance. Split engines and nozzles do not add grip, but on a long flat-bottom
+contact they will not free her on their own. Soil and friction values are estimates;
+see `Art/Source/VolgoDon507B/PART12_REVIEW.md`.
+
 ## Vessels
 
 | Vessel | Length | Deadweight | Engines | Handling notes |

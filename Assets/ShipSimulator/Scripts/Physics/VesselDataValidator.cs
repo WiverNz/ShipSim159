@@ -144,6 +144,33 @@ namespace ShipSimulator.Physics
                 !Positive(data.calibration.resistanceMultiplier) || !Positive(data.calibration.rudderMultiplier))
                 return Fail("Calibration multipliers must be finite and positive.", out error);
 
+            if (LoadingModel.Supported(data))
+            {
+                VesselLoading loading = data.loading;
+                if (!FiniteVector(loading.lightshipCentreLocalM) || loading.lightshipCentreLocalM.x != 0 ||
+                    !InRange(loading.propellerAxisHeightAboveKeelM, 0, d.depthMouldedM) ||
+                    !Positive(loading.maximumTransferSpeedMps) || loading.compartments == null ||
+                    loading.compartments.Length == 0 || loading.compartments.Length > 32 || !Positive(m.deadweightKg))
+                    return Fail("Loading configuration is invalid.", out error);
+                float initial = 0;
+                var ids = new System.Collections.Generic.HashSet<string>();
+                foreach (LoadCompartment c in loading.compartments)
+                {
+                    if (c == null || string.IsNullOrWhiteSpace(c.id) || !ids.Add(c.id) ||
+                        (c.kind != "cargo" && c.kind != "ballast" && c.kind != "consumables") ||
+                        !Positive(c.capacityKg) || !InRange(c.initialKg, 0, c.capacityKg) || !Positive(c.transferKgPerSecond) ||
+                        !FiniteVector(c.centreLocalM) || c.centreLocalM.x != 0 ||
+                        !FiniteVector(c.sizeM) || !Positive(c.sizeM.x) || !Positive(c.sizeM.y) || !Positive(c.sizeM.z) ||
+                        c.sizeM.x > d.beamOverallM || Mathf.Abs(c.centreLocalM.z) + c.sizeM.z / 2 > d.lengthOverallM / 2 ||
+                        c.centreLocalM.y - c.sizeM.y / 2 < data.hydrostatics.waterlineLocalY - d.loadedDraftM ||
+                        c.centreLocalM.y + c.sizeM.y / 2 > data.hydrostatics.waterlineLocalY - d.loadedDraftM + d.depthMouldedM)
+                        return Fail("Loading compartment is invalid or outside the supported symmetric layout.", out error);
+                    initial += c.initialKg;
+                }
+                if (Mathf.Abs(initial - (m.loadedMassKg - m.lightshipMassKg)) > 1 || initial > m.deadweightKg + 1)
+                    return Fail("Initial cargo, ballast and stores must equal the loaded payload within deadweight.", out error);
+            }
+
             error = null;
             return true;
         }

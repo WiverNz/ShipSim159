@@ -24,6 +24,8 @@ namespace ShipSimulator.Physics
         public float WettedSurface { get; }
         public float KeelLocalY { get; }
         public float CentreOfGravityX { get; }
+        public Vector3 CentreOfMassLocalM { get; }
+        public float PropellerImmersion { get; } = 1f;
         public float CentreOfGravityAboveKeel { get; }
         public float YawInertiaAtG { get; }
         public float RollInertia { get; }
@@ -42,7 +44,7 @@ namespace ShipSimulator.Physics
         public float RatedRps { get; }
         public float DeliveredPowerPerShaftW { get; }
 
-        private VesselParameters(VesselData data, float loadFraction)
+        private VesselParameters(VesselData data, float loadFraction, LoadingState loading = null)
         {
             Data = data;
             LoadFraction = Mathf.Clamp01(loadFraction);
@@ -57,6 +59,7 @@ namespace ShipSimulator.Physics
 
             VesselMassProperties mass = data.massProperties;
             Mass = Mathf.Lerp(mass.lightshipMassKg, mass.loadedMassKg, LoadFraction);
+            if (loading != null) Mass = mass.lightshipMassKg + LoadingModel.Payload(loading);
             DisplacementVolume = Mass / Rho;
             // Station hydrostatics are wall-sided prisms sized to float the loaded mass at the loaded
             // draft, so draft is proportional to mass.
@@ -68,6 +71,19 @@ namespace ShipSimulator.Physics
             YawInertiaAtG = Mass * mass.yawGyrationRadiusM * mass.yawGyrationRadiusM;
             RollInertia = Mass * mass.rollGyrationRadiusM * mass.rollGyrationRadiusM;
             PitchInertia = Mass * mass.pitchGyrationRadiusM * mass.pitchGyrationRadiusM;
+            CentreOfMassLocalM = mass.centerOfMassLocalM;
+            if (loading != null)
+            {
+                LoadingModel.MassProperties(data, loading, out Vector3 centre, out Vector3 inertia);
+                CentreOfMassLocalM = centre;
+                CentreOfGravityX = centre.z;
+                CentreOfGravityAboveKeel = centre.y - KeelLocalY;
+                PitchInertia = inertia.x;
+                YawInertiaAtG = inertia.y;
+                RollInertia = inertia.z;
+                PropellerImmersion = Mathf.Clamp01((Draft - data.loading.propellerAxisHeightAboveKeelM +
+                    .5f * data.propeller.diameterM) / data.propeller.diameterM);
+            }
 
             float loadedWetted = data.resistance.wettedSurfaceM2 > 0f
                 ? data.resistance.wettedSurfaceM2
@@ -108,12 +124,19 @@ namespace ShipSimulator.Physics
 
         public static VesselParameters Create(VesselData data, float loadFraction)
         {
-            return new VesselParameters(data, loadFraction);
+            return !LoadingModel.Supported(data) ? new VesselParameters(data, loadFraction) :
+                Create(data, LoadingModel.Initial(data, loadFraction));
         }
 
         public static VesselParameters Create(VesselData data)
         {
-            return new VesselParameters(data, data.massProperties.loadFraction);
+            return Create(data, data.massProperties.loadFraction);
+        }
+
+        public static VesselParameters Create(VesselData data, LoadingState loading)
+        {
+            LoadingModel.Validate(data, loading);
+            return new VesselParameters(data, LoadingModel.Payload(loading) / LoadingModel.Budget(data), loading);
         }
 
         private static float Ratio(float value, float reference)

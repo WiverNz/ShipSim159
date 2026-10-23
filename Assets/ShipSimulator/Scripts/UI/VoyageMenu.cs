@@ -302,6 +302,7 @@ namespace ShipSimulator.UI
                 rudder = ship.RudderCommand, rudderAngle = ship.RudderAngleDeg,
                 engineCommands = ship.CaptureEngineCommands(), shaftRps = ship.CaptureShaftRps(),
                 mechanisms = ship.Mechanisms?.CaptureState(),
+                loading = ship.CaptureLoading(),
                 bowThrusterCommand = ship.BowThrusterCommand, bowThrusterOutput = ship.BowThrusterOutput,
                 simulationScale = open ? resumeScale : Time.timeScale,
                 night = FindAnyObjectByType<DayNightController>()?.IsNight ?? false,

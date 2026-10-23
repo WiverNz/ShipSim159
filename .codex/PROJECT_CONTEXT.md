@@ -1,5 +1,44 @@
 # ShipSim159 Project Context
 
+## Volgo-Don 507B Part 7, 2026-10-23
+
+Part 7 complete. Do not start Part 8 until requested. Current guide:
+`Art/Source/VolgoDon507B/PART7_REVIEW.md`, with checklist and README updated.
+Optional loading.enabled schema and explicit LoadingState.present flag preserve
+other-vessel/legacy-save behavior even when JsonUtility instantiates absent objects.
+Default inventory:1750t lightship +4800t cargo +200t stores =6750t, draft3.53m.
+Two cargo groups, two ballast groups (2200t total) and one stores budget share
+5000t deadweight. Capacities, positions, box inertias and rates are estimates.
+Archive507B6678t/3.5m conflict remains explicit. No free-surface/certified stability.
+
+CG and diagonal inertia follow actual inventory with parallel-axis terms;
+wall-sided hydrostatics resolve sinking/trim through Rigidbody forces. Loading
+rebuilds dimensional models and Rigidbody properties without changing pose or
+velocity; reuses shaft objects to preserve governor/reversal state and helm.
+Mean-draft propeller immersion scales thrust/torque/passive nozzle forces;
+bow-thruster immersion refreshes. Physical grounding/clearance remain active.
+Transverse asymmetry rejected; longitudinal redistribution supported/tested.
+
+HUD panel above machinery: SELECT COMPARTMENT, FILL, EMPTY, STOP ALL. Stop engines
+and ground speed<.3m/s to transfer; cargo needs stationary HALF OPEN hatches.
+Commands persist per compartment and pause at interlocks. Rates use simulation
+time. Save copies IDs/masses/commands; validates identity/capacity/budget on restore.
+Old saves use default inventory. Reset stops transfers, retains inventory.
+External shore/water exchange only; no port infrastructure or automatic fuel burn.
+
+Verification: EditMode228/228 TestResults/check-EditMode-20261023-011059-805.xml;
+PlayMode47/47 TestResults/check-PlayMode-20261023-011324-017.xml; menu smoke PASS
+Logs/check-Menu-20261023-011005-663.log; five-vessel shakedown PASS
+Logs/check-Shakedown-20261023-011412-502.log. Loading review PASS exit0
+Logs/VolgoDon507B/part7-loading.log, results Art/Source/VolgoDon507B/part7-loading.json.
+Other four playable vessels and KVLCC2 exactly match Part6 stored handling metrics.
+Full507B straight-line19.80km/h and stop718.5m/286s unchanged; loaded inertia differs.
+Physical tests include dry/half/full flotation, forward trim, no teleporting,
+loading save continuation and grounded-to-floating clearance recovery.
+HUD capture Art/Source/VolgoDon507B/Previews/part7-loading-hud.png inspected.
+No geometry/FBX/prefab edits. Runtime model rebuild allocations during transfer
+remain a Part8 profiling item. Commits and push not performed.
+
 ## Volgo-Don 507B Part 6, 2026-10-22
 
 Part 6 complete. Do not start Part 7 until requested. Current handling guide:

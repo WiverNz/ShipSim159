@@ -20,6 +20,19 @@ resistance. Everything else is estimated.
 
 ## Structure
 
+### Optional compartment loading
+
+`loading.enabled` selects per-compartment inventories for 507B. Mass sums
+lightship, cargo, ballast and consumables once; deadweight is a shared capacity,
+not an extra mass. CG is a weighted centre, and diagonal inertia uses equivalent
+uniform boxes plus parallel-axis terms. The reference waterplane/keel remain
+unchanged; station buoyancy resolves sinking and trim after mass/CG updates.
+Dimensional manoeuvring parameters, Rigidbody properties, bow-thruster immersion
+and a mean-draft propeller ventilation approximation update with the inventory.
+Shaft governor/reversal objects survive these updates. Other vessel configurations
+use their existing fractional loading model. Detailed assumptions and numerical
+limits: `Art/Source/VolgoDon507B/PART7_REVIEW.md`.
+
 ### Optional steerable nozzles (Volgo-Don 507B)
 
 `steeringNozzle.enabled` selects fixed-shaft, deflected-jet steering instead of

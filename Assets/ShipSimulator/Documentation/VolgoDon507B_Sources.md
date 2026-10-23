@@ -1,5 +1,22 @@
 # Volgo-Don Project 507B: Sources and Data Status
 
+## Part 7 loading approximation, 2026-10-23
+
+The enabled `loading` configuration now splits lightship, two cargo groups,
+two ballast groups and consumables. Default masses are 1750 + 4800 + 0 + 200 t,
+with cargo/ballast/stores sharing a 5000 t budget. The 200 t stores reservation,
+centres, equivalent box dimensions and rates are estimates. The 2200 t ballast
+capacity is inspired by the archive's ballasted operating condition, not a verified
+tank-capacity sum. No individual-vessel loading booklet has been established.
+
+Current mass, CG and diagonal inertia follow the inventory. The prior gyration
+radii now approximate lightship; loaded inertias are derived by mass summation.
+Mean draft still uses wall-sided calibrated prisms, with exaggerated stability
+at very low draft and no free-surface correction. The archive's 6678 t / 3.5 m
+507B condition remains distinct from the retained 6750 t / 3.53 m prototype.
+See [Part 7 review](../../../../Art/Source/VolgoDon507B/PART7_REVIEW.md) for
+coordinates, provenance, controls, save compatibility, trial results and limits.
+
 ## Part 6 handling configuration, 2026-10-22
 
 The active JSON now uses the archived 1.8 m screws, steerable nozzles and

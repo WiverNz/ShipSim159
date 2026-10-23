@@ -298,22 +298,27 @@ and the retained loading-condition conflict are explicit in PART6_REVIEW.md.
 
 ## Part 7: Cargo, ballast and loading-dependent behavior
 
-Dependencies: Part 6. Status: not started.
+Dependencies: Part 6. Status: complete, 2026-10-23. See PART7_REVIEW.md.
 
-- [ ] Separate lightship, cargo, consumables and ballast in the mass accounting.
+- [x] Separate lightship, cargo, consumables and ballast in the mass accounting.
   Do not count deadweight as cargo in addition to ballast and fuel.
-- [ ] Derive a configurable loading approximation from supported hydrostatics and
+- [x] Derive a configurable loading approximation from supported hydrostatics and
   compartment geometry. Label missing tank, CG and stability information.
-- [ ] Update total mass, CG, inertia, displacement and equilibrium draft together;
+- [x] Update total mass, CG, inertia, displacement and equilibrium draft together;
   retain grounding, under-keel clearance and propeller/thruster immersion behavior.
-- [ ] Add loading/ballast controls and persistence through existing project contracts.
+- [x] Add loading/ballast controls and persistence through existing project contracts.
   Keep physically plausible rates and mass conservation; avoid cosmetic vertical
   Transform offsets pretending to change buoyancy.
-- [ ] Check empty, partial and loaded cases, asymmetric loads if supported, and
+- [x] Check empty, partial and loaded cases, asymmetric loads if supported, and
   save/load continuity. Do not claim certified stability or safe loading limits.
 
 Acceptance: repeatable loading tests show consistent mass, draft and handling;
 unknown hydrostatic behavior is documented and all-vessel regressions pass.
+
+Evidence: 228/228 EditMode, 47/47 PlayMode, loading review, menu/save smoke and
+five-vessel shakedown PASS. Longitudinal asymmetry produces physical trim;
+transverse asymmetry/free-surface stability are unsupported. Archive loading
+conflict and equivalent compartment estimates remain explicit in PART7_REVIEW.md.
 
 ## Part 8: LOD, performance and final quality gate
 

@@ -24,6 +24,25 @@
     "yawGyrationRadiusM": 33.75,
     "estimated": true
   },
+  "loading": {
+    "enabled": true,
+    "lightshipCentreLocalM": {"x": 0, "y": 0, "z": 2},
+    "propellerAxisHeightAboveKeelM": 1.0,
+    "maximumTransferSpeedMps": 0.3,
+    "estimated": true,
+    "compartments": [
+      {"id": "Forward hold", "kind": "cargo", "capacityKg": 2400000, "initialKg": 2400000,
+       "transferKgPerSecond": 125, "centreLocalM": {"x": 0, "y": -1.6, "z": 26}, "sizeM": {"x": 12, "y": 3, "z": 42}},
+      {"id": "Aft hold", "kind": "cargo", "capacityKg": 2400000, "initialKg": 2400000,
+       "transferKgPerSecond": 125, "centreLocalM": {"x": 0, "y": -1.6, "z": -22}, "sizeM": {"x": 12, "y": 3, "z": 42}},
+      {"id": "Forward ballast group", "kind": "ballast", "capacityKg": 1100000, "initialKg": 0,
+       "transferKgPerSecond": 50, "centreLocalM": {"x": 0, "y": -2.5, "z": 26}, "sizeM": {"x": 14, "y": 2, "z": 42}},
+      {"id": "Aft ballast group", "kind": "ballast", "capacityKg": 1100000, "initialKg": 0,
+       "transferKgPerSecond": 50, "centreLocalM": {"x": 0, "y": -2.5, "z": -22}, "sizeM": {"x": 14, "y": 2, "z": 42}},
+      {"id": "Fuel and stores budget", "kind": "consumables", "capacityKg": 200000, "initialKg": 200000,
+       "transferKgPerSecond": 10, "centreLocalM": {"x": 0, "y": -2.1, "z": 2}, "sizeM": {"x": 8, "y": 2, "z": 20}}
+    ]
+  },
   "hydrostatics": {
     "waterDensityKgM3": 1000.0,
     "waterlineLocalY": 0.0,

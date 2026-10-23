@@ -1,0 +1,120 @@
+{
+    "unchangedOtherVessels": true,
+    "conditions": [
+        {
+            "name": "fraction 0",
+            "massKg": 1750000.0,
+            "cargoKg": 0.0,
+            "ballastKg": 0.0,
+            "storesKg": 0.0,
+            "draftM": 0.9151851534843445,
+            "propellerImmersion": 0.4528806507587433,
+            "estimatedGmM": 18.50052261352539,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 2.0
+            },
+            "inertiaKgM2": {
+                "x": 1993359360.0,
+                "y": 1993359360.0,
+                "z": 60917504.0
+            },
+            "fullSpeedMps": 4.827210903167725,
+            "stopM": 259.19549560546875,
+            "stopSeconds": 107.20194244384766
+        },
+        {
+            "name": "fraction 0.5",
+            "massKg": 4250000.0,
+            "cargoKg": 2400000.0,
+            "ballastKg": 0.0,
+            "storesKg": 100000.0,
+            "draftM": 2.22259259223938,
+            "propellerImmersion": 1.0,
+            "estimatedGmM": 7.417208671569824,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": -0.9529411792755127,
+                "z": 2.0
+            },
+            "inertiaKgM2": {
+                "x": 3736451840.0,
+                "y": 3761225728.0,
+                "z": 94809760.0
+            },
+            "fullSpeedMps": 5.793102264404297,
+            "stopM": 519.6192626953125,
+            "stopSeconds": 191.75709533691406
+        },
+        {
+            "name": "fraction 1",
+            "massKg": 6750000.0,
+            "cargoKg": 4800000.0,
+            "ballastKg": 0.0,
+            "storesKg": 200000.0,
+            "draftM": 3.5299999713897705,
+            "propellerImmersion": 1.0,
+            "estimatedGmM": 5.027981758117676,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": -1.2000000476837158,
+                "z": 2.0
+            },
+            "inertiaKgM2": {
+                "x": 5477542400.0,
+                "y": 5529092608.0,
+                "z": 126700840.0
+            },
+            "fullSpeedMps": 5.5008039474487305,
+            "stopM": 718.5244750976563,
+            "stopSeconds": 286.0036926269531
+        },
+        {
+            "name": "ballast plus stores",
+            "massKg": 4150000.0,
+            "cargoKg": 0.0,
+            "ballastKg": 2200000.0,
+            "storesKg": 200000.0,
+            "draftM": 2.1702961921691895,
+            "propellerImmersion": 1.0,
+            "estimatedGmM": 8.078673362731934,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": -1.4265060424804688,
+                "z": 2.0
+            },
+            "inertiaKgM2": {
+                "x": 3597613056.0,
+                "y": 3627625984.0,
+                "z": 104904600.0
+            },
+            "fullSpeedMps": 5.805760383605957,
+            "stopM": 510.8325500488281,
+            "stopSeconds": 187.80685424804688
+        },
+        {
+            "name": "forward-biased cargo",
+            "massKg": 4250000.0,
+            "cargoKg": 2400000.0,
+            "ballastKg": 0.0,
+            "storesKg": 100000.0,
+            "draftM": 2.22259259223938,
+            "propellerImmersion": 1.0,
+            "estimatedGmM": 7.417208671569824,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": -0.9529411792755127,
+                "z": 7.647058963775635
+            },
+            "inertiaKgM2": {
+                "x": 3600922112.0,
+                "y": 3625696512.0,
+                "z": 94809760.0
+            },
+            "fullSpeedMps": 5.793102264404297,
+            "stopM": 519.6192626953125,
+            "stopSeconds": 191.75709533691406
+        }
+    ]
+}

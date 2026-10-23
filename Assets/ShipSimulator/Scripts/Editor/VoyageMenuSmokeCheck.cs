@@ -62,6 +62,7 @@ namespace ShipSimulator.Editor
                         if (!menu.HasVoyage || VoyageMenu.IsOpen) return;
                         menu.OpenPause();
                         ReviewMechanisms(UnityEngine.Object.FindAnyObjectByType<ShipPhysicsController>());
+                        ReviewLoading(UnityEngine.Object.FindAnyObjectByType<ShipPhysicsController>());
                         var save = menu.CaptureSave();
                         save.position = new Vector3(2, save.position.y, 35);
                         save.throttle = 0.5f;
@@ -99,6 +100,9 @@ namespace ShipSimulator.Editor
                             throw new Exception("Cross-scene load did not restore the saved vessel.");
                         if (Mathf.Abs(ship.ActualThrottle - 0.35f) > 0.05f)
                             throw new Exception("Cross-scene load lost engine response state.");
+                        if (!ship.HasLoading || Mathf.Abs(ship.CurrentMassKg - SessionState.GetFloat("ShipSim.Part7Mass", 0)) > 1 ||
+                            ship.CaptureLoading().commands[2] != 1)
+                            throw new Exception("Cross-scene load lost compartment inventory or transfer command.");
                         if (ship.Mechanisms == null || ship.Mechanisms.Target != HatchPosition.ForwardOpen ||
                             Mathf.Abs(ship.Mechanisms.Opening - .625f) > .02f || !ship.Mechanisms.AnchorsReleased)
                             throw new Exception("Cross-scene load lost deck machinery state.");
@@ -116,6 +120,26 @@ namespace ShipSimulator.Editor
                 SessionState.SetBool(ActiveKey, false);
                 EditorApplication.Exit(1);
             }
+        }
+
+        private static void ReviewLoading(ShipPhysicsController ship)
+        {
+            ship.ConfigureLoading(.5f);
+            var hud = UnityEngine.Object.FindAnyObjectByType<ShipTelemetryUI>();
+            var buttons = hud.GetComponentsInChildren<HudButton>();
+            buttons.Single(b => b.Label.text == "EMPTY").OnPointerClick(null);
+            float mass = ship.CurrentMassKg;
+            ship.Simulate(.02f);
+            if (ship.CurrentMassKg != mass) throw new Exception("Cargo transfer must wait for accessible hatches.");
+            buttons.Single(b => b.Label.text == "STOP ALL").OnPointerClick(null);
+            buttons.Single(b => b.Label.text == "SELECT COMPARTMENT").OnPointerClick(null);
+            buttons.Single(b => b.Label.text == "SELECT COMPARTMENT").OnPointerClick(null);
+            buttons.Single(b => b.Label.text == "FILL").OnPointerClick(null);
+            ship.Simulate(.02f);
+            if (Mathf.Abs(ship.CurrentMassKg - mass - 1) > .5f)
+                throw new Exception("HUD ballast command did not add the rate-limited mass.");
+            SessionState.SetFloat("ShipSim.Part7Mass", ship.CurrentMassKg);
+            Debug.Log("VOLGODON_LOADING_UI|PASS: hatch interlock, compartment selection and ballast transfer");
         }
 
         private static void ReviewMechanisms(ShipPhysicsController ship)
@@ -145,7 +169,7 @@ namespace ShipSimulator.Editor
                     text.SetAllDirty();
                 }
                 Canvas.ForceUpdateCanvases();
-                Directory.CreateDirectory("Art/Source/VolgoDon507B/Previews");
+                Directory.CreateDirectory("Logs/MenuScreenshots");
                 foreach (HatchPosition target in new[] { HatchPosition.ForwardOpen, HatchPosition.AftOpen, HatchPosition.Closed })
                 {
                     string caption = target == HatchPosition.ForwardOpen ? "FORE OPEN" : target == HatchPosition.AftOpen ? "AFT OPEN" : "CLOSE";
@@ -153,7 +177,7 @@ namespace ShipSimulator.Editor
                     if (rig.Target != target) throw new Exception("HUD machinery command did not reach the vessel.");
                     for (int i = 0; i < 240; i++) rig.Advance(1, 0, 0, 0);
                     if (rig.IsMoving) throw new Exception("Hatches never reached " + target);
-                    LandscapePreview.Render(camera, "Art/Source/VolgoDon507B/Previews/part5-runtime-" + target + ".png");
+                    LandscapePreview.Render(camera, "Logs/MenuScreenshots/volgodon-machinery-" + target + ".png");
                 }
                 var lights = ship.GetComponent<NavigationLightRig>();
                 lights.EnsureCreated();
@@ -163,7 +187,7 @@ namespace ShipSimulator.Editor
                     if (light.enabled && light.cookie != null) enabledLights++;
                 if (enabledLights != 5) throw new Exception("Expected five sector navigation lights.");
                 UnityEngine.Object.FindAnyObjectByType<DayNightController>().Apply(true);
-                LandscapePreview.Render(camera, "Art/Source/VolgoDon507B/Previews/part5-runtime-night.png");
+                LandscapePreview.Render(camera, "Logs/MenuScreenshots/volgodon-machinery-night.png");
                 UnityEngine.Object.FindAnyObjectByType<DayNightController>().Apply(false);
                 ship.SetHatchPosition(HatchPosition.ForwardOpen);
                 hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == "UNSEAT / STOW ANCHORS").OnPointerClick(null);

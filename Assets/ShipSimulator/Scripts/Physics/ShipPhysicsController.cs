@@ -42,6 +42,22 @@ namespace ShipSimulator.Physics
         private ManoeuvringOutput diagnostics;
         private Vector3 relativeWaterVelocity;
         private float effectiveDraft;
+        private LoadingState loading;
+        public bool HasLoading => loading != null;
+        public LoadingState CaptureLoading() => loading?.Copy();
+        public string LoadingStatus { get; private set; } = "STOPPED";
+        public float CompartmentMassKg(int index) => loading.massKg[index];
+
+        public void SetLoadingCommand(int index, float command)
+        {
+            if (loading == null || index < 0 || index >= loading.commands.Length || float.IsNaN(command) || float.IsInfinity(command)) return;
+            loading.commands[index] = Mathf.Clamp(command, -1, 1);
+        }
+
+        public void StopLoading()
+        {
+            if (loading != null) Array.Clear(loading.commands, 0, loading.commands.Length);
+        }
 
         public Rigidbody Body => body;
         public VesselData Data => data;
@@ -109,15 +125,22 @@ namespace ShipSimulator.Physics
 
         public void ConfigureLoading(float loadFraction)
         {
-            parameters = VesselParameters.Create(data, loadFraction);
-            model = new ManoeuvringModel(parameters);
+            loading = LoadingModel.Supported(data) ? LoadingModel.Initial(data, loadFraction) : null;
+            ApplyLoading(VesselParameters.Create(data, loadFraction));
+        }
+
+        private void ApplyLoading(VesselParameters next)
+        {
+            parameters = next;
+            model = new ManoeuvringModel(parameters, model);
             hydrostatics = new HydrostaticsModel(parameters);
-            engineCommands = new float[parameters.Data.propeller.count];
+            if (engineCommands.Length != parameters.Data.propeller.count)
+                engineCommands = new float[parameters.Data.propeller.count];
             stationCurrent = new float[model.Hull.StationCount];
             effectiveDraft = parameters.Draft;
 
             body.mass = parameters.Mass;
-            body.centerOfMass = data.massProperties.centerOfMassLocalM;
+            body.centerOfMass = parameters.CentreOfMassLocalM;
             // Unity body axes: x pitches, y yaws, z rolls.
             body.inertiaTensor = new Vector3(parameters.PitchInertia, parameters.YawInertiaAtG, parameters.RollInertia);
             body.inertiaTensorRotation = Quaternion.identity;
@@ -154,6 +177,7 @@ namespace ShipSimulator.Physics
         public void Simulate(float dt)
         {
             if (model == null) return;
+            StepLoading(dt);
             if (grounding != null && grounding.isActiveAndEnabled) grounding.Step(dt);
             Vector3 forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
             forward = forward.sqrMagnitude > 1e-6f ? forward.normalized : Vector3.forward;
@@ -273,6 +297,7 @@ namespace ShipSimulator.Physics
 
         private void ResetVessel()
         {
+            StopLoading();
             body.position = startPosition;
             body.rotation = startRotation;
             body.linearVelocity = Vector3.zero;
@@ -288,6 +313,13 @@ namespace ShipSimulator.Physics
 
         public void RestoreVoyage(ShipSimulator.Persistence.VoyageSave save)
         {
+            if (save.loading != null && save.loading.present)
+            {
+                LoadingModel.Validate(data, save.loading);
+                loading = save.loading.Copy();
+                ApplyLoading(VesselParameters.Create(data, loading));
+            }
+            else if (LoadingModel.Supported(data)) ConfigureLoading(data.massProperties.loadFraction);
             body.position = save.position;
             body.rotation = save.rotation;
             body.linearVelocity = save.velocity;
@@ -324,6 +356,23 @@ namespace ShipSimulator.Physics
         }
 
         public float[] CaptureEngineCommands() => (float[])engineCommands.Clone();
+
+        private void StepLoading(float dt)
+        {
+            if (loading == null || dt <= 0) return;
+            bool active = false;
+            foreach (float command in loading.commands) active |= command != 0;
+            if (!active) { LoadingStatus = "STOPPED"; return; }
+            foreach (float command in engineCommands)
+                if (Mathf.Abs(command) > .001f) { LoadingStatus = "STOP ENGINES TO TRANSFER"; return; }
+            if (body.linearVelocity.magnitude > data.loading.maximumTransferSpeedMps)
+            { LoadingStatus = "TRANSFER PAUSED: VESSEL MOVING"; return; }
+            bool accessible = Mechanisms == null || (!Mechanisms.IsMoving &&
+                Mechanisms.Target == ShipSimulator.Visuals.HatchPosition.HalfOpen);
+            bool changed = LoadingModel.Step(data, loading, dt, accessible);
+            LoadingStatus = changed ? "TRANSFERRING" : "LIMIT REACHED / OPEN HATCHES HALFWAY";
+            if (changed) ApplyLoading(VesselParameters.Create(data, loading));
+        }
 
         public float[] CaptureShaftRps()
         {

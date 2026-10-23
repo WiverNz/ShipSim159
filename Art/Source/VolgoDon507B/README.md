@@ -1,6 +1,13 @@
 # Volgo-Don 507B editable source
 
-## Current milestone: Part 6
+## Current milestone: Part 7
+
+Read [PART7_REVIEW.md](PART7_REVIEW.md) for cargo, ballast and stores accounting,
+shared deadweight limits, loading controls, physical draft/trim/inertia changes,
+save compatibility, tests and remaining hydrostatic limitations. The current
+source/FBX remain the Part 4 geometry integrated in Part 5. Part 8 is not started.
+
+## Part 6 handling record
 
 Read [PART6_REVIEW.md](PART6_REVIEW.md) for the optional steering-nozzle force
 model, archived propulsion particulars, estimated calibration, reproducible

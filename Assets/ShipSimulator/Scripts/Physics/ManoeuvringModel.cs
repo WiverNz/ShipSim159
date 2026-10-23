@@ -81,7 +81,7 @@ namespace ShipSimulator.Physics
         // Null when the vessel has no bow thruster.
         public BowThrusterModel BowThruster { get; }
 
-        public ManoeuvringModel(VesselParameters parameters)
+        public ManoeuvringModel(VesselParameters parameters, ManoeuvringModel previous = null)
         {
             Parameters = parameters;
             hull = new HullForceModel(parameters);
@@ -89,7 +89,13 @@ namespace ShipSimulator.Physics
                 BowThruster = new BowThrusterModel(parameters);
             VesselPropeller propeller = parameters.Data.propeller;
             Shafts = new EngineShaft[propeller.count];
-            for (int i = 0; i < Shafts.Length; i++) Shafts[i] = new EngineShaft(parameters);
+            for (int i = 0; i < Shafts.Length; i++)
+                Shafts[i] = previous != null ? previous.Shafts[i] : new EngineShaft(parameters);
+            if (previous != null)
+            {
+                RudderAngleRad = previous.RudderAngleRad;
+                BowThruster?.Restore(previous.BowThruster != null ? previous.BowThruster.Output : 0);
+            }
             PropellerThrustN = new float[propeller.count];
             PropellerTorqueNm = new float[propeller.count];
             propellerCoefficient = new float[propeller.count];
@@ -159,6 +165,8 @@ namespace ShipSimulator.Physics
             {
                 float thrust = PropellerModel.Evaluate(propeller, p.Rho, Shafts[i].Rps, advance,
                     out float torque, out float coefficient) * data.calibration.thrustMultiplier;
+                thrust *= p.PropellerImmersion;
+                torque *= p.PropellerImmersion;
                 PropellerThrustN[i] = thrust;
                 PropellerTorqueNm[i] = torque;
                 propellerCoefficient[i] = coefficient;
@@ -196,7 +204,7 @@ namespace ShipSimulator.Physics
                     float xNozzle = data.rudder.longitudinalPositionM;
                     float yNozzle = data.rudder.lateralPositionsM[j];
                     Vector2 force = SteeringNozzleModel.Passive(data.steeringNozzle, p.Rho,
-                        new Vector2(u - r * yNozzle, v + r * xNozzle), RudderAngleRad);
+                        new Vector2(u - r * yNozzle, v + r * xNozzle), RudderAngleRad) * p.PropellerImmersion;
                     RudderNormalForceN[j] = Vector2.Dot(force, new Vector2(Mathf.Sin(RudderAngleRad), Mathf.Cos(RudderAngleRad)));
                     output.RudderX += force.x;
                     output.RudderY += force.y;

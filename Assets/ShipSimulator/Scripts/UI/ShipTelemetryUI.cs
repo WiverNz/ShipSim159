@@ -70,6 +70,8 @@ namespace ShipSimulator.UI
 
         public ShipPhysicsController Ship => ship;
         private Text machineryText;
+        private Text loadingText;
+        private int selectedLoadCompartment;
         private float MaxRudderDeg => ship.Data != null ? ship.Data.rudder.maxAngleDeg : 35f;
 
         // Effective only before Start, which builds the HUD for the vessel it has then.
@@ -155,6 +157,12 @@ namespace ShipSimulator.UI
                 return;
             }
             UpdateKeyboardShortcuts();
+            if (loadingText != null && ship.HasLoading)
+            {
+                var c = ship.Data.loading.compartments[selectedLoadCompartment];
+                loadingText.text = $"{c.id.ToUpperInvariant()}\n{ship.CompartmentMassKg(selectedLoadCompartment) / 1000:F1} / {c.capacityKg / 1000:F0} t" +
+                    $"   TOTAL {ship.CurrentMassKg / 1000:F0} t\nDRAFT {ship.EstimatedDraftM:F2} m\n{ship.LoadingStatus}";
+            }
             if (machineryText != null && ship.Mechanisms != null)
             {
                 var machinery = ship.Mechanisms;
@@ -196,7 +204,7 @@ namespace ShipSimulator.UI
             currentText.text =
                 $"<size=14><color=#8AA0AD>CURRENT</color></size>\n" +
                 $"<size=28><b>{current.magnitude:F1}</b></size><size=15> m/s {CurrentArrow(current)}</size>\n" +
-                $"<size=14><color=#8AA0AD>cargo {ship.LoadFraction * 100f:F0}%</color></size>";
+                $"<size=14><color=#8AA0AD>{(ship.HasLoading ? "deadweight" : "cargo")} {ship.LoadFraction * 100f:F0}%</color></size>";
             cameraText.text = followCamera == null
                 ? "CAMERA"
                 : FormatCameraStatus(
@@ -277,6 +285,7 @@ namespace ShipSimulator.UI
             BuildTimeControls();
             BuildWeatherControls();
             BuildMachineryControls();
+            BuildLoadingControls();
 
             warningPanel = Panel("Warnings",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
@@ -429,6 +438,24 @@ namespace ShipSimulator.UI
                 () => ship.SetHatchPosition(HatchPosition.AftOpen));
             Button(block, "UNSEAT / STOW ANCHORS", new Vector2(0, -74), new Vector2(305, 30),
                 () => ship.SetAnchorsReleased(!ship.Mechanisms.AnchorsReleased));
+        }
+
+        private void BuildLoadingControls()
+        {
+            loadingText = null;
+            if (!ship.HasLoading) return;
+            selectedLoadCompartment = 0;
+            RectTransform block = AnchoredPanel("LoadingBlock", Vector2.zero, Vector2.zero, Vector2.zero,
+                new Vector2(20, 512), new Vector2(330, 168));
+            loadingText = Label(block, "LOADING", 13, TextAnchor.UpperCenter,
+                new Vector2(8, 76), new Vector2(-8, -8));
+            Button(block, "SELECT COMPARTMENT", new Vector2(0, -28), new Vector2(305, 28),
+                () => selectedLoadCompartment = (selectedLoadCompartment + 1) % ship.Data.loading.compartments.Length);
+            Button(block, "FILL", new Vector2(-105, -63), new Vector2(95, 28),
+                () => ship.SetLoadingCommand(selectedLoadCompartment, 1));
+            Button(block, "EMPTY", new Vector2(0, -63), new Vector2(95, 28),
+                () => ship.SetLoadingCommand(selectedLoadCompartment, -1));
+            Button(block, "STOP ALL", new Vector2(105, -63), new Vector2(95, 28), ship.StopLoading);
         }
 
         private void BuildWeatherControls()

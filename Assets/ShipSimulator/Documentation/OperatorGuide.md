@@ -9,6 +9,23 @@ standalone player. Choose **New voyage**, pick a vessel, then River familiarisat
 Gorodets passage; or choose **Continue voyage** to restore the saved passage with the
 vessel it was sailed in.
 
+## Volgo-Don cargo and ballast
+
+The loading panel above the deck-machinery controls provides **SELECT COMPARTMENT**,
+**FILL**, **EMPTY** and **STOP ALL**. It shows compartment tonnes/capacity, total
+displacement and estimated mean draft. Stop engine commands and reduce ground
+speed below 0.3 m/s to transfer. Cargo also requires **HALF OPEN** hatches with
+the mechanism stationary. Ballast and stores do not require open cargo hatches.
+
+The default load reserves 200 t for fuel/stores and carries 4800 t of cargo.
+All cargo, ballast and stores share the 5000 t deadweight limit. Unload before
+adding ballast to the full ship. Rates are gradual and follow simulation time;
+commands pause when conditions prevent transfer and resume when conditions allow.
+Use **STOP ALL** to cancel them. Save/load preserves individual quantities and
+commands; older saves use the default inventory. Tank groups and rates are
+estimates, not an operational loading booklet. See
+`Art/Source/VolgoDon507B/PART7_REVIEW.md` for limits and test conditions.
+
 ## Vessels
 
 | Vessel | Length | Deadweight | Engines | Handling notes |

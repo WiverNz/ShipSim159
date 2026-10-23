@@ -1,5 +1,14 @@
 # Volgo-Don 507B Model Provenance
 
+## Part 9 reference decisions, 2026-10-23
+
+See [REFERENCE_DECISIONS.md](REFERENCE_DECISIONS.md) for dated photo comparisons,
+archive applicability and uncertainty. Representative classic two-covered-hold
+507B remains the target; neither Volgo-Don 25 nor Volgo-Don 185 is assigned as
+this model's identity. No photograph/PDF raster was added to game resources.
+All primary geometry matches Part 8 and all 45 legacy resource hashes match
+Part 1. Part 9 changes documentation and captures evidence only.
+
 ## Part 3 derivatives, 2026-10-22
 
 Localized geometry and deterministic material scripts are original project work.

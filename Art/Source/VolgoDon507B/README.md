@@ -1,10 +1,17 @@
 # Volgo-Don 507B editable source
 
-## Current milestone: Part 8
+## Current milestone: Part 9 reference baseline
 
 Parts 1-8 are implemented, with target-machine performance acceptance still open.
 Remaining fidelity work is staged as Parts 9-17 in
-[REFINEMENT_PLAN.md](REFINEMENT_PLAN.md). Those parts are planned, not implemented.
+[REFINEMENT_PLAN.md](REFINEMENT_PLAN.md). Part 9 is complete; Parts 10-17 are not started.
+
+Read [REFERENCE_DECISIONS.md](REFERENCE_DECISIONS.md) before hull or physics edits.
+It records the retained representative two-hold variant, source applicability,
+photo comparisons, coordinate conventions and pre-fit tolerances. The page-2
+project-507 raster is a 600 x 316 pixel family reference, not exact 507B offsets.
+`part9-geometry-baseline.json` and `part9-baseline.json` freeze the current source
+and numerical evidence. The visual hull is not a closed hydrostatic solid.
 
 ## Part 7 record
 

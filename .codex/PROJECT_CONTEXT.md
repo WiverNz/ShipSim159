@@ -1,5 +1,28 @@
 # ShipSim159 Project Context
 
+## Volgo-Don Part 9, 2026-10-23
+
+Part 9 complete, evidence/baseline only. Read
+`Art/Source/VolgoDon507B/REFERENCE_DECISIONS.md` before Part 10.
+Nine archive pages and three dated FleetPhoto images reviewed. Target remains
+representative classic two-covered-hold 507B, no named vessel or modernization.
+Page2 project507 body-plan raster is only600x316; use as uncertain family prior,
+not authenticated507B offsets. Coordinate mappings and pre-fit tolerances recorded.
+Reconciled separate p3/p8 loading cases without changing current6750t/3.53m selection.
+Archive320/160m circulation refers to same/opposite nozzle sides; stop protocol
+lacks dwell and conditions. p3 .935/.996/.861 coefficients are not silently adopted.
+
+Registered Blender MCP read-only capture:49meshes53130tris match Part8 hashes.
+Hull544tris has177boundary/180nonmanifold edges: not a closed hydrostatic solid.
+Visual propeller height1.35m above keel differs from physics estimate1.0m.
+`part9-geometry-baseline.json` captures meshes/landmarks; `part9-baseline.json`
+freezes91file hashes, parameters, historical Part7 evidence and fresh sea trials.
+45legacy hashes unchanged. Fresh VirtualSeaTrials exit0, SEA_TRIALS|PASS,
+zero compile errors: `Logs/VolgoDon507B/part9-trials.log`.
+No runtime/model edits; no full test rerun for this documentation stage.
+Part10 not started. Photos/PDF only inspected temporarily, no copyrighted image
+assets added. No commit/push.
+
 ## Volgo-Don refinement plan, 2026-10-23
 
 User requested a plan for the remaining fidelity work after Part 8.

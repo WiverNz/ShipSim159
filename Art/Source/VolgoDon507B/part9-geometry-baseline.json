@@ -1,0 +1,1024 @@
+{
+  "scene": "VolgoDon507B_Source",
+  "frame": 1,
+  "units": "metres",
+  "axes": "Blender world X starboard, Y forward, Z up; origin at selected loaded waterline",
+  "source_sha256": "d795ff8f0cee8bb6e04d436cfe8af30f791d368a5fd2cb18a87fcee98e9cf97d",
+  "matches_part8_geometry": true,
+  "meshes": [
+    {
+      "name": "AnchorMesh_Port",
+      "triangles": 155,
+      "bounds_min": [
+        -2.4464454650878906,
+        65.43075561523438,
+        0.878921627998352
+      ],
+      "bounds_max": [
+        -1.6097753047943115,
+        66.48871612548828,
+        2.589531660079956
+      ],
+      "boundary_edges": 465,
+      "non_manifold_edges": 465,
+      "uv_layers": 2,
+      "geometry_sha256": "6938011121c592273db9558526dda8acda5ed9f6da1f95d0031268225a50d60d"
+    },
+    {
+      "name": "AnchorMesh_Starboard",
+      "triangles": 155,
+      "bounds_min": [
+        1.6219433546066284,
+        65.49134063720703,
+        0.9059687256813049
+      ],
+      "bounds_max": [
+        2.4311914443969727,
+        66.5255355834961,
+        2.594261884689331
+      ],
+      "boundary_edges": 465,
+      "non_manifold_edges": 465,
+      "uv_layers": 2,
+      "geometry_sha256": "a9f5ef47a9fbcbff82aec2e2dd457857905c70fd247d4fb6ef12abc95b6e281f"
+    },
+    {
+      "name": "AnchorMesh_Stern",
+      "triangles": 155,
+      "bounds_min": [
+        -0.401736855506897,
+        -68.97383880615234,
+        0.42517027258872986
+      ],
+      "bounds_max": [
+        0.4005409777164459,
+        -68.79296875,
+        1.4893039464950562
+      ],
+      "boundary_edges": 465,
+      "non_manifold_edges": 465,
+      "uv_layers": 2,
+      "geometry_sha256": "e21713ea5f1e864e0de1e35b63f45b1c485a85ccbd0204c6dd98dff57586a05d"
+    },
+    {
+      "name": "HatchRail_-1",
+      "triangles": 12,
+      "bounds_min": [
+        -6.045000076293945,
+        -40.900001525878906,
+        2.8399999141693115
+      ],
+      "bounds_max": [
+        -5.954999923706055,
+        53.47999954223633,
+        2.890000104904175
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "f588cc7b35029dd2983b222857280a4f090ddfe22ebd1861a43272cb2d87f34f"
+    },
+    {
+      "name": "HatchRail_1",
+      "triangles": 12,
+      "bounds_min": [
+        5.954999923706055,
+        -40.900001525878906,
+        2.8399999141693115
+      ],
+      "bounds_max": [
+        6.045000076293945,
+        53.47999954223633,
+        2.890000104904175
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "0a3ac48ec5a3aec7c419d814e1428eb1064759ffd534943749b1ec3a357e1c5b"
+    },
+    {
+      "name": "HoldEnd_Aft0",
+      "triangles": 12,
+      "bounds_min": [
+        -5.71999979019165,
+        -40.83000183105469,
+        -2.5999999046325684
+      ],
+      "bounds_max": [
+        5.71999979019165,
+        -40.77000045776367,
+        2.5999999046325684
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "dc7ca17352eda18a3575a2d14086c0e65d2d880ef3334bb8ecfef3df3cb9cef3"
+    },
+    {
+      "name": "HoldEnd_Aft1",
+      "triangles": 12,
+      "bounds_min": [
+        -5.71999979019165,
+        3.7899999618530273,
+        -2.5999999046325684
+      ],
+      "bounds_max": [
+        5.71999979019165,
+        3.8499999046325684,
+        2.5999999046325684
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "9718e7565a237cdde2308c811a98ff12523d5705165794acdaf1e7ffd4aa7201"
+    },
+    {
+      "name": "HoldEnd_Fore0",
+      "triangles": 12,
+      "bounds_min": [
+        -5.71999979019165,
+        10.0600004196167,
+        -2.5999999046325684
+      ],
+      "bounds_max": [
+        5.71999979019165,
+        10.119999885559082,
+        2.5999999046325684
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "01ac25f4785415e7ec869fbd38f50595fee5f12caf1343d515e23a4ecf1a7225"
+    },
+    {
+      "name": "HoldEnd_Fore1",
+      "triangles": 12,
+      "bounds_min": [
+        -5.71999979019165,
+        53.31999969482422,
+        -2.5999999046325684
+      ],
+      "bounds_max": [
+        5.71999979019165,
+        53.380001068115234,
+        2.5999999046325684
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "3b23af65a704a2ae3900b217d4d375e7c560cb080cc297ddfefd875539fc66ef"
+    },
+    {
+      "name": "HoldFloor_Aft",
+      "triangles": 12,
+      "bounds_min": [
+        -5.849999904632568,
+        -40.79999923706055,
+        -2.640000104904175
+      ],
+      "bounds_max": [
+        5.849999904632568,
+        3.819999933242798,
+        -2.5999999046325684
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "702530a6d0b5affe05d1015adfaf15c6e0116895aa97cfb5b508fccf52ae9a7c"
+    },
+    {
+      "name": "HoldFloor_Fore",
+      "triangles": 12,
+      "bounds_min": [
+        -5.849999904632568,
+        10.09000015258789,
+        -2.640000104904175
+      ],
+      "bounds_max": [
+        5.849999904632568,
+        53.349998474121094,
+        -2.5999999046325684
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "4d9787cbeb462393b9e34a84078c76b65019b713cce3621a07178d58bb74c8ae"
+    },
+    {
+      "name": "HoldLining_Aft-1",
+      "triangles": 12,
+      "bounds_min": [
+        -5.75,
+        -40.79999923706055,
+        -2.5999999046325684
+      ],
+      "bounds_max": [
+        -5.690000057220459,
+        3.819999933242798,
+        2.5999999046325684
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "35857617685b4b59abef2149e60ed16ee3f73e8a38f7140f5e0e98ac516ace85"
+    },
+    {
+      "name": "HoldLining_Aft1",
+      "triangles": 12,
+      "bounds_min": [
+        5.690000057220459,
+        -40.79999923706055,
+        -2.5999999046325684
+      ],
+      "bounds_max": [
+        5.75,
+        3.819999933242798,
+        2.5999999046325684
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "0340ff644b58cb784e30b80853b7417f6cae02d9f64cb8033a28b83c2087030d"
+    },
+    {
+      "name": "HoldLining_Fore-1",
+      "triangles": 12,
+      "bounds_min": [
+        -5.75,
+        10.09000015258789,
+        -2.5999999046325684
+      ],
+      "bounds_max": [
+        -5.690000057220459,
+        53.349998474121094,
+        2.5999999046325684
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "755b186664b86cbab27a21462dce26bb16eddeb5746a4c250c599b42477ca532"
+    },
+    {
+      "name": "HoldLining_Fore1",
+      "triangles": 12,
+      "bounds_min": [
+        5.690000057220459,
+        10.09000015258789,
+        -2.5999999046325684
+      ],
+      "bounds_max": [
+        5.75,
+        53.349998474121094,
+        2.5999999046325684
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "679fc57518f18932147f7928d4aedb203ac4c869ab4698e23bf546ed61979b4c"
+    },
+    {
+      "name": "JackHeads_AftOuter",
+      "triangles": 120,
+      "bounds_min": [
+        -6.555788516998291,
+        -37.78923416137695,
+        2.594817638397217
+      ],
+      "bounds_max": [
+        6.555750846862793,
+        -21.287492752075195,
+        2.9595582485198975
+      ],
+      "boundary_edges": 360,
+      "non_manifold_edges": 360,
+      "uv_layers": 2,
+      "geometry_sha256": "f408779b0394554ae06ad877f76134f42c04ec14c9ccfe3a22a72198ddaaf685"
+    },
+    {
+      "name": "JackHeads_ForeOuter",
+      "triangles": 120,
+      "bounds_min": [
+        -6.555765628814697,
+        34.06344985961914,
+        2.594817638397217
+      ],
+      "bounds_max": [
+        6.55577278137207,
+        50.565189361572266,
+        2.9595582485198975
+      ],
+      "boundary_edges": 360,
+      "non_manifold_edges": 360,
+      "uv_layers": 2,
+      "geometry_sha256": "b0297003acbf1416e99ade1359daadf6151f211446eb988331cac8e1ded6d871"
+    },
+    {
+      "name": "JackRods_AftOuter",
+      "triangles": 360,
+      "bounds_min": [
+        -6.494999885559082,
+        -37.584999084472656,
+        2.6500000953674316
+      ],
+      "bounds_max": [
+        6.494999885559082,
+        -21.485000610351562,
+        2.9600000381469727
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "82890807885d7b2e0d625df312874d6646c0b715d0f6bdc9e9fa64f1ff7551f8"
+    },
+    {
+      "name": "JackRods_ForeOuter",
+      "triangles": 360,
+      "bounds_min": [
+        -6.494999885559082,
+        34.26499938964844,
+        2.6500000953674316
+      ],
+      "bounds_max": [
+        6.494999885559082,
+        50.3650016784668,
+        2.9600000381469727
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "537725eb81aef0e91347fd70fd486c8fc0cf4aee1b9989bbeb27c6a943e5904f"
+    },
+    {
+      "name": "NozzleMesh_Port",
+      "triangles": 3016,
+      "bounds_min": [
+        -4.690000057220459,
+        -65.81000518798828,
+        -3.2699999809265137
+      ],
+      "bounds_max": [
+        -2.5099997520446777,
+        -63.81999969482422,
+        0.2799999713897705
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "1399f7a33188b6d0089060a796ed9cc978d3950bf8e99d7a2cba9433fb49e077"
+    },
+    {
+      "name": "NozzleMesh_Starboard",
+      "triangles": 3016,
+      "bounds_min": [
+        2.5099997520446777,
+        -65.81000518798828,
+        -3.2699999809265137
+      ],
+      "bounds_max": [
+        4.690000057220459,
+        -63.81999969482422,
+        0.2799999713897705
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "1399f7a33188b6d0089060a796ed9cc978d3950bf8e99d7a2cba9433fb49e077"
+    },
+    {
+      "name": "PanelDetails_AftInner",
+      "triangles": 1224,
+      "bounds_min": [
+        -6.117675304412842,
+        -16.158374786376953,
+        2.6398000717163086
+      ],
+      "bounds_max": [
+        6.117652893066406,
+        2.259490728378296,
+        3.207350492477417
+      ],
+      "boundary_edges": 3672,
+      "non_manifold_edges": 3672,
+      "uv_layers": 2,
+      "geometry_sha256": "d8c16eb859c333b086a31c18b89b77af9c672a665d73b8c26a912892262f4dd4"
+    },
+    {
+      "name": "PanelDetails_AftOuter",
+      "triangles": 720,
+      "bounds_min": [
+        -2.612396478652954,
+        -39.97672653198242,
+        3.0633254051208496
+      ],
+      "bounds_max": [
+        2.6123578548431396,
+        -18.579044342041016,
+        3.207350492477417
+      ],
+      "boundary_edges": 2160,
+      "non_manifold_edges": 2160,
+      "uv_layers": 2,
+      "geometry_sha256": "8e57b30cc12db0093b63a6d234c48e7ec3e6a0c52453dc851c1a2494f54b77ec"
+    },
+    {
+      "name": "PanelDetails_ForeInner",
+      "triangles": 1368,
+      "bounds_min": [
+        -6.117666721343994,
+        11.402424812316895,
+        2.6398000717163086
+      ],
+      "bounds_max": [
+        6.117661952972412,
+        32.17910385131836,
+        3.207350492477417
+      ],
+      "boundary_edges": 4104,
+      "non_manifold_edges": 4104,
+      "uv_layers": 2,
+      "geometry_sha256": "e5176301bcb7507b23b9f31d7fe863992ad636682470b835c17dbb9e35281da2"
+    },
+    {
+      "name": "PanelDetails_ForeOuter",
+      "triangles": 576,
+      "bounds_min": [
+        -2.612372636795044,
+        36.136592864990234,
+        3.0633254051208496
+      ],
+      "bounds_max": [
+        2.612380266189575,
+        52.40043640136719,
+        3.207350492477417
+      ],
+      "boundary_edges": 1728,
+      "non_manifold_edges": 1728,
+      "uv_layers": 2,
+      "geometry_sha256": "0883ec273549d23d3d4707b1adb33fa7564777aaefa3cc45c58713284ccc0cbf"
+    },
+    {
+      "name": "Panel_AftInner",
+      "triangles": 16,
+      "bounds_min": [
+        -5.828325271606445,
+        -17.469127655029297,
+        2.6078896522521973
+      ],
+      "bounds_max": [
+        5.82830286026001,
+        3.938993453979492,
+        3.2071428298950195
+      ],
+      "boundary_edges": 48,
+      "non_manifold_edges": 48,
+      "uv_layers": 2,
+      "geometry_sha256": "309a1fe89dc268e631cada98fe983e7be608dc271abcf9d79bd9ca26c5c0d0e1"
+    },
+    {
+      "name": "Panel_AftOuter",
+      "triangles": 16,
+      "bounds_min": [
+        -5.828333377838135,
+        -40.92372512817383,
+        2.6078896522521973
+      ],
+      "bounds_max": [
+        5.8282952308654785,
+        -17.759681701660156,
+        3.2071428298950195
+      ],
+      "boundary_edges": 48,
+      "non_manifold_edges": 48,
+      "uv_layers": 2,
+      "geometry_sha256": "034a62f588d921fbf6bcf7efadb9989fa6e45875e29d61b9c606e20074f51b31"
+    },
+    {
+      "name": "Panel_ForeInner",
+      "triangles": 16,
+      "bounds_min": [
+        -5.828316688537598,
+        9.971630096435547,
+        2.6194753646850586
+      ],
+      "bounds_max": [
+        5.828311443328857,
+        32.77064895629883,
+        3.2071428298950195
+      ],
+      "boundary_edges": 48,
+      "non_manifold_edges": 48,
+      "uv_layers": 2,
+      "geometry_sha256": "57b2e9126d36d2f9482ce690a6abc8b86cbd79da1f9b618cacf211472b79b749"
+    },
+    {
+      "name": "Panel_ForeOuter",
+      "triangles": 24,
+      "bounds_min": [
+        -5.828309535980225,
+        33.042354583740234,
+        2.6194753646850586
+      ],
+      "bounds_max": [
+        5.828317165374756,
+        53.47721862792969,
+        3.2071428298950195
+      ],
+      "boundary_edges": 72,
+      "non_manifold_edges": 72,
+      "uv_layers": 2,
+      "geometry_sha256": "38c491dca8a3603069c68179b43f240f9b7e8532aff37ffff79c00a5ae5d2526"
+    },
+    {
+      "name": "PropellerMesh_Port",
+      "triangles": 2152,
+      "bounds_min": [
+        -4.493190765380859,
+        -64.97000122070312,
+        -3.073190689086914
+      ],
+      "bounds_max": [
+        -2.7068092823028564,
+        -62.30000305175781,
+        -1.2868094444274902
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "88b8bdf5b6c38ff431ba48f95fd0b745b9ca236116d91a65c32dff2e012bbc05"
+    },
+    {
+      "name": "PropellerMesh_Starboard",
+      "triangles": 2152,
+      "bounds_min": [
+        2.7068045139312744,
+        -64.97000122070312,
+        -3.073195457458496
+      ],
+      "bounds_max": [
+        4.493195533752441,
+        -62.30000305175781,
+        -1.2868046760559082
+      ],
+      "boundary_edges": 0,
+      "non_manifold_edges": 0,
+      "uv_layers": 2,
+      "geometry_sha256": "291c0f1cfb6480c62204d8db95f937e756af4b39741389e761d1017637a8a7e5"
+    },
+    {
+      "name": "Seal_AftInner",
+      "triangles": 4,
+      "bounds_min": [
+        -5.8283257484436035,
+        -17.759685516357422,
+        2.6078896522521973
+      ],
+      "bounds_max": [
+        5.828295707702637,
+        -17.451364517211914,
+        2.838588237762451
+      ],
+      "boundary_edges": 12,
+      "non_manifold_edges": 12,
+      "uv_layers": 2,
+      "geometry_sha256": "f973e1c5046e878f9ee48b0a0594f448280a22b718ff63b1f80c7856054deb05"
+    },
+    {
+      "name": "Seal_ForeOuter",
+      "triangles": 4,
+      "bounds_min": [
+        -5.828309535980225,
+        32.758914947509766,
+        2.6194753646850586
+      ],
+      "bounds_max": [
+        5.828311443328857,
+        33.067237854003906,
+        2.8501737117767334
+      ],
+      "boundary_edges": 12,
+      "non_manifold_edges": 12,
+      "uv_layers": 2,
+      "geometry_sha256": "587af4e22ab5a5bb4e6b1f0d42260ec1229a48532ee97a9444098326256f66a0"
+    },
+    {
+      "name": "VD507B_boats",
+      "triangles": 3951,
+      "bounds_min": [
+        -8.102197647094727,
+        -58.93649673461914,
+        4.582127094268799
+      ],
+      "bounds_max": [
+        8.172800064086914,
+        -51.88920593261719,
+        8.630064010620117
+      ],
+      "boundary_edges": 2955,
+      "non_manifold_edges": 2979,
+      "uv_layers": 2,
+      "geometry_sha256": "3813a5897f38eb92f0061db253fcbf0ebc975a175c146dcb84499cb6608ce79e"
+    },
+    {
+      "name": "VD507B_deck",
+      "triangles": 419,
+      "bounds_min": [
+        -8.250743865966797,
+        -69.01382446289062,
+        0.9785648584365845
+      ],
+      "bounds_max": [
+        8.250726699829102,
+        68.39115905761719,
+        10.02949047088623
+      ],
+      "boundary_edges": 1257,
+      "non_manifold_edges": 1257,
+      "uv_layers": 2,
+      "geometry_sha256": "c637f7a99f87c2267bc9a61724ae35d7c305c7be011990dde00698c66e4b86bb"
+    },
+    {
+      "name": "VD507B_detali",
+      "triangles": 14257,
+      "bounds_min": [
+        -8.159789085388184,
+        -67.55877685546875,
+        1.760918140411377
+      ],
+      "bounds_max": [
+        8.159767150878906,
+        67.6514663696289,
+        12.635147094726562
+      ],
+      "boundary_edges": 42771,
+      "non_manifold_edges": 42771,
+      "uv_layers": 2,
+      "geometry_sha256": "d0b962c080f30916d7050e2e3c8b74d55c529d111fd3f44644a54385a982f945"
+    },
+    {
+      "name": "VD507B_hold",
+      "triangles": 56,
+      "bounds_min": [
+        -6.198184967041016,
+        -17.776702880859375,
+        0.9785648584365845
+      ],
+      "bounds_max": [
+        6.198176860809326,
+        53.47721862792969,
+        2.4172298908233643
+      ],
+      "boundary_edges": 168,
+      "non_manifold_edges": 168,
+      "uv_layers": 2,
+      "geometry_sha256": "5c686bf17e18b35d59b901b6e8475d2bac4d481aa069819a50ec9bfdf171e519"
+    },
+    {
+      "name": "VD507B_hold_detali",
+      "triangles": 720,
+      "bounds_min": [
+        -6.590470790863037,
+        -37.66767883300781,
+        1.9813024997711182
+      ],
+      "bounds_max": [
+        6.590455055236816,
+        50.4456787109375,
+        2.6756036281585693
+      ],
+      "boundary_edges": 2160,
+      "non_manifold_edges": 2160,
+      "uv_layers": 2,
+      "geometry_sha256": "eb7f73dc354922aa2507113554d3e33db43c3b8c1f6b663edc8867d7b654e9af"
+    },
+    {
+      "name": "VD507B_hull",
+      "triangles": 544,
+      "bounds_min": [
+        -8.250746726989746,
+        -69.09393310546875,
+        -3.5299999713897705
+      ],
+      "bounds_max": [
+        8.250726699829102,
+        68.85809326171875,
+        4.112030506134033
+      ],
+      "boundary_edges": 177,
+      "non_manifold_edges": 180,
+      "uv_layers": 2,
+      "geometry_sha256": "a0c1ff0fdf69f44b42d8dca29873c55ca090f95a9d9de59a2b9dbdf16f71d8fb"
+    },
+    {
+      "name": "VD507B_hull_detali",
+      "triangles": 790,
+      "bounds_min": [
+        -8.349994659423828,
+        -69.14998626708984,
+        -2.5723252296447754
+      ],
+      "bounds_max": [
+        8.350006103515625,
+        68.85208129882812,
+        3.9723870754241943
+      ],
+      "boundary_edges": 652,
+      "non_manifold_edges": 652,
+      "uv_layers": 2,
+      "geometry_sha256": "dbe66f7d8c84590e1c6d378e12e7adcb820716a6dfe08ff46cbff529bccc74e7"
+    },
+    {
+      "name": "VD507B_interior",
+      "triangles": 656,
+      "bounds_min": [
+        -4.60245943069458,
+        -49.045284271240234,
+        7.448293685913086
+      ],
+      "bounds_max": [
+        4.602412700653076,
+        -42.35187911987305,
+        9.682714462280273
+      ],
+      "boundary_edges": 456,
+      "non_manifold_edges": 456,
+      "uv_layers": 2,
+      "geometry_sha256": "f8200500df3ad64c09fc3c81a2f73503dc3d12d826d248f1a98e89d43bdce11d"
+    },
+    {
+      "name": "VD507B_lights",
+      "triangles": 90,
+      "bounds_min": [
+        -7.587717533111572,
+        -60.936279296875,
+        4.695851802825928
+      ],
+      "bounds_max": [
+        7.58767557144165,
+        55.33611297607422,
+        11.707053184509277
+      ],
+      "boundary_edges": 104,
+      "non_manifold_edges": 104,
+      "uv_layers": 2,
+      "geometry_sha256": "3d081ac7c94b7bd5b075c9739fbaeb3db6cd56b3ccc40cb7c44be22cdf61b0ba"
+    },
+    {
+      "name": "VD507B_pipes",
+      "triangles": 5022,
+      "bounds_min": [
+        -8.131648063659668,
+        -68.91236877441406,
+        1.6403063535690308
+      ],
+      "bounds_max": [
+        8.135578155517578,
+        68.67921447753906,
+        12.564085006713867
+      ],
+      "boundary_edges": 2630,
+      "non_manifold_edges": 2632,
+      "uv_layers": 2,
+      "geometry_sha256": "dfa17e4b2cf0aad17a3f917fa83cd05ed1d37c25bf1d9dda97b77346501bfca7"
+    },
+    {
+      "name": "VD507B_radar",
+      "triangles": 28,
+      "bounds_min": [
+        2.53056001663208,
+        -45.774845123291016,
+        11.157394409179688
+      ],
+      "bounds_max": [
+        4.557547569274902,
+        -45.52250289916992,
+        11.265046119689941
+      ],
+      "boundary_edges": 32,
+      "non_manifold_edges": 32,
+      "uv_layers": 2,
+      "geometry_sha256": "38eac16b7c2e8f069f35d0e856199871b4338019028d03fd86aa9bacee7f0596"
+    },
+    {
+      "name": "VD507B_radar.001",
+      "triangles": 28,
+      "bounds_min": [
+        -5.423757076263428,
+        -43.70909881591797,
+        11.157394409179688
+      ],
+      "bounds_max": [
+        -3.3967695236206055,
+        -43.45676040649414,
+        11.265045166015625
+      ],
+      "boundary_edges": 32,
+      "non_manifold_edges": 32,
+      "uv_layers": 2,
+      "geometry_sha256": "121cdeef6ae749331e6b69fdbaf1766ea7cc52e0293d5dce65b0ba44cd67c1f9"
+    },
+    {
+      "name": "VD507B_rubka",
+      "triangles": 2602,
+      "bounds_min": [
+        -8.250715255737305,
+        -69.01382446289062,
+        1.114047884941101
+      ],
+      "bounds_max": [
+        8.250726699829102,
+        69.14999389648438,
+        10.02949047088623
+      ],
+      "boundary_edges": 1602,
+      "non_manifold_edges": 1630,
+      "uv_layers": 2,
+      "geometry_sha256": "8428e02d8f6ad68d0d85696ab6598307b6ea0af7b4fac7af9affa31bcc6f3264"
+    },
+    {
+      "name": "VD507B_rubka_detali",
+      "triangles": 6894,
+      "bounds_min": [
+        -7.49258279800415,
+        -59.71204376220703,
+        1.8401293754577637
+      ],
+      "bounds_max": [
+        7.492543697357178,
+        -41.03654479980469,
+        11.773420333862305
+      ],
+      "boundary_edges": 4696,
+      "non_manifold_edges": 4696,
+      "uv_layers": 2,
+      "geometry_sha256": "c1d113d8b3222633529d71ee5913b9a7c4d9cb8eb9dbb8bc8e92c5afa6680749"
+    },
+    {
+      "name": "WindlassMesh_Port",
+      "triangles": 600,
+      "bounds_min": [
+        -2.235823631286621,
+        56.97703552246094,
+        3.519972324371338
+      ],
+      "bounds_max": [
+        -1.3911248445510864,
+        58.03386688232422,
+        4.571014404296875
+      ],
+      "boundary_edges": 1800,
+      "non_manifold_edges": 1800,
+      "uv_layers": 2,
+      "geometry_sha256": "46b2a5978e99d818f7a54636ec703aa4301e0d1ed6e4fa43f61732dbd3a9f1f3"
+    },
+    {
+      "name": "WindlassMesh_Starboard",
+      "triangles": 600,
+      "bounds_min": [
+        2.785612106323242,
+        56.97439193725586,
+        3.4835500717163086
+      ],
+      "bounds_max": [
+        3.6303117275238037,
+        58.03122329711914,
+        4.5345916748046875
+      ],
+      "boundary_edges": 1800,
+      "non_manifold_edges": 1800,
+      "uv_layers": 2,
+      "geometry_sha256": "452bd56ebf3e38511bc101b9be8c92e4871defdac0c6af7411a0c918a98bd0bf"
+    }
+  ],
+  "overall_min": [
+    -8.349994659423828,
+    -69.14998626708984,
+    -3.5299999713897705
+  ],
+  "overall_max": [
+    8.350006103515625,
+    69.14999389648438,
+    12.635147094726562
+  ],
+  "landmarks": {
+    "Waterline": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "BowReference": [
+      0.0,
+      69.1500015258789,
+      0.0
+    ],
+    "StarboardReference": [
+      8.350000381469727,
+      0.0,
+      0.0
+    ],
+    "UpReference": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "KeelReference": [
+      0.0,
+      0.0,
+      -3.5299999713897705
+    ],
+    "Mechanisms": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Propeller_Port": [
+      -3.5999999046325684,
+      -64.6500015258789,
+      -2.180000066757202
+    ],
+    "Nozzle_Port": [
+      -3.5999999046325684,
+      -64.6500015258789,
+      0.2800000011920929
+    ],
+    "Propeller_Starboard": [
+      3.5999999046325684,
+      -64.6500015258789,
+      -2.180000066757202
+    ],
+    "Nozzle_Starboard": [
+      3.5999999046325684,
+      -64.6500015258789,
+      0.2800000011920929
+    ],
+    "Hatch_AftOuter": [
+      0.0,
+      -29.341703414916992,
+      2.6500000953674316
+    ],
+    "Hatch_AftInner": [
+      0.0,
+      -6.765067100524902,
+      2.6500000953674316
+    ],
+    "Hatch_ForeInner": [
+      0.0,
+      21.371139526367188,
+      2.6500000953674316
+    ],
+    "Hatch_ForeOuter": [
+      0.0,
+      43.259788513183594,
+      2.6500000953674316
+    ],
+    "JackLift_AftOuter": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "JackLift_ForeOuter": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Anchor_Stern": [
+      -0.0005979388952255249,
+      -68.88340759277344,
+      1.4893039464950562
+    ],
+    "ChainAttachment_Stern": [
+      -0.0005979388952255249,
+      -68.88340759277344,
+      1.4893039464950562
+    ],
+    "Anchor_Port": [
+      -2.0281105041503906,
+      65.95973205566406,
+      2.589531660079956
+    ],
+    "ChainAttachment_Port": [
+      -2.0281105041503906,
+      65.95973205566406,
+      2.589531660079956
+    ],
+    "Anchor_Starboard": [
+      2.026567220687866,
+      66.00843811035156,
+      2.594261884689331
+    ],
+    "ChainAttachment_Starboard": [
+      2.026567220687866,
+      66.00843811035156,
+      2.594261884689331
+    ],
+    "Windlass_Port": [
+      -1.813474178314209,
+      57.50545120239258,
+      4.045493125915527
+    ],
+    "Windlass_Starboard": [
+      3.2079620361328125,
+      57.5028076171875,
+      4.009070873260498
+    ]
+  }
+}

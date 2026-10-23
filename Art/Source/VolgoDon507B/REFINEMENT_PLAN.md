@@ -1,6 +1,6 @@
 # Volgo-Don 507B: remaining fidelity work
 
-Created: 2026-10-23. Status: planned, implementation not started.
+Created: 2026-10-23. Part 9 complete; Parts 10-17 not started.
 
 This continues Parts 1-8 of [IMPROVEMENT_CHECKLIST.md](IMPROVEMENT_CHECKLIST.md).
 The baseline and known discrepancies are recorded in [PART8_REVIEW.md](PART8_REVIEW.md).
@@ -34,7 +34,7 @@ precision. A completed prototype feature is not validated maritime training.
 
 | Part | Deliverable | Dependencies | Status |
 |---|---|---|---|
-| 9 | Reference and variant decision package | Existing Parts 1-8 | Not started |
+| 9 | Reference and variant decision package | Existing Parts 1-8 | Complete, 2026-10-23 |
 | 10 | Hull sections and corrected editable geometry | 9 | Not started |
 | 11 | Section-based hydrostatics and loading response | 10 | Not started |
 | 12 | Propulsion, stopping and steering calibration | 9, 11 | Not started |
@@ -51,16 +51,19 @@ Built-player performance acceptance remains the separate open item from Part 8.
 
 ## Part 9: references, variant and measurement baseline
 
-- [ ] Revisit the archived documentation and existing source notes. Record page,
+Result: [REFERENCE_DECISIONS.md](REFERENCE_DECISIONS.md), geometry and numerical
+baseline JSON files, and read-only capture scripts. See its completion record.
+
+- [x] Revisit the archived documentation and existing source notes. Record page,
   figure, units, date, variant, confidence and intended use for every adopted value.
-- [ ] Distinguish the page-2 project-507 lines plan from confirmed 507B particulars.
+- [x] Distinguish the page-2 project-507 lines plan from confirmed 507B particulars.
   Establish whether and how its sections can apply to the selected vessel.
-- [ ] Compare the existing model with identified classic covered-hold photographs;
+- [x] Compare the existing model with identified classic covered-hold photographs;
   separate original fittings from later modifications. Do not use photographs as
   game textures without appropriate rights.
-- [ ] Reconcile length definitions, displacement, draft, cargo/deadweight and the
+- [x] Reconcile length definitions, displacement, draft, cargo/deadweight and the
   conditions/procedure behind archived stopping and turning values.
-- [ ] Capture current geometry and numerical trial baselines before any edits.
+- [x] Capture current geometry and numerical trial baselines before any edits.
 
 Deliverables: `REFERENCE_DECISIONS.md`, a source/measurement table and reference
 overlays or links with usage notes. Keep the baseline evidence from Parts 1-8.

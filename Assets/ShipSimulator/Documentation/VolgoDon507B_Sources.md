@@ -212,3 +212,25 @@ timings are engineering measurements, not vessel specifications or proof of the
 target GPU budget. The final discrepancy ledger retains unknown vessel identity,
 estimated hydrostatics, steering calibration and machinery rates.
 
+## Part 9 reference baseline, 2026-10-23
+
+The current source decisions and pre-fit tolerances are in
+[REFERENCE_DECISIONS.md](../../../../Art/Source/VolgoDon507B/REFERENCE_DECISIONS.md).
+No physics parameters changed. The selected classic two-hold model remains
+representative, with no authenticated individual-vessel identity.
+
+Reinspection separates the archive's p3 507B condition (6678 t / 3.50 m,
+1466 t empty) from the retained 6750 t / 3.53 m prototype and conflicting p8
+weight breakdown. The p3 coefficients at 3.5 m (.935/.996/.861) are additional
+reference evidence with unresolved variant applicability, not replacements for
+current .90/.98/.851. Page 2 is a 600 x 316 pixel raster labelled project 507.
+No exact 507B offsets can be claimed from it. The model hull has open boundaries
+and needs a separate closed hydrostatic surface before volume-based calculations.
+
+Archive circulation values distinguish same-side and opposite-side nozzle operation;
+current common-helm tactical diameter is not a matching test. The archive stop
+sequence includes Stop, while current trials command astern immediately and let
+the shaft reversal model respond. Missing dwell/loading/depth prevent direct
+calibration to a single stopping figure. Visual propeller height above keel is
+1.35 m versus the loading model's estimated 1.0 m; reconcile explicitly later.
+

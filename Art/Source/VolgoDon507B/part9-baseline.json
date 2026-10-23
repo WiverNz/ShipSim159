@@ -1,0 +1,538 @@
+{
+  "date": "2026-10-23",
+  "file_sha256": {
+    "Art/Source/VolgoDon507B/VolgoDon507B.blend": "d795ff8f0cee8bb6e04d436cfe8af30f791d368a5fd2cb18a87fcee98e9cf97d",
+    "Art/Source/VolgoDon507B/part6-after.json": "f58a7141da448bcbe3ba664308a64d2b49b83b44a01cf0ed4c27b30261da04af",
+    "Art/Source/VolgoDon507B/part7-loading.json": "ca7ddbf800a1c0039660c2b1f39b25c4ba53798786e23343d0f4f6b774c1109f",
+    "Art/Source/VolgoDon507B/part8-source.json": "c015aca09876937f80f681a7742000420b2a932959729a8a8c14dcf90fab4358",
+    "Art/Source/VolgoDon507B/part8-unity.json": "806a2a955abbacf5e9ff026b94ab190e3d862412759bd392a9722cf143f9d9f9",
+    "Art/Source/VolgoDon507B/part9-geometry-baseline.json": "28c53f81048432a2affe5cc94495d27df089147cd10183f7b6a375d19c7a4ce3",
+    "Assets/ShipSimulator/Data/Vessels/KVLCC2_MMG_Benchmark.json": "bed6dd917caf55fb7241c61d355a51c4ca842b37ce5bc020b42cbc6688e7be3b",
+    "Assets/ShipSimulator/Data/Vessels/Luch14352.json": "fe7d36c55f0115247c6e47e44b3a427da0cab2ff31d22fdf287f5d62cbcdbb88",
+    "Assets/ShipSimulator/Data/Vessels/Meteor342U.json": "096283af19287667da1e850e91dc316f5ed7ff649f25c9de2c721a93f0556a09",
+    "Assets/ShipSimulator/Data/Vessels/VolgoBalt295AR.json": "fecc4cbda2c839cc17f16a9ee861d1dcaf0ec39857b35056b7deb1d8c4911ffe",
+    "Assets/ShipSimulator/Data/Vessels/VolgoDon507B.json": "67c55f8a101d26265556d60893ef2e48f34da8012397f05b09cf2edd4e4589f0",
+    "Assets/ShipSimulator/Data/Vessels/Volgoneft1577.json": "33f628204a22a5e49fc37607d0ccb6abfda2819da3ff53d6cca8b2c2d5ac6373",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/proxy_mat.mat": "4f3ce7eb94e6f2909ac20a82847eed9094f71acbb077ec891d6dbe7908832175",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/proxy_mat.mat.meta": "9f604c76b15ddb72dfeab132b2ba0e4277661d69a98996d12ecb0ed8a44de095",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_gms_axalp_main.mat": "c24576e31baec53f8ada95a655474368dfba897c404f3e7c498f0cb040f083f6",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_gms_axalp_main.mat.meta": "1b04d396e977eac165608fef6f59a0bb00c98cba4902d35c146f1f780b9ef14a",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_boats.mat": "608fb34158918743116e9e81c4d6c5137f04bd358795bd6966d23207ffbd2b36",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_boats.mat.meta": "1da8e1599b4b75c0462145cb38aea17c65d4ec21a061fdcba82d686c80fb1799",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_deck.mat": "1f83e0827fcbf0ecac9af1a641368b95ed435905383fc7798d6292ae6060d8f7",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_deck.mat.meta": "874ee6be2a75851fa44214bb1c96e72defec13c028ff1d755d480c8581b05897",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_detali.mat": "a80bdd4cad8bbb679e4bb7744900ba737c92176c66bae817bf11f0bf8b0ffdf5",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_detali.mat.meta": "55522e31b933d723a2793ee7651ba05fbd993ce6b7224cebeb5e22cb8e341a31",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_hold.mat": "a3b094177da88d899b6ce6ec6420044fa83b378f2169cffa7e42f7cfdc94c301",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_hold.mat.meta": "dea24ccbb4dea95331e2a7512592d17b338c73b7d79b16ee57889fd8a5f84a52",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_hull.mat": "66b320ed56d3b87bd51857cd8cbc4e007b40b50c6ed843742a32b9a71dbfa405",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_hull.mat.meta": "be2e885fa3bfcd116a7505495e4ef2715594451feec24ed5ec6021112d796569",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_interior.mat": "83175b012e14be5436deb136b8c2b64c3d93ff1b5682708ee6e68e30b593392f",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_interior.mat.meta": "00491d41a29c8a9cf0b49e554bde62377b8f57d3b887f1e37cd7cbd326f94616",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_lights.mat": "300d89f10b25a6a39a155c19ff8f11ae0a43e1030d247bdb69e9031db083e947",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_lights.mat.meta": "a475c81eeae66929c0890e516865ae056c11bc66c355aea9ab56800f1c4210de",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_rubka.mat": "699fa6b8262a17370024bb0fde1bbd0e219d0a39f4443fff840ed6b3e36c91c1",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_rubka.mat.meta": "7e532c4a8d2ab936c336ca41b46230f88625564bf2497db47e5ba4bd648b5633",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_rubka_detali.mat": "ae1dc093c30d447df8943d34dc66aac21b2c3adf69909ee437e396f4eaf7e29b",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_rubka_detali.mat.meta": "5240b4218937f6f8150200bfc0bb0320a61a369b3d370922fa5b2c7977cd5f02",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/unassigned.mat": "b820670bda7916a4102f3b73a6126e3f60f1a57670774b638077fdab3d9cc58e",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials/unassigned.mat.meta": "4954797320ffe6d341bc3b3d1f8d00834e45353a87ba4887d9178fabf8279832",
+    "Assets/ShipSimulator/Models/VolgoDon507/Materials.meta": "fb562a783d03da96acbdd48df1d04a493fd0bef216c130573b09e3aad57eab9b",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_boats_ao.dds": "a350b772b8ccd77691be08229ce1d9ef9741e6dc00c7de60e0608c08f440ef4c",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_boats_ao.dds.meta": "cd4476362ca9257516952c3f0cfc91298d1f3abe950144487357be66f097afe9",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_deck_ao.dds": "cb3a1fb3ce9a1ab9ff1bdf2fd91a1a4bac59089100f6f3a1d6b65f4f609854a1",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_deck_ao.dds.meta": "dd3ebe90eb041970236f7b8051541851ad05d015538a32d77851f515aded8fa3",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_detali_ao.dds": "e2ff64cb78eda392458f778dc2625fe2dab13a5e1fe75c4dfa80660545ae8681",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_detali_ao.dds.meta": "345452a44d9ef3cd38fee41ab44f2147c3b8f52683e6133666b645d51e783d25",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_hold_ao.dds": "15e03de98e61fcc989f8f50877a351922f029198580ea9ce4ad3234a5bb1e9d7",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_hold_ao.dds.meta": "6fea428555d38e0336ec2b745f98aba570668314972627b9d76a966d832f3bc3",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_hull_ao.dds": "d6cb2e94d738d09b096f2a6b47da35f3f6fb8fc57e120185e322c5ae63095957",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_hull_ao.dds.meta": "0a32efd1acc7ce4dd608517bae5aedd4c8748d4e3d4b0e24cd4c1f63f556090c",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_interior_ao.dds": "62030f57e8d8fbda038690262a57dcf23958634d81f348c98af1d6e98a631d48",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_interior_ao.dds.meta": "493626e28d9a7e1080e9d78ec28bb1f86f20a1a9220e20ef7690a6e5877244fe",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_lights.hdr": "9e37fb09cca0507b7b6ce40e721c7444fbefb3abe987c5e3568d67c190d78cfc",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_lights.hdr.meta": "721ab26b9b9edcec23ccc55105b57e0a1487a15ce73f1224e29aad02b29c4856",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_rubka_ao.dds": "d63ec59bb77c3e8f4e0e7609279e5be39dfff11bf70dee263f2f40701a4af080",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_rubka_ao.dds.meta": "2324382b1d43dba14a11adc21c2b9e483c4bb0ef26002c12583b236e8f814ec6",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_rubka_detali_ao.dds": "45435ffaf6866ae8f8f7b7ff389244765908688eb4a7851f3fcc2033c720e7ef",
+    "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_rubka_detali_ao.dds.meta": "73b5343c1b6a49563b80f6b67bbfde1670fb460e6e5c2cc958fc7b894f35248a",
+    "Assets/ShipSimulator/Models/VolgoDon507/volgo_don.fbx": "d4de8b05f8798708350d31dac70b23b6b2479f595d36af824bc267f3e3cfe8b4",
+    "Assets/ShipSimulator/Models/VolgoDon507/volgo_don.fbx.meta": "7aebcc7339b7f956ba7d18e8f1b4500f7624d9d26189632589beccdfb2e8877c",
+    "Assets/ShipSimulator/Models/VolgoDon507B_Improved/VolgoDon507B.fbx": "f92ff9cded5cbc871ec5ba977dbde871d370942bbe114a432abb1a62f534809d",
+    "Assets/ShipSimulator/Models/VolgoDon507B_Improved/VolgoDon507B_LOD1.fbx": "7e15889eb5cd07ee12d7cec416f330a5b3e56b7f7784b8b03bc911a22cbc1801",
+    "Assets/ShipSimulator/Models/VolgoDon507B_Improved/VolgoDon507B_LOD2.fbx": "acd1c941bc75ac016d2a6d7ef6f0bebfb266475821116dd91d1709264f545d5f",
+    "Assets/ShipSimulator/Prefabs/Vessels/VolgoDon507B.prefab": "31f64588da2978f1e609398bf7ce6ce7fdbe483e3a771e7f189799234691a20a",
+    "Assets/ShipSimulator/Scripts/Physics/BowThrusterModel.cs": "d8b8af65b3dd48edbd0cac3e885910b8e68684973adbbb638bb0d98a6cebd1b5",
+    "Assets/ShipSimulator/Scripts/Physics/CurrentFieldProvider.cs": "5ed13aff40ba312a7218c01793f77711db9f8575b662b0d1fb3fd3e3d7f82f46",
+    "Assets/ShipSimulator/Scripts/Physics/DepthFactors.cs": "057fb0a245f041f9403813c4b0e45ad4f88fb66ea12db874e2634d5d7948b9c9",
+    "Assets/ShipSimulator/Scripts/Physics/EngineShaft.cs": "df037f95ce775dfedf0e872fec934472997fc311521021197302a462cf0bdc00",
+    "Assets/ShipSimulator/Scripts/Physics/FairwayModel.cs": "bce66255c0c5128c854e6532e329822fd0e4ed0b2f96e7c1095f9658381458de",
+    "Assets/ShipSimulator/Scripts/Physics/FairwayRoute.cs": "daa3fb2b4062a223ded71adad9548cb898ce8d95455760d5be96bd0dbd737b75",
+    "Assets/ShipSimulator/Scripts/Physics/GroundingController.cs": "00fe86a5fc2788e7edb7a2451ca9a8e8f33f62c9ef821b5d7ad4a1fdfca9586c",
+    "Assets/ShipSimulator/Scripts/Physics/HullDerivativeEstimate.cs": "b294a43474924986d1ad538741ea8e73fe481b40d0583e8d792dd853c581fc09",
+    "Assets/ShipSimulator/Scripts/Physics/HullForceModel.cs": "8be346537358c40b6883e07df3ddd99baca10e6a0554c639b469689875c47bfc",
+    "Assets/ShipSimulator/Scripts/Physics/HydrostaticsModel.cs": "217f597da7017cbb615c624d17a4c86684fe0b112cbb8c617893b547406413f6",
+    "Assets/ShipSimulator/Scripts/Physics/LeadingMarkPair.cs": "d0e08d24fc6160c605eb16d3ac8810ac1bffb74260f1d5268ff5e93681cf72b0",
+    "Assets/ShipSimulator/Scripts/Physics/ManoeuvringModel.cs": "01456268fa598c1b2bcfa739b4b716006e066ff72839b8c35376eb39b7a9ae93",
+    "Assets/ShipSimulator/Scripts/Physics/ManoeuvringSimulator.cs": "02c74e98d337239d12a91f6e91e065f79245c2f6b153e2a9e16c58670da85d7c",
+    "Assets/ShipSimulator/Scripts/Physics/ManoeuvringTrials.cs": "490f2ca90cee2062506e5e597d184e45daf50518372bca9aa036e83cf09426e5",
+    "Assets/ShipSimulator/Scripts/Physics/PropellerModel.cs": "58a2636c94b92d4efcc21167a32cff317a77d02c0ef89eb1d7e34e1bbb70cea3",
+    "Assets/ShipSimulator/Scripts/Physics/ResistanceModel.cs": "b68899af354fc74aebcaec87694a0c6bfe195223ca2455f83efae3b40a742f3c",
+    "Assets/ShipSimulator/Scripts/Physics/RestrictedWaterModel.cs": "39c228e653884bc756fc9e5476284da22a724a227b62009ff88cbb3bc1d0417c",
+    "Assets/ShipSimulator/Scripts/Physics/RiverCurrentZone.cs": "3e4605f28dd3f537db25ecdbafb1e25607827f90d75b50506a0bd8bb2a5ad940",
+    "Assets/ShipSimulator/Scripts/Physics/RudderModel.cs": "b04f0a328b7434f7cec728fcf37dc955da16e3863f5df04da517c5fed5ea2f3a",
+    "Assets/ShipSimulator/Scripts/Physics/ScenarioBathymetry.cs": "43b97700f287cdb7203e4d089a6ec470f893b0fd11ed3f257e37357d435462c4",
+    "Assets/ShipSimulator/Scripts/Physics/ShipPhysicsController.cs": "bbe5ddf86cb0d8b42b0a713823d376cdc8759788d59b7fb01a5196edb1052230",
+    "Assets/ShipSimulator/Scripts/Physics/SteeringNozzleModel.cs": "e1c2e76f268363c3eb33568f4958a09df484dd436c69a3830967169d779ea48e",
+    "Assets/ShipSimulator/Scripts/Physics/SupportModel.cs": "f726a6b592f90efb954ac3d5abbafd2fc639dc272f03a620ce5b020b394e319e",
+    "Assets/ShipSimulator/Scripts/Physics/VesselCatalogue.cs": "571aaaa7516b78a1f38480762af0aeeef6f86ee814295ae5504dc4e325ca8ab9",
+    "Assets/ShipSimulator/Scripts/Physics/VesselData.cs": "d57f6fcdfb3729b733a9549dea4be21fbc5e8560d0d8e9728b0f5c6ac5acedf0",
+    "Assets/ShipSimulator/Scripts/Physics/VesselDataLoader.cs": "6c885c2c97b8ab2d52982930378c1cbcaf5f04d5d949d71bf467d9eda47d0e1a",
+    "Assets/ShipSimulator/Scripts/Physics/VesselDataValidator.cs": "76ac2c5e335c58b207860593c950ea678779c346aa222ccb838ca427b64ee74d",
+    "Assets/ShipSimulator/Scripts/Physics/VesselLoading.cs": "bb30db9731309d7aa39cfba79f33203a5f6251f58de1e8463e20765df2e3768a",
+    "Assets/ShipSimulator/Scripts/Physics/VesselParameters.cs": "20f6033d59bd0c6d09e9d857519552aa60d315042738cb474105f5e85c926473",
+    "Assets/ShipSimulator/Scripts/Physics/WindLoadModel.cs": "9e2c70712fbcacd0ca7272fb2151b45f82b43ff4023f7d154212345d328ae86a"
+  },
+  "unchanged_fallback_files": 45,
+  "vessel": {
+    "identity": {
+      "displayName": "Volgo-Don Project 507B",
+      "project": "507B",
+      "vesselType": "Twin-screw river dry cargo motor vessel"
+    },
+    "dimensions": {
+      "lengthOverallM": 138.3,
+      "lengthBetweenPerpendicularsM": 135.0,
+      "beamOverallM": 16.7,
+      "beamMouldedM": 16.5,
+      "depthMouldedM": 5.5,
+      "loadedDraftM": 3.53
+    },
+    "massProperties": {
+      "loadedMassKg": 6750000.0,
+      "deadweightKg": 5000000.0,
+      "lightshipMassKg": 1750000.0,
+      "loadFraction": 1.0,
+      "loadingCondition": "fully loaded prototype condition",
+      "centerOfMassLocalM": {
+        "x": 0.0,
+        "y": -1.2,
+        "z": 2.0
+      },
+      "rollGyrationRadiusM": 5.9,
+      "pitchGyrationRadiusM": 33.75,
+      "yawGyrationRadiusM": 33.75,
+      "estimated": true
+    },
+    "loading": {
+      "enabled": true,
+      "lightshipCentreLocalM": {
+        "x": 0,
+        "y": 0,
+        "z": 2
+      },
+      "propellerAxisHeightAboveKeelM": 1.0,
+      "maximumTransferSpeedMps": 0.3,
+      "estimated": true,
+      "compartments": [
+        {
+          "id": "Forward hold",
+          "kind": "cargo",
+          "capacityKg": 2400000,
+          "initialKg": 2400000,
+          "transferKgPerSecond": 125,
+          "centreLocalM": {
+            "x": 0,
+            "y": -1.6,
+            "z": 26
+          },
+          "sizeM": {
+            "x": 12,
+            "y": 3,
+            "z": 42
+          }
+        },
+        {
+          "id": "Aft hold",
+          "kind": "cargo",
+          "capacityKg": 2400000,
+          "initialKg": 2400000,
+          "transferKgPerSecond": 125,
+          "centreLocalM": {
+            "x": 0,
+            "y": -1.6,
+            "z": -22
+          },
+          "sizeM": {
+            "x": 12,
+            "y": 3,
+            "z": 42
+          }
+        },
+        {
+          "id": "Forward ballast group",
+          "kind": "ballast",
+          "capacityKg": 1100000,
+          "initialKg": 0,
+          "transferKgPerSecond": 50,
+          "centreLocalM": {
+            "x": 0,
+            "y": -2.5,
+            "z": 26
+          },
+          "sizeM": {
+            "x": 14,
+            "y": 2,
+            "z": 42
+          }
+        },
+        {
+          "id": "Aft ballast group",
+          "kind": "ballast",
+          "capacityKg": 1100000,
+          "initialKg": 0,
+          "transferKgPerSecond": 50,
+          "centreLocalM": {
+            "x": 0,
+            "y": -2.5,
+            "z": -22
+          },
+          "sizeM": {
+            "x": 14,
+            "y": 2,
+            "z": 42
+          }
+        },
+        {
+          "id": "Fuel and stores budget",
+          "kind": "consumables",
+          "capacityKg": 200000,
+          "initialKg": 200000,
+          "transferKgPerSecond": 10,
+          "centreLocalM": {
+            "x": 0,
+            "y": -2.1,
+            "z": 2
+          },
+          "sizeM": {
+            "x": 8,
+            "y": 2,
+            "z": 20
+          }
+        }
+      ]
+    },
+    "hydrostatics": {
+      "waterDensityKgM3": 1000.0,
+      "waterlineLocalY": 0.0,
+      "blockCoefficient": 0.851,
+      "midshipCoefficient": 0.98,
+      "waterplaneCoefficient": 0.9,
+      "longitudinalCentreOfBuoyancyM": 2.0,
+      "stationCount": 24,
+      "stripsAcross": 4,
+      "heaveDampingRatio": 0.3,
+      "heaveAddedMassFraction": 1.0,
+      "rollDampingRatio": 0.08,
+      "estimated": true
+    },
+    "resistance": {
+      "kinematicViscosityM2PerS": 1.14e-06,
+      "wettedSurfaceM2": 0.0,
+      "formFactor": 1.3,
+      "correlationAllowance": 0.0004,
+      "residualResistanceCoefficient": 0.0001005,
+      "estimated": true
+    },
+    "hull": {
+      "surgeAddedMassPrime": 0.011104,
+      "swayAddedMassPrime": 0.12817,
+      "yawAddedInertiaPrime": 0.009087,
+      "xVV": -0.04,
+      "xVR": 0.002,
+      "xRR": 0.011,
+      "xVVVV": 0.771,
+      "yV": -0.21285,
+      "yR": 0.0497,
+      "yVVV": -1.607,
+      "yVVR": 0.379,
+      "yVRR": -0.391,
+      "yRRR": 0.008,
+      "nV": -0.04623,
+      "nR": -0.02989,
+      "nVVV": -0.03,
+      "nVVR": -0.294,
+      "nVRR": 0.055,
+      "nRRR": -0.013,
+      "maxYawRatePrime": 1.2,
+      "lowSpeedBlendStartMps": 0.3,
+      "lowSpeedBlendEndMps": 1.2,
+      "crossFlowStations": 16,
+      "estimated": true,
+      "derivation": "Linear derivatives and added masses: Clarke, Gedling and Hine (1983) and Soding at the loaded draft, converted to MMG primes. Nonlinear terms: KVLCC2 set of Yasukawa and Yoshimura (2015), assumed to transfer because they are cross-flow dominated."
+    },
+    "engine": {
+      "engineCount": 2,
+      "engineType": "6ChRN 36/45 (6\u0427\u0420\u041d 36/45)",
+      "powerPerEngineW": 662000.0,
+      "gearEfficiency": 0.92,
+      "shaftEfficiency": 0.98,
+      "ratedPropellerRpm": 375.0,
+      "shaftInertiaKgM2": 2500.0,
+      "governorBandFraction": 0.01,
+      "rpmRampSecondsFullRange": 15.0,
+      "reversalRpmFraction": 0.25,
+      "reversalDelaySeconds": 8.0,
+      "reversalBrakeTorqueFraction": 0.5,
+      "estimatedDynamics": true
+    },
+    "propeller": {
+      "count": 2,
+      "diameterM": 1.8,
+      "longitudinalPositionsM": [
+        -64.65,
+        -64.65
+      ],
+      "lateralPositionsM": [
+        -3.6,
+        3.6
+      ],
+      "aheadThrustCoefficients": [
+        0.33,
+        -0.25,
+        -0.12
+      ],
+      "aheadTorqueCoefficients": [
+        0.0336,
+        -0.0176,
+        -0.0096
+      ],
+      "asternThrustCoefficients": [
+        0.23,
+        -0.2,
+        -0.1
+      ],
+      "asternTorqueCoefficients": [
+        0.0288,
+        -0.0144,
+        -0.008
+      ],
+      "wakeFraction": 0.2,
+      "thrustDeduction": 0.2,
+      "wakeDriftC1": 2.0,
+      "wakeDriftC2": 1.3,
+      "estimated": true
+    },
+    "rudder": {
+      "count": 2,
+      "maxAngleDeg": 35.0,
+      "rateDegPerSecond": 2.5,
+      "areaPerRudderM2": 5.5,
+      "spanM": 2.6,
+      "longitudinalPositionM": -64.65,
+      "lateralPositionsM": [
+        -3.6,
+        3.6
+      ],
+      "normalForceSlope": 0.0,
+      "stallAngleDeg": 32.0,
+      "postStallNormalCoefficient": 1.1,
+      "steeringResistanceDeduction": 0.39,
+      "hullInteractionFactor": 0.31,
+      "hullInteractionPositionPrime": -0.46,
+      "wakeRatio": 1.05,
+      "slipstreamFactor": 0.5,
+      "flowStraightening": 0.5,
+      "flowStraighteningLeverPrime": -0.8,
+      "estimated": true
+    },
+    "steeringNozzle": {
+      "enabled": true,
+      "thrustDeflectionFactor": 1.0,
+      "passiveAreaM2": 3.0544,
+      "passiveNormalSlope": 3.0,
+      "estimated": true
+    },
+    "bowThruster": {
+      "fitted": true,
+      "powerW": 72000,
+      "tunnelDiameterM": 0.71,
+      "longitudinalPositionM": 60.0,
+      "axisHeightAboveKeelM": 1.1,
+      "figureOfMerit": 0.62,
+      "rampSecondsToFull": 5.0,
+      "speedLossReferenceMps": 1.0,
+      "minimumSpeedEffectiveness": 0.0,
+      "estimated": true
+    },
+    "windage": {
+      "airDensityKgM3": 1.225,
+      "frontalAreaM2": 190.0,
+      "lateralAreaM2": 650.0,
+      "lateralCentroidLongitudinalM": -15.0,
+      "lateralCentroidHeightM": 3.0,
+      "transverseDragCoefficient": 0.85,
+      "longitudinalDragBow": 0.65,
+      "longitudinalDragStern": 0.55,
+      "crossForceParameter": 0.4,
+      "estimated": true
+    },
+    "restrictedWater": {
+      "shallowWaterCorrections": true,
+      "squatCoefficient": 0.0,
+      "bankSamplingWidthBeams": 4.0,
+      "bankSuctionCoefficient": 0.5,
+      "bankMomentLeverPrime": -0.25,
+      "estimated": true
+    },
+    "controlLimits": {
+      "maxLoadedSpeedMps": 5.55556,
+      "throttleCommandRatePerSecond": 0.2,
+      "rudderCommandRatePerSecond": 0.35
+    },
+    "calibration": {
+      "thrustMultiplier": 1.0,
+      "resistanceMultiplier": 1.0,
+      "rudderMultiplier": 1.0,
+      "trainingValidated": false
+    },
+    "sourceReferences": [
+      "https://russrivership.ru/public/files/doc257.pdf",
+      "https://www.wartsila.com/encyclopedia/term/steering-nozzle",
+      "https://fleetphoto.ru/projects/1697",
+      "https://mebspb.com/dry/507B.html",
+      "https://www.korabel.ru/fleet/info/7075.html",
+      "https://vsuwt-perm.ru/wp-content/uploads/vypusk/2018/isaev_a.s..pdf",
+      "https://s.science-education.ru/pdf/2013/5/242.pdf",
+      "https://link.springer.com/article/10.1007/s00773-014-0293-y",
+      "https://github.com/cybergalactic/MSS"
+    ]
+  },
+  "fresh_sea_trials": "# Virtual Sea Trials\n\nGenerated 2026-10-23 08:36. Pure three-degree-of-freedom simulation of the\nmanoeuvring model. Vessel coefficients are estimates, not trial data; this is not\nvalidated for maritime training. Distances are in ship lengths (Lpp).\n\n| Vessel and condition | Depth m | Slow / half / full kn | Advance | Transfer | Tactical D | Steady D | Turn speed loss | 10/10 1st / 2nd deg | 20/20 1st deg | Initial turn | Crash stop track | Stop time s | Full-speed squat bow / stern m |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| 507B loaded, deep water | deep | 3.6 / 7.5 / 10.7 | 3.77 | 1.96 | 4.60 | 3.70 | 53 % | 3.0 / 3.5 | 7.1 | 1.86 | 5.32 | 286 | 0.00 / 0.00 |\n| 507B loaded, river familiarisation channel | 8.2 | 3.3 / 6.9 / 9.7 | 3.68 | 2.12 | 4.61 | 3.81 | 47 % | 2.5 / 2.9 | 6.3 | 2.01 | 4.44 | 261 | 0.33 / 0.03 |\n| 507B loaded, Gorodets reach | 4.6 | 2.6 / 5.5 / 7.5 | 5.77 | 4.62 | 9.27 | 8.94 | 23 % | 0.7 / 0.7 | 1.9 | 3.60 | 2.66 | 203 | 0.35 / 0.03 |\n| 507B lightship, deep water | deep | 2.9 / 6.0 / 9.4 | 2.95 | 1.39 | 3.67 | 3.50 | 32 % | 2.5 / 2.1 | 5.7 | 1.30 | 1.92 | 107 | 0.00 / 0.00 |\n| Volgo-Balt 2-95A/R loaded, deep water | deep | 3.1 / 6.4 / 9.9 | 3.13 | 1.45 | 3.52 | 2.97 | 57 % | 4.1 / 4.9 | 10.0 | 1.60 | 4.54 | 213 | 0.00 / 0.00 |\n| Volgo-Balt 2-95A/R loaded, Gorodets reach | 4.6 | 2.5 / 5.1 / 7.4 | 5.62 | 4.33 | 8.75 | 8.38 | 27 % | 0.8 / 0.8 | 2.3 | 3.32 | 2.60 | 161 | 0.37 / 0.00 |\n| Volgoneft 1577 loaded, deep water | deep | 3.3 / 6.9 / 10.7 | 3.31 | 1.53 | 3.76 | 3.04 | 58 % | 3.9 / 4.5 | 9.0 | 1.64 | 4.99 | 254 | 0.00 / 0.00 |\n| Volgoneft 1577 loaded, Gorodets reach | 4.6 | 2.5 / 5.2 / 7.5 | 4.45 | 3.35 | 6.72 | 6.31 | 26 % | 1.1 / 1.1 | 3.0 | 2.62 | 2.52 | 181 | 0.38 / 0.00 |\n| Meteor 342U hydrofoil, deep water | deep | 8.9 / 17.6 / 34.4 | 3.08 | 1.19 | 2.93 | 2.92 | 61 % | 14.3 / 14.2 | 35.1 | 1.33 | 6.14 | 20 | 0.00 / 0.00 |\n| Meteor 342U hydrofoil, Gorodets reach | 4.6 | 8.8 / 16.4 / 34.3 | 3.11 | 1.21 | 2.97 | 2.95 | 63 % | 13.8 / 13.7 | 34.3 | 1.33 | 6.16 | 20 | 0.00 / 0.04 |\n| Luch 14352 air cushion, deep water | deep | 5.4 / 13.8 / 21.1 | 3.13 | 1.13 | 2.62 | 2.09 | 67 % | 10.7 / 10.4 | 28.6 | 1.32 | 5.76 | 21 | 0.00 / 0.00 |\n| Luch 14352 air cushion, Gorodets reach | 4.6 | 5.4 / 13.2 / 21.1 | 3.14 | 1.13 | 2.61 | 2.10 | 67 % | 10.5 / 10.4 | 28.2 | 1.32 | 5.53 | 21 | 0.00 / 0.15 |\n| KVLCC2 MMG benchmark, deep water | deep | 4.6 / 9.9 / 15.4 | 3.00 | 1.30 | 3.09 | 2.27 | 64 % | 5.7 / 10.3 | 11.7 | 1.67 | 5.58 | 488 | 0.00 / 0.00 |\n\nBow thruster alone, full to starboard from rest with engines stopped, yaw rate after 180 s:\n507B loaded deep water 13.1 deg/min, Gorodets reach 6.3 deg/min, lightship 0.0 deg/min.\n\nIMO MSC.137(76) reference envelope (deep, unrestricted water, full load): advance <= 4.5 L,\ntactical diameter <= 5 L, initial turning <= 2.5 L, 10/10 and 20/20 overshoot limits by L/V,\ncrash stop track reach <= 15 L. The criteria do not apply to a river vessel in shallow water,\nnor to the hydrofoil and air cushion craft, which are reported without an envelope check.\n\nResult: deep-water loaded conditions are inside the IMO envelope.\n",
+  "historical_loading_report": {
+    "unchangedOtherVessels": true,
+    "conditions": [
+      {
+        "name": "fraction 0",
+        "massKg": 1750000.0,
+        "cargoKg": 0.0,
+        "ballastKg": 0.0,
+        "storesKg": 0.0,
+        "draftM": 0.9151851534843445,
+        "propellerImmersion": 0.4528806507587433,
+        "estimatedGmM": 18.50052261352539,
+        "centreLocalM": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 2.0
+        },
+        "inertiaKgM2": {
+          "x": 1993359360.0,
+          "y": 1993359360.0,
+          "z": 60917504.0
+        },
+        "fullSpeedMps": 4.827210903167725,
+        "stopM": 259.19549560546875,
+        "stopSeconds": 107.20194244384766
+      },
+      {
+        "name": "fraction 0.5",
+        "massKg": 4250000.0,
+        "cargoKg": 2400000.0,
+        "ballastKg": 0.0,
+        "storesKg": 100000.0,
+        "draftM": 2.22259259223938,
+        "propellerImmersion": 1.0,
+        "estimatedGmM": 7.417208671569824,
+        "centreLocalM": {
+          "x": 0.0,
+          "y": -0.9529411792755127,
+          "z": 2.0
+        },
+        "inertiaKgM2": {
+          "x": 3736451840.0,
+          "y": 3761225728.0,
+          "z": 94809760.0
+        },
+        "fullSpeedMps": 5.793102264404297,
+        "stopM": 519.6192626953125,
+        "stopSeconds": 191.75709533691406
+      },
+      {
+        "name": "fraction 1",
+        "massKg": 6750000.0,
+        "cargoKg": 4800000.0,
+        "ballastKg": 0.0,
+        "storesKg": 200000.0,
+        "draftM": 3.5299999713897705,
+        "propellerImmersion": 1.0,
+        "estimatedGmM": 5.027981758117676,
+        "centreLocalM": {
+          "x": 0.0,
+          "y": -1.2000000476837158,
+          "z": 2.0
+        },
+        "inertiaKgM2": {
+          "x": 5477542400.0,
+          "y": 5529092608.0,
+          "z": 126700840.0
+        },
+        "fullSpeedMps": 5.5008039474487305,
+        "stopM": 718.5244750976562,
+        "stopSeconds": 286.0036926269531
+      },
+      {
+        "name": "ballast plus stores",
+        "massKg": 4150000.0,
+        "cargoKg": 0.0,
+        "ballastKg": 2200000.0,
+        "storesKg": 200000.0,
+        "draftM": 2.1702961921691895,
+        "propellerImmersion": 1.0,
+        "estimatedGmM": 8.078673362731934,
+        "centreLocalM": {
+          "x": 0.0,
+          "y": -1.4265060424804688,
+          "z": 2.0
+        },
+        "inertiaKgM2": {
+          "x": 3597613056.0,
+          "y": 3627625984.0,
+          "z": 104904600.0
+        },
+        "fullSpeedMps": 5.805760383605957,
+        "stopM": 510.8325500488281,
+        "stopSeconds": 187.80685424804688
+      },
+      {
+        "name": "forward-biased cargo",
+        "massKg": 4250000.0,
+        "cargoKg": 2400000.0,
+        "ballastKg": 0.0,
+        "storesKg": 100000.0,
+        "draftM": 2.22259259223938,
+        "propellerImmersion": 1.0,
+        "estimatedGmM": 7.417208671569824,
+        "centreLocalM": {
+          "x": 0.0,
+          "y": -0.9529411792755127,
+          "z": 7.647058963775635
+        },
+        "inertiaKgM2": {
+          "x": 3600922112.0,
+          "y": 3625696512.0,
+          "z": 94809760.0
+        },
+        "fullSpeedMps": 5.793102264404297,
+        "stopM": 519.6192626953125,
+        "stopSeconds": 191.75709533691406
+      }
+    ]
+  },
+  "historical_loading_note": "Preserved Part 7 evidence, not rerun in Part 9. Fresh planar trials are above.",
+  "archive": {
+    "url": "https://russrivership.ru/public/files/doc257.pdf",
+    "pages": 9,
+    "sha256": "841d1aeb590193e92ab2a848d6aaa516ec7c1cc498fa2e3dfee6f7db21979e4b"
+  }
+}

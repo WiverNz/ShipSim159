@@ -1,6 +1,12 @@
 # Volgo-Don 507B editable source
 
-## Current milestone: Part 7
+## Current milestone: Part 8
+
+Parts 1-8 are implemented, with target-machine performance acceptance still open.
+Remaining fidelity work is staged as Parts 9-17 in
+[REFINEMENT_PLAN.md](REFINEMENT_PLAN.md). Those parts are planned, not implemented.
+
+## Part 7 record
 
 Read [PART7_REVIEW.md](PART7_REVIEW.md) for cargo, ballast and stores accounting,
 shared deadweight limits, loading controls, physical draft/trim/inertia changes,

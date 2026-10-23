@@ -1,5 +1,14 @@
 # ShipSim159 Project Context
 
+## Volgo-Don refinement plan, 2026-10-23
+
+User requested a plan for the remaining fidelity work after Part 8.
+`Art/Source/VolgoDon507B/REFINEMENT_PLAN.md` defines Parts 9-17: evidence/variant,
+hull, hydrostatics, manoeuvring, machinery, anchors/mooring, audio, collision and
+integrated acceptance. Each has dependencies, a checklist and acceptance criteria.
+Implementation has not started; execute only the next part requested by the user.
+Built-player performance remains the separate open Part 8 item. README links the plan.
+
 ## Volgo-Don 507B Part 8, 2026-10-23
 
 LOD and final host quality work implemented. Guide: `Art/Source/VolgoDon507B/PART8_REVIEW.md`.

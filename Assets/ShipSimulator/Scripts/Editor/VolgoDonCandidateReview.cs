@@ -48,7 +48,7 @@ namespace ShipSimulator.Editor
             }
         }
 
-        public static void Review()
+        public static void Review(bool capture = true)
         {
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             var specs = JsonUtility.FromJson<MaterialList>(File.ReadAllText(Folder + "/materials.json"));
@@ -181,8 +181,8 @@ namespace ShipSimulator.Editor
                     Require(materials["VD507B_Glass"].renderQueue == (int)RenderQueue.Transparent,
                         "Glazing must use the transparent pass.");
                 }
-                Render(vessel, specs.stage >= 3 ? specs.stage : 2);
-                if (specs.stage >= 4) ReviewMechanisms(vessel);
+                if (capture) Render(vessel, specs.stage >= 3 ? specs.stage : 2);
+                if (specs.stage >= 4) ReviewMechanisms(vessel, capture);
                 Directory.CreateDirectory("Logs/VolgoDon507B");
                 File.WriteAllText("Logs/VolgoDon507B/candidate-review.txt",
                     $"PASS\nMeshes: {renderers.Length}\nTriangles: {triangles}\nBounds: {bounds}\n" +
@@ -206,7 +206,7 @@ namespace ShipSimulator.Editor
             return AssetDatabase.LoadAssetAtPath<Texture>(path);
         }
 
-        private static void ReviewMechanisms(GameObject vessel)
+        private static void ReviewMechanisms(GameObject vessel, bool capture)
         {
             var manifest = JsonUtility.FromJson<MechanismList>(File.ReadAllText(Folder + "/mechanisms.json"));
             var transforms = vessel.GetComponentsInChildren<Transform>().ToDictionary(t => t.name);
@@ -282,7 +282,7 @@ namespace ShipSimulator.Editor
                         anchor ? new Vector3(0, 1.5f, 65) : new Vector3(0, 0, 5));
                     camera.orthographicSize = nozzle ? 4 : anchor ? 4 : 43;
                     sun.transform.rotation = Quaternion.Euler(40, camera.transform.eulerAngles.y - 25, 0);
-                    LandscapePreview.Render(camera, Output + "/part4-unity-" + names[i] + ".png");
+                    if (capture) LandscapePreview.Render(camera, Output + "/part4-unity-" + names[i] + ".png");
                 }
                 Debug.Log($"VOLGODON_MECHANISMS|PASS|bindings={manifest.mechanisms.Length}|clip={clip.name}|duration={clip.length}");
             }

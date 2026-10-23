@@ -322,25 +322,29 @@ conflict and equivalent compartment estimates remain explicit in PART7_REVIEW.md
 
 ## Part 8: LOD, performance and final quality gate
 
-Dependencies: Parts 3-7. Status: not started.
+Dependencies: Parts 3-7. Status: implemented and host-verified, 2026-10-23.
+Target-machine built-player GPU acceptance remains open. See `PART8_REVIEW.md`.
 
-- [ ] Establish measured triangle, draw-call, texture-memory and frame-time budgets.
+- [x] Establish measured triangle, draw-call, texture-memory and frame-time budgets.
   Generate LODs preserving silhouette, material boundaries and moving components.
-- [ ] Check LOD transitions, distant railings, glass, lights and shadow behavior.
-- [ ] Review collision approximations against the updated hull without replacing
+- [x] Check LOD transitions, distant railings, glass, lights and shadow behavior.
+- [x] Review collision approximations against the updated hull without replacing
   the dynamic compound hull with a non-convex mesh.
-- [ ] Reopen source, regenerate export and reintegrate to prove reproducibility.
-- [ ] Verify original fallback checksums and candidate resource completeness.
-- [ ] Run compile checks, relevant EditMode/PlayMode tests, full vessel shakedown,
+- [x] Reopen source, regenerate export and reintegrate to prove reproducibility.
+- [x] Verify original fallback checksums and candidate resource completeness.
+- [x] Run compile checks, relevant EditMode/PlayMode tests, full vessel shakedown,
   manoeuvring trials and save/load/menu checks appropriate to the changed systems.
-- [ ] Capture front, side, top, perspective, underwater, bridge and mechanism views,
+- [x] Capture front, side, top, perspective, underwater, bridge and mechanism views,
   including loaded/light conditions and day/night navigation lights.
-- [ ] Finish source README, provenance, parameter sources and discrepancy ledger.
+- [x] Finish source README, provenance, parameter sources and discrepancy ledger.
   Update project context with exact verification evidence and remaining limitations.
 
 Acceptance: reproducible editable source and verified Unity integration, no missing
 textures or inverted visible surfaces, functioning mechanisms, acceptable measured
 performance, preserved controls and an honest final list of remaining differences.
+
+- [ ] External acceptance: measure a 1080p built player on target hardware.
+  RTX 4090 editor/batch measurements are recorded, not a target GPU certification.
 
 ## Completion record template
 

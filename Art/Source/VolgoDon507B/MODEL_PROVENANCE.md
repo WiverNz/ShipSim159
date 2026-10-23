@@ -82,3 +82,11 @@ anchor chain payout remain unresolved. Anchor motion is a short unseating previe
 No new external textures were introduced. See PART4_REVIEW.md and mechanisms.json
 for current controls, confidence, screenshots and validation evidence.
 
+# Part 8 addendum, 2026-10-23
+
+The final source adds two distance LOD scenes derived from the existing editable
+geometry by Blender decimation. No downloaded geometry or photographic textures
+were added. Primary geometry, material lineage and the classic two-covered-hold
+variant are unchanged. All 45 original model resources match their audit hashes.
+See `PART8_REVIEW.md` and `part8-reproducibility.json` for evidence and limitations.
+

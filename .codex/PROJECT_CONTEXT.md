@@ -1,5 +1,28 @@
 # ShipSim159 Project Context
 
+## Volgo-Don 507B Part 8, 2026-10-23
+
+LOD and final host quality work implemented. Guide: `Art/Source/VolgoDon507B/PART8_REVIEW.md`.
+Source .blend has original plus two derived scenes; 53130/34429/24072 triangles.
+Run `part8_export.py` through registered Blender MCP, then dedicated batch
+`ShipSimulator.Editor.VolgoDonQualityGate.Run` for import, repeated integration,
+budgets, collider preservation and screenshots. Keep original FBX fallback unchanged.
+33 packed images decode after reopen; semantic geometry matches regeneration;
+45 original model resource hashes match. Shared textures 78.28 MiB, 50/50/43 slots.
+Runtime LOD meshes are identity children of animated originals. Physics unchanged.
+
+EditMode 228/228: `check-EditMode-20261023-031918-126.xml`.
+PlayMode 47/47: `check-PlayMode-20261023-031956-404.xml`.
+Full shakedown PASS five vessels: `Logs/VolgoDon507B/part8-shakedown.log`.
+Menu/save/load PASS exit0: `Logs/check-Menu-20261023-081632-457.log`.
+Sea trials PASS exit0: `Logs/VolgoDon507B/part8-trials.log`.
+Final visual/resource gate: `Logs/VolgoDon507B/part8-quality.log`.
+Part8 source JSON reports and Previews hold evidence. RTX4090/i9 host timing only:
+batch640x480 median1.336ms; GPU timing unavailable. Isolated1080p synchronous
+render benchmark is not player FPS. Thread allocation counter unavailable.
+Target1080p built-player GPU/GC profiling remains open; do not claim RTX3060 acceptance.
+Remaining model/physics discrepancies are listed in PART8_REVIEW.md. No commit/push.
+
 ## Volgo-Don 507B Part 7, 2026-10-23
 
 Part 7 complete. Do not start Part 8 until requested. Current guide:

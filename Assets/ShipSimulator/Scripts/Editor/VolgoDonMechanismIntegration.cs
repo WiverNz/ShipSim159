@@ -38,6 +38,7 @@ namespace ShipSimulator.Editor
             rig.Configure(visual, hatch, anchor, shafts, ducts, shaftAxes, steeringAxes);
             ConfigureLayout(root);
             AddAudioPoints(visual);
+            VolgoDonLodIntegration.Install(visual);
             return true;
         }
 

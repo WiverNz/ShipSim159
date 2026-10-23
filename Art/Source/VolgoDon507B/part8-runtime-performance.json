@@ -1,0 +1,16 @@
+{
+    "device": "NVIDIA GeForce RTX 4090",
+    "processor": "13th Gen Intel(R) Core(TM) i9-13900K",
+    "method": "First 600 advancing player frames after 60 warmups during full five-vessel shakedown. River scenario, editor wall intervals, fixed simulation capture step. CPU/GPU timing zero means unavailable. Not an RTX 3060 acceptance test.",
+    "width": 640,
+    "height": 480,
+    "samples": 600,
+    "cpuSamples": 600,
+    "gpuSamples": 0,
+    "drawCalls": 48,
+    "setPassCalls": 48,
+    "wallMedianMs": 1.3359999999984495,
+    "wallP95Ms": 1.507200000000708,
+    "cpuMedianMs": 1.3353,
+    "gpuMedianMs": 0.0
+}

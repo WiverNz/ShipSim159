@@ -202,3 +202,13 @@ pitch, not independently verified historical handedness. Machinery rates are
 estimated 40 s opening, 45 s paired travel and 5 s unseating. Full anchor payout
 and holding forces remain absent. See Art/Source/VolgoDon507B/PART5_REVIEW.md.
 
+## Part 8 quality and performance addendum, 2026-10-23
+
+Distance LODs and final verification are documented in
+`Art/Source/VolgoDon507B/PART8_REVIEW.md`. Primary geometry and all physical
+parameters remain unchanged. The source now regenerates three FBXs and the normal
+integrator installs their LOD group without changing the physics root. Host render
+timings are engineering measurements, not vessel specifications or proof of the
+target GPU budget. The final discrepancy ledger retains unknown vessel identity,
+estimated hydrostatics, steering calibration and machinery rates.
+

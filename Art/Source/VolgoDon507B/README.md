@@ -5,7 +5,18 @@
 Read [PART7_REVIEW.md](PART7_REVIEW.md) for cargo, ballast and stores accounting,
 shared deadweight limits, loading controls, physical draft/trim/inertia changes,
 save compatibility, tests and remaining hydrostatic limitations. The current
-source/FBX remain the Part 4 geometry integrated in Part 5. Part 8 is not started.
+source/FBX retain the Part 4 primary geometry integrated in Part 5.
+
+## Part 8 record
+
+See [PART8_REVIEW.md](PART8_REVIEW.md) for distance LODs, resource budgets,
+reproducibility, performance measurements, final screenshots and remaining limits.
+The source now contains three scenes, with 53,130 / 34,429 / 24,072 triangles.
+Use `part8_export.py` through registered Blender MCP to regenerate all exports,
+then `ShipSimulator.Editor.VolgoDonQualityGate.Run` in a dedicated Unity batch
+editor to reimport, validate and install them. This supersedes the earlier export
+instructions for the final LOD-enabled source. Physics and controls are preserved.
+Target-machine built-player GPU performance remains unverified.
 
 ## Part 6 handling record
 

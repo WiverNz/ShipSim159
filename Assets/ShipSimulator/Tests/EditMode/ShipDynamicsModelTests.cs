@@ -201,9 +201,32 @@ namespace ShipSimulator.Tests
         }
 
         [Test]
-        public void Hydrostatics_FloatLoadedMassAtDraftWithPlausibleStability()
+        public void SectionHydrostatics_FloatLoadedMassWithPlausibleStability()
         {
             VesselParameters p = VesselFixtures.VolgoDon();
+            var hydrostatics = new HydrostaticsModel(p);
+            float area = 0f, moment = 0f;
+            for (int i = 0; i < hydrostatics.CellCount; i++)
+            {
+                area += hydrostatics.Area(i);
+                moment += hydrostatics.Area(i) * hydrostatics.KeelPoint(i).z;
+            }
+            float rollPeriod = 2f * Mathf.PI * p.Data.massProperties.rollGyrationRadiusM /
+                Mathf.Sqrt(VesselParameters.Gravity * hydrostatics.MetacentricHeightM);
+
+            Assert.That(p.Rho * p.Equilibrium.VolumeM3, Is.EqualTo(p.Mass).Within(0.001f * p.Mass));
+            Assert.That(area, Is.EqualTo(hydrostatics.WaterplaneArea).Within(0.01f * area));
+            Assert.That(moment / area, Is.EqualTo(p.Equilibrium.LcfM).Within(0.05f));
+            Assert.That(hydrostatics.MetacentricHeightM, Is.InRange(2f, 8f));
+            Assert.That(rollPeriod, Is.InRange(3f, 12f));
+        }
+
+        [Test]
+        public void Hydrostatics_FloatLoadedMassAtDraftWithPlausibleStability()
+        {
+            VesselData data = VesselFixtures.Load(VesselFixtures.VolgoDonFile);
+            data.hydrostatics.sectionTable.enabled = false;
+            VesselParameters p = VesselParameters.Create(data);
             var hydrostatics = new HydrostaticsModel(p);
             float moment = 0f;
             for (int i = 0; i < hydrostatics.CellCount; i++) moment += hydrostatics.Area(i) * hydrostatics.KeelPoint(i).z;
@@ -223,8 +246,8 @@ namespace ShipSimulator.Tests
             VesselParameters loaded = VesselParameters.Create(data, 1f);
             VesselParameters light = VesselParameters.Create(data, 0f);
 
-            Assert.That(light.Draft, Is.EqualTo(data.dimensions.loadedDraftM * data.massProperties.lightshipMassKg /
-                data.massProperties.loadedMassKg).Within(1e-3f));
+            Assert.That(light.Equilibrium.VolumeM3 * light.Rho, Is.EqualTo(light.Mass).Within(1e-3f * light.Mass));
+            Assert.That(light.Draft, Is.LessThan(0.3f * loaded.Draft));
             Assert.That(light.WindLateralArea, Is.GreaterThan(loaded.WindLateralArea));
             Assert.That(light.SwayAddedMass, Is.LessThan(loaded.SwayAddedMass));
         }

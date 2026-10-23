@@ -161,7 +161,8 @@ namespace ShipSimulator.UI
             {
                 var c = ship.Data.loading.compartments[selectedLoadCompartment];
                 loadingText.text = $"{c.id.ToUpperInvariant()}\n{ship.CompartmentMassKg(selectedLoadCompartment) / 1000:F1} / {c.capacityKg / 1000:F0} t" +
-                    $"   TOTAL {ship.CurrentMassKg / 1000:F0} t\nDRAFT {ship.EstimatedDraftM:F2} m\n{ship.LoadingStatus}";
+                    $"   TOTAL {ship.CurrentMassKg / 1000:F0} t\nDRAFT {ship.EstimatedDraftM:F2} m  TRIM {ship.EstimatedTrimM:+0.00;-0.00} m\n{ship.LoadingStatus}" +
+                    (ship.HydrostaticRange == HydrostaticRange.Supported ? "" : " | OUTSIDE TABLES");
             }
             if (machineryText != null && ship.Mechanisms != null)
             {

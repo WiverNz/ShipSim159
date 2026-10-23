@@ -1,0 +1,19 @@
+{
+    "scope": "Editor thread, warmed. Rebuild = parameters (including equilibrium solve), manoeuvring model, hydrostatics model and station array, as ShipPhysicsController.ApplyLoading does per transfer step; Rigidbody assignment excluded. Apply = one hydrostatic force evaluation on a Rigidbody.",
+    "allocationMeasure": "GC.Alloc profiler samples on this thread (Recorder), per operation",
+    "iterations": 1000,
+    "geometryBuildMs": 7.2427849769592285,
+    "coldParameterSolveMs": 0.5412167906761169,
+    "warmParameterSolveMs": 0.14766579866409302,
+    "cachedRebuildMs": 0.15709500014781952,
+    "wallSidedRebuildMs": 0.007155200000852346,
+    "geometryBuildAllocations": 965,
+    "cachedRebuildAllocations": 13,
+    "wallSidedRebuildAllocations": 16,
+    "sectionApplyMicroseconds": 108.28780364990234,
+    "wallSidedApplyMicroseconds": 16.99250030517578,
+    "sectionApplyAllocations": 0,
+    "wallSidedApplyAllocations": 0,
+    "cells": 1932,
+    "wallSidedCells": 96
+}

@@ -76,7 +76,7 @@ run them without a scene:
 | `SupportModel` | Air cushion or hydrofoil lift: weight fraction, drag hump, supported draft |
 | `WindLoadModel` | Blendermann (1994) wind load coefficients |
 | `RestrictedWaterModel` | Depth factors, ICORELS squat with blockage, estimated bank suction |
-| `HydrostaticsModel` | Station prism buoyancy, heave and roll damping, squat as a lowered water surface |
+| `HydrostaticsModel` | Station prism or tabulated section-column buoyancy, heave and roll damping, squat as a lowered water surface |
 | `ManoeuvringSimulator`, `ManoeuvringTrials` | Pure simulation and IMO-style standard manoeuvres |
 
 `ShipPhysicsController` is the hub. Each `FixedUpdate` it:
@@ -213,6 +213,23 @@ Heave and roll damping are critical-damping fractions. The turning heel moment u
 
 `massProperties.loadFraction` interpolates mass between lightship and loaded; draft, windage,
 added masses and derivatives follow the resulting condition.
+
+### Section hydrostatics (Volgo-Don 507B)
+
+An enabled `hydrostatics.sectionTable` replaces the prisms. It holds half-breadth offsets per
+station (heights above keel, breadth linear between offsets and zero below the first) for a
+closed hydrostatic surface. `SectionHydrostatics` builds once per vessel data a table of
+immersed area and keel moment for every station and strip, on a uniform height grid, and
+`VesselParameters` solves draft and trim by Newton iteration so that the displaced volume
+equals mass / rho and buoyancy and gravity lie on one vertical. `HydrostaticsModel` applies
+the same columns at runtime, immersed to the local water surface, with heave damping
+proportional to each column's waterline breadth. Heel is resolved dynamically; reported GM is
+`KB + I_T / V - KG` without a free-surface correction. Immersion above the cap saturates; a
+dry or non-finite column adds nothing. A solution outside the table's declared draft and trim
+range is flagged (`HydrostaticRange`), and an overload beyond the capped volume is reported as
+unsolved without NaN. Propeller immersion and bow thruster submergence use the local draft at
+their stations. Vessels without a table keep the prism model unchanged. Derivation, accuracy
+and limits: `Art/Source/VolgoDon507B/PART11_REVIEW.md`.
 
 ## Grounding
 

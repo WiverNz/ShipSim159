@@ -22,7 +22,7 @@ namespace ShipSimulator.Physics
         {
             data = parameters.Data.bowThruster;
             BollardThrustN = BollardThrust(parameters.Rho, data.powerW, data.tunnelDiameterM, data.figureOfMerit);
-            submergence = SubmergenceFactor(data, parameters.Draft);
+            submergence = SubmergenceFactor(data, parameters.DraftAt(data.longitudinalPositionM));
         }
 
         public static float BollardThrust(float rho, float powerW, float diameterM, float figureOfMerit)

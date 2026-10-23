@@ -87,6 +87,9 @@ namespace ShipSimulator.Physics
         public float CurrentMassKg => body != null ? body.mass : 0f;
         // Still-water draft for the loading condition.
         public float EstimatedDraftM => parameters != null ? parameters.Draft : 0f;
+        // Still-water trim over Lpp for the loading condition, bow-down positive.
+        public float EstimatedTrimM => parameters != null ? parameters.TrimM : 0f;
+        public HydrostaticRange HydrostaticRange => parameters != null ? parameters.HydrostaticRange : HydrostaticRange.Supported;
         public float EstimatedSquatM => Mathf.Max(diagnostics.BowSquatM, diagnostics.SternSquatM);
         // Deepest keel point below the still water surface, including squat, trim and heel.
         public float EffectiveDraftM => effectiveDraft;
@@ -137,7 +140,8 @@ namespace ShipSimulator.Physics
             if (engineCommands.Length != parameters.Data.propeller.count)
                 engineCommands = new float[parameters.Data.propeller.count];
             stationCurrent = new float[model.Hull.StationCount];
-            effectiveDraft = parameters.Draft;
+            effectiveDraft = Mathf.Max(parameters.Draft, parameters.DraftAt(0.5f * parameters.Lpp),
+                parameters.DraftAt(-0.5f * parameters.Lpp));
 
             body.mass = parameters.Mass;
             body.centerOfMass = parameters.CentreOfMassLocalM;
@@ -371,7 +375,7 @@ namespace ShipSimulator.Physics
                 Mechanisms.Target == ShipSimulator.Visuals.HatchPosition.HalfOpen);
             bool changed = LoadingModel.Step(data, loading, dt, accessible);
             LoadingStatus = changed ? "TRANSFERRING" : "LIMIT REACHED / OPEN HATCHES HALFWAY";
-            if (changed) ApplyLoading(VesselParameters.Create(data, loading));
+            if (changed) ApplyLoading(VesselParameters.Create(data, loading, parameters));
         }
 
         public float[] CaptureShaftRps()

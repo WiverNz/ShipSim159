@@ -6,22 +6,37 @@ namespace ShipSimulator.Physics
     // by a parabolic end taper that matches the waterplane coefficient. Each prism is pushed up by the weight of
     // water it displaces at its own immersion, so draft, trim, heel and the metacentric height follow from the
     // geometry. Prisms are sized to float the loaded mass at the loaded draft (wall-sided, an estimate).
+    // A vessel with a section table replaces the prisms with its tabulated hull columns instead.
     public sealed class HydrostaticsModel
     {
         private readonly VesselParameters p;
+        private readonly SectionHydrostatics sections;
         private readonly Vector3[] keelPoints;
         private readonly float[] areas;
         private readonly float[] damping;
+        private readonly float heaveDampingPerArea;
 
         public float WaterplaneArea { get; }
+        // Solid-mass value: no free-surface correction is applied.
         public float MetacentricHeightM { get; }
         public float RollDampingNmsPerRad { get; }
-        public int CellCount => areas.Length;
+        public int CellCount => sections != null ? sections.StationCount * sections.StripCount : areas.Length;
 
         public HydrostaticsModel(VesselParameters parameters)
         {
             p = parameters;
             VesselHydrostatics h = parameters.Data.hydrostatics;
+            if (parameters.Sections != null)
+            {
+                sections = parameters.Sections;
+                HydrostaticState state = parameters.Equilibrium;
+                WaterplaneArea = Mathf.Max(state.WaterplaneAreaM2, 1f);
+                MetacentricHeightM = state.KbM + state.TransverseInertiaM4 / Mathf.Max(state.VolumeM3, 1e-3f) -
+                    parameters.CentreOfGravityAboveKeel;
+                heaveDampingPerArea = HeaveDamping(parameters, h, WaterplaneArea) / WaterplaneArea;
+                RollDampingNmsPerRad = RollDamping(parameters, h, MetacentricHeightM);
+                return;
+            }
             int stations = h.stationCount;
             int strips = h.stripsAcross;
             keelPoints = new Vector3[stations * strips];
@@ -62,16 +77,39 @@ namespace ShipSimulator.Physics
 
             MetacentricHeightM = 0.5f * parameters.Draft + secondMoment / (WaterplaneArea * parameters.Draft) -
                 parameters.CentreOfGravityAboveKeel;
-            float heaveStiffness = parameters.Rho * VesselParameters.Gravity * WaterplaneArea;
-            float heaveDamping = 2f * h.heaveDampingRatio *
-                Mathf.Sqrt(heaveStiffness * parameters.Mass * (1f + h.heaveAddedMassFraction));
+            float heaveDamping = HeaveDamping(parameters, h, WaterplaneArea);
             for (int i = 0; i < areas.Length; i++) damping[i] = heaveDamping * areas[i] / WaterplaneArea;
-            float rollStiffness = parameters.Mass * VesselParameters.Gravity * Mathf.Max(MetacentricHeightM, 0.1f);
-            RollDampingNmsPerRad = 2f * h.rollDampingRatio * Mathf.Sqrt(rollStiffness * parameters.RollInertia);
+            RollDampingNmsPerRad = RollDamping(parameters, h, MetacentricHeightM);
         }
 
-        public Vector3 KeelPoint(int index) => keelPoints[index];
-        public float Area(int index) => areas[index];
+        private static float HeaveDamping(VesselParameters parameters, VesselHydrostatics h, float waterplaneArea)
+        {
+            float heaveStiffness = parameters.Rho * VesselParameters.Gravity * waterplaneArea;
+            return 2f * h.heaveDampingRatio * Mathf.Sqrt(heaveStiffness * parameters.Mass * (1f + h.heaveAddedMassFraction));
+        }
+
+        private static float RollDamping(VesselParameters parameters, VesselHydrostatics h, float metacentricHeight)
+        {
+            float rollStiffness = parameters.Mass * VesselParameters.Gravity * Mathf.Max(metacentricHeight, 0.1f);
+            return 2f * h.rollDampingRatio * Mathf.Sqrt(rollStiffness * parameters.RollInertia);
+        }
+
+        public Vector3 KeelPoint(int index)
+        {
+            if (sections == null) return keelPoints[index];
+            int station = index / sections.StripCount;
+            return new Vector3(sections.StripX(index % sections.StripCount), p.KeelLocalY, sections.StationZ(station));
+        }
+
+        // Waterplane area of a cell in the still-water floating position.
+        public float Area(int index)
+        {
+            if (sections == null) return areas[index];
+            int station = index / sections.StripCount;
+            sections.Lookup(station, index % sections.StripCount, p.DraftAt(sections.StationZ(station)), out _, out _,
+                out float breadth);
+            return sections.Weight(station) * breadth;
+        }
 
         public float SquatAt(float localZ, float bowSquatM, float sternSquatM)
         {
@@ -82,6 +120,11 @@ namespace ShipSimulator.Physics
         // around a moving hull in shallow water: the ship sinks and trims instead of reporting a number.
         public void Apply(Rigidbody body, Transform frame, float waterLevel, float bowSquatM, float sternSquatM)
         {
+            if (sections != null)
+            {
+                ApplySections(body, frame, waterLevel, bowSquatM, sternSquatM);
+                return;
+            }
             float weightDensity = p.Rho * VesselParameters.Gravity;
             Vector3 up = frame.up;
             for (int i = 0; i < areas.Length; i++)
@@ -96,6 +139,50 @@ namespace ShipSimulator.Physics
             }
             float rollRate = Vector3.Dot(body.angularVelocity, frame.forward);
             body.AddTorque(-frame.forward * (RollDampingNmsPerRad * rollRate), ForceMode.Force);
+        }
+
+        // Columns are vertical in the body frame and immersed to the local water surface. Their forces are
+        // summed here and applied once, which is the same resultant as one force per column at a fraction of
+        // the engine calls. Immersion above the cap saturates; a dry or non-finite immersion adds nothing.
+        private void ApplySections(Rigidbody body, Transform frame, float waterLevel, float bowSquatM, float sternSquatM)
+        {
+            float weightDensity = p.Rho * VesselParameters.Gravity;
+            Vector3 origin = frame.position, right = frame.right, up = frame.up, forward = frame.forward;
+            Vector3 centre = body.worldCenterOfMass, velocity = body.linearVelocity, spin = body.angularVelocity;
+            float lift = 0f, torqueX = 0f, torqueZ = 0f;
+            // Scalar arithmetic: this loop visits every column each physics step.
+            float reach = Mathf.Abs(right.y) * sections.Table.stripHalfWidthM;
+            for (int i = 0; i < sections.StationCount; i++)
+            {
+                float z = sections.StationZ(i);
+                float surface = waterLevel - SquatAt(z, bowSquatM, sternSquatM);
+                float baseX = origin.x + forward.x * z + up.x * p.KeelLocalY - centre.x;
+                float baseY = origin.y + forward.y * z + up.y * p.KeelLocalY;
+                float baseZ = origin.z + forward.z * z + up.z * p.KeelLocalY - centre.z;
+                if (surface <= baseY - reach) continue;
+                float weight = sections.Weight(i);
+                for (int j = 0; j < sections.StripCount; j++)
+                {
+                    float x = sections.StripX(j);
+                    float immersion = surface - (baseY + right.y * x);
+                    if (!(immersion > 0f)) continue;
+                    sections.Lookup(i, j, immersion, out float area, out float moment, out float breadth);
+                    if (area <= 0f) continue;
+                    float rise = moment / area;
+                    float rx = baseX + right.x * x + up.x * rise;
+                    float rz = baseZ + right.z * x + up.z * rise;
+                    float verticalVelocity = velocity.y + spin.z * rx - spin.x * rz;
+                    float force = weight * (weightDensity * area - heaveDampingPerArea * breadth * verticalVelocity);
+                    if (force <= 0f) continue;
+                    lift += force;
+                    torqueX -= rz * force;
+                    torqueZ += rx * force;
+                }
+            }
+            body.AddForce(new Vector3(0f, lift, 0f), ForceMode.Force);
+            body.AddTorque(new Vector3(torqueX, 0f, torqueZ), ForceMode.Force);
+            float rollRate = Vector3.Dot(spin, forward);
+            body.AddTorque(-forward * (RollDampingNmsPerRad * rollRate), ForceMode.Force);
         }
     }
 }

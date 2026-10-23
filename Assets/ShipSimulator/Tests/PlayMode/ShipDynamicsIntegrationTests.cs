@@ -309,7 +309,7 @@ namespace ShipSimulator.Tests
             ship.ConfigureLoading(fraction);
             Assert.That(ship.Body.position, Is.EqualTo(before));
             Run(ship, 120);
-            Assert.That(ship.EffectiveDraftM, Is.EqualTo(ship.Parameters.Draft).Within(.07f));
+            AssertFloatsAtSolvedWaterline(ship, .07f);
             Assert.That(ship.Body.mass, Is.EqualTo(ship.Parameters.Mass));
             Assert.That(ship.Body.centerOfMass, Is.EqualTo(ship.Parameters.CentreOfMassLocalM));
             yield return null;
@@ -380,11 +380,162 @@ namespace ShipSimulator.Tests
             Assert.That(ship.Grounding.MinimumClearanceM, Is.LessThan(.1f));
             Vector3 position = ship.Body.position;
             ship.ConfigureLoading(0);
-            Assert.That(ship.Body.position, Is.EqualTo(position));
+            // Moving the centre of mass about 20 m aft may round the pose in its last bits; it must not jump.
+            Assert.That(Vector3.Distance(ship.Body.position, position), Is.LessThan(1e-4f));
             Run(ship, 120);
-            Assert.That(ship.Grounding.MinimumClearanceM, Is.GreaterThan(1.4f));
+            // The light ship trims by the stern, so its aft keel sets the clearance.
+            float aftDraft = ship.Parameters.DraftAt(-.46f * ship.Parameters.Lpp);
+            Assert.That(aftDraft, Is.LessThan(2.4f));
+            Assert.That(ship.Grounding.MinimumClearanceM, Is.EqualTo(2.5f - aftDraft).Within(.1f));
             Assert.That(ship.Grounding.ContactNormalForceN, Is.Zero);
             yield return null;
+        }
+
+        private static readonly string[] SectionLoadCases = { "full", "half", "ballast", "forward biased" };
+
+        [UnityTest]
+        public IEnumerator SectionHydrostatics_SettleStablyAtSolvedDraftAndTrim([ValueSource(nameof(SectionLoadCases))] string name)
+        {
+            ShipPhysicsController ship = CreateShip(LoadVolgoDon(), float.PositiveInfinity, false);
+            LoadingState state = LoadingModel.Initial(ship.Data, name == "full" ? 1f : name == "ballast" ? 0f : .5f);
+            if (name == "ballast")
+            {
+                state.massKg[2] = state.massKg[3] = 1100000;
+                state.massKg[4] = 200000;
+            }
+            if (name == "forward biased")
+            {
+                state.massKg[0] += 500000;
+                state.massKg[1] -= 500000;
+            }
+            ship.RestoreVoyage(new VoyageSave { loading = state });
+            Assert.That(ship.HydrostaticRange, Is.EqualTo(HydrostaticRange.Supported));
+            Run(ship, 180);
+            AssertFloatsAtSolvedWaterline(ship, .03f);
+            Assert.That(ship.Body.linearVelocity.magnitude, Is.LessThan(.01f));
+            Assert.That(ship.Body.angularVelocity.magnitude, Is.LessThan(1e-3f));
+            Assert.That(ship.Body.mass, Is.EqualTo(LoadingModel.Payload(state) + ship.Data.massProperties.lightshipMassKg));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator SectionHydrostatics_SmallHeelFollowsTheTabulatedMetacentricHeight()
+        {
+            ShipPhysicsController ship = CreateShip(LoadVolgoDon(), float.PositiveInfinity, false);
+            float gm = ship.Hydrostatics.MetacentricHeightM;
+            float moment = ship.Parameters.Mass * VesselParameters.Gravity * gm * Mathf.Sin(1.5f * Mathf.Deg2Rad);
+            for (int i = 0; i < Mathf.RoundToInt(150f / Step); i++)
+            {
+                ship.Simulate(Step);
+                ship.Body.AddTorque(ship.transform.forward * moment, ForceMode.Force);
+                UnityEngine.Physics.Simulate(Step);
+            }
+            float heel = Mathf.Asin(Mathf.Abs(ship.transform.right.y)) * Mathf.Rad2Deg;
+            Assert.That(gm, Is.InRange(4f, 8f));
+            Assert.That(heel, Is.EqualTo(1.5f).Within(.15f));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator SectionHydrostatics_ApplyDoesNotAllocate()
+        {
+            ShipPhysicsController ship = CreateShip(LoadVolgoDon(), float.PositiveInfinity, false);
+            Run(ship, 1);
+            Assert.That(() => ship.Hydrostatics.Apply(ship.Body, ship.transform, 0f, .05f, .1f),
+                UnityEngine.TestTools.Constraints.ConstraintExtensions.AllocatingGCMemory(Is.Not));
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TransferUnderSectionHydrostatics_KeepsShaftStateContinuous()
+        {
+            ShipPhysicsController reference = CreateShip(LoadVolgoDon(), float.PositiveInfinity, false);
+            GameObject referenceObject = shipObject;
+            ShipPhysicsController ship = CreateShip(LoadVolgoDon(), float.PositiveInfinity, false);
+            reference.ConfigureLoading(.5f);
+            ship.ConfigureLoading(.5f);
+            for (int i = 0; i < Mathf.RoundToInt(120f / Step); i++)
+            {
+                reference.Simulate(Step);
+                ship.Simulate(Step);
+                UnityEngine.Physics.Simulate(Step);
+            }
+            // Settled, then spinning shafts with engines at stop, which the transfer interlock permits.
+            var save = new VoyageSave { loading = ship.CaptureLoading(), position = ship.Body.position,
+                rotation = ship.Body.rotation, engineCommands = new float[2], shaftRps = new[] { 4f, -3f } };
+            reference.RestoreVoyage(save);
+            ship.RestoreVoyage(save);
+            EngineShaft shaft = ship.Model.Shafts[0];
+            ship.SetLoadingCommand(2, 1);
+            for (int i = 0; i < 100; i++)
+            {
+                reference.Simulate(Step);
+                ship.Simulate(Step);
+                UnityEngine.Physics.Simulate(Step);
+                Assert.That(ship.ShaftRpm(0), Is.EqualTo(reference.ShaftRpm(0)).Within(.01f));
+                Assert.That(ship.ShaftRpm(1), Is.EqualTo(reference.ShaftRpm(1)).Within(.01f));
+            }
+            Assert.That(ship.Model.Shafts[0], Is.SameAs(shaft));
+            Assert.That(ship.CurrentMassKg - reference.CurrentMassKg, Is.EqualTo(100f).Within(.5f));
+            Object.Destroy(referenceObject);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator PausedSimulation_NeitherTransfersNorMoves()
+        {
+            UnityEngine.Physics.simulationMode = SimulationMode.FixedUpdate;
+            float scale = Time.timeScale;
+            ShipPhysicsController ship = CreateShip(LoadVolgoDon(), float.PositiveInfinity, false);
+            ship.ManualStepping = false;
+            ship.ConfigureLoading(.5f);
+            ship.SetLoadingCommand(2, 1);
+            try
+            {
+                Time.timeScale = 0f;
+                float mass = ship.CurrentMassKg;
+                Vector3 position = ship.Body.position;
+                for (int i = 0; i < 10; i++) yield return null;
+                Assert.That(ship.CurrentMassKg, Is.EqualTo(mass));
+                Assert.That(ship.Body.position, Is.EqualTo(position));
+                Time.timeScale = 1f;
+                for (int i = 0; i < 5; i++) yield return new WaitForFixedUpdate();
+                Assert.That(ship.CurrentMassKg, Is.GreaterThan(mass));
+            }
+            finally { Time.timeScale = scale; }
+        }
+
+        [UnityTest]
+        public IEnumerator SaveRestoreMidTransfer_ReproducesFloatingPositionAndContinues()
+        {
+            ShipPhysicsController ship = CreateShip(LoadVolgoDon(), float.PositiveInfinity, false);
+            ship.ConfigureLoading(.5f);
+            Run(ship, 120);
+            ship.SetLoadingCommand(0, -1);
+            ship.SetLoadingCommand(3, 1);
+            Run(ship, 30);
+            var save = new VoyageSave { loading = ship.CaptureLoading(), position = ship.Body.position,
+                rotation = ship.Body.rotation, engineCommands = new float[2], shaftRps = ship.CaptureShaftRps() };
+            float draft = ship.Parameters.Draft, trim = ship.Parameters.TrimM, mass = ship.CurrentMassKg;
+            ship.ConfigureLoading(1);
+            ship.RestoreVoyage(JsonUtility.FromJson<VoyageSave>(JsonUtility.ToJson(save)));
+            Assert.That(ship.CurrentMassKg, Is.EqualTo(mass));
+            Assert.That(ship.Parameters.Draft, Is.EqualTo(draft).Within(1e-4f));
+            Assert.That(ship.Parameters.TrimM, Is.EqualTo(trim).Within(1e-3f));
+            Run(ship, 10);
+            Assert.That(ship.CurrentMassKg, Is.EqualTo(mass - 750f).Within(10f), "125 kg/s out, 50 kg/s in.");
+            Assert.That(ship.CaptureLoading().massKg[3], Is.GreaterThan(save.loading.massKg[3]));
+            yield return null;
+        }
+
+        private static void AssertFloatsAtSolvedWaterline(ShipPhysicsController ship, float tolerance)
+        {
+            VesselParameters p = ship.Parameters;
+            foreach (float z in new[] { -.5f * p.Lpp, 0f, .5f * p.Lpp })
+            {
+                float keelDepth = ship.WaterLevel - ship.transform.TransformPoint(0f, p.KeelLocalY, z).y;
+                Assert.That(keelDepth, Is.EqualTo(p.DraftAt(z)).Within(tolerance), $"keel depth at z = {z}");
+            }
         }
 
         private ShipPhysicsController CreateShip(VesselData data, float depth, bool withGrounding)

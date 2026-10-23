@@ -16,7 +16,15 @@ namespace ShipSimulator.Physics
         public float BeamOverall { get; }
         public float DepthMoulded { get; }
         public float LoadedDraft { get; }
+        // Still-water draft at body z = 0; with section hydrostatics the ship may also trim about it.
         public float Draft { get; }
+        // Bow-down positive: immersion grows by TrimSlope per metre forward. Zero for wall-sided prisms.
+        public float TrimSlope { get; }
+        public float TrimM => TrimSlope * Lpp;
+        // Null for vessels on wall-sided prisms.
+        public SectionHydrostatics Sections { get; }
+        public HydrostaticRange HydrostaticRange { get; } = HydrostaticRange.Supported;
+        public HydrostaticState Equilibrium { get; }
         public float BlockCoefficient { get; }
         public float Mass { get; }
         public float DisplacementVolume { get; }
@@ -44,7 +52,8 @@ namespace ShipSimulator.Physics
         public float RatedRps { get; }
         public float DeliveredPowerPerShaftW { get; }
 
-        private VesselParameters(VesselData data, float loadFraction, LoadingState loading = null)
+        private VesselParameters(VesselData data, float loadFraction, LoadingState loading = null,
+            VesselParameters previous = null)
         {
             Data = data;
             LoadFraction = Mathf.Clamp01(loadFraction);
@@ -61,10 +70,6 @@ namespace ShipSimulator.Physics
             Mass = Mathf.Lerp(mass.lightshipMassKg, mass.loadedMassKg, LoadFraction);
             if (loading != null) Mass = mass.lightshipMassKg + LoadingModel.Payload(loading);
             DisplacementVolume = Mass / Rho;
-            // Station hydrostatics are wall-sided prisms sized to float the loaded mass at the loaded
-            // draft, so draft is proportional to mass.
-            Draft = LoadedDraft * Mass / mass.loadedMassKg;
-            MidshipArea = data.hydrostatics.midshipCoefficient * Beam * Draft;
             KeelLocalY = data.hydrostatics.waterlineLocalY - LoadedDraft;
             CentreOfGravityX = mass.centerOfMassLocalM.z;
             CentreOfGravityAboveKeel = mass.centerOfMassLocalM.y - KeelLocalY;
@@ -81,7 +86,31 @@ namespace ShipSimulator.Physics
                 PitchInertia = inertia.x;
                 YawInertiaAtG = inertia.y;
                 RollInertia = inertia.z;
-                PropellerImmersion = Mathf.Clamp01((Draft - data.loading.propellerAxisHeightAboveKeelM +
+            }
+            if (SectionHydrostatics.Supported(data))
+            {
+                // Mean draft and trim come from the hull's own sections, at this mass and centre of gravity.
+                Sections = SectionHydrostatics.For(data);
+                bool warm = previous != null && previous.Sections == Sections &&
+                    previous.HydrostaticRange != HydrostaticRange.Unsolved;
+                HydrostaticRange = Sections.Solve(DisplacementVolume, CentreOfGravityX, CentreOfGravityAboveKeel, Lpp,
+                    out float draft, out float slope, out HydrostaticState state,
+                    warm ? previous.Draft : float.NaN, warm ? previous.TrimSlope : 0f);
+                Draft = draft;
+                TrimSlope = slope;
+                Equilibrium = state;
+            }
+            else
+            {
+                // Station hydrostatics are wall-sided prisms sized to float the loaded mass at the loaded
+                // draft, so draft is proportional to mass.
+                Draft = LoadedDraft * Mass / mass.loadedMassKg;
+            }
+            MidshipArea = data.hydrostatics.midshipCoefficient * Beam * Draft;
+            if (loading != null)
+            {
+                float propellerZ = data.propeller.longitudinalPositionsM[0];
+                PropellerImmersion = Mathf.Clamp01((DraftAt(propellerZ) - data.loading.propellerAxisHeightAboveKeelM +
                     .5f * data.propeller.diameterM) / data.propeller.diameterM);
             }
 
@@ -122,6 +151,8 @@ namespace ShipSimulator.Physics
                 data.engine.shaftEfficiency * (1f - liftShare);
         }
 
+        public float DraftAt(float localZ) => Draft + TrimSlope * localZ;
+
         public static VesselParameters Create(VesselData data, float loadFraction)
         {
             return !LoadingModel.Supported(data) ? new VesselParameters(data, loadFraction) :
@@ -133,10 +164,12 @@ namespace ShipSimulator.Physics
             return Create(data, data.massProperties.loadFraction);
         }
 
-        public static VesselParameters Create(VesselData data, LoadingState loading)
+        // previous, when given, only seeds the floating-position solve; the result does not depend on it
+        // beyond the solver tolerance.
+        public static VesselParameters Create(VesselData data, LoadingState loading, VesselParameters previous = null)
         {
             LoadingModel.Validate(data, loading);
-            return new VesselParameters(data, LoadingModel.Payload(loading) / LoadingModel.Budget(data), loading);
+            return new VesselParameters(data, LoadingModel.Payload(loading) / LoadingModel.Budget(data), loading, previous);
         }
 
         private static float Ratio(float value, float reference)

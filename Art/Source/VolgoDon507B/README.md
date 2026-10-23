@@ -1,19 +1,27 @@
 # Volgo-Don 507B editable source
 
-## Current milestone: Part 10 sectional hull
+## Current milestone: Part 11 section hydrostatics
+
+Part 11 is implemented. Read [PART11_REVIEW.md](PART11_REVIEW.md). The 507B now floats on
+an offset table derived from the closed hydrostatic surface (`part11_hydrostatics.py`,
+`part11-hydrostatic-surface.json`), with draft, trim and heel resolved from the loading
+inventory. The lightship LCG is a convention-derived estimate and free surface is not applied.
+The blend and FBX exports are unchanged in this stage.
+
+## Part 10 sectional hull
 
 Part 10 is implemented. Read [PART10_REVIEW.md](PART10_REVIEW.md) for the corrected
 lower shell, separate closed hydrostatic surface, source uncertainty, validation
 and screenshots. Current LOD triangle counts are 59,543 / 35,972 / 24,362.
 The blend contains source, two LOD, archival hull and hydrostatic scenes.
-The hydrostatic surface is excluded from FBX exports and is not yet used by physics.
+The hydrostatic surface is excluded from FBX exports; Part 11 derives the physics table from it.
 The largest trace-to-section residual is 0.743 m and remains explicitly unresolved.
 
 ## Part 9 reference baseline
 
 Parts 1-8 are implemented, with target-machine performance acceptance still open.
 Remaining fidelity work is staged as Parts 9-17 in
-[REFINEMENT_PLAN.md](REFINEMENT_PLAN.md). Parts 9-10 are complete; Parts 11-17 are not started.
+[REFINEMENT_PLAN.md](REFINEMENT_PLAN.md). Parts 9-11 are complete; Parts 12-17 are not started.
 
 Read [REFERENCE_DECISIONS.md](REFERENCE_DECISIONS.md) before hull or physics edits.
 It records the retained representative two-hold variant, source applicability,

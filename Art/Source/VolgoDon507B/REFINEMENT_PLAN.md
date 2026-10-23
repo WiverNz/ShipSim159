@@ -1,6 +1,6 @@
 # Volgo-Don 507B: remaining fidelity work
 
-Created: 2026-10-23. Parts 9-10 complete; Parts 11-17 not started.
+Created: 2026-10-23. Parts 9-11 complete; Parts 12-17 not started.
 
 This continues Parts 1-8 of [IMPROVEMENT_CHECKLIST.md](IMPROVEMENT_CHECKLIST.md).
 The baseline and known discrepancies are recorded in [PART8_REVIEW.md](PART8_REVIEW.md).
@@ -36,7 +36,7 @@ precision. A completed prototype feature is not validated maritime training.
 |---|---|---|---|
 | 9 | Reference and variant decision package | Existing Parts 1-8 | Complete, 2026-10-23 |
 | 10 | Hull sections and corrected editable geometry | 9 | Complete with documented trace discrepancy, 2026-10-23 |
-| 11 | Section-based hydrostatics and loading response | 10 | Not started |
+| 11 | Section-based hydrostatics and loading response | 10 | Complete, 2026-10-23; estimated lightship LCG and no free-surface correction |
 | 12 | Propulsion, stopping and steering calibration | 9, 11 | Not started |
 | 13 | Evidence-based machinery rates and detail corrections | 9; reconcile with 12 | Not started |
 | 14 | Anchor holding and mooring prototype | 11, 12, 13 | Not started |
@@ -98,17 +98,21 @@ baselines, not by removing the checks.
 
 ## Part 11: hydrostatics, cargo and ballast
 
-- [ ] Derive displacement, buoyancy centre and waterplane properties across
+Result: [PART11_REVIEW.md](PART11_REVIEW.md). Column integration agrees with exact
+mesh clipping within 0.004% volume and 0.005 m LCB; full load floats at 3.494 m on
+even keel after a documented lightship-LCG re-estimate. Free surface is not applied.
+
+- [x] Derive displacement, buoyancy centre and waterplane properties across
   the useful draft range from the approved section data.
-- [ ] Replace the 507B wall-sided approximation through the existing hydrostatic
+- [x] Replace the 507B wall-sided approximation through the existing hydrostatic
   interface, retaining the current implementation for other vessels.
-- [ ] Resolve draft, trim and small-angle roll response from actual loading;
+- [x] Resolve draft, trim and small-angle roll response from actual loading;
   keep mass, CG and inertia accounting consistent with the existing inventory.
-- [ ] Model free-surface corrections only for documented tank groups/geometries.
+- [x] Model free-surface corrections only for documented tank groups/geometries.
   Label surrogate tanks and their valid range; do not claim certified stability.
-- [ ] Define out-of-range handling for dry sections, extreme trim, overload and
+- [x] Define out-of-range handling for dry sections, extreme trim, overload and
   unsupported loading conditions. Avoid extrapolated negative buoyancy or NaNs.
-- [ ] Profile loading updates and allocations with a supported profiler; remove
+- [x] Profile loading updates and allocations with a supported profiler; remove
   unnecessary repeated construction only after measurement.
 
 Deliverables: hydrostatic tables with derivation, optional vessel parameters,

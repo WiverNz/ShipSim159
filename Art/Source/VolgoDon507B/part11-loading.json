@@ -1,0 +1,308 @@
+{
+    "units": "kg, m, m2, kg m2, m/s, s; drafts above keel; trim over Lpp, bow down positive; longitudinal positions forward positive",
+    "classification": "Prototype estimates from a derived hull surface and estimated inventory; solid-mass GM without free-surface correction; not a stability booklet",
+    "unchangedOtherVessels": true,
+    "conditions": [
+        {
+            "name": "full load",
+            "range": "Supported",
+            "massKg": 6750000.0,
+            "cargoKg": 4800000.0,
+            "ballastKg": 0.0,
+            "storesKg": 200000.0,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": -0.8444444537162781,
+                "z": -0.9145185351371765
+            },
+            "inertiaKgM2": {
+                "x": 6847807488.0,
+                "y": 6896231424.0,
+                "z": 120427512.0
+            },
+            "draftM": 3.4945428371429443,
+            "trimM": -0.002241225680336356,
+            "forwardDraftM": 3.493422269821167,
+            "aftDraftM": 3.4956634044647217,
+            "kbM": 1.8132761716842651,
+            "bmtM": 6.716517448425293,
+            "gmSolidM": 5.84423828125,
+            "waterplaneM2": 2103.77001953125,
+            "lcfM": -2.536343812942505,
+            "propellerImmersion": 1.0,
+            "wallSidedDraftM": 3.5299999713897705,
+            "wallSidedGmM": 4.672426223754883,
+            "fullSpeedMps": 5.490262985229492,
+            "stopM": 715.857421875,
+            "stopSeconds": 285.4538269042969
+        },
+        {
+            "name": "half deadweight",
+            "range": "Supported",
+            "massKg": 4250000.0,
+            "cargoKg": 2400000.0,
+            "ballastKg": 0.0,
+            "storesKg": 100000.0,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": -0.6705882549285889,
+                "z": -5.235058784484863
+            },
+            "inertiaKgM2": {
+                "x": 4727086080.0,
+                "y": 4750801920.0,
+                "z": 91167984.0
+            },
+            "draftM": 2.2651050090789795,
+            "trimM": -1.1337509155273438,
+            "forwardDraftM": 1.6982295513153076,
+            "aftDraftM": 2.8319804668426514,
+            "kbM": 1.1991478204727173,
+            "bmtM": 10.149882316589355,
+            "gmSolidM": 8.489618301391602,
+            "waterplaneM2": 2029.7958984375,
+            "lcfM": -2.8722589015960693,
+            "propellerImmersion": 1.0,
+            "wallSidedDraftM": 2.22259259223938,
+            "wallSidedGmM": 7.1348557472229,
+            "fullSpeedMps": 5.821638107299805,
+            "stopM": 524.501708984375,
+            "stopSeconds": 192.6571502685547
+        },
+        {
+            "name": "lightship",
+            "range": "OutsideDeclaredRange",
+            "massKg": 1750000.0,
+            "cargoKg": 0.0,
+            "ballastKg": 0.0,
+            "storesKg": 0.0,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -21.899999618530273
+            },
+            "inertiaKgM2": {
+                "x": 1993359360.0,
+                "y": 1993359360.0,
+                "z": 60917504.0
+            },
+            "draftM": 0.9407849907875061,
+            "trimM": -2.5878238677978516,
+            "forwardDraftM": -0.35312697291374207,
+            "aftDraftM": 2.234696865081787,
+            "kbM": 0.721261203289032,
+            "bmtM": 21.992555618286133,
+            "gmSolidM": 19.18381690979004,
+            "waterplaneM2": 1775.0701904296875,
+            "lcfM": -7.398721694946289,
+            "propellerImmersion": 1.0,
+            "wallSidedDraftM": 0.9151851534843445,
+            "wallSidedGmM": 18.50052261352539,
+            "fullSpeedMps": 6.19596004486084,
+            "stopM": 282.533447265625,
+            "stopSeconds": 90.9509506225586
+        },
+        {
+            "name": "ballast, both groups, stores",
+            "range": "Supported",
+            "massKg": 4150000.0,
+            "cargoKg": 0.0,
+            "ballastKg": 2200000.0,
+            "storesKg": 200000.0,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": -1.4265060424804688,
+                "z": -5.631807327270508
+            },
+            "inertiaKgM2": {
+                "x": 4552397312.0,
+                "y": 4582410240.0,
+                "z": 104904600.0
+            },
+            "draftM": 2.2142465114593506,
+            "trimM": -1.2057374715805054,
+            "forwardDraftM": 1.6113777160644531,
+            "aftDraftM": 2.817115306854248,
+            "kbM": 1.1763639450073242,
+            "bmtM": 10.357004165649414,
+            "gmSolidM": 9.429874420166016,
+            "waterplaneM2": 2023.7440185546875,
+            "lcfM": -2.8498897552490234,
+            "propellerImmersion": 1.0,
+            "wallSidedDraftM": 2.1702961921691895,
+            "wallSidedGmM": 8.078673362731934,
+            "fullSpeedMps": 5.836395263671875,
+            "stopM": 515.9686279296875,
+            "stopSeconds": 188.7569122314453
+        },
+        {
+            "name": "forward ballast group, stores",
+            "range": "Supported",
+            "massKg": 3050000.0,
+            "cargoKg": 0.0,
+            "ballastKg": 1100000.0,
+            "storesKg": 200000.0,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": -1.039344310760498,
+                "z": -0.9944262504577637
+            },
+            "inertiaKgM2": {
+                "x": 4120344576.0,
+                "y": 4134482176.0,
+                "z": 84846448.0
+            },
+            "draftM": 1.6713234186172485,
+            "trimM": -0.17106057703495026,
+            "forwardDraftM": 1.585793137550354,
+            "aftDraftM": 1.756853699684143,
+            "kbM": 0.8641043305397034,
+            "bmtM": 13.654277801513672,
+            "gmSolidM": 12.027726173400879,
+            "waterplaneM2": 1947.279296875,
+            "lcfM": -0.7534455060958862,
+            "propellerImmersion": 0.9184679985046387,
+            "wallSidedDraftM": 1.5950369834899902,
+            "wallSidedGmM": 10.684773445129395,
+            "fullSpeedMps": 6.066574573516846,
+            "stopM": 426.5115051269531,
+            "stopSeconds": 146.85435485839844
+        },
+        {
+            "name": "forward hold only",
+            "range": "OutsideDeclaredRange",
+            "massKg": 4350000.0,
+            "cargoKg": 2400000.0,
+            "ballastKg": 0.0,
+            "storesKg": 200000.0,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": -0.7034482955932617,
+                "z": 8.782299041748047
+            },
+            "inertiaKgM2": {
+                "x": 5297198592.0,
+                "y": 5321215488.0,
+                "z": 91934288.0
+            },
+            "draftM": 2.329794406890869,
+            "trimM": 2.1894853115081787,
+            "forwardDraftM": 3.424536943435669,
+            "aftDraftM": 1.2350517511367798,
+            "kbM": 1.2770873308181763,
+            "bmtM": 9.849074363708496,
+            "gmSolidM": 8.299610137939453,
+            "waterplaneM2": 1974.607421875,
+            "lcfM": 1.1645632982254028,
+            "propellerImmersion": 0.6562634706497192,
+            "wallSidedDraftM": 2.274888753890991,
+            "wallSidedGmM": 6.989657878875732,
+            "fullSpeedMps": 5.341563701629639,
+            "stopM": 494.7915954589844,
+            "stopSeconds": 195.0572967529297
+        },
+        {
+            "name": "aft hold only",
+            "range": "OutsideDeclaredRange",
+            "massKg": 4350000.0,
+            "cargoKg": 2400000.0,
+            "ballastKg": 0.0,
+            "storesKg": 200000.0,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": -0.7034482955932617,
+                "z": -18.919769287109375
+            },
+            "inertiaKgM2": {
+                "x": 2505228544.0,
+                "y": 2529245440.0,
+                "z": 91934288.0
+            },
+            "draftM": 2.2109930515289307,
+            "trimM": -4.210374355316162,
+            "forwardDraftM": 0.10580581426620483,
+            "aftDraftM": 4.316180229187012,
+            "kbM": 1.4959003925323486,
+            "bmtM": 9.708500862121582,
+            "gmSolidM": 8.377849578857422,
+            "waterplaneM2": 1999.99755859375,
+            "lcfM": -5.976245403289795,
+            "propellerImmersion": 1.0,
+            "wallSidedDraftM": 2.274888753890991,
+            "wallSidedGmM": 6.989657878875732,
+            "fullSpeedMps": 5.737285137176514,
+            "stopM": 520.6416015625,
+            "stopSeconds": 194.20724487304688
+        },
+        {
+            "name": "half deadweight, 1000 t moved forward",
+            "range": "Supported",
+            "massKg": 4250000.0,
+            "cargoKg": 2400000.0,
+            "ballastKg": 0.0,
+            "storesKg": 100000.0,
+            "centreLocalM": {
+                "x": 0.0,
+                "y": -0.6705882549285889,
+                "z": 0.671999990940094
+            },
+            "inertiaKgM2": {
+                "x": 5168800768.0,
+                "y": 5192516608.0,
+                "z": 91168000.0
+            },
+            "draftM": 2.281782627105713,
+            "trimM": 0.21755839884281158,
+            "forwardDraftM": 2.390561819076538,
+            "aftDraftM": 2.1730034351348877,
+            "kbM": 1.1788078546524048,
+            "bmtM": 10.100549697875977,
+            "gmSolidM": 8.41994571685791,
+            "waterplaneM2": 1995.7637939453125,
+            "lcfM": -0.8272972702980042,
+            "propellerImmersion": 1.0,
+            "wallSidedDraftM": 2.22259259223938,
+            "wallSidedGmM": 7.1348557472229,
+            "fullSpeedMps": 5.832544326782227,
+            "stopM": 526.3715209960938,
+            "stopSeconds": 193.00717163085938
+        }
+    ],
+    "outOfRange": [
+        {
+            "name": "overload beyond capped volume",
+            "range": "Unsolved",
+            "draftM": 5.5,
+            "trimM": 0.0,
+            "volumeM3": 11013.4111328125
+        },
+        {
+            "name": "100 t",
+            "range": "OutsideDeclaredRange",
+            "draftM": 0.07077158242464066,
+            "trimM": -0.025023814290761948,
+            "volumeM3": 100.0
+        },
+        {
+            "name": "LCG 30 m forward, lightship mass",
+            "range": "OutsideDeclaredRange",
+            "draftM": 0.8104140758514404,
+            "trimM": 4.181055068969727,
+            "volumeM3": 1750.0
+        },
+        {
+            "name": "NaN centre",
+            "range": "Unsolved",
+            "draftM": 0.0,
+            "trimM": 0.0,
+            "volumeM3": 0.0
+        },
+        {
+            "name": "zero volume",
+            "range": "Unsolved",
+            "draftM": 0.0,
+            "trimM": 0.0,
+            "volumeM3": 0.0
+        }
+    ]
+}

@@ -1,5 +1,18 @@
 # Volgo-Don Project 507B: Sources and Data Status
 
+## Part 11 section hydrostatics, 2026-10-23
+
+`hydrostatics.sectionTable` is derived (D) from the Part 10 closed hydrostatic surface,
+itself a family-guided reconstruction with an unresolved 0.743 m trace residual and estimated
+station mapping; it is not a 507B offset table. Agreement with exact mesh clipping is within
+0.004% volume and 0.005 m LCB over 0.6-4.0 m drafts and +/-1.5 m trim (declared range).
+The 6750 t prototype floats at 3.494 m; the archive's 6678 t at 3.50 m compares with 6762 m3
+there (1.3% more, not fitted). Hold and ballast-group extents now follow the authored hold
+meshes (D). The lightship LCG moved from +2.0 m to -21.9 m (E), re-estimated so the default
+full load floats on even keel; no source gives it. No free-surface correction is applied:
+tank subdivision is unavailable. The Part 7 table below lists the superseded centres. See
+[Part 11 review](../../../../Art/Source/VolgoDon507B/PART11_REVIEW.md).
+
 ## Part 7 loading approximation, 2026-10-23
 
 The enabled `loading` configuration now splits lightship, two cargo groups,

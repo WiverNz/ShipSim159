@@ -17,9 +17,9 @@ namespace ShipSimulator.Tests
             Assert.That(s.massKg[4], Is.EqualTo(200000));
             var p = VesselParameters.Create(d, s);
             Assert.That(p.Mass, Is.EqualTo(6750000));
-            Assert.That(p.Draft, Is.EqualTo(3.53f).Within(.001));
-            Assert.That(p.CentreOfMassLocalM.y, Is.EqualTo(-1.2f).Within(.001));
-            Assert.That(p.CentreOfMassLocalM.z, Is.EqualTo(2).Within(.001));
+            Assert.That(p.Equilibrium.VolumeM3 * p.Rho, Is.EqualTo(p.Mass).Within(1e-4f * p.Mass));
+            Assert.That(p.CentreOfMassLocalM.y, Is.EqualTo(d.massProperties.centerOfMassLocalM.y).Within(.001));
+            Assert.That(p.CentreOfMassLocalM.z, Is.EqualTo(d.massProperties.centerOfMassLocalM.z).Within(.001));
         }
 
         [Test]
@@ -60,7 +60,8 @@ namespace ShipSimulator.Tests
             var a = VesselParameters.Create(d, cargo);
             var b = VesselParameters.Create(d, ballast);
             Assert.That(b.Mass, Is.EqualTo(a.Mass));
-            Assert.That(b.Draft, Is.EqualTo(a.Draft));
+            // Same mass and longitudinal centre; only the small KG term in the trimmed equilibrium differs.
+            Assert.That(b.Draft, Is.EqualTo(a.Draft).Within(.01f));
             Assert.That(b.CentreOfGravityAboveKeel, Is.LessThan(a.CentreOfGravityAboveKeel));
             Assert.That(b.RollInertia, Is.Not.EqualTo(a.RollInertia));
             cargo.massKg[0] += 500000;
@@ -81,8 +82,14 @@ namespace ShipSimulator.Tests
             Assert.That(empty.Mass, Is.EqualTo(d.massProperties.lightshipMassKg));
             Assert.That(empty.Draft, Is.LessThan(partial.Draft));
             Assert.That(partial.Draft, Is.LessThan(full.Draft));
-            Assert.That(empty.PropellerImmersion, Is.InRange(0, .6f));
+            // Immersion follows the local draft at the screws, so the stern-trimmed lightship keeps them wet.
+            foreach (var p in new[] { empty, partial, full })
+                Assert.That(p.PropellerImmersion, Is.EqualTo(Mathf.Clamp01((p.DraftAt(d.propeller.longitudinalPositionsM[0]) -
+                    d.loading.propellerAxisHeightAboveKeelM + .5f * d.propeller.diameterM) / d.propeller.diameterM)));
             Assert.That(full.PropellerImmersion, Is.EqualTo(1));
+            var level = VesselFixtures.Load(VesselFixtures.VolgoDonFile);
+            level.hydrostatics.sectionTable.enabled = false;
+            Assert.That(VesselParameters.Create(level, 0).PropellerImmersion, Is.InRange(0, .6f));
             Assert.That(new BowThrusterModel(empty).BollardThrustN, Is.GreaterThan(0));
             var dryThruster = new BowThrusterModel(empty);
             dryThruster.Restore(1); dryThruster.Step(1, 0, 1);

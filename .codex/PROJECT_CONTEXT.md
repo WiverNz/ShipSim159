@@ -1,5 +1,27 @@
 # ShipSim159 Project Context
 
+## Volgo-Don Part 11, 2026-10-23
+
+Part 11 complete. Read `Art/Source/VolgoDon507B/PART11_REVIEW.md`. The 507B now floats
+on `hydrostatics.sectionTable` (161 stations, 2736 offsets) derived by
+`Art/Source/VolgoDon507B/part11_hydrostatics.py` from the Part 10 closed surface,
+exported read-only through Blender MCP to `part11-hydrostatic-surface.json`.
+`SectionHydrostatics` (new) builds cached column tables, solves draft/trim by
+Newton; `VesselParameters` exposes Draft, TrimSlope/TrimM, DraftAt, Equilibrium,
+HydrostaticRange; `HydrostaticsModel` keeps its interface and applies the same
+columns. Other vessels and KVLCC2 keep wall-sided prisms (handling bit-identical).
+Runtime vs exact mesh clipping: 0.004% volume, 0.005 m LCB, 0.0003 m KB.
+
+Data decision to review: hold/ballast extents now follow authored hold meshes and
+lightship LCG moved +2.0 -> -21.9 m (estimate, even keel at design full load). Full
+load: 3.494 m, trim 0.00, GM 5.84 m solid. Lightship trims 2.6 m by stern (flagged
+outside table range). No free-surface correction (tank geometry unavailable).
+HUD shows TRIM and `OUTSIDE TABLES`. Loading rebuild 0.16 ms warm-started, force
+evaluation 108 us/step, zero allocations (editor). Tests: EditMode 243/243,
+PlayMode 56/56, Shakedown 5/5 PASS, Menu PASS, sea trials PASS with only 507B rows
+changed (loaded tactical 4.60 -> 4.29 L, lightship 9.4 -> 12.0 kn). Part 12 not
+started; built-player performance still open. No commit/push.
+
 ## Volgo-Don Part 10, 2026-10-23
 
 Part 10 complete with explicit unresolved trace discrepancy. Read

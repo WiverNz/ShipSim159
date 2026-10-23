@@ -40,6 +40,8 @@ namespace ShipSimulator.Physics
                 h.stationCount < 4 || h.stripsAcross < 2 || !NonNegative(h.heaveDampingRatio) ||
                 !NonNegative(h.heaveAddedMassFraction) || !NonNegative(h.rollDampingRatio))
                 return Fail("Hydrostatics configuration is invalid.", out error);
+            if (SectionHydrostatics.Supported(data) && !SectionTable(h.sectionTable, d))
+                return Fail("Hydrostatic section table is invalid.", out error);
 
             VesselResistance r = data.resistance;
             if (r == null || !Positive(r.kinematicViscosityM2PerS) || !NonNegative(r.wettedSurfaceM2) ||
@@ -172,6 +174,42 @@ namespace ShipSimulator.Physics
             }
 
             error = null;
+            return true;
+        }
+
+        // Stations ascend along the length, offsets ascend in height within the capped surface, and every
+        // breadth lies within the strips that carry it.
+        private static bool SectionTable(VesselSectionTable table, VesselDimensions d)
+        {
+            if (table.halfStripsAcross < 1 || table.halfStripsAcross > 16 ||
+                !InRange(table.stripHalfWidthM, 0.5f * d.beamMouldedM, 0.6f * d.beamOverallM) ||
+                !InRange(table.capHeightAboveKeelM, d.loadedDraftM, 2f * d.depthMouldedM) ||
+                !InRange(table.tableHeightStepM, 0.005f, 0.5f) || table.tableHeightStepM > table.capHeightAboveKeelM / 4f ||
+                !InRange(table.minimumMeanDraftM, 0.01f, table.capHeightAboveKeelM) ||
+                !InRange(table.maximumMeanDraftM, table.minimumMeanDraftM, table.capHeightAboveKeelM) ||
+                !Positive(table.maximumTrimM) || table.stations == null || table.stations.Length < 3 ||
+                table.stations.Length > 512)
+                return false;
+            float previous = float.NegativeInfinity;
+            foreach (VesselSectionStation station in table.stations)
+            {
+                if (station == null || !Finite(station.localZ) || station.localZ <= previous ||
+                    Mathf.Abs(station.localZ) > d.lengthOverallM ||
+                    station.heightsAboveKeelM == null || station.halfBreadthsM == null ||
+                    station.heightsAboveKeelM.Length == 0 || station.heightsAboveKeelM.Length > 128 ||
+                    station.heightsAboveKeelM.Length != station.halfBreadthsM.Length)
+                    return false;
+                previous = station.localZ;
+                float height = 0f;
+                for (int i = 0; i < station.heightsAboveKeelM.Length; i++)
+                {
+                    float z = station.heightsAboveKeelM[i];
+                    if (!InRange(z, height, table.capHeightAboveKeelM) ||
+                        !InRange(station.halfBreadthsM[i], 0f, table.stripHalfWidthM))
+                        return false;
+                    height = z;
+                }
+            }
             return true;
         }
 

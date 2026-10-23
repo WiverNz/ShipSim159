@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "mesh_count": 49,
+  "triangles": 59543,
+  "mechanism_bindings": 15,
+  "hatch_motion_frames_checked": 541,
+  "propeller_nozzle_configurations_checked": 720,
+  "minimum_stacked_geometry_gap_m": 0.08053922653198242,
+  "closed_seal_contacts": {
+    "AftOuter": 2,
+    "AftInner": 5,
+    "ForeInner": 3,
+    "ForeOuter": 6
+  },
+  "deliberate_stack_collision_detected": true,
+  "unseated_anchors_clear": true,
+  "bounds_xyz": [
+    16.700000762939453,
+    138.29998016357422,
+    16.165147066116333
+  ],
+  "limits": "Discrete motion checks; closed seal contact and anchor stow/hawse contact are intentional. No chain payout or hydraulic hose simulation."
+}

@@ -1,0 +1,11 @@
+{
+  "hull_triangles": 6957,
+  "section_count": 147,
+  "hydrostatic": {
+    "vertices": 4437,
+    "triangles": 8870,
+    "boundary_edges": 0,
+    "non_manifold_edges": 0,
+    "volume_to_deck_cap_m3": 11013.688746684815
+  }
+}

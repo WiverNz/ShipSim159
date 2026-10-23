@@ -1,10 +1,19 @@
 # Volgo-Don 507B editable source
 
-## Current milestone: Part 9 reference baseline
+## Current milestone: Part 10 sectional hull
+
+Part 10 is implemented. Read [PART10_REVIEW.md](PART10_REVIEW.md) for the corrected
+lower shell, separate closed hydrostatic surface, source uncertainty, validation
+and screenshots. Current LOD triangle counts are 59,543 / 35,972 / 24,362.
+The blend contains source, two LOD, archival hull and hydrostatic scenes.
+The hydrostatic surface is excluded from FBX exports and is not yet used by physics.
+The largest trace-to-section residual is 0.743 m and remains explicitly unresolved.
+
+## Part 9 reference baseline
 
 Parts 1-8 are implemented, with target-machine performance acceptance still open.
 Remaining fidelity work is staged as Parts 9-17 in
-[REFINEMENT_PLAN.md](REFINEMENT_PLAN.md). Part 9 is complete; Parts 10-17 are not started.
+[REFINEMENT_PLAN.md](REFINEMENT_PLAN.md). Parts 9-10 are complete; Parts 11-17 are not started.
 
 Read [REFERENCE_DECISIONS.md](REFERENCE_DECISIONS.md) before hull or physics edits.
 It records the retained representative two-hold variant, source applicability,
@@ -24,7 +33,7 @@ source/FBX retain the Part 4 primary geometry integrated in Part 5.
 
 See [PART8_REVIEW.md](PART8_REVIEW.md) for distance LODs, resource budgets,
 reproducibility, performance measurements, final screenshots and remaining limits.
-The source now contains three scenes, with 53,130 / 34,429 / 24,072 triangles.
+At Part 8 the source contained three scenes, with 53,130 / 34,429 / 24,072 triangles.
 Use `part8_export.py` through registered Blender MCP to regenerate all exports,
 then `ShipSimulator.Editor.VolgoDonQualityGate.Run` in a dedicated Unity batch
 editor to reimport, validate and install them. This supersedes the earlier export

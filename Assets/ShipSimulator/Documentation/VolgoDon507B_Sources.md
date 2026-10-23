@@ -234,3 +234,13 @@ the shaft reversal model respond. Missing dwell/loading/depth prevent direct
 calibration to a single stopping figure. Visual propeller height above keel is
 1.35 m versus the loading model's estimated 1.0 m; reconcile explicitly later.
 
+## Part 10 geometry update, 2026-10-23
+
+The lower visual hull now uses manually sampled sections from the project-507
+family drawing, constrained by the retained model waterline. See
+[`PART10_REVIEW.md`](../../../Art/Source/VolgoDon507B/PART10_REVIEW.md) for the
+conversion assumptions, source-pixel table, unresolved 0.743 m trace residual,
+derived volume and checks. The independent closed surface is not yet consumed
+by runtime hydrostatics. No vessel JSON, displacement, thrust location or force
+coefficient changed in this stage. This remains an estimated prototype geometry.
+

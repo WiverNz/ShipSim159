@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000">
+<rect width="1400" height="1000" fill="white"/>
+<text x="30" y="30" font-family="sans-serif" font-size="20">Family trace (blue) vs constrained section (orange), metres above keel</text>
+<text x="35" y="65" font-family="sans-serif" font-size="16">Station 0.5</text>
+<polyline points="35.00,275.00 290.75,275.00 290.75,104.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="35.00,273.93 58.79,251.68 77.62,216.43 98.44,180.08 119.26,135.07" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="35.00,273.93 35.00,273.93 35.29,273.71 35.88,273.28 37.20,272.30 40.13,270.13 45.27,266.34 54.07,259.84 66.93,249.01 77.93,232.75 92.85,211.08 108.56,189.41 123.82,165.57" fill="none" stroke="#e65100" stroke-width="2"/>
+<text x="380" y="65" font-family="sans-serif" font-size="16">Station 1</text>
+<polyline points="380.00,275.00 635.75,275.00 635.75,104.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="380.00,275.00 425.60,266.98 460.29,250.19 488.05,221.42 506.88,184.97 527.70,143.08" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="380.00,275.00 380.00,275.00 381.40,274.78 384.21,274.34 390.53,273.36 404.57,271.17 429.14,267.34 445.94,260.77 471.02,249.83 488.90,233.42 507.73,211.53 520.50,189.64 534.10,165.57" fill="none" stroke="#e65100" stroke-width="2"/>
+<text x="725" y="65" font-family="sans-serif" font-size="16">Station 2</text>
+<polyline points="725.00,275.00 980.75,275.00 980.75,104.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="725.00,275.00 807.28,273.89 845.94,264.67 881.62,244.60 907.40,211.41 929.20,173.78 950.02,135.01 964.89,105.88" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="725.00,275.00 725.00,275.00 743.35,274.78 780.06,274.34 820.92,273.36 831.34,271.17 849.59,267.34 870.16,260.77 892.25,249.83 912.67,233.42 931.96,211.53 946.39,189.64 961.83,165.57" fill="none" stroke="#e65100" stroke-width="2"/>
+<text x="1070" y="65" font-family="sans-serif" font-size="16">Station 3</text>
+<polyline points="1070.00,275.00 1325.75,275.00 1325.75,104.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="1176.07,275.00 1236.53,273.87 1270.24,262.40 1292.05,237.78 1308.90,209.82 1320.79,180.69 1325.75,159.07" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="1070.00,275.00 1176.70,275.00 1188.48,274.78 1212.04,274.34 1239.04,273.36 1245.51,271.17 1256.83,267.34 1272.88,260.77 1282.63,249.83 1296.01,233.42 1309.28,211.53 1318.61,189.64 1325.77,165.57" fill="none" stroke="#e65100" stroke-width="2"/>
+<text x="35" y="365" font-family="sans-serif" font-size="16">Station 4</text>
+<polyline points="35.00,575.00 290.75,575.00 290.75,404.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="234.25,575.00 262.00,571.39 277.86,559.68 288.77,538.14 290.75,521.91" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="35.00,575.00 234.26,575.00 235.95,574.78 239.31,574.34 246.88,573.36 262.32,571.17 267.51,567.34 276.40,560.77 282.87,549.83 289.37,533.42 290.77,511.53 290.77,489.64 290.77,465.57" fill="none" stroke="#e65100" stroke-width="2"/>
+<text x="380" y="365" font-family="sans-serif" font-size="16">Station 5</text>
+<polyline points="380.00,575.00 635.75,575.00 635.75,404.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="380.00,575.00 610.97,575.00 627.82,575.00 633.77,567.39 635.75,558.75" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="380.00,575.00 627.84,575.00 628.01,574.78 628.35,574.34 629.12,573.36 630.84,571.17 633.80,567.34 635.31,560.77 635.77,549.83 635.77,533.42 635.77,511.53 635.77,489.64 635.77,465.57" fill="none" stroke="#e65100" stroke-width="2"/>
+<text x="725" y="365" font-family="sans-serif" font-size="16">Station 17.5</text>
+<polyline points="725.00,575.00 980.75,575.00 980.75,404.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="725.00,575.00 943.23,574.08 964.95,571.82 974.83,566.36 979.76,555.50 980.75,532.74" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="725.00,575.00 725.00,575.00 776.41,574.78 879.23,574.34 948.71,573.36 964.60,571.17 971.48,567.34 975.77,560.77 978.40,549.83 979.11,533.42 979.13,511.53 979.13,489.64 979.13,465.57" fill="none" stroke="#e65100" stroke-width="2"/>
+<text x="1070" y="365" font-family="sans-serif" font-size="16">Station 18</text>
+<polyline points="1070.00,575.00 1325.75,575.00 1325.75,404.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="1070.00,566.42 1286.25,565.43 1305.01,559.93 1315.88,549.05 1323.78,532.76 1325.75,508.91" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="1070.00,566.42 1070.00,566.42 1113.25,566.22 1199.76,565.81 1283.31,564.90 1290.04,562.89 1300.47,559.36 1306.38,553.31 1313.30,543.22 1318.64,528.10 1320.20,507.93 1320.20,487.76 1320.20,465.57" fill="none" stroke="#e65100" stroke-width="2"/>
+<text x="35" y="665" font-family="sans-serif" font-size="16">Station 18.5</text>
+<polyline points="35.00,875.00 290.75,875.00 290.75,704.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="35.00,849.25 241.38,847.09 262.11,842.65 277.91,830.65 284.83,814.36 289.76,782.91" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="35.00,849.25 35.00,849.25 50.45,849.08 81.35,848.75 150.88,848.00 237.81,846.32 251.03,843.39 259.81,838.37 269.90,830.00 275.04,817.45 278.38,800.72 280.92,783.98 281.26,765.57" fill="none" stroke="#e65100" stroke-width="2"/>
+<text x="380" y="665" font-family="sans-serif" font-size="16">Station 19</text>
+<polyline points="380.00,875.00 635.75,875.00 635.75,704.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="380.00,821.36 564.65,819.11 584.40,815.74 601.19,810.23 613.04,794.99 622.91,770.01 627.85,740.72" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="380.00,821.36 380.00,821.36 389.14,821.25 407.41,821.02 448.52,820.52 539.89,819.41 573.36,817.45 588.28,814.11 601.33,808.53 607.80,800.16 614.16,789.00 618.54,777.84 622.37,765.57" fill="none" stroke="#e65100" stroke-width="2"/>
+<text x="725" y="665" font-family="sans-serif" font-size="16">Station 19.5</text>
+<polyline points="725.00,875.00 980.75,875.00 980.75,704.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="725.00,796.68 879.04,789.09 900.77,783.53 916.57,768.27 927.43,743.31 935.33,720.53" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="725.00,796.68 725.00,796.68 726.45,796.62 729.34,796.50 735.84,796.22 750.29,795.59 775.59,794.50 818.95,792.64 891.22,789.53 920.23,784.86 931.98,778.64 939.36,772.41 945.62,765.57" fill="none" stroke="#e65100" stroke-width="2"/>
+<text x="1070" y="665" font-family="sans-serif" font-size="16">Station 20</text>
+<polyline points="1070.00,875.00 1325.75,875.00 1325.75,704.50" fill="none" stroke="#cccccc" stroke-width="2"/>
+<polyline points="1178.62,781.89 1070.00,781.66 1196.39,777.44 1211.21,767.61 1226.02,751.30 1231.94,733.98" fill="none" stroke="#1565c0" stroke-width="2"/>
+<polyline points="1070.00,781.89 1178.21,781.89 1178.21,781.86 1178.21,781.79 1178.28,781.65 1179.65,781.32 1182.04,780.75 1186.15,779.77 1193.00,778.14 1198.55,775.69 1203.46,772.43 1208.36,769.16 1212.53,765.57" fill="none" stroke="#e65100" stroke-width="2"/>
+</svg>

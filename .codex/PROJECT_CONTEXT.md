@@ -1,5 +1,30 @@
 # ShipSim159 Project Context
 
+## Volgo-Don Part 10, 2026-10-23
+
+Part 10 complete with explicit unresolved trace discrepancy. Read
+`Art/Source/VolgoDon507B/PART10_REVIEW.md`. Reconstructed lower shell with 147 rings,
+preserving the original waterline, upper geometry, materials, UV continuity and
+48 other meshes. Source blend has an archived original hull and separate closed
+hydrostatic scene, excluded from FBX exports. LODs: 59543/35972/24362 triangles.
+Unity prefab installed through existing integration; physics/colliders unchanged.
+
+Family507 raster trace retains native pixels and estimated conversion parameters.
+Derived section/waterline/buttock tables are not authenticated507B offsets.
+Maximum nearest-section residual0.7428m exceeds3px tolerance and remains unresolved.
+Hydro surface is connected/manifold, no detected self-intersections; full capped
+volume11013.69m3, submerged6824.74m3 atZ0. Cap5.5m above keel; no mass fitting.
+Part11 must validate applicability before using this geometry in hydrostatics.
+
+Reopened blend and regenerated exports: identical mesh signatures;33packed images
+decode;81protected legacy/physics/vessel files unchanged, including45legacyassets.
+720propeller/duct hull configurations and existing mechanism regression pass.
+Unity quality gatePASS;228/228EditMode,47/47PlayMode;5/5all-vessel shakedownPASS.
+Evidence paths and front/side/top/underwater/LOD screenshots in Part10review.
+The Blender look tool failed to retrieve its temporary screenshot; renders were
+saved using bpy through registered MCP and inspected locally. No fallback connection.
+Part11 and later remain unstarted; player performance remains open. No commit/push.
+
 ## Volgo-Don Part 9, 2026-10-23
 
 Part 9 complete, evidence/baseline only. Read

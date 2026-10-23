@@ -1,6 +1,6 @@
 # Volgo-Don 507B: remaining fidelity work
 
-Created: 2026-10-23. Part 9 complete; Parts 10-17 not started.
+Created: 2026-10-23. Parts 9-10 complete; Parts 11-17 not started.
 
 This continues Parts 1-8 of [IMPROVEMENT_CHECKLIST.md](IMPROVEMENT_CHECKLIST.md).
 The baseline and known discrepancies are recorded in [PART8_REVIEW.md](PART8_REVIEW.md).
@@ -35,7 +35,7 @@ precision. A completed prototype feature is not validated maritime training.
 | Part | Deliverable | Dependencies | Status |
 |---|---|---|---|
 | 9 | Reference and variant decision package | Existing Parts 1-8 | Complete, 2026-10-23 |
-| 10 | Hull sections and corrected editable geometry | 9 | Not started |
+| 10 | Hull sections and corrected editable geometry | 9 | Complete with documented trace discrepancy, 2026-10-23 |
 | 11 | Section-based hydrostatics and loading response | 10 | Not started |
 | 12 | Propulsion, stopping and steering calibration | 9, 11 | Not started |
 | 13 | Evidence-based machinery rates and detail corrections | 9; reconcile with 12 | Not started |
@@ -73,15 +73,20 @@ for later comparisons from source resolution and uncertainty, before fitting.
 
 ## Part 10: hull reconstruction from sections
 
-- [ ] Digitize traceable stations, waterlines and buttocks into a versioned table
+Result: [PART10_REVIEW.md](PART10_REVIEW.md). Geometry and integration checks pass.
+The maximum 0.743 m family-trace residual is explicitly unresolved, not accepted
+as falling within the three-pixel tracing tolerance. Waterlines and buttocks are
+derived from the reconstructed surface, not independently traced offsets.
+
+- [x] Digitize traceable stations, waterlines and buttocks into a versioned table
   in metres. Preserve original drawing coordinates and conversion parameters.
-- [ ] Check symmetry, station order, scan distortion, keel/deck/waterline datums
+- [x] Check symmetry, station order, scan distortion, keel/deck/waterline datums
   and consistency with the accepted length and beam.
-- [ ] Fit fair sections, bow and stern surfaces to the retained hull. Preserve
+- [x] Fit fair sections, bow and stern surfaces to the retained hull. Preserve
   working geometry wherever compatible; document any locally replaced mesh.
-- [ ] Create a closed hydrostatic surface separate from cosmetic openings and
+- [x] Create a closed hydrostatic surface separate from cosmetic openings and
   fittings. Verify winding, positive volume, manifoldness and intersections.
-- [ ] Regenerate UVs only where necessary, preserve material continuity, update
+- [x] Regenerate UVs only where necessary, preserve material continuity, update
   LODs and recheck propeller/nozzle clearances through the steering range.
 
 Deliverables: section data, updated `.blend` and candidate FBXs, comparison

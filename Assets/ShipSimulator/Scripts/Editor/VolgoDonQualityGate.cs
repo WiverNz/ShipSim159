@@ -16,6 +16,9 @@ namespace ShipSimulator.Editor
     public static class VolgoDonQualityGate
     {
         public const string Output = "Art/Source/VolgoDon507B/Previews";
+        private static int stage = 8;
+        private static string Prefix => "part" + stage;
+        [Serializable] private sealed class Manifest { public int stage; }
         [Serializable] public sealed class Level { public int level, triangles, renderers, materialPasses; }
         [Serializable] private sealed class Timing { public int level, drawCalls, setPassCalls; public double medianMs, p95Ms; }
         [Serializable] private sealed class Performance
@@ -44,6 +47,7 @@ namespace ShipSimulator.Editor
         {
             try
             {
+                stage = JsonUtility.FromJson<Manifest>(File.ReadAllText(VolgoDonMechanismIntegration.Folder + "/materials.json")).stage >= 10 ? 10 : 8;
                 EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 VolgoDonCandidateReview.Review(false);
                 GameObject contents = PrefabUtility.LoadPrefabContents(VolgoDonMechanismIntegration.PrefabPath);
@@ -104,7 +108,7 @@ namespace ShipSimulator.Editor
             }
             timer.Stop();
             long allocated = GC.GetAllocatedBytesForCurrentThread() - startBytes;
-            File.WriteAllText("Art/Source/VolgoDon507B/part8-loading-cost.json", JsonUtility.ToJson(new LoadingCost
+            File.WriteAllText($"Art/Source/VolgoDon507B/{Prefix}-loading-cost.json", JsonUtility.ToJson(new LoadingCost
                 { iterations = 1000, millisecondsPerRebuild = timer.Elapsed.TotalMilliseconds / 1000,
                     bytesPerRebuild = allocated == 0 ? -1 : allocated / 1000 }, true));
         }
@@ -113,7 +117,7 @@ namespace ShipSimulator.Editor
         {
             LODGroup group = vessel.GetComponentInChildren<LODGroup>();
             Level[] levels = Measure(group);
-            Require(levels.Length == 3 && levels[0].triangles == 53130, "LOD0 changed");
+            Require(levels.Length == 3 && levels[0].triangles == (stage == 10 ? 59543 : 53130), "LOD0 changed");
             Require(levels[1].triangles <= 36000 && levels[2].triangles <= 25000, "Triangle budget exceeded");
             Require(levels.All(l => l.materialPasses <= 64), "Vessel forward-pass budget exceeded");
             var textures = new HashSet<Texture>();
@@ -146,7 +150,7 @@ namespace ShipSimulator.Editor
             foreach (Renderer r in group.GetLODs()[0].renderers) bounds.Encapsulate(r.bounds);
             var report = new Report { levels = levels, textureBytes = bytes, textureCount = textures.Count,
                 collisions = collisions.ToArray(), boundsCentre = bounds.center, boundsSize = bounds.size };
-            File.WriteAllText("Art/Source/VolgoDon507B/part8-unity.json", JsonUtility.ToJson(report, true));
+            File.WriteAllText($"Art/Source/VolgoDon507B/{Prefix}-unity.json", JsonUtility.ToJson(report, true));
         }
 
         private static void Capture(GameObject vessel)
@@ -190,7 +194,7 @@ namespace ShipSimulator.Editor
                 lights.SetNight(i == 8);
                 sun.intensity = i == 8 ? .05f : 1.5f;
                 RenderSettings.ambientLight = i == 8 ? new Color(.04f, .05f, .07f) : new Color(.6f, .6f, .6f);
-                LandscapePreview.Render(camera, Output + "/part8-" + names[i] + ".png");
+                LandscapePreview.Render(camera, Output + "/" + Prefix + "-unity-" + names[i] + ".png");
             }
             water.SetActive(false);
             lights.SetNight(false); sun.intensity = 1.5f;
@@ -200,7 +204,7 @@ namespace ShipSimulator.Editor
             for (int level = 0; level < 3; level++)
             {
                 group.ForceLOD(level);
-                LandscapePreview.Render(camera, Output + $"/part8-lod{level}.png");
+                LandscapePreview.Render(camera, Output + $"/{Prefix}-unity-lod{level}.png");
             }
             Benchmark(camera, group);
             group.ForceLOD(-1);
@@ -209,14 +213,14 @@ namespace ShipSimulator.Editor
                 Vector3 scale = group.transform.lossyScale;
                 float worldSize = group.size * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z));
                 camera.orthographicSize = worldSize * QualitySettings.lodBias / (2 * height);
-                LandscapePreview.Render(camera, Output + "/part8-transition-" + height.ToString("F2", System.Globalization.CultureInfo.InvariantCulture) + ".png");
+                LandscapePreview.Render(camera, Output + "/" + Prefix + "-transition-" + height.ToString("F2", System.Globalization.CultureInfo.InvariantCulture) + ".png");
             }
             group.ForceLOD(2); camera.orthographicSize = 44;
             rig.SetHatches(HatchPosition.HalfOpen); rig.Advance(100, 0, 0, 0);
-            LandscapePreview.Render(camera, Output + "/part8-lod2-hatches.png");
+            LandscapePreview.Render(camera, Output + "/" + Prefix + "-lod2-hatches.png");
             lights.SetNight(true); sun.intensity = .05f;
             RenderSettings.ambientLight = new Color(.04f, .05f, .07f);
-            LandscapePreview.Render(camera, Output + "/part8-lod2-night.png");
+            LandscapePreview.Render(camera, Output + "/" + Prefix + "-lod2-night.png");
             group.ForceLOD(-1);
             Object.DestroyImmediate(water); Object.DestroyImmediate(waterMaterial);
             Object.DestroyImmediate(camera.gameObject); Object.DestroyImmediate(sun.gameObject);
@@ -249,7 +253,7 @@ namespace ShipSimulator.Editor
                         drawCalls = UnityStats.drawCalls == 0 ? -1 : UnityStats.drawCalls,
                         setPassCalls = UnityStats.setPassCalls == 0 ? -1 : UnityStats.setPassCalls });
                 }
-                File.WriteAllText("Art/Source/VolgoDon507B/part8-render-cost.json", JsonUtility.ToJson(new Performance
+                File.WriteAllText($"Art/Source/VolgoDon507B/{Prefix}-render-cost.json", JsonUtility.ToJson(new Performance
                     { gpu = SystemInfo.graphicsDeviceName, cpu = SystemInfo.processorType, timings = results.ToArray() }, true));
             }
             finally

@@ -1,0 +1,1142 @@
+{
+  "levels": [
+    {
+      "level": 0,
+      "meshes": [
+        {
+          "name": "AnchorMesh_Port",
+          "triangles": 155,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "6938011121c592273db9558526dda8acda5ed9f6da1f95d0031268225a50d60d"
+        },
+        {
+          "name": "AnchorMesh_Starboard",
+          "triangles": 155,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "a9f5ef47a9fbcbff82aec2e2dd457857905c70fd247d4fb6ef12abc95b6e281f"
+        },
+        {
+          "name": "AnchorMesh_Stern",
+          "triangles": 155,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "e21713ea5f1e864e0de1e35b63f45b1c485a85ccbd0204c6dd98dff57586a05d"
+        },
+        {
+          "name": "HatchRail_-1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "f588cc7b35029dd2983b222857280a4f090ddfe22ebd1861a43272cb2d87f34f"
+        },
+        {
+          "name": "HatchRail_1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "0a3ac48ec5a3aec7c419d814e1428eb1064759ffd534943749b1ec3a357e1c5b"
+        },
+        {
+          "name": "HoldEnd_Aft0",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "dc7ca17352eda18a3575a2d14086c0e65d2d880ef3334bb8ecfef3df3cb9cef3"
+        },
+        {
+          "name": "HoldEnd_Aft1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "9718e7565a237cdde2308c811a98ff12523d5705165794acdaf1e7ffd4aa7201"
+        },
+        {
+          "name": "HoldEnd_Fore0",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "01ac25f4785415e7ec869fbd38f50595fee5f12caf1343d515e23a4ecf1a7225"
+        },
+        {
+          "name": "HoldEnd_Fore1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "3b23af65a704a2ae3900b217d4d375e7c560cb080cc297ddfefd875539fc66ef"
+        },
+        {
+          "name": "HoldFloor_Aft",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "702530a6d0b5affe05d1015adfaf15c6e0116895aa97cfb5b508fccf52ae9a7c"
+        },
+        {
+          "name": "HoldFloor_Fore",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "4d9787cbeb462393b9e34a84078c76b65019b713cce3621a07178d58bb74c8ae"
+        },
+        {
+          "name": "HoldLining_Aft-1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "35857617685b4b59abef2149e60ed16ee3f73e8a38f7140f5e0e98ac516ace85"
+        },
+        {
+          "name": "HoldLining_Aft1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "0340ff644b58cb784e30b80853b7417f6cae02d9f64cb8033a28b83c2087030d"
+        },
+        {
+          "name": "HoldLining_Fore-1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "755b186664b86cbab27a21462dce26bb16eddeb5746a4c250c599b42477ca532"
+        },
+        {
+          "name": "HoldLining_Fore1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "679fc57518f18932147f7928d4aedb203ac4c869ab4698e23bf546ed61979b4c"
+        },
+        {
+          "name": "JackHeads_AftOuter",
+          "triangles": 120,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "f408779b0394554ae06ad877f76134f42c04ec14c9ccfe3a22a72198ddaaf685"
+        },
+        {
+          "name": "JackHeads_ForeOuter",
+          "triangles": 120,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "b0297003acbf1416e99ade1359daadf6151f211446eb988331cac8e1ded6d871"
+        },
+        {
+          "name": "JackRods_AftOuter",
+          "triangles": 360,
+          "materials": [
+            "VD507B_ship_gms_axalp_main"
+          ],
+          "geometry_sha256": "82890807885d7b2e0d625df312874d6646c0b715d0f6bdc9e9fa64f1ff7551f8"
+        },
+        {
+          "name": "JackRods_ForeOuter",
+          "triangles": 360,
+          "materials": [
+            "VD507B_ship_gms_axalp_main"
+          ],
+          "geometry_sha256": "537725eb81aef0e91347fd70fd486c8fc0cf4aee1b9989bbeb27c6a943e5904f"
+        },
+        {
+          "name": "NozzleMesh_Port",
+          "triangles": 3016,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "1399f7a33188b6d0089060a796ed9cc978d3950bf8e99d7a2cba9433fb49e077"
+        },
+        {
+          "name": "NozzleMesh_Starboard",
+          "triangles": 3016,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "1399f7a33188b6d0089060a796ed9cc978d3950bf8e99d7a2cba9433fb49e077"
+        },
+        {
+          "name": "PanelDetails_AftInner",
+          "triangles": 1224,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "d8c16eb859c333b086a31c18b89b77af9c672a665d73b8c26a912892262f4dd4"
+        },
+        {
+          "name": "PanelDetails_AftOuter",
+          "triangles": 720,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "8e57b30cc12db0093b63a6d234c48e7ec3e6a0c52453dc851c1a2494f54b77ec"
+        },
+        {
+          "name": "PanelDetails_ForeInner",
+          "triangles": 1368,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "e5176301bcb7507b23b9f31d7fe863992ad636682470b835c17dbb9e35281da2"
+        },
+        {
+          "name": "PanelDetails_ForeOuter",
+          "triangles": 576,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "0883ec273549d23d3d4707b1adb33fa7564777aaefa3cc45c58713284ccc0cbf"
+        },
+        {
+          "name": "Panel_AftInner",
+          "triangles": 16,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "309a1fe89dc268e631cada98fe983e7be608dc271abcf9d79bd9ca26c5c0d0e1"
+        },
+        {
+          "name": "Panel_AftOuter",
+          "triangles": 16,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "034a62f588d921fbf6bcf7efadb9989fa6e45875e29d61b9c606e20074f51b31"
+        },
+        {
+          "name": "Panel_ForeInner",
+          "triangles": 16,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "57b2e9126d36d2f9482ce690a6abc8b86cbd79da1f9b618cacf211472b79b749"
+        },
+        {
+          "name": "Panel_ForeOuter",
+          "triangles": 24,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "38c491dca8a3603069c68179b43f240f9b7e8532aff37ffff79c00a5ae5d2526"
+        },
+        {
+          "name": "PropellerMesh_Port",
+          "triangles": 2152,
+          "materials": [
+            "VD507B_ship_gms_axalp_main"
+          ],
+          "geometry_sha256": "88b8bdf5b6c38ff431ba48f95fd0b745b9ca236116d91a65c32dff2e012bbc05"
+        },
+        {
+          "name": "PropellerMesh_Starboard",
+          "triangles": 2152,
+          "materials": [
+            "VD507B_ship_gms_axalp_main"
+          ],
+          "geometry_sha256": "291c0f1cfb6480c62204d8db95f937e756af4b39741389e761d1017637a8a7e5"
+        },
+        {
+          "name": "Seal_AftInner",
+          "triangles": 4,
+          "materials": [
+            "VD507B_deck"
+          ],
+          "geometry_sha256": "f973e1c5046e878f9ee48b0a0594f448280a22b718ff63b1f80c7856054deb05"
+        },
+        {
+          "name": "Seal_ForeOuter",
+          "triangles": 4,
+          "materials": [
+            "VD507B_deck"
+          ],
+          "geometry_sha256": "587af4e22ab5a5bb4e6b1f0d42260ec1229a48532ee97a9444098326256f66a0"
+        },
+        {
+          "name": "VD507B_boats",
+          "triangles": 3951,
+          "materials": [
+            "VD507B_boats"
+          ],
+          "geometry_sha256": "3813a5897f38eb92f0061db253fcbf0ebc975a175c146dcb84499cb6608ce79e"
+        },
+        {
+          "name": "VD507B_deck",
+          "triangles": 419,
+          "materials": [
+            "VD507B_deck"
+          ],
+          "geometry_sha256": "c637f7a99f87c2267bc9a61724ae35d7c305c7be011990dde00698c66e4b86bb"
+        },
+        {
+          "name": "VD507B_detali",
+          "triangles": 14257,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "d0b962c080f30916d7050e2e3c8b74d55c529d111fd3f44644a54385a982f945"
+        },
+        {
+          "name": "VD507B_hold",
+          "triangles": 56,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "5c686bf17e18b35d59b901b6e8475d2bac4d481aa069819a50ec9bfdf171e519"
+        },
+        {
+          "name": "VD507B_hold_detali",
+          "triangles": 720,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "eb7f73dc354922aa2507113554d3e33db43c3b8c1f6b663edc8867d7b654e9af"
+        },
+        {
+          "name": "VD507B_hull",
+          "triangles": 6957,
+          "materials": [
+            "VD507B_hull"
+          ],
+          "geometry_sha256": "e377b9adc03dd104b80e46c86be82e823609a6fc6e557361769a2985664a1ac5"
+        },
+        {
+          "name": "VD507B_hull_detali",
+          "triangles": 790,
+          "materials": [
+            "VD507B_hull"
+          ],
+          "geometry_sha256": "dbe66f7d8c84590e1c6d378e12e7adcb820716a6dfe08ff46cbff529bccc74e7"
+        },
+        {
+          "name": "VD507B_interior",
+          "triangles": 656,
+          "materials": [
+            "VD507B_interior"
+          ],
+          "geometry_sha256": "f8200500df3ad64c09fc3c81a2f73503dc3d12d826d248f1a98e89d43bdce11d"
+        },
+        {
+          "name": "VD507B_lights",
+          "triangles": 90,
+          "materials": [
+            "VD507B_lights"
+          ],
+          "geometry_sha256": "3d081ac7c94b7bd5b075c9739fbaeb3db6cd56b3ccc40cb7c44be22cdf61b0ba"
+        },
+        {
+          "name": "VD507B_pipes",
+          "triangles": 5022,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "dfa17e4b2cf0aad17a3f917fa83cd05ed1d37c25bf1d9dda97b77346501bfca7"
+        },
+        {
+          "name": "VD507B_radar",
+          "triangles": 28,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "38eac16b7c2e8f069f35d0e856199871b4338019028d03fd86aa9bacee7f0596"
+        },
+        {
+          "name": "VD507B_radar.001",
+          "triangles": 28,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "121cdeef6ae749331e6b69fdbaf1766ea7cc52e0293d5dce65b0ba44cd67c1f9"
+        },
+        {
+          "name": "VD507B_rubka",
+          "triangles": 2602,
+          "materials": [
+            "VD507B_rubka",
+            "VD507B_Glass"
+          ],
+          "geometry_sha256": "8428e02d8f6ad68d0d85696ab6598307b6ea0af7b4fac7af9affa31bcc6f3264"
+        },
+        {
+          "name": "VD507B_rubka_detali",
+          "triangles": 6894,
+          "materials": [
+            "VD507B_rubka_detali"
+          ],
+          "geometry_sha256": "c1d113d8b3222633529d71ee5913b9a7c4d9cb8eb9dbb8bc8e92c5afa6680749"
+        },
+        {
+          "name": "WindlassMesh_Port",
+          "triangles": 600,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "46b2a5978e99d818f7a54636ec703aa4301e0d1ed6e4fa43f61732dbd3a9f1f3"
+        },
+        {
+          "name": "WindlassMesh_Starboard",
+          "triangles": 600,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "452bd56ebf3e38511bc101b9be8c92e4871defdac0c6af7411a0c918a98bd0bf"
+        }
+      ]
+    },
+    {
+      "level": 1,
+      "meshes": [
+        {
+          "name": "LOD1__AnchorMesh_Port",
+          "triangles": 155,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "6938011121c592273db9558526dda8acda5ed9f6da1f95d0031268225a50d60d"
+        },
+        {
+          "name": "LOD1__AnchorMesh_Starboard",
+          "triangles": 155,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "a9f5ef47a9fbcbff82aec2e2dd457857905c70fd247d4fb6ef12abc95b6e281f"
+        },
+        {
+          "name": "LOD1__AnchorMesh_Stern",
+          "triangles": 155,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "e21713ea5f1e864e0de1e35b63f45b1c485a85ccbd0204c6dd98dff57586a05d"
+        },
+        {
+          "name": "LOD1__HatchRail_-1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "f588cc7b35029dd2983b222857280a4f090ddfe22ebd1861a43272cb2d87f34f"
+        },
+        {
+          "name": "LOD1__HatchRail_1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "0a3ac48ec5a3aec7c419d814e1428eb1064759ffd534943749b1ec3a357e1c5b"
+        },
+        {
+          "name": "LOD1__HoldEnd_Aft0",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "dc7ca17352eda18a3575a2d14086c0e65d2d880ef3334bb8ecfef3df3cb9cef3"
+        },
+        {
+          "name": "LOD1__HoldEnd_Aft1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "9718e7565a237cdde2308c811a98ff12523d5705165794acdaf1e7ffd4aa7201"
+        },
+        {
+          "name": "LOD1__HoldEnd_Fore0",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "01ac25f4785415e7ec869fbd38f50595fee5f12caf1343d515e23a4ecf1a7225"
+        },
+        {
+          "name": "LOD1__HoldEnd_Fore1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "3b23af65a704a2ae3900b217d4d375e7c560cb080cc297ddfefd875539fc66ef"
+        },
+        {
+          "name": "LOD1__HoldFloor_Aft",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "702530a6d0b5affe05d1015adfaf15c6e0116895aa97cfb5b508fccf52ae9a7c"
+        },
+        {
+          "name": "LOD1__HoldFloor_Fore",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "4d9787cbeb462393b9e34a84078c76b65019b713cce3621a07178d58bb74c8ae"
+        },
+        {
+          "name": "LOD1__HoldLining_Aft-1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "35857617685b4b59abef2149e60ed16ee3f73e8a38f7140f5e0e98ac516ace85"
+        },
+        {
+          "name": "LOD1__HoldLining_Aft1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "0340ff644b58cb784e30b80853b7417f6cae02d9f64cb8033a28b83c2087030d"
+        },
+        {
+          "name": "LOD1__HoldLining_Fore-1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "755b186664b86cbab27a21462dce26bb16eddeb5746a4c250c599b42477ca532"
+        },
+        {
+          "name": "LOD1__HoldLining_Fore1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "679fc57518f18932147f7928d4aedb203ac4c869ab4698e23bf546ed61979b4c"
+        },
+        {
+          "name": "LOD1__JackHeads_AftOuter",
+          "triangles": 120,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "f408779b0394554ae06ad877f76134f42c04ec14c9ccfe3a22a72198ddaaf685"
+        },
+        {
+          "name": "LOD1__JackHeads_ForeOuter",
+          "triangles": 120,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "b0297003acbf1416e99ade1359daadf6151f211446eb988331cac8e1ded6d871"
+        },
+        {
+          "name": "LOD1__JackRods_AftOuter",
+          "triangles": 198,
+          "materials": [
+            "VD507B_ship_gms_axalp_main"
+          ],
+          "geometry_sha256": "52338128c677ab4820439d09f88bc24eef9ad94ee30215134442f80de398d99c"
+        },
+        {
+          "name": "LOD1__JackRods_ForeOuter",
+          "triangles": 198,
+          "materials": [
+            "VD507B_ship_gms_axalp_main"
+          ],
+          "geometry_sha256": "397730524288cd98c9827fdf4edcbb94561a7f8836f7e9f40674d30fd956d220"
+        },
+        {
+          "name": "LOD1__NozzleMesh_Port",
+          "triangles": 1658,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "efb5f48f9b42e824e6885ec6fbb2e4e28f9361eadc7c7d762761d230d2fd67a4"
+        },
+        {
+          "name": "LOD1__NozzleMesh_Starboard",
+          "triangles": 1658,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "efb5f48f9b42e824e6885ec6fbb2e4e28f9361eadc7c7d762761d230d2fd67a4"
+        },
+        {
+          "name": "LOD1__PanelDetails_AftInner",
+          "triangles": 673,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "29cb2033c122b63c59d0d0d7e9e4bdcb117aaa3ea5fba02ff94ef1c23d957311"
+        },
+        {
+          "name": "LOD1__PanelDetails_AftOuter",
+          "triangles": 396,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "aaea6da6c6d0f7b45ab220ab2e585602ad38a675862aa128f6cfbca83fdf9609"
+        },
+        {
+          "name": "LOD1__PanelDetails_ForeInner",
+          "triangles": 752,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "a15b9e7168da89c7b7ec827ef07d08cd051cdd19d83bdd02ba70b564fd147d9b"
+        },
+        {
+          "name": "LOD1__PanelDetails_ForeOuter",
+          "triangles": 316,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "9ffa3361ae716fc318bb11e7a1c797363e7eca5917707a16fdd314a4c3c0e377"
+        },
+        {
+          "name": "LOD1__Panel_AftInner",
+          "triangles": 16,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "309a1fe89dc268e631cada98fe983e7be608dc271abcf9d79bd9ca26c5c0d0e1"
+        },
+        {
+          "name": "LOD1__Panel_AftOuter",
+          "triangles": 16,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "034a62f588d921fbf6bcf7efadb9989fa6e45875e29d61b9c606e20074f51b31"
+        },
+        {
+          "name": "LOD1__Panel_ForeInner",
+          "triangles": 16,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "57b2e9126d36d2f9482ce690a6abc8b86cbd79da1f9b618cacf211472b79b749"
+        },
+        {
+          "name": "LOD1__Panel_ForeOuter",
+          "triangles": 24,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "38c491dca8a3603069c68179b43f240f9b7e8532aff37ffff79c00a5ae5d2526"
+        },
+        {
+          "name": "LOD1__PropellerMesh_Port",
+          "triangles": 1182,
+          "materials": [
+            "VD507B_ship_gms_axalp_main"
+          ],
+          "geometry_sha256": "9cf3f3f84013c12904c7970ce43af4ce1f4eecb396d89540244dd5a5ed563431"
+        },
+        {
+          "name": "LOD1__PropellerMesh_Starboard",
+          "triangles": 1182,
+          "materials": [
+            "VD507B_ship_gms_axalp_main"
+          ],
+          "geometry_sha256": "fd6beda0dfc28db4010c784237f0b16471a807d7fd207dafc5154b5f9c19fa55"
+        },
+        {
+          "name": "LOD1__Seal_AftInner",
+          "triangles": 4,
+          "materials": [
+            "VD507B_deck"
+          ],
+          "geometry_sha256": "f973e1c5046e878f9ee48b0a0594f448280a22b718ff63b1f80c7856054deb05"
+        },
+        {
+          "name": "LOD1__Seal_ForeOuter",
+          "triangles": 4,
+          "materials": [
+            "VD507B_deck"
+          ],
+          "geometry_sha256": "587af4e22ab5a5bb4e6b1f0d42260ec1229a48532ee97a9444098326256f66a0"
+        },
+        {
+          "name": "LOD1__VD507B_boats",
+          "triangles": 2173,
+          "materials": [
+            "VD507B_boats"
+          ],
+          "geometry_sha256": "b0da692eb1d35cae98140b31f2026a048dfaf58f7939d0edd63db9e50465ccda"
+        },
+        {
+          "name": "LOD1__VD507B_deck",
+          "triangles": 419,
+          "materials": [
+            "VD507B_deck"
+          ],
+          "geometry_sha256": "c637f7a99f87c2267bc9a61724ae35d7c305c7be011990dde00698c66e4b86bb"
+        },
+        {
+          "name": "LOD1__VD507B_detali",
+          "triangles": 7841,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "94a9f65c5c61d01777457a2c3f742940c874bdfd6da697cd57fb53c64b91c8c3"
+        },
+        {
+          "name": "LOD1__VD507B_hold",
+          "triangles": 56,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "5c686bf17e18b35d59b901b6e8475d2bac4d481aa069819a50ec9bfdf171e519"
+        },
+        {
+          "name": "LOD1__VD507B_hold_detali",
+          "triangles": 396,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "d4cb6f0674d1d5fb5cd126f4b6070ad1e4e9f6e55908a5779294eb2492928542"
+        },
+        {
+          "name": "LOD1__VD507B_hull",
+          "triangles": 2087,
+          "materials": [
+            "VD507B_hull"
+          ],
+          "geometry_sha256": "7a8487b9ea5b5e19ff292a5566a24461804081c3fb379e186bc54e9a3eeafca6"
+        },
+        {
+          "name": "LOD1__VD507B_hull_detali",
+          "triangles": 434,
+          "materials": [
+            "VD507B_hull"
+          ],
+          "geometry_sha256": "66d68b5fd2fc83943ffa79ea9f05cf1b3fa8bd076395cbf8807fd34b61654487"
+        },
+        {
+          "name": "LOD1__VD507B_interior",
+          "triangles": 360,
+          "materials": [
+            "VD507B_interior"
+          ],
+          "geometry_sha256": "d84bfcdfc8b57a7cbd7db38b803b396414221df99943ebd930b698dbe36a5b1d"
+        },
+        {
+          "name": "LOD1__VD507B_lights",
+          "triangles": 90,
+          "materials": [
+            "VD507B_lights"
+          ],
+          "geometry_sha256": "3d081ac7c94b7bd5b075c9739fbaeb3db6cd56b3ccc40cb7c44be22cdf61b0ba"
+        },
+        {
+          "name": "LOD1__VD507B_pipes",
+          "triangles": 2762,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "bfc22f3a559ff10bc2fbf620c732f927fd613030a9993441a25e2633b698e5e7"
+        },
+        {
+          "name": "LOD1__VD507B_radar",
+          "triangles": 28,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "38eac16b7c2e8f069f35d0e856199871b4338019028d03fd86aa9bacee7f0596"
+        },
+        {
+          "name": "LOD1__VD507B_radar.001",
+          "triangles": 28,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "121cdeef6ae749331e6b69fdbaf1766ea7cc52e0293d5dce65b0ba44cd67c1f9"
+        },
+        {
+          "name": "LOD1__VD507B_rubka",
+          "triangles": 2602,
+          "materials": [
+            "VD507B_rubka",
+            "VD507B_Glass"
+          ],
+          "geometry_sha256": "8428e02d8f6ad68d0d85696ab6598307b6ea0af7b4fac7af9affa31bcc6f3264"
+        },
+        {
+          "name": "LOD1__VD507B_rubka_detali",
+          "triangles": 6894,
+          "materials": [
+            "VD507B_rubka_detali"
+          ],
+          "geometry_sha256": "c1d113d8b3222633529d71ee5913b9a7c4d9cb8eb9dbb8bc8e92c5afa6680749"
+        },
+        {
+          "name": "LOD1__WindlassMesh_Port",
+          "triangles": 330,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "95454c72e71ba18bea652e2a29c7e78f0a1db30b8b6f864d51b757aee0a7259d"
+        },
+        {
+          "name": "LOD1__WindlassMesh_Starboard",
+          "triangles": 330,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "759ea63f07b25be909fa230fa76e561821ad408878e4a13d156f5cd47393ff0b"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "meshes": [
+        {
+          "name": "LOD2__AnchorMesh_Port",
+          "triangles": 155,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "6938011121c592273db9558526dda8acda5ed9f6da1f95d0031268225a50d60d"
+        },
+        {
+          "name": "LOD2__AnchorMesh_Starboard",
+          "triangles": 155,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "a9f5ef47a9fbcbff82aec2e2dd457857905c70fd247d4fb6ef12abc95b6e281f"
+        },
+        {
+          "name": "LOD2__AnchorMesh_Stern",
+          "triangles": 155,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "e21713ea5f1e864e0de1e35b63f45b1c485a85ccbd0204c6dd98dff57586a05d"
+        },
+        {
+          "name": "LOD2__HatchRail_-1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "f588cc7b35029dd2983b222857280a4f090ddfe22ebd1861a43272cb2d87f34f"
+        },
+        {
+          "name": "LOD2__HatchRail_1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "0a3ac48ec5a3aec7c419d814e1428eb1064759ffd534943749b1ec3a357e1c5b"
+        },
+        {
+          "name": "LOD2__HoldEnd_Aft0",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "dc7ca17352eda18a3575a2d14086c0e65d2d880ef3334bb8ecfef3df3cb9cef3"
+        },
+        {
+          "name": "LOD2__HoldEnd_Aft1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "9718e7565a237cdde2308c811a98ff12523d5705165794acdaf1e7ffd4aa7201"
+        },
+        {
+          "name": "LOD2__HoldEnd_Fore0",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "01ac25f4785415e7ec869fbd38f50595fee5f12caf1343d515e23a4ecf1a7225"
+        },
+        {
+          "name": "LOD2__HoldEnd_Fore1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "3b23af65a704a2ae3900b217d4d375e7c560cb080cc297ddfefd875539fc66ef"
+        },
+        {
+          "name": "LOD2__HoldFloor_Aft",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "702530a6d0b5affe05d1015adfaf15c6e0116895aa97cfb5b508fccf52ae9a7c"
+        },
+        {
+          "name": "LOD2__HoldFloor_Fore",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "4d9787cbeb462393b9e34a84078c76b65019b713cce3621a07178d58bb74c8ae"
+        },
+        {
+          "name": "LOD2__HoldLining_Aft-1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "35857617685b4b59abef2149e60ed16ee3f73e8a38f7140f5e0e98ac516ace85"
+        },
+        {
+          "name": "LOD2__HoldLining_Aft1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "0340ff644b58cb784e30b80853b7417f6cae02d9f64cb8033a28b83c2087030d"
+        },
+        {
+          "name": "LOD2__HoldLining_Fore-1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "755b186664b86cbab27a21462dce26bb16eddeb5746a4c250c599b42477ca532"
+        },
+        {
+          "name": "LOD2__HoldLining_Fore1",
+          "triangles": 12,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "679fc57518f18932147f7928d4aedb203ac4c869ab4698e23bf546ed61979b4c"
+        },
+        {
+          "name": "LOD2__NozzleMesh_Port",
+          "triangles": 662,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "5f63ee2332a7691d082bdf70ff1fbf8043073564f3c2d7146c22f39fb248689b"
+        },
+        {
+          "name": "LOD2__NozzleMesh_Starboard",
+          "triangles": 662,
+          "materials": [
+            "VD507B_NozzlePaint"
+          ],
+          "geometry_sha256": "5f63ee2332a7691d082bdf70ff1fbf8043073564f3c2d7146c22f39fb248689b"
+        },
+        {
+          "name": "LOD2__PanelDetails_AftInner",
+          "triangles": 269,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "bc5f1a8cc48220bc46bb9c97ffcbf0f3906977dcd352f8cea938a4ab51d5ad2f"
+        },
+        {
+          "name": "LOD2__PanelDetails_AftOuter",
+          "triangles": 158,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "8fdf986a044ae87ebaa59aa90e202d43637678df233dfd5a13cd09bf703d207f"
+        },
+        {
+          "name": "LOD2__PanelDetails_ForeInner",
+          "triangles": 300,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "33729077e674f5059bc2318a7a31e46f9247a69b43db428e198b58607a2fa2df"
+        },
+        {
+          "name": "LOD2__PanelDetails_ForeOuter",
+          "triangles": 126,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "d95cf9bc9a90f49cc4101d6d7999c0b411b88b38df2c37046e77b2cc35d24e5b"
+        },
+        {
+          "name": "LOD2__Panel_AftInner",
+          "triangles": 16,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "309a1fe89dc268e631cada98fe983e7be608dc271abcf9d79bd9ca26c5c0d0e1"
+        },
+        {
+          "name": "LOD2__Panel_AftOuter",
+          "triangles": 16,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "034a62f588d921fbf6bcf7efadb9989fa6e45875e29d61b9c606e20074f51b31"
+        },
+        {
+          "name": "LOD2__Panel_ForeInner",
+          "triangles": 16,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "57b2e9126d36d2f9482ce690a6abc8b86cbd79da1f9b618cacf211472b79b749"
+        },
+        {
+          "name": "LOD2__Panel_ForeOuter",
+          "triangles": 24,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "38c491dca8a3603069c68179b43f240f9b7e8532aff37ffff79c00a5ae5d2526"
+        },
+        {
+          "name": "LOD2__PropellerMesh_Port",
+          "triangles": 472,
+          "materials": [
+            "VD507B_ship_gms_axalp_main"
+          ],
+          "geometry_sha256": "a5f7e4954b406728547386802aa05e8727d072d930ea2f91771d8f2c6c5d5dfa"
+        },
+        {
+          "name": "LOD2__PropellerMesh_Starboard",
+          "triangles": 472,
+          "materials": [
+            "VD507B_ship_gms_axalp_main"
+          ],
+          "geometry_sha256": "ada4619ee19af58f2c4d83c167bf85c5c95cc0c1eb21972fc6cc76af35d901ec"
+        },
+        {
+          "name": "LOD2__VD507B_boats",
+          "triangles": 1975,
+          "materials": [
+            "VD507B_boats"
+          ],
+          "geometry_sha256": "2d94512b759e1d71aa43c6da3688ee598fda6a57a94011156c3c5215b5115c28"
+        },
+        {
+          "name": "LOD2__VD507B_deck",
+          "triangles": 419,
+          "materials": [
+            "VD507B_deck"
+          ],
+          "geometry_sha256": "c637f7a99f87c2267bc9a61724ae35d7c305c7be011990dde00698c66e4b86bb"
+        },
+        {
+          "name": "LOD2__VD507B_detali",
+          "triangles": 4277,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "5721cb37c885ca06d1aa948df03dd721e25c37794fef5c3ec53ac1487c09ecfe"
+        },
+        {
+          "name": "LOD2__VD507B_hold",
+          "triangles": 56,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "5c686bf17e18b35d59b901b6e8475d2bac4d481aa069819a50ec9bfdf171e519"
+        },
+        {
+          "name": "LOD2__VD507B_hold_detali",
+          "triangles": 158,
+          "materials": [
+            "VD507B_hold"
+          ],
+          "geometry_sha256": "f5312de344e8d860812e70966f99bb17e73409f31a68042c8361d5165ab097c0"
+        },
+        {
+          "name": "LOD2__VD507B_hull",
+          "triangles": 834,
+          "materials": [
+            "VD507B_hull"
+          ],
+          "geometry_sha256": "7c8fdb1bad980b5176961a404c8a1e576e582368bb0e9e2a10d3fd323f747b25"
+        },
+        {
+          "name": "LOD2__VD507B_hull_detali",
+          "triangles": 173,
+          "materials": [
+            "VD507B_hull"
+          ],
+          "geometry_sha256": "9eff7fbac1435594d838e48af7a71610c3b3a9b3f4b5065977f8c6588b32575e"
+        },
+        {
+          "name": "LOD2__VD507B_lights",
+          "triangles": 90,
+          "materials": [
+            "VD507B_lights"
+          ],
+          "geometry_sha256": "3d081ac7c94b7bd5b075c9739fbaeb3db6cd56b3ccc40cb7c44be22cdf61b0ba"
+        },
+        {
+          "name": "LOD2__VD507B_pipes",
+          "triangles": 2762,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "bfc22f3a559ff10bc2fbf620c732f927fd613030a9993441a25e2633b698e5e7"
+        },
+        {
+          "name": "LOD2__VD507B_radar",
+          "triangles": 28,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "38eac16b7c2e8f069f35d0e856199871b4338019028d03fd86aa9bacee7f0596"
+        },
+        {
+          "name": "LOD2__VD507B_radar.001",
+          "triangles": 28,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "121cdeef6ae749331e6b69fdbaf1766ea7cc52e0293d5dce65b0ba44cd67c1f9"
+        },
+        {
+          "name": "LOD2__VD507B_rubka",
+          "triangles": 2602,
+          "materials": [
+            "VD507B_rubka",
+            "VD507B_Glass"
+          ],
+          "geometry_sha256": "8428e02d8f6ad68d0d85696ab6598307b6ea0af7b4fac7af9affa31bcc6f3264"
+        },
+        {
+          "name": "LOD2__VD507B_rubka_detali",
+          "triangles": 6894,
+          "materials": [
+            "VD507B_rubka_detali"
+          ],
+          "geometry_sha256": "c1d113d8b3222633529d71ee5913b9a7c4d9cb8eb9dbb8bc8e92c5afa6680749"
+        },
+        {
+          "name": "LOD2__WindlassMesh_Port",
+          "triangles": 132,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "bdaf8efc12c13c905bef416c9102d485dfbb815473b0cf45a9836e10d72c7b2a"
+        },
+        {
+          "name": "LOD2__WindlassMesh_Starboard",
+          "triangles": 132,
+          "materials": [
+            "VD507B_detali"
+          ],
+          "geometry_sha256": "e7ba5ae62801ae87b77baa0957079576b75ebb5f87d59e6b454289a9c033df63"
+        }
+      ]
+    }
+  ]
+}

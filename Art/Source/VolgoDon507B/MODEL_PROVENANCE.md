@@ -1,5 +1,17 @@
 # Volgo-Don 507B Model Provenance
 
+## Part 10 sectional derivative, 2026-10-23
+
+The lower visual shell and separate capped hydrostatic surface are project-authored
+derivatives of the existing model and manually sampled page-2 project-507 body plan.
+Raw raster coordinates and estimated conversions are retained in `part10-trace.json`.
+No third-party image pixels were added. Existing atlas provenance is unchanged.
+The family drawing does not establish exact 507B offsets; estimated station spacing,
+waterline-constrained fitting and a maximum 0.743 m residual remain explicit.
+See [PART10_REVIEW.md](PART10_REVIEW.md) for preserved geometry, volume, exports,
+resource budgets and verification. The original hull is archived inside the blend;
+all legacy fallback assets remain unchanged.
+
 ## Part 9 reference decisions, 2026-10-23
 
 See [REFERENCE_DECISIONS.md](REFERENCE_DECISIONS.md) for dated photo comparisons,

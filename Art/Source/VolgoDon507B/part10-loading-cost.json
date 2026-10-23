@@ -1,0 +1,6 @@
+{
+    "iterations": 1000,
+    "millisecondsPerRebuild": 0.007407100000000001,
+    "bytesPerRebuild": -1,
+    "scope": "Parameter, manoeuvring, hydrostatics and station-array reconstruction only; excludes Rigidbody assignments. Alternating cargo inventory, warmed editor thread."
+}

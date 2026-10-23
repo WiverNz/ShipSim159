@@ -1,0 +1,78 @@
+{
+    "levels": [
+        {
+            "level": 0,
+            "triangles": 59543,
+            "renderers": 49,
+            "materialPasses": 50
+        },
+        {
+            "level": 1,
+            "triangles": 35972,
+            "renderers": 49,
+            "materialPasses": 50
+        },
+        {
+            "level": 2,
+            "triangles": 24362,
+            "renderers": 42,
+            "materialPasses": 43
+        }
+    ],
+    "textureBytes": 82087012,
+    "textureCount": 25,
+    "collisions": [
+        {
+            "name": "MidshipCollision",
+            "type": "BoxCollider",
+            "centre": {
+                "x": 0.0,
+                "y": -1.25,
+                "z": -5.0
+            },
+            "size": {
+                "x": 16.200000762939453,
+                "y": 4.599999904632568,
+                "z": 82.0
+            }
+        },
+        {
+            "name": "BowCollision",
+            "type": "BoxCollider",
+            "centre": {
+                "x": 0.0,
+                "y": -1.0499999523162842,
+                "z": 48.0
+            },
+            "size": {
+                "x": 11.5,
+                "y": 4.099999904632568,
+                "z": 28.0
+            }
+        },
+        {
+            "name": "SternCollision",
+            "type": "BoxCollider",
+            "centre": {
+                "x": 0.0,
+                "y": -1.149999976158142,
+                "z": -54.0
+            },
+            "size": {
+                "x": 13.5,
+                "y": 4.300000190734863,
+                "z": 22.0
+            }
+        }
+    ],
+    "boundsCentre": {
+        "x": -0.0000095367431640625,
+        "y": 4.552572727203369,
+        "z": 0.0
+    },
+    "boundsSize": {
+        "x": 16.70003318786621,
+        "y": 16.16514778137207,
+        "z": 138.29998779296875
+    }
+}

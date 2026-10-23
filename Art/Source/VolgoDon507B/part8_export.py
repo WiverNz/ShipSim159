@@ -8,6 +8,7 @@ ROOT = Path('G:/Projects/ShipSim159')
 SOURCE = ROOT / 'Art/Source/VolgoDon507B'
 TARGET = ROOT / 'Assets/ShipSimulator/Models/VolgoDon507B_Improved'
 scene = bpy.data.scenes['VolgoDon507B_Source']
+stage = 10 if scene.get('part10_hull') else 8
 bpy.context.window.scene = scene
 scene.frame_set(1)
 originals = [o for o in scene.objects if o.type in {'MESH', 'EMPTY'}]
@@ -69,7 +70,7 @@ for level, ratio in [(1, .55), (2, .22)]:
         copy.matrix_parent_inverse = original.matrix_parent_inverse.copy()
     bpy.context.window.scene = derived
     for original, copy in mapping.items():
-        if copy.type != 'MESH' or original.name in protected:
+        if copy.type != 'MESH' or (original.name in protected and not (stage == 10 and original.name == 'VD507B_hull')):
             continue
         triangles = sum(len(p.vertices) - 2 for p in copy.data.polygons)
         if triangles < 300:
@@ -80,6 +81,8 @@ for level, ratio in [(1, .55), (2, .22)]:
         bpy.context.view_layer.objects.active = copy
         modifier = copy.modifiers.new('Derived distance simplification', 'DECIMATE')
         modifier.ratio = max(ratio, .5) if original.name == 'VD507B_boats' else ratio
+        if stage == 10 and original.name == 'VD507B_hull':
+            modifier.ratio = .30 if level == 1 else .12
         if original.name == 'VD507B_detali':
             modifier.ratio = max(ratio, .30)
         if original.name == 'VD507B_pipes':
@@ -98,6 +101,6 @@ for image in bpy.data.images:
     if image.source == 'FILE' and image.has_data and not image.packed_file:
         image.pack()
 bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE / 'VolgoDon507B.blend'))
-with open(SOURCE / 'part8-source.json', 'w') as stream:
+with open(SOURCE / f'part{stage}-source.json', 'w') as stream:
     json.dump(report, stream, indent=2)
-print('PART8_EXPORT', [(r['level'], sum(m['triangles'] for m in r['meshes']), len(r['meshes'])) for r in report['levels']])
+print(f'PART{stage}_EXPORT', [(r['level'], sum(m['triangles'] for m in r['meshes']), len(r['meshes'])) for r in report['levels']])

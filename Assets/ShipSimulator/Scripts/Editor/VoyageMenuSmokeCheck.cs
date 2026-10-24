@@ -104,7 +104,9 @@ namespace ShipSimulator.Editor
                             ship.CaptureLoading().commands[2] != 1)
                             throw new Exception("Cross-scene load lost compartment inventory or transfer command.");
                         if (ship.Mechanisms == null || ship.Mechanisms.Target != HatchPosition.ForwardOpen ||
-                            Mathf.Abs(ship.Mechanisms.Opening - .625f) > .02f || !ship.Mechanisms.AnchorsReleased)
+                            Mathf.Abs(ship.Mechanisms.Opening - SessionState.GetFloat("ShipSim.Part13Opening", -1)) > .02f ||
+                            Mathf.Abs(ship.Mechanisms.ChainOutM(0) - SessionState.GetFloat("ShipSim.Part13Chain", -1)) > .05f ||
+                            !ship.Mechanisms.AnchorsReleased)
                             throw new Exception("Cross-scene load lost deck machinery state.");
                         menu.HandleEscape();
                         if (Time.timeScale != 2) throw new Exception("Resume lost saved simulation speed.");
@@ -175,7 +177,7 @@ namespace ShipSimulator.Editor
                     string caption = target == HatchPosition.ForwardOpen ? "FORE OPEN" : target == HatchPosition.AftOpen ? "AFT OPEN" : "CLOSE";
                     hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == caption).OnPointerClick(null);
                     if (rig.Target != target) throw new Exception("HUD machinery command did not reach the vessel.");
-                    for (int i = 0; i < 240; i++) rig.Advance(1, 0, 0, 0);
+                    for (int i = 0; i < 1000; i++) rig.Advance(1, 0, 0, 0);
                     if (rig.IsMoving) throw new Exception("Hatches never reached " + target);
                     LandscapePreview.Render(camera, "Logs/MenuScreenshots/volgodon-machinery-" + target + ".png");
                 }
@@ -190,8 +192,10 @@ namespace ShipSimulator.Editor
                 LandscapePreview.Render(camera, "Logs/MenuScreenshots/volgodon-machinery-night.png");
                 UnityEngine.Object.FindAnyObjectByType<DayNightController>().Apply(false);
                 ship.SetHatchPosition(HatchPosition.ForwardOpen);
-                hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == "UNSEAT / STOW ANCHORS").OnPointerClick(null);
+                hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == "LET GO / HEAVE UP ANCHORS").OnPointerClick(null);
                 rig.Advance(25, 0, 0, 0);
+                SessionState.SetFloat("ShipSim.Part13Opening", rig.Opening);
+                SessionState.SetFloat("ShipSim.Part13Chain", rig.ChainOutM(0));
                 if (Vector3.Distance(position, ship.transform.position) > .001f ||
                     Quaternion.Angle(rotation, ship.transform.rotation) > .01f)
                     throw new Exception("Machinery changed vessel root pose.");

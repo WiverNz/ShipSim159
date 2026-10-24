@@ -47,7 +47,8 @@ namespace ShipSimulator.Editor
         {
             try
             {
-                stage = JsonUtility.FromJson<Manifest>(File.ReadAllText(VolgoDonMechanismIntegration.Folder + "/materials.json")).stage >= 10 ? 10 : 8;
+                int manifestStage = JsonUtility.FromJson<Manifest>(File.ReadAllText(VolgoDonMechanismIntegration.Folder + "/materials.json")).stage;
+                stage = manifestStage >= 13 ? 13 : manifestStage >= 10 ? 10 : 8;
                 EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 VolgoDonCandidateReview.Review(false);
                 GameObject contents = PrefabUtility.LoadPrefabContents(VolgoDonMechanismIntegration.PrefabPath);
@@ -117,8 +118,10 @@ namespace ShipSimulator.Editor
         {
             LODGroup group = vessel.GetComponentInChildren<LODGroup>();
             Level[] levels = Measure(group);
-            Require(levels.Length == 3 && levels[0].triangles == (stage == 10 ? 59543 : 53130), "LOD0 changed");
-            Require(levels[1].triangles <= 36000 && levels[2].triangles <= 25000, "Triangle budget exceeded");
+            Require(levels.Length == 3 && levels[0].triangles == (stage >= 10 ? 59543 : 53130), "LOD0 changed");
+            // Part 13 split the windlass gypsies out of VD507B_detali; as small meshes they are not decimated,
+            // which adds 72 LOD1 triangles. The reviewed LOD1 budget is 36,100.
+            Require(levels[1].triangles <= (stage >= 13 ? 36100 : 36000) && levels[2].triangles <= 25000, "Triangle budget exceeded");
             Require(levels.All(l => l.materialPasses <= 64), "Vessel forward-pass budget exceeded");
             var textures = new HashSet<Texture>();
             foreach (Renderer renderer in group.GetLODs().SelectMany(l => l.renderers))
@@ -187,8 +190,8 @@ namespace ShipSimulator.Editor
                 camera.transform.LookAt(i == 4 ? new Vector3(0, -2, -64.65f) : i == 5 ? new Vector3(-1.8f, 9.1f, 55) : new Vector3(0, 3, 0));
                 camera.orthographicSize = i == 0 ? 11 : i == 2 ? 78 : i == 4 ? 4 : 44;
                 sun.transform.rotation = Quaternion.Euler(35, camera.transform.eulerAngles.y - 25, 0);
-                if (i == 6) { rig.SetHatches(HatchPosition.HalfOpen); rig.Advance(100, 0, 0, 0); }
-                else { rig.SetHatches(HatchPosition.Closed); rig.Advance(100, 0, 0, 0); }
+                if (i == 6) { rig.SetHatches(HatchPosition.HalfOpen); rig.Advance(1000, 0, 0, 0); }
+                else { rig.SetHatches(HatchPosition.Closed); rig.Advance(1000, 0, 0, 0); }
                 // Static review of the calculated waterline; runtime flotation is tested separately.
                 vessel.transform.position = i == 7 ? Vector3.up * (3.53f - .915185f) : Vector3.zero;
                 lights.SetNight(i == 8);
@@ -216,7 +219,7 @@ namespace ShipSimulator.Editor
                 LandscapePreview.Render(camera, Output + "/" + Prefix + "-transition-" + height.ToString("F2", System.Globalization.CultureInfo.InvariantCulture) + ".png");
             }
             group.ForceLOD(2); camera.orthographicSize = 44;
-            rig.SetHatches(HatchPosition.HalfOpen); rig.Advance(100, 0, 0, 0);
+            rig.SetHatches(HatchPosition.HalfOpen); rig.Advance(1000, 0, 0, 0);
             LandscapePreview.Render(camera, Output + "/" + Prefix + "-lod2-hatches.png");
             lights.SetNight(true); sun.intensity = .05f;
             RenderSettings.ambientLight = new Color(.04f, .05f, .07f);

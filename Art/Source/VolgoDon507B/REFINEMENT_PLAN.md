@@ -1,6 +1,6 @@
 # Volgo-Don 507B: remaining fidelity work
 
-Created: 2026-10-23. Parts 9-12 complete; Parts 13-17 not started.
+Created: 2026-10-23. Parts 9-13 complete; Parts 14-17 not started.
 
 This continues Parts 1-8 of [IMPROVEMENT_CHECKLIST.md](IMPROVEMENT_CHECKLIST.md).
 The baseline and known discrepancies are recorded in [PART8_REVIEW.md](PART8_REVIEW.md).
@@ -38,7 +38,7 @@ precision. A completed prototype feature is not validated maritime training.
 | 10 | Hull sections and corrected editable geometry | 9 | Complete with documented trace discrepancy, 2026-10-23 |
 | 11 | Section-based hydrostatics and loading response | 10 | Complete, 2026-10-23; estimated lightship LCG and no free-surface correction |
 | 12 | Propulsion, stopping and steering calibration | 9, 11 | Complete, 2026-10-24; audit with no refit, stop and turning published as envelopes; open-hold water and refloating fixes |
-| 13 | Evidence-based machinery rates and detail corrections | 9; reconcile with 12 | Not started |
+| 13 | Evidence-based machinery rates and detail corrections | 9; reconcile with 12 | Complete, 2026-10-24; rates derived or estimated within archive limits, visual anchors only |
 | 14 | Anchor holding and mooring prototype | 11, 12, 13 | Not started |
 | 15 | Licensed machinery and water audio | 12, 13 | Not started |
 | 16 | Improved contact geometry | 10, 11; retest 14 | Not started |
@@ -150,12 +150,17 @@ claim. Preserve independent engines, steering, thruster and save compatibility.
 
 ## Part 13: machinery timing and remaining fittings
 
-- [ ] Resolve shaft reduction, hatch travel/lift sequence and operating rates,
+Result: [PART13_REVIEW.md](PART13_REVIEW.md). Real-time hatch, anchor and steering
+rates derived from the archive hydraulics, winch and windlass data in the
+`operating_rates` block of `mechanisms.json`; windlass re-bound from the mooring
+drums to the gypsies; forward outer cover lifts before it shifts; visual chain payout.
+
+- [x] Resolve shaft reduction, hatch travel/lift sequence and operating rates,
   anchor payout limits and steering actuator rates from available evidence.
-- [ ] Separate real-time operating rates from accelerated preview animations.
-- [ ] Correct only supported fittings, pivots or clearances. Retain the archived
+- [x] Separate real-time operating rates from accelerated preview animations.
+- [x] Correct only supported fittings, pivots or clearances. Retain the archived
   hatch lift/translation mechanism rather than substituting hinged covers.
-- [ ] Verify partially completed operations, interruption/reversal, pause and
+- [x] Verify partially completed operations, interruption/reversal, pause and
   save/load at each mechanism state, including every LOD.
 
 Deliverables: updated mechanism manifest, clips/parameters and review captures.

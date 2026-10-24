@@ -30,6 +30,22 @@ Open holds show the cargo actually carried in each hold as a heap of nominal bul
 cargo (an estimated 1.6 t/m3 sand/gravel class, not a documented cargo); an empty
 hold shows its dry floor. The river surface no longer shows inside the hull.
 
+## Volgo-Don deck machinery
+
+The DECK MACHINERY panel shows the hatch target, the current phase and the time left.
+Hatches run at real-time rates derived from the archive hydraulics and winches: about
+6 minutes from closed to half open (outer covers lifted, inner covers rolled under them,
+outer covers lowered onto the stack) and about 6 more to move a stack over the other hold.
+Simulation speed shortens the wait; pause stops it. A new command reverses an operation
+from wherever it is; switching holds always passes through the half-open stack. Cargo
+transfer needs the hatches stationary at HALF OPEN.
+
+LET GO / HEAVE UP ANCHORS lets go all three anchors until each rests on the bottom (chain
+150 m forward, 75 m aft at most) or heaves them in at 10 m/min forward and 18 m/min aft.
+The panel shows the chain out per anchor. The anchors are visual only: they do not hold the
+ship until the anchoring part is implemented. Rates are estimates within archive limits; see
+`Art/Source/VolgoDon507B/PART13_REVIEW.md`.
+
 ## Aground
 
 The HUD shows the bottom's holding force in kN next to the grounding warning.

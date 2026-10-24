@@ -1,0 +1,28 @@
+{
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+    "method": "1920x1080 isolated editor Camera.Render plus synchronous 1-pixel readback; 20 warmups, 100 samples. Includes submission and synchronization, not runtime frame time.",
+    "timings": [
+        {
+            "level": 0,
+            "drawCalls": -1,
+            "setPassCalls": -1,
+            "medianMs": 1.3612,
+            "p95Ms": 1.5854000000000001
+        },
+        {
+            "level": 1,
+            "drawCalls": -1,
+            "setPassCalls": -1,
+            "medianMs": 1.3271000000000002,
+            "p95Ms": 1.6368
+        },
+        {
+            "level": 2,
+            "drawCalls": -1,
+            "setPassCalls": -1,
+            "medianMs": 0.994,
+            "p95Ms": 1.0419
+        }
+    ]
+}

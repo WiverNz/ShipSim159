@@ -390,7 +390,7 @@ namespace ShipSimulator.Physics
                 if (Mathf.Abs(command) > .001f) { LoadingStatus = "STOP ENGINES TO TRANSFER"; return; }
             if (body.linearVelocity.magnitude > data.loading.maximumTransferSpeedMps)
             { LoadingStatus = "TRANSFER PAUSED: VESSEL MOVING"; return; }
-            bool accessible = Mechanisms == null || (!Mechanisms.IsMoving &&
+            bool accessible = Mechanisms == null || (!Mechanisms.HatchesMoving &&
                 Mechanisms.Target == ShipSimulator.Visuals.HatchPosition.HalfOpen);
             bool changed = LoadingModel.Step(data, loading, dt, accessible);
             LoadingStatus = changed ? "TRANSFERRING" : "LIMIT REACHED / OPEN HATCHES HALFWAY";

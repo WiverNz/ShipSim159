@@ -167,9 +167,11 @@ namespace ShipSimulator.UI
             if (machineryText != null && ship.Mechanisms != null)
             {
                 var machinery = ship.Mechanisms;
-                machineryText.text = "DECK MACHINERY\n" + machinery.Target +
-                    (machinery.IsMoving ? " | MOVING" : " | READY") +
-                    (machinery.AnchorsReleased ? "\nAnchors released from stow" : "\nAnchors stowed");
+                float left = machinery.HatchSecondsRemaining;
+                machineryText.text = "DECK MACHINERY\n" + machinery.Target + " | " +
+                    (machinery.HatchesMoving ? $"{machinery.Phase} {Mathf.FloorToInt(left / 60f)}:{Mathf.FloorToInt(left % 60f):00}" : "READY") +
+                    $"\nChain P {machinery.ChainOutM(0):0} m  S {machinery.ChainOutM(1):0} m  STERN {machinery.ChainOutM(2):0} m" +
+                    (machinery.AnchorsMoving ? (machinery.AnchorsReleased ? " | LETTING GO" : " | HEAVING") : "");
             }
 
             float speedMps = ship.Body.linearVelocity.magnitude;
@@ -437,7 +439,7 @@ namespace ShipSimulator.UI
                 () => ship.SetHatchPosition(HatchPosition.ForwardOpen));
             Button(block, "AFT OPEN", new Vector2(80, -39), new Vector2(145, 30),
                 () => ship.SetHatchPosition(HatchPosition.AftOpen));
-            Button(block, "UNSEAT / STOW ANCHORS", new Vector2(0, -74), new Vector2(305, 30),
+            Button(block, "LET GO / HEAVE UP ANCHORS", new Vector2(0, -74), new Vector2(305, 30),
                 () => ship.SetAnchorsReleased(!ship.Mechanisms.AnchorsReleased));
         }
 

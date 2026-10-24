@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "stage": 4,
+  "stage": 13,
   "source_axes": "+X starboard, +Y bow, +Z up",
   "units": "metres, degrees",
   "reference": "doc257.pdf pp.4,7,8",
@@ -332,7 +332,7 @@
         "payout_enabled": false
       },
       "binding": "anchor_unseat_stern",
-      "confidence": "Original anchor separated; payout chain routing/catenary deliberately deferred",
+      "confidence": "Original anchor separated; Part 13 adds visual chain payout from the hawse, no holding force (Part 14)",
       "unity_rest_position": [
         -0.0005979388952255249,
         1.4893039464950562,
@@ -363,7 +363,7 @@
         "payout_enabled": false
       },
       "binding": "anchor_unseat_port",
-      "confidence": "Original anchor separated; payout chain routing/catenary deliberately deferred",
+      "confidence": "Original anchor separated; Part 13 adds visual chain payout from the hawse, no holding force (Part 14)",
       "unity_rest_position": [
         -2.0281105041503906,
         2.589531660079956,
@@ -394,7 +394,7 @@
         "payout_enabled": false
       },
       "binding": "anchor_unseat_starboard",
-      "confidence": "Original anchor separated; payout chain routing/catenary deliberately deferred",
+      "confidence": "Original anchor separated; Part 13 adds visual chain payout from the hawse, no holding force (Part 14)",
       "unity_rest_position": [
         2.026567220687866,
         2.594261884689331,
@@ -416,19 +416,19 @@
         0
       ],
       "rest_position": [
-        -1.813474178314209,
-        57.50545120239258,
-        4.045493125915527
+        -1.0918,
+        60.6007,
+        4.5013
       ],
       "limits": {
         "continuous": true
       },
       "binding": "anchor_windlass_angle",
-      "confidence": "Retained circular drive cheeks; gearing and chain speed uncalibrated",
+      "confidence": "Part 13: re-bound from the mooring-winch drums at Y 57.5 m to the anchor windlass gypsy (whelped hub and outboard cheek, diameter 1.32 m) of the single archive windlass; rotation is driven by chain payout at the estimated 1.72 m of chain per turn",
       "unity_rest_position": [
-        -1.813474178314209,
-        4.045493125915527,
-        57.50545120239258
+        -1.0918,
+        4.5013,
+        60.6007
       ],
       "unity_axis": [
         -1,
@@ -446,19 +446,19 @@
         0
       ],
       "rest_position": [
-        3.2079620361328125,
-        57.5028076171875,
-        4.009070873260498
+        1.0918,
+        60.6007,
+        4.5013
       ],
       "limits": {
         "continuous": true
       },
       "binding": "anchor_windlass_angle",
-      "confidence": "Retained circular drive cheeks; gearing and chain speed uncalibrated",
+      "confidence": "Part 13: re-bound from the mooring-winch drums at Y 57.5 m to the anchor windlass gypsy (whelped hub and outboard cheek, diameter 1.32 m) of the single archive windlass; rotation is driven by chain payout at the estimated 1.72 m of chain per turn",
       "unity_rest_position": [
-        3.2079620361328125,
-        4.009070873260498,
-        57.5028076171875
+        1.0918,
+        4.5013,
+        60.6007
       ],
       "unity_axis": [
         -1,
@@ -484,7 +484,7 @@
         ],
         "Hatch_ForeOuter": [
           0,
-          -1.2697885131835918,
+          0,
           1.05
         ],
         "JackLift_AftOuter": [
@@ -834,7 +834,7 @@
         ],
         "Hatch_ForeOuter": [
           0,
-          -1.2697885131835918,
+          0,
           1.05
         ],
         "JackLift_AftOuter": [
@@ -925,12 +925,179 @@
     "JackRods_AftOuter": "scale Z = 1 + JackLift_AftOuter lift / 0.31",
     "JackRods_ForeOuter": "scale Z = 1 + JackLift_ForeOuter lift / 0.31"
   },
-  "anchor_limit": "Unseat preview only; no seabed deployment or chain payout is claimed",
+  "anchor_limit": "Part 13: visual payout to the bottom within the archive chain lengths; no seabed holding, tension or dragging force (Part 14)",
   "hydraulics_limit": "Twelve inherited jack pedestals; archive lists sixteen vertical and four horizontal jacks. Unlocated missing units are not invented.",
   "fps": 24,
   "frame_start": 1,
   "frame_end": 770,
-  "timing": "Accelerated review sequence, not calibrated machinery rates",
+  "timing": "The Blender clip is an accelerated review sequence (24 fps). Runtime real-time rates are in operating_rates and are mapped onto the clip phases by VesselMechanisms.",
   "unity_axes": "+X starboard, +Z bow, +Y up",
-  "import_note": "FBX root aligned by existing datums; preserve hierarchy and sample the review clip"
+  "import_note": "FBX root aligned by existing datums; preserve hierarchy and sample the review clip",
+  "operating_rates": {
+    "note": "Single source for runtime machinery rates, read by VolgoDonMechanismIntegration. S sourced, D derived, E estimated. Archive doc257.pdf one-based pages.",
+    "hatch": {
+      "sequence": "p4: outer (end) covers raised, inner (middle) covers moved under them, outer lowered onto the inner, paired stack moved by winch: one hold fully open or both 50%",
+      "hydraulic_flow_m3_per_h": {
+        "value": 1.5,
+        "kind": "S",
+        "source": "p4 pump EMN-1.5/95-1",
+        "range": [
+          1.2,
+          1.5
+        ]
+      },
+      "jack_piston_area_cm2": {
+        "value": 70,
+        "kind": "D",
+        "source": "p4 7 t at 100 kgf/cm2",
+        "range": [
+          70,
+          70
+        ]
+      },
+      "jacks_per_cover": {
+        "value": 4,
+        "kind": "E",
+        "source": "p4 lists 16 vertical jacks for four covers; the model shows 12 pedestals",
+        "range": [
+          4,
+          8
+        ]
+      },
+      "winch_line_speed_mps": {
+        "value": 0.13,
+        "kind": "D",
+        "source": "p4 LE-61, 4 tf pull, 7 kW: 7 kW x 0.75 drive efficiency / 39.2 kN",
+        "range": [
+          0.1,
+          0.18
+        ]
+      },
+      "phases_s": {
+        "outer_lift": {
+          "value": 141,
+          "kind": "D",
+          "note": "8 jacks x 70 cm2 x 1.05 m / 1.5 m3/h",
+          "range": [
+            141,
+            282
+          ]
+        },
+        "inner_rolling_lift": {
+          "value": 34,
+          "kind": "D",
+          "note": "8 jacks x 70 cm2 x 0.25 m / 1.5 m3/h",
+          "range": [
+            34,
+            68
+          ]
+        },
+        "inner_slide_under": {
+          "value": 174,
+          "kind": "D",
+          "note": "22.6 m at the winch line speed",
+          "range": [
+            125,
+            226
+          ]
+        },
+        "outer_lower_onto_stack": {
+          "value": 16,
+          "kind": "E",
+          "note": "0.12 m at the lifting flow",
+          "range": [
+            8,
+            32
+          ]
+        },
+        "stack_traverse": {
+          "value": 371,
+          "kind": "D",
+          "note": "48.3 m at the winch line speed",
+          "range": [
+            268,
+            483
+          ]
+        }
+      }
+    },
+    "anchor": {
+      "bow_chain_limit_m": {
+        "value": 150,
+        "kind": "S",
+        "source": "p8 43 mm x 150 m each"
+      },
+      "stern_chain_limit_m": {
+        "value": 75,
+        "kind": "S",
+        "source": "p8 37 mm x 75 m"
+      },
+      "bow_heave_m_per_min": {
+        "value": 10,
+        "kind": "S",
+        "source": "p8 windlass BE16-4, one anchor from 80 m depth; first 507B ships had BER-5-2, rate not given",
+        "range": [
+          10,
+          10
+        ]
+      },
+      "stern_heave_m_per_min": {
+        "value": 18,
+        "kind": "S",
+        "source": "p8 capstan ShER-1.5/3/2-1 on project 507B ships, from 40 m depth"
+      },
+      "let_go_mps": {
+        "value": 1.0,
+        "kind": "E",
+        "source": "free fall under the windlass band brake, remote release p8; no rate given",
+        "range": [
+          0.5,
+          2.0
+        ]
+      },
+      "chain_per_gypsy_turn_m": {
+        "value": 1.72,
+        "kind": "E",
+        "source": "five-whelp gypsy, two links of about 4 d = 0.172 m per whelp",
+        "range": [
+          1.4,
+          2.0
+        ]
+      }
+    },
+    "steering": {
+      "hard_over_s": {
+        "value": 28,
+        "kind": "S limit, E value",
+        "source": "p7 not more than 30 s from 35 deg to 35 deg on the main drive; model 2.5 deg/s",
+        "range": [
+          14.5,
+          30
+        ]
+      },
+      "rate_deg_per_s": {
+        "value": 2.5,
+        "kind": "E",
+        "source": "vessel JSON rudder.rateDegPerSecond; at least 2.33 deg/s by the p7 limit, at most about 4.8 deg/s from 2 x 6.2 kW at the 15 tf m maximum torque"
+      },
+      "note": "p7 steering gear RER7.5-15 allows simultaneous and separate nozzle movement; the simulator steers both together. Emergency drive 2 x 1.2 kW is not modelled."
+    },
+    "shaft": {
+      "ratio": {
+        "value": 1.0,
+        "kind": "D",
+        "source": "p5 G60 (6ChRN 36/45) is a reversible engine rated at 375 rpm; the only listed gearbox (TsOM-30) drives the shaft generator"
+      },
+      "visual_degrees_per_second_per_rpm": {
+        "value": 6,
+        "kind": "D",
+        "source": "360 / 60"
+      },
+      "handedness": {
+        "value": "outward turning",
+        "kind": "E",
+        "source": "p5 gives port/starboard pitch 1.52/1.47 m, not the rotation sense"
+      }
+    }
+  }
 }

@@ -1,6 +1,18 @@
 # Volgo-Don 507B editable source
 
-## Current milestone: Part 12 propulsion audit, holds and refloating
+## Current milestone: Part 13 machinery timing and fittings
+
+Part 13 is complete. Read [PART13_REVIEW.md](PART13_REVIEW.md). Hatches, anchors and steering
+run at real-time rates derived from the archive (p4, p7, p8) in the `operating_rates` block of
+`mechanisms.json`, the single source the integrator reads. The windlass pivots now carry the
+gypsies, the forward outer cover lifts before it shifts, and the anchors pay out visible chain
+(no holding force). Blender steps: `part13_windlass.py`, `part13_hatch.py` (each applied once,
+guarded by scene markers), `part13_validate.py` (read-only), then `part8_export.py`.
+`part10_validate.py` no longer matches the Part 9 hash of `VD507B_detali`, by design.
+`part8_export.py` still names its report `part10-source.json` for this scene; the Part 13
+export was saved as `part13-source.json` and the Part 10 report restored.
+
+## Part 12 propulsion audit, holds and refloating
 
 Part 12 is complete. Read [PART12_REVIEW.md](PART12_REVIEW.md). Propulsion, stopping and
 steering were audited against matched archive conditions without refitting coefficients;

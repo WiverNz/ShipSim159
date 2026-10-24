@@ -1,5 +1,25 @@
 # ShipSim159 Project Context
 
+## Volgo-Don Part 13, 2026-10-24
+
+Part 13 complete. Read `Art/Source/VolgoDon507B/PART13_REVIEW.md`. Archive p4/p5/p7/p8 read
+from the scans (hash matches Part 9). Runtime machinery rates are in `mechanisms.json`
+`operating_rates` (single source, read by `VolgoDonMechanismIntegration`): hatches 365 s to
+half open (141/34/174/16 s phases) and 371 s traverse, derived from the jacks, pump and winch;
+anchors let go 1 m/s (E) to the bottom or 150/75 m chain, heave 10/18 m/min. Before: 40/45 s
+accelerated preview rates, no chain. Steering 2.5 deg/s and 1:1 shaft ratio kept (now derived).
+
+Fixes: Windlass_* pivots animated the mooring drums; `part13_windlass.py` (registered Blender
+MCP) moved the real gypsies under them (pure face partition) and renamed the drums
+MooringDrumMesh_*. Forward outer cover rose and shifted together and hit the inner cover;
+`part13_hatch.py` lifts it before the shift. `VesselMechanisms` spends each step phase by
+phase, exposes HatchPhase/HatchSecondsRemaining, pays out a line-renderer chain, turns the
+gypsies from chain; `MechanismSave.chainOutM` with legacy fallback. Cargo transfer waits on
+HatchesMoving only. LOD1 budget reviewed to 36,100 (+72 triangles). `part13_validate.py` PASS,
+reopened blend reproduces signatures, quality gate PASS, machinery review PASS (covers stay
+1.93 m above full cargo), EditMode 251/251, PlayMode 70/70, Menu PASS. Part 14 not started.
+No commit/push.
+
 ## Volgo-Don Part 12, 2026-10-24
 
 Part 12 complete. Read `Art/Source/VolgoDon507B/PART12_REVIEW.md`. Propulsion audit and

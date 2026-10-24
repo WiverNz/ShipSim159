@@ -1,5 +1,17 @@
 # Volgo-Don Project 507B: Sources and Data Status
 
+## Part 13 machinery rates, 2026-10-24
+
+See `Art/Source/VolgoDon507B/PART13_REVIEW.md`; the values live in the `operating_rates`
+block of `Models/VolgoDon507B_Improved/mechanisms.json`. Archive p4: 16 vertical and 4
+horizontal 7 t jacks at 100 kgf/cm2 (70 cm2 derived), pump 1.5 m3/h, two LE-61 winches 4 tf /
+7 kW (0.13 m/s derived); hatch phases 141 / 34 / 174 / 16 s and traverse 371 s, derived or
+estimated with the ranges recorded there. p5: G60 reversible at 375 rpm, the only gearbox
+drives the shaft generator, so the 1:1 shaft ratio is derived. p7: steering 35 to 35 deg in
+at most 30 s (model 28 s, estimated rate). p8: chains 43 mm x 150 m bow, 37 mm x 75 m stern;
+windlass BE16-4 10 m/min, stern capstan 18 m/min. Let-go speed 1 m/s and 1.72 m of chain per
+gypsy turn are estimates. None of these is a measured operating time of a specific ship.
+
 ## Part 12 propulsion, contact and hold data, 2026-10-24
 
 See `Art/Source/VolgoDon507B/PART12_REVIEW.md`. No hydrodynamic coefficient was

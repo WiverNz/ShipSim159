@@ -13,7 +13,9 @@ model allow it (`DisabledLayers` lists reasons): all five vessels hear diesels, 
 (scaled by the computed support, so it fades foilborne) and wind; firing, starting air, blade rate,
 hatches, tackle and wheelhouse filter only the 507B. `ShipAudioBuilder.InstallSoundscape` is called by
 every vessel builder. EditMode 267/267, PlayMode 107/107, SHIP_AUDIO_RUNTIME, MENU_SMOKE,
-VESSEL_SHAKEDOWN PASS, sea trials identical; 507B behaviour unchanged. See PART15_REVIEW section 10.
+VESSEL_SHAKEDOWN PASS, sea trials identical; 507B behaviour unchanged. See PART15_REVIEW section 10. Follow-up: no propeller wash for the Luch
+(waterjet; the clip carries a ferry's propeller tones); diesel layers documented as unsynchronized
+texture; raw HTML license snapshots removed (GitHub push protection: embedded site tokens).
 
 ## Volgo-Don Part 15, 2026-10-24 (paths as of Part 15; superseded by the shared library above)
 

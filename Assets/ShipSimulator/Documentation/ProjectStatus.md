@@ -22,7 +22,7 @@ left to do. Detailed references: `ShipSimulator_Physics.md` (model), the sources
 | Passages | `GorodetsTrainingScene` (2.27 km mission, default), `RiverTrainingScene` (familiarisation) and `SerpukhovZatonScene` (2.42 km, fast craft only) |
 | Automated tests | EditMode 197 passed, PlayMode 40 passed (2026-09-20) |
 | Batch runtime checks | Menu smoke (including vessel selection), ship wake, graphics phase one, water weather, buoy graphics, vessel catalogue build, virtual sea trials, 507B ground tackle, 507B ship audio (`ShipAudioRuntimeCheck`, recorded demonstration) |
-| Sound | One shared library and a profile per vessel: all five hear their diesels, propeller wash, hull water (fading on foils or cushion) and wind; the 507B also its firing rhythm, starting air, blade beat, hatches, anchors and mooring (Part 15) |
+| Sound | One shared library and a profile per vessel: all five hear generic diesel texture, hull water (fading on foils or cushion) and wind, four of them propeller wash (not the waterjet Luch); the 507B also its firing rhythm, starting air, blade beat, hatches, anchors and mooring (Part 15) |
 
 ## How it looks
 

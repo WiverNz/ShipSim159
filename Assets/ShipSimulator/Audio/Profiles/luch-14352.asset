@@ -44,7 +44,7 @@ MonoBehaviour:
   firingClipStrokes: 4
   firingCrossfadeHz: {x: 7.5, y: 11.5}
   propellerWash:
-    clip: {fileID: 8300000, guid: 4843f4744b91cb640aad5d54feba3729, type: 3}
+    clip: {fileID: 0}
     volume: 0.75
     minDistance: 14
     spread: 90

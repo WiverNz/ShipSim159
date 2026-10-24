@@ -381,7 +381,8 @@ namespace ShipSimulator.Tests
             for (int i = 0; i < ship.EngineCount; i++)
             {
                 Assert.That(sound.EngineLayer(i, "Room").Volume, Is.GreaterThan(0.05f), id + ": its diesels are heard.");
-                Assert.That(sound.EngineLayer(i, "Wash").Volume, Is.GreaterThan(0.01f), id + ": its propeller churns the water.");
+                if (id == "luch-14352") Assert.That(sound.EngineLayer(i, "Wash"), Is.Null, "Luch: a waterjet, not the recorded propeller wash.");
+                else Assert.That(sound.EngineLayer(i, "Wash").Volume, Is.GreaterThan(0.01f), id + ": its propeller churns the water.");
                 Assert.That(sound.EngineLayer(i, "FiringLow") != null, Is.EqualTo(volgoDon), id + " firing layer");
                 Assert.That(sound.EngineLayer(i, "AirBrake") != null, Is.EqualTo(volgoDon), id + " starting air");
                 Assert.That(sound.EngineLayer(i, "Blade") != null, Is.EqualTo(volgoDon), id + " blade rate");

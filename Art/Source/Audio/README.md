@@ -11,7 +11,6 @@ One library of sound files serves every vessel. Nothing is copied per vessel.
 | `Art/Source/Audio/Sources/` | The 19 source recordings as downloaded (Freesound high-quality Ogg previews, CC0) |
 | `Art/Source/Audio/sources.json` | Each source: preview URL, SHA-256, license, date checked |
 | `Art/Source/Audio/audio-manifest.json`, `AUDIO_SOURCES.md` | Every game file: purpose, status, source, license, edits (generated) |
-| `Art/Source/Audio/LicenseSnapshots/` | The Freesound page of each source as fetched on 2026-10-24 at about 11:47 UTC (raw HTML) |
 
 ## What decides what a vessel hears
 

@@ -75,7 +75,8 @@ edits and status of every file is `Art/Source/Audio/AUDIO_SOURCES.md` (human) an
 - Sources: 19 Freesound recordings, each checked on its own page on 2026-10-24: all CC0 1.0
   (no attribution required; authors credited). Freesound's high-quality Ogg previews were used
   (CC0 covers them; originals need an account). They are kept in `Art/Source/Audio/Sources/`
-  (21.8 MB), the sound pages as checked in `Art/Source/Audio/LicenseSnapshots/`.
+  (21.8 MB). Raw HTML snapshots of the sound pages were removed again: GitHub push protection
+  rejected them because the pages embed site tokens.
 - Excluded: the craigsmith "Vintage" library (stated to be copies of 1930s-60s studio effects,
   rights unclear), a recording with a large DC offset (Stena Danica engine room), anything from
   video.
@@ -277,8 +278,8 @@ The sounds were never recordings of the 507B, so they no longer belong to it. Ar
   `Engines/Loop_DieselFiring_6Cyl4Stroke_5Hz` and `_15Hz`, `Propulsion/Loop_BladeRate_4Blade_20Hz`.
 - `Assets/ShipSimulator/Audio/Profiles/<vessel id>.asset`: one profile per catalogue vessel, built by
   `ShipAudioBuilder`; the 507B's is the moved original (same GUID, same clips, levels and distances).
-- `Art/Source/Audio/`: `build_ship_audio.py` (was `part15_audio.py`), `Sources/`, `sources.json`, the
-  registry and the 19 license snapshots. `Audio/Demo/` here keeps the 507B recordings.
+- `Art/Source/Audio/`: `build_ship_audio.py` (was `part15_audio.py`), `Sources/`, `sources.json` and the
+  registry. `Audio/Demo/` here keeps the 507B recordings.
 - `VesselSoundscape` is the one implementation. The vessel data states equipment facts (optional,
   zero meaning not established): engine `cylinders`, `strokesPerCycle`, `engineRpmPerShaftRpm`,
   `directReversingAirStart`, propeller `bladeCount`, ground tackle `windlassDrive` and
@@ -291,12 +292,20 @@ The sounds were never recordings of the 507B, so they no longer belong to it. Ar
 - `ShipAudioBuilder.InstallSoundscape` is called by the 507B, procedural, Meteor and Luch builders,
   so a prefab rebuild keeps the sound. The mixer, buses, settings, pause and load policy are shared.
 
-What each vessel plays now:
+What each vessel plays now. The diesel engine-room and exterior layers are generic texture for all
+of them: level and pitch follow the shaft speed as a fraction of rated speed (with a fixed gear ratio
+the same fraction as the engine's) and the fuel, but they are not synchronized with any vessel's
+firing. The recordings keep their own engines' rhythm (about 7.8 Hz and 15.5 Hz, moved by a pitch of
+0.75 to 1.1). For the high-speed engines of the Meteor (M-400, 1700 rpm) and the Luch this is an
+acceptable stand-in until recordings or synthesis of a high-speed diesel exist: those engines fire at
+well over 100 Hz, and the clips carry no claim about that rate. The propeller wash clip also keeps the
+recorded ferry's tones (99 Hz, a 19 to 28 Hz modulation), unsynchronized; for the 507B, Volgo-Balt,
+Volgoneft and Meteor it stays as a generic propeller wake.
 
 | Layer | 507B | Volgo-Balt | Volgoneft | Meteor | Luch |
 |---|---|---|---|---|---|
 | Engine room, exterior (shaft speed, fuel) | yes | yes | yes | yes | yes (1 engine) |
-| Propeller wash (thrust) | yes | yes | yes | yes | yes (model propeller; real craft has a waterjet) |
+| Propeller wash (thrust) | yes | yes | yes | yes | off: the real craft has a waterjet; the clip carries the recorded ferry's propeller tones |
 | Hull flow, bow wave, lapping (x hull in water) | yes | yes | yes | yes, fading foilborne | yes, reduced on cushion |
 | Wind | yes | yes | yes | yes | yes |
 | Firing rhythm | yes | off: cycle, speed, gearing not established | off: ratio and speed not established | off: cylinders and gearing not established | off: speed and gearing not established |

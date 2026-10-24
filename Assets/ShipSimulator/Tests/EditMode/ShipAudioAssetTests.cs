@@ -65,8 +65,6 @@ namespace ShipSimulator.Tests
                     Assert.That(registry, Does.Contain(source.sha256), "The source registry pins the same file.");
                     Assert.That(File.Exists(Path.Combine(Project, "Art/Source/Audio/Sources/freesound-" + source.id + ".ogg")),
                         Is.True, "The source recording is kept.");
-                    Assert.That(File.Exists(Path.Combine(Project, "Art/Source/Audio/LicenseSnapshots/freesound-" + source.id + ".html")),
-                        Is.True, "The license page as checked is kept.");
                 }
             }
         }
@@ -152,6 +150,7 @@ namespace ShipSimulator.Tests
                     Assert.That(AssetDatabase.GetAssetPath(clip), Does.StartWith(ShipAudioBuilder.LibraryFolder + "/"), id + ": " + clip.name);
                 Assert.That(profile.windSteady.clip, Is.Not.Null, id + " hears the wind.");
                 Assert.That(profile.engineRoom.clip, Is.Not.Null, id + " hears its diesels.");
+                Assert.That(profile.propellerWash.clip != null, Is.EqualTo(id != ShipAudioBuilder.LuchId), id + ": no propeller wash for a waterjet.");
                 bool volgoDon = id == ShipAudioBuilder.VolgoDonId;
                 Assert.That(profile.firingLow.clip != null, Is.EqualTo(volgoDon), id + ": firing clips only where the engine is known.");
                 Assert.That(profile.chainRun.clip != null && profile.hydraulicPump.clip != null, Is.EqualTo(volgoDon), id + ": machinery only where modelled.");

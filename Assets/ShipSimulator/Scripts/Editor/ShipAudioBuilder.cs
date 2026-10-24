@@ -21,6 +21,7 @@ namespace ShipSimulator.Editor
         public const string LibraryFolder = AudioRoot + "/Library";
         public const string ProfilesFolder = AudioRoot + "/Profiles";
         public const string VolgoDonId = "volgodon-507b";
+        public const string LuchId = "luch-14352";
         private static readonly string[] FilteredBuses = { "Engines", "Water", "Wind", "Machinery" };
 
         public static string ProfilePath(string vesselId) => $"{ProfilesFolder}/{vesselId}.asset";
@@ -201,6 +202,9 @@ namespace ShipSimulator.Editor
                 VesselSoundProfile profile = Profile(entry.id);
                 Shared(profile);
                 if (entry.id == VolgoDonId) VolgoDon(profile);
+                // The real 14352 is driven by a waterjet (Luch14352_Sources.md); the wash clip carries the recorded
+                // ferry's propeller and engine tones, so it would sound like the propeller the model only stands in for.
+                if (entry.id == LuchId) profile.propellerWash.clip = null;
                 EditorUtility.SetDirty(profile);
             }
             AssetDatabase.SaveAssets();

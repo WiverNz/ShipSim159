@@ -7,7 +7,9 @@ exhaust layers driven by shaft speed and fuel, propeller wash, hull water scaled
 in the water, and wind. No equipment facts were added to its data. M-400 rated 1700 rpm, but the
 cylinder count is not in these sources, the model shaft speed is a calibration value and the gearing
 is unknown; five blades (medium confidence) differ from the four-bladed clip; so its engine firing
-rhythm, starting-air reversal and blade-rate layers stay off rather than guess.
+rhythm, starting-air reversal and blade-rate layers stay off rather than guess. The diesel layers
+are generic texture from slower recorded engines, not synchronized with this engine's firing; a
+stand-in until a high-speed diesel sound exists.
 
 This file separates published particulars from prototype estimates for the hydrofoil in
 `Meteor342U.json`. The Meteor family (projects 342, 342E, 342U) shares one hull and foil system;

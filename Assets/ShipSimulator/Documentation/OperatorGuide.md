@@ -92,8 +92,9 @@ Every vessel plays the same shared sound library through its own profile, and on
 has and facts its data establishes. Everything you hear follows what the simulation computes, never
 a lever position on its own.
 
-All five vessels: their diesels (engine-room and exhaust layers that follow shaft speed and fuel),
-propeller wash with thrust, water along the hull with speed through the water, the bow wave and
+All five vessels: their diesels (generic engine-room and exhaust texture that follows shaft speed
+and fuel, not synchronized with their firing), propeller wash with thrust (not on the Luch, whose
+real craft has a waterjet), water along the hull with speed through the water, the bow wave and
 lapping, and wind relative to the vessel. On foils or a cushion the hull water fades as the hull
 leaves the water. The Volgo-Balt, Volgoneft, Meteor and Luch have no firing rhythm, no starting air
 and no blade beat: their engines' cylinders, gearing and propeller blades are not established in

@@ -7,7 +7,10 @@ exhaust layers driven by shaft speed and fuel, propeller wash, hull water scaled
 in the water, and wind. No equipment facts were added to its data. 12ChN15/18 (12 cylinders,
 four-stroke by designation), but engine speed and gearing are not established, and the real craft
 has a waterjet that the model replaces with a propeller surrogate; so its engine firing rhythm,
-starting-air reversal and blade-rate layers stay off rather than guess.
+starting-air reversal and blade-rate layers stay off rather than guess. No propeller wash either:
+the clip carries a recorded ferry's propeller tones, and the real craft has a waterjet. The diesel
+layers are generic texture from slower recorded engines, not synchronized with this engine's firing;
+a stand-in until a high-speed diesel sound exists.
 
 This file separates published particulars from prototype estimates for the skeg air-cushion craft in
 `Luch14352.json`. Projects 1435, 14351 and 14352 belong to one family; over 80 were built between 1983

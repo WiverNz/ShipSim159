@@ -45,7 +45,7 @@ No recording here is of any catalogue vessel, of its engines or of its deck mach
 
 ## Source files
 
-The Freesound high-quality Ogg previews actually used are kept in `Sources/` as downloaded (`freesound-<id>.ogg`); `sources.json` records each preview URL and SHA-256, and `--download` verifies them. Previews are a lossy transcode by Freesound; CC0 applies to them as to the upload. `LicenseSnapshots/` keeps each sound page as fetched on 2026-10-24 (about 11:47 UTC), showing the license at that date.
+The Freesound high-quality Ogg previews actually used are kept in `Sources/` as downloaded (`freesound-<id>.ogg`); `sources.json` records each preview URL and SHA-256, and `--download` verifies them. Previews are a lossy transcode by Freesound; CC0 applies to them as to the upload. Raw HTML snapshots of the sound pages are not kept in the repository: GitHub push protection rejected them, because the pages embed site tokens.
 
 | Id | Title | Author | Page |
 |---|---|---|---|

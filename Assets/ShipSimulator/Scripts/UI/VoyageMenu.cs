@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using ShipSimulator.Audio;
 using ShipSimulator.CameraSystem;
 using ShipSimulator.Persistence;
 using ShipSimulator.Physics;
@@ -444,7 +445,8 @@ namespace ShipSimulator.UI
         public void ShowSettings()
         {
             ShowPage("settings", "MAKE YOURSELF AT HOME", "Bridge settings");
-            SettingSlider("Master volume", VoyageSettings.Volume, 0f, 1f, 0, VoyageSettings.SetVolume, value => Mathf.RoundToInt(value * 100) + "%");
+            ActionButton("Sound  /  " + (VoyageSettings.Muted ? "Muted" : Mathf.RoundToInt(VoyageSettings.Volume * 100) + "%"),
+                "Master volume, mix and mute", 0, ShowSound);
             SettingSlider("Camera sensitivity", VoyageSettings.CameraSensitivity, 0.25f, 2f, 92, VoyageSettings.SetSensitivity, value => value.ToString("0.00") + "x");
             ActionButton("Graphics  /  " + QualitySettings.names[QualitySettings.GetQualityLevel()], "Select the next quality preset", 200, () => { VoyageSettings.CycleQuality(); ShowSettings(); });
             ActionButton("VSync  /  " + (QualitySettings.vSyncCount > 0 ? "On" : "Off"), "Synchronise frames with your display", 280, () => { VoyageSettings.ToggleVSync(); ShowSettings(); });
@@ -455,6 +457,27 @@ namespace ShipSimulator.UI
         }
 
         private IEnumerator RefreshDisplay() { yield return null; ShowSettings(); }
+
+        public void ShowSound()
+        {
+            ShowPage("sound", "MAKE YOURSELF AT HOME", "Sound");
+            Func<float, string> percent = value => Mathf.RoundToInt(value * 100) + "%";
+            SettingSlider("Master volume", VoyageSettings.Volume, 0f, 1f, 0, VoyageSettings.SetVolume, percent);
+            SettingSlider("Engines and propellers", VoyageSettings.BusVolume(AudioBus.Engines), 0f, 1f, 74,
+                value => VoyageSettings.SetBusVolume(AudioBus.Engines, value), percent);
+            SettingSlider("Water", VoyageSettings.BusVolume(AudioBus.Water), 0f, 1f, 148,
+                value => VoyageSettings.SetBusVolume(AudioBus.Water, value), percent);
+            SettingSlider("Wind", VoyageSettings.BusVolume(AudioBus.Wind), 0f, 1f, 222,
+                value => VoyageSettings.SetBusVolume(AudioBus.Wind, value), percent);
+            SettingSlider("Deck machinery", VoyageSettings.BusVolume(AudioBus.Machinery), 0f, 1f, 296,
+                value => VoyageSettings.SetBusVolume(AudioBus.Machinery, value), percent);
+            ActionButton("Mute  /  " + (VoyageSettings.Muted ? "On" : "Off"), "Silence all sound; the mix is kept", 382,
+                () => { VoyageSettings.SetMuted(!VoyageSettings.Muted); ShowSound(); });
+            ActionButton("Back", "Return to settings", 462, () => { PlayerPrefs.Save(); ShowSettings(); }, true);
+            SelectFirst();
+        }
+
+        private void OnApplicationFocus(bool hasFocus) => VoyageSettings.SetFocused(hasFocus);
 
         private void Confirm(string title, string description, Action action)
         {

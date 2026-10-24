@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c358d2e0d1b7b6a489d2c97820288baa, type: 3}
+  m_Name: volgoneft-1577
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Audio.VesselSoundProfile
+  firingLow:
+    clip: {fileID: 0}
+    volume: 1
+    minDistance: 10
+    spread: 30
+  firingHigh:
+    clip: {fileID: 0}
+    volume: 1
+    minDistance: 10
+    spread: 30
+  engineRoom:
+    clip: {fileID: 8300000, guid: 86419f045c92d014cb6e680a880792ee, type: 3}
+    volume: 0.5
+    minDistance: 12
+    spread: 60
+  engineExterior:
+    clip: {fileID: 8300000, guid: ecb5d4ff69a50f840ae913627352e4c7, type: 3}
+    volume: 0.7
+    minDistance: 18
+    spread: 40
+  startingAirBrake:
+    clip: {fileID: 0}
+    volume: 1
+    minDistance: 10
+    spread: 30
+  startingAir: {fileID: 0}
+  firingLowHz: 5
+  firingHighHz: 15
+  firingClipCylinders: 6
+  firingClipStrokes: 4
+  firingCrossfadeHz: {x: 7.5, y: 11.5}
+  propellerWash:
+    clip: {fileID: 8300000, guid: 4843f4744b91cb640aad5d54feba3729, type: 3}
+    volume: 0.75
+    minDistance: 14
+    spread: 90
+  bladeRate:
+    clip: {fileID: 0}
+    volume: 1
+    minDistance: 10
+    spread: 30
+  bladeClipHz: 20
+  bladeClipBlades: 4
+  hullFlow:
+    clip: {fileID: 8300000, guid: 4398b95cd140ea5488573a0ddb38dbd8, type: 3}
+    volume: 0.6
+    minDistance: 25
+    spread: 140
+  hullLap:
+    clip: {fileID: 8300000, guid: c217e133b649c544f9f64825a22727e3, type: 3}
+    volume: 0.35
+    minDistance: 15
+    spread: 120
+  bowWave:
+    clip: {fileID: 8300000, guid: 2f24fa8bca71a5743b41fd4fb6e1ad09, type: 3}
+    volume: 0.6
+    minDistance: 15
+    spread: 90
+  fullFlowSpeedMps: 5
+  windSteady:
+    clip: {fileID: 8300000, guid: 37d93edc3467d3140adb64ec6a65c09e, type: 3}
+    volume: 0.45
+    minDistance: 1
+    spread: 0
+  windStrong:
+    clip: {fileID: 8300000, guid: dcc390e11150b9e4ab98ced0feec4fee, type: 3}
+    volume: 0.5
+    minDistance: 1
+    spread: 0
+  hydraulicPump:
+    clip: {fileID: 0}
+    volume: 1
+    minDistance: 10
+    spread: 30
+  electricMotor:
+    clip: {fileID: 0}
+    volume: 1
+    minDistance: 10
+    spread: 30
+  coverRolling:
+    clip: {fileID: 0}
+    volume: 1
+    minDistance: 10
+    spread: 30
+  hydraulicStart: {fileID: 0}
+  hydraulicStop: {fileID: 0}
+  electricMotorStart: {fileID: 0}
+  electricMotorStop: {fileID: 0}
+  heavyImpact: []
+  metalClunk: []
+  chainHeave:
+    clip: {fileID: 0}
+    volume: 1
+    minDistance: 10
+    spread: 30
+  chainRun:
+    clip: {fileID: 0}
+    volume: 1
+    minDistance: 10
+    spread: 30
+  lineStrain:
+    clip: {fileID: 0}
+    volume: 1
+    minDistance: 10
+    spread: 30
+  lineCreak: []
+  lineParted: {fileID: 0}
+  chainParted: {fileID: 0}
+  recordedLinksPerSecond: 1.05
+  linkPitchDiameters: 4
+  wheelhouseCentre: {x: 0, y: 0, z: 0}
+  wheelhouseHalfExtents: {x: 0, y: 0, z: 0}
+  eventVolume: 0.9
+  poolSize: 8

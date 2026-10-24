@@ -1,6 +1,14 @@
 # Volgo-Don 507B editable source
 
-## Current milestone: Part 14 anchors and mooring forces
+## Current milestone: Part 15 audio
+
+Part 15 is complete. Read [PART15_REVIEW.md](PART15_REVIEW.md). No geometry changed. The sound
+library, its pipeline, sources, license registry and license snapshots are shared by all vessels in
+`Art/Source/Audio/` (see its README); the game files are in `Assets/ShipSimulator/Audio/Library/`
+and the 507B's profile is `Assets/ShipSimulator/Audio/Profiles/volgodon-507b.asset`. `Audio/Demo/`
+here keeps the 507B demonstration recordings. None of the sounds is a recording of a 507B.
+
+## Part 14 anchors and mooring forces
 
 Part 14 is complete. Read [PART14_REVIEW.md](PART14_REVIEW.md). No geometry changed. Chain
 lengths, heave and let-go rates moved from `mechanisms.json` to the vessel JSON `groundTackle`

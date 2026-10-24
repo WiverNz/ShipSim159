@@ -1,5 +1,27 @@
 # Volgo-Don Project 507B: Sources and Data Status
 
+## Part 15 audio, 2026-10-24
+
+See `Art/Source/VolgoDon507B/PART15_REVIEW.md` and `Art/Source/VolgoDon507B/Audio/AUDIO_SOURCES.md`.
+Equipment the sound represents, from the archive: 2 x 6ChRN 36/45 direct-reversing engines at
+375 rpm, four-bladed propellers, EMN-1.5/95-1 hydraulic pump and two LE-61 cover winches, windlass
+BE16-4, stern capstan ShER, electrohydraulic mooring winches LEGShA2-1. No recording of any of them
+was found: every recording used is an analogue (other ferries and river vessels, a vehicle-ramp
+hydraulic pack, a lighthouse motor, a ship's anchor chain), all CC0, and the slow-engine firing
+rhythm, blade rate and parting snaps are original synthesis. Levels, distances, emitter positions
+of the exhaust uptake, hull water and stern capstan, and the wheelhouse filter are estimated.
+
+Equipment facts in the vessel JSON that the sound uses (physics ignores them):
+
+| Field | Value | Status |
+|---|---|---|
+| `engine.cylinders`, `engine.strokesPerCycle` | 6, 4 | D: GOST designation 6ChRN (6 cylinders, Ch four-stroke) |
+| `engine.directReversingAirStart` | true | D: R in 6ChRN (reversible) and archive p5 "reversible"; air start is the usual means, not stated |
+| `engine.engineRpmPerShaftRpm` | 1.0 | D: archive p5, the only gearbox drives the shaft generator; not stated directly |
+| `propeller.bladeCount` | 4 | S: four-bladed propellers (source item 5 above) |
+| `groundTackle.windlassDrive` | electric | S: archive p8, BE16-4 and ShER with electric motors |
+| `groundTackle.mooringWinchDrive` | electrohydraulic | S: archive p8, LEGShA2-1 electrohydraulic |
+
 ## Part 14 ground tackle, 2026-10-24
 
 See `Art/Source/VolgoDon507B/PART14_REVIEW.md` for the full table; the values live in the

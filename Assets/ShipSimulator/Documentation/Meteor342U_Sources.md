@@ -1,5 +1,14 @@
 # Meteor Project 342U: Sources and Data Status
 
+## Sound (Part 15 library), 2026-10-24
+
+This vessel plays the shared sound library (`Art/Source/Audio/README.md`): diesel engine-room and
+exhaust layers driven by shaft speed and fuel, propeller wash, hull water scaled by the hull still
+in the water, and wind. No equipment facts were added to its data. M-400 rated 1700 rpm, but the
+cylinder count is not in these sources, the model shaft speed is a calibration value and the gearing
+is unknown; five blades (medium confidence) differ from the four-bladed clip; so its engine firing
+rhythm, starting-air reversal and blade-rate layers stay off rather than guess.
+
 This file separates published particulars from prototype estimates for the hydrofoil in
 `Meteor342U.json`. The Meteor family (projects 342, 342E, 342U) shares one hull and foil system;
 published figures below describe that family. Nothing here is validated for maritime training.

@@ -18,9 +18,12 @@ namespace ShipSimulator.Physics
     // MMG hull coefficients, non-dimensional with 0.5 rho Lpp d U^2 (forces) and 0.5 rho Lpp^2 d U^2 (moments),
     // given at the loaded draft.
     [Serializable] public sealed class VesselHull { public float surgeAddedMassPrime; public float swayAddedMassPrime; public float yawAddedInertiaPrime; public float xVV; public float xVR; public float xRR; public float xVVVV; public float yV; public float yR; public float yVVV; public float yVVR; public float yVRR; public float yRRR; public float nV; public float nR; public float nVVV; public float nVVR; public float nVRR; public float nRRR; public float maxYawRatePrime; public float lowSpeedBlendStartMps; public float lowSpeedBlendEndMps; public int crossFlowStations; public bool estimated; public string derivation; }
-    [Serializable] public sealed class VesselEngine { public int engineCount; public string engineType; public float powerPerEngineW; public float gearEfficiency; public float shaftEfficiency; public float ratedPropellerRpm; public float shaftInertiaKgM2; public float governorBandFraction; public float rpmRampSecondsFullRange; public float reversalRpmFraction; public float reversalDelaySeconds; public float reversalBrakeTorqueFraction; public bool estimatedDynamics; }
+    // Optional equipment facts (cylinders, strokesPerCycle, engineRpmPerShaftRpm, directReversingAirStart) say what the
+    // engine is, not how it behaves in the model; zero or false means not established. Sound uses them; physics does not.
+    [Serializable] public sealed class VesselEngine { public int engineCount; public string engineType; public float powerPerEngineW; public float gearEfficiency; public float shaftEfficiency; public float ratedPropellerRpm; public float shaftInertiaKgM2; public float governorBandFraction; public float rpmRampSecondsFullRange; public float reversalRpmFraction; public float reversalDelaySeconds; public float reversalBrakeTorqueFraction; public bool estimatedDynamics; public int cylinders; public int strokesPerCycle; public float engineRpmPerShaftRpm; public bool directReversingAirStart; }
     // Open-water polynomials K = c0 + c1 J + c2 J^2; astern sets use J = -V_A / (|n| D).
-    [Serializable] public sealed class VesselPropeller { public int count; public float diameterM; public float[] longitudinalPositionsM; public float[] lateralPositionsM; public float[] aheadThrustCoefficients; public float[] aheadTorqueCoefficients; public float[] asternThrustCoefficients; public float[] asternTorqueCoefficients; public float wakeFraction; public float thrustDeduction; public float wakeDriftC1; public float wakeDriftC2; public bool estimated; }
+    // bladeCount is optional: zero means not established.
+    [Serializable] public sealed class VesselPropeller { public int count; public int bladeCount; public float diameterM; public float[] longitudinalPositionsM; public float[] lateralPositionsM; public float[] aheadThrustCoefficients; public float[] aheadTorqueCoefficients; public float[] asternThrustCoefficients; public float[] asternTorqueCoefficients; public float wakeFraction; public float thrustDeduction; public float wakeDriftC1; public float wakeDriftC2; public bool estimated; }
     [Serializable] public sealed class VesselRudder { public int count; public float maxAngleDeg; public float rateDegPerSecond; public float areaPerRudderM2; public float spanM; public float longitudinalPositionM; public float[] lateralPositionsM; public float normalForceSlope; public float stallAngleDeg; public float postStallNormalCoefficient; public float steeringResistanceDeduction; public float hullInteractionFactor; public float hullInteractionPositionPrime; public float wakeRatio; public float slipstreamFactor; public float flowStraightening; public float flowStraighteningLeverPrime; public bool estimated; }
     // Air cushion or hydrofoil support; a missing section, or supportedWeightFraction 0, means the vessel
     // always floats on its hull. supportedDraftM is how deep the skegs or foils reach once supported.
@@ -69,6 +72,10 @@ namespace ShipSimulator.Physics
         public float passReachM;
         public float passMaxSpeedMps;
         public int linesPerBollard;
+        // Drives of the anchor windlass and capstan and of the mooring winches: "electric", "electrohydraulic", or
+        // empty when not established. Sound picks its machinery layer from them.
+        public string windlassDrive;
+        public string mooringWinchDrive;
         public bool estimated;
     }
 

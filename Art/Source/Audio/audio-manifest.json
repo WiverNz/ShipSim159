@@ -1,0 +1,894 @@
+{
+ "generated_by": "Art/Source/Audio/build_ship_audio.py",
+ "library": "Assets/ShipSimulator/Audio/Library",
+ "sample_rate": 44100,
+ "files": [
+  {
+   "file": "Engines/Loop_DieselFiring_6Cyl4Stroke_5Hz.wav",
+   "purpose": "Firing rhythm of a six-cylinder four-stroke diesel: 5 firings per second at pitch 1 (100 engine rpm); low-speed layer",
+   "kind": "loop",
+   "status": "synthesized approximation",
+   "sources": [],
+   "edits": "Original synthesis: 6-cylinder four-stroke firing at a 100 rpm reference, 12 cycles; low-passed 5 kHz, high-passed 18 Hz.",
+   "channels_note": null,
+   "sample_rate": 22050
+  },
+  {
+   "file": "Engines/Loop_DieselFiring_6Cyl4Stroke_15Hz.wav",
+   "purpose": "Firing rhythm of a six-cylinder four-stroke diesel: 15 firings per second at pitch 1 (300 engine rpm); high-speed layer",
+   "kind": "loop",
+   "status": "synthesized approximation",
+   "sources": [],
+   "edits": "Original synthesis: as the low layer at a 300 rpm reference, 30 cycles, shorter pulses.",
+   "channels_note": null,
+   "sample_rate": 22050
+  },
+  {
+   "file": "Engines/Loop_DieselEngineRoom.wav",
+   "purpose": "Diesel engine-room mechanical texture (valve gear, auxiliaries), per engine",
+   "kind": "loop",
+   "status": "analogue recording (ferry engine room, engine type unknown)",
+   "sources": [
+    {
+     "id": "74915",
+     "segment_s": [
+      4,
+      21.5
+     ],
+     "title": "ferry engine room2.wav",
+     "author": "mrmayo",
+     "url": "https://freesound.org/people/mrmayo/sounds/74915/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/74/74915_271213-hq.ogg",
+     "sha256": "5aa9086fa95907107a73443dd31f77efba35d34a6c9e84d93700ae79d5ab16e1",
+     "description": "Engine of the Cape May-Lewes ferry, recorded at the top of the engine-room stairs"
+    }
+   ],
+   "edits": "Mono sum, high-pass 90 Hz to remove the ferry engine's own firing fundamentals, 1.5 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Engines/Loop_DieselExterior.wav",
+   "purpose": "Diesel engine heard outside the hull and from the exhaust, per engine",
+   "kind": "loop",
+   "status": "analogue recording (135 m Danube cargo vessel, engine type unknown)",
+   "sources": [
+    {
+     "id": "322960",
+     "segment_s": [
+      2,
+      19.5
+     ],
+     "title": "riverboat1.wav",
+     "author": "vumseplutten1709",
+     "url": "https://freesound.org/people/vumseplutten1709/sounds/322960/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/322/322960_3406193-hq.ogg",
+     "sha256": "64093045dfe8a23a383550d756e74e3cd2a0b55927247e59b0af3d80a1c7ff17",
+     "description": "A 135 m Danube cargo vessel under way, recorded from the bank"
+    }
+   ],
+   "edits": "Mono sum, 3457 impulsive samples interpolated (de-click), high-pass 110 Hz, 1.5 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Engines/Loop_StartingAirBrake.wav",
+   "purpose": "Starting air braking the shaft of a direct-reversing diesel during reversal",
+   "kind": "loop",
+   "status": "analogue recording (compressor hose)",
+   "sources": [
+    {
+     "id": "708043",
+     "segment_s": [
+      12,
+      21
+     ],
+     "title": "air compressor hose",
+     "author": "mycompasstv",
+     "url": "https://freesound.org/people/mycompasstv/sounds/708043/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/708/708043_3902754-hq.ogg",
+     "sha256": "f4a95f5e7c8b0d4f7a61bed433d67361abd43fbf13b151609c176292ea162880",
+     "description": "Air released from an industrial compressor hose"
+    }
+   ],
+   "edits": "Mono sum, high-pass 120 Hz, 1 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Engines/Shot_StartingAir.wav",
+   "purpose": "Starting air admitted when a direct-reversing diesel engages a running direction",
+   "kind": "oneshot",
+   "status": "analogue recording (rig air release)",
+   "sources": [
+    {
+     "id": "131934",
+     "segment_s": [
+      0.32,
+      3.2
+     ],
+     "title": "Slips air release v1",
+     "author": "mcpable",
+     "url": "https://freesound.org/people/mcpable/sounds/131934/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/131/131934_1542102-hq.ogg",
+     "sha256": "aef96fcc8419ec5457389d598a0e13dce60639a10aa20132000840558fc28c4c",
+     "description": "Air pressure release on oil-rig equipment"
+    }
+   ],
+   "edits": "Mono sum, high-pass 60 Hz, 2 ms fade in, 0.6 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Propulsion/Loop_PropellerWash.wav",
+   "purpose": "Water churned behind a propeller, scaled by its thrust",
+   "kind": "loop",
+   "status": "analogue recording (ferry wake)",
+   "sources": [
+    {
+     "id": "74916",
+     "segment_s": [
+      20,
+      38
+     ],
+     "title": "back of ferry boat.wav",
+     "author": "mrmayo",
+     "url": "https://freesound.org/people/mrmayo/sounds/74916/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/74/74916_271213-hq.ogg",
+     "sha256": "1423d4491c3a0af2fb51f1e27bf2576237aa6cb2b7e3657f7f31883a19dc71d5",
+     "description": "Water churned by the propellers behind a ferry"
+    }
+   ],
+   "edits": "Mono sum, high-pass 40 Hz, 2 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Propulsion/Loop_BladeRate_4Blade_20Hz.wav",
+   "purpose": "Blade-passing pressure of a four-bladed propeller: 20 Hz at pitch 1 (300 shaft rpm)",
+   "kind": "loop",
+   "status": "synthesized approximation",
+   "sources": [],
+   "edits": "Original synthesis: four blades at a 300 rpm reference, 60 revolutions.",
+   "channels_note": null,
+   "sample_rate": 22050
+  },
+  {
+   "file": "Water/Loop_HullFlow.wav",
+   "purpose": "Water streaming along an immersed hull, scaled by speed through the water",
+   "kind": "loop",
+   "status": "analogue recording (river cargo boat bow, Amazon)",
+   "sources": [
+    {
+     "id": "871472",
+     "segment_s": [
+      2,
+      20
+     ],
+     "title": "Amazon River Cargo Boat- Water against Hull",
+     "author": "edfrederick",
+     "url": "https://freesound.org/people/edfrederick/sounds/871472/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/871/871472_16331892-hq.ogg",
+     "sha256": "ead4361e27a8f1bb876ca56015a9eb7db0e5da8509e99a119dd99f4cf15bf1f8",
+     "description": "Water along the bow of a river cargo boat under way"
+    }
+   ],
+   "edits": "Mono sum, notches at the recording boat's engine lines (132, 133, 147, 148, 264, 294 Hz), high-pass 80 Hz, 2 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Water/Loop_HullLap.wav",
+   "purpose": "Small waves lapping an immersed hull when slow or stopped",
+   "kind": "loop",
+   "status": "analogue recording (waves against a ship's bow)",
+   "sources": [
+    {
+     "id": "551436",
+     "segment_s": [
+      3.9,
+      21.4
+     ],
+     "title": "Choppy waves against a ship&#x27;s bow",
+     "author": "tiennotg",
+     "url": "https://freesound.org/people/tiennotg/sounds/551436/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/551/551436_3879577-hq.ogg",
+     "sha256": "4c30ee35aa5252cea7249844def0de856d81c6f1bfca0faec2bee60784991ae5",
+     "description": "Small waves against a moored ship's bow"
+    }
+   ],
+   "edits": "High-pass 220 Hz to remove engine lines in the background, 2682 impulsive samples interpolated, 1.5 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Water/Loop_BowWave.wav",
+   "purpose": "Bow wave of a displacement hull making way ahead",
+   "kind": "loop",
+   "status": "analogue recording (steel barge bow under way)",
+   "sources": [
+    {
+     "id": "570927",
+     "segment_s": [
+      2,
+      20
+     ],
+     "title": "metallic barge bow.wav",
+     "author": "bruno.auzet",
+     "url": "https://freesound.org/people/bruno.auzet/sounds/570927/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/570/570927_11519060-hq.ogg",
+     "sha256": "58d99021dedd7481bd72597455c1cd43659b896b2b9ec5bb887911d3432aa280",
+     "description": "Water slapping at the bow of a steel barge under way"
+    }
+   ],
+   "edits": "Mono sum, high-pass 60 Hz, 2 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Wind/Loop_WindSteady.wav",
+   "purpose": "Wind around the listener, scaled by wind relative to the vessel (stereo, non-positional)",
+   "kind": "loop",
+   "status": "recording of the phenomenon (strong wind, open air)",
+   "sources": [
+    {
+     "id": "376533",
+     "segment_s": [
+      18,
+      41
+     ],
+     "title": "Strong Wind Recorded with Soundfield Microphone Manchester 3",
+     "author": "keirofinch",
+     "url": "https://freesound.org/people/keirofinch/sounds/376533/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/376/376533_3256739-hq.ogg",
+     "sha256": "260d253db2bf70184b8fb6bc4c092edd32eb272579293ba8f9dd8b5dada127cf",
+     "description": "Strong wind, open air"
+    }
+   ],
+   "edits": "Stereo kept, notches at hum lines (59-62, 120, 180, 280 Hz), high-pass 40 Hz, 3 s cross-faded loop.",
+   "channels_note": "stereo",
+   "sample_rate": 44100
+  },
+  {
+   "file": "Wind/Loop_WindStrong.wav",
+   "purpose": "Gusting gale layer above about 10 m/s relative wind",
+   "kind": "loop",
+   "status": "recording of the phenomenon (gale over open water)",
+   "sources": [
+    {
+     "id": "830338",
+     "segment_s": [
+      40,
+      63
+     ],
+     "title": "Wind howling over Reservoir No 2",
+     "author": "pnwheeler",
+     "url": "https://freesound.org/people/pnwheeler/sounds/830338/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/830/830338_15729518-hq.ogg",
+     "sha256": "b7a9c18b9b6f4eaf0d5ca22a0708179a47d8a21ba797efc92317896ee8761959",
+     "description": "Gale over open water (Walthamstow reservoirs)"
+    }
+   ],
+   "edits": "High-pass 35 Hz, 3 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Machinery/Loop_HydraulicPump.wav",
+   "purpose": "Electric hydraulic power pack running (jacks, electrohydraulic winches)",
+   "kind": "loop",
+   "status": "analogue recording (vehicle-ramp hydraulic pack)",
+   "sources": [
+    {
+     "id": "784981",
+     "segment_s": [
+      5.3,
+      10.25
+     ],
+     "title": "Motors_Hydraulic_Handycap_Ramp",
+     "author": "SoundsofTheMachine",
+     "url": "https://freesound.org/people/SoundsofTheMachine/sounds/784981/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/784/784981_7602203-hq.ogg",
+     "sha256": "c395efe8cd5a5216c0a9efe67992a66c51987239cbf1292b464515483d7bf986",
+     "description": "Electric hydraulic power pack driving a vehicle ramp"
+    }
+   ],
+   "edits": "Mono, high-pass 50 Hz, 0.8 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Machinery/Shot_HydraulicStart.wav",
+   "purpose": "Hydraulic power pack starting",
+   "kind": "oneshot",
+   "status": "analogue recording",
+   "sources": [
+    {
+     "id": "784981",
+     "segment_s": [
+      0.0,
+      2.6
+     ],
+     "title": "Motors_Hydraulic_Handycap_Ramp",
+     "author": "SoundsofTheMachine",
+     "url": "https://freesound.org/people/SoundsofTheMachine/sounds/784981/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/784/784981_7602203-hq.ogg",
+     "sha256": "c395efe8cd5a5216c0a9efe67992a66c51987239cbf1292b464515483d7bf986",
+     "description": "Electric hydraulic power pack driving a vehicle ramp"
+    }
+   ],
+   "edits": "Mono, high-pass 50 Hz, 5 ms fade in, 0.8 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Machinery/Shot_HydraulicStop.wav",
+   "purpose": "Hydraulic power pack stopping, valve and stop clunk",
+   "kind": "oneshot",
+   "status": "analogue recording",
+   "sources": [
+    {
+     "id": "784981",
+     "segment_s": [
+      10.1,
+      12.0
+     ],
+     "title": "Motors_Hydraulic_Handycap_Ramp",
+     "author": "SoundsofTheMachine",
+     "url": "https://freesound.org/people/SoundsofTheMachine/sounds/784981/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/784/784981_7602203-hq.ogg",
+     "sha256": "c395efe8cd5a5216c0a9efe67992a66c51987239cbf1292b464515483d7bf986",
+     "description": "Electric hydraulic power pack driving a vehicle ramp"
+    }
+   ],
+   "edits": "Mono, high-pass 50 Hz, 5 ms fade in, 0.4 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Machinery/Loop_ElectricMotor.wav",
+   "purpose": "Geared electric motor running (electric winches, windlass, capstan), pitched per machine",
+   "kind": "loop",
+   "status": "analogue recording (geared lighthouse motor, contact microphones)",
+   "sources": [
+    {
+     "id": "718387",
+     "segment_s": [
+      10,
+      27.5
+     ],
+     "title": "electric lighthouse motor",
+     "author": "bruno.auzet",
+     "url": "https://freesound.org/people/bruno.auzet/sounds/718387/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/718/718387_11519060-hq.ogg",
+     "sha256": "67fea01b217e504f366465b22d22cc3d9b29de6ed9377c8cac5be075961980e1",
+     "description": "Geared electric motor turning a lighthouse lens, contact microphones"
+    }
+   ],
+   "edits": "Mono, high-pass 45 Hz, 1.5 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Machinery/Shot_ElectricMotorStart.wav",
+   "purpose": "Geared electric motor starting",
+   "kind": "oneshot",
+   "status": "analogue recording",
+   "sources": [
+    {
+     "id": "718387",
+     "segment_s": [
+      1.0,
+      3.6
+     ],
+     "title": "electric lighthouse motor",
+     "author": "bruno.auzet",
+     "url": "https://freesound.org/people/bruno.auzet/sounds/718387/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/718/718387_11519060-hq.ogg",
+     "sha256": "67fea01b217e504f366465b22d22cc3d9b29de6ed9377c8cac5be075961980e1",
+     "description": "Geared electric motor turning a lighthouse lens, contact microphones"
+    }
+   ],
+   "edits": "Mono, high-pass 45 Hz, 5 ms fade in, 1 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Machinery/Shot_ElectricMotorStop.wav",
+   "purpose": "Geared electric motor stopping and its brake setting",
+   "kind": "oneshot",
+   "status": "analogue recording",
+   "sources": [
+    {
+     "id": "718387",
+     "segment_s": [
+      95.9,
+      100.4
+     ],
+     "title": "electric lighthouse motor",
+     "author": "bruno.auzet",
+     "url": "https://freesound.org/people/bruno.auzet/sounds/718387/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/718/718387_11519060-hq.ogg",
+     "sha256": "67fea01b217e504f366465b22d22cc3d9b29de6ed9377c8cac5be075961980e1",
+     "description": "Geared electric motor turning a lighthouse lens, contact microphones"
+    }
+   ],
+   "edits": "Mono, high-pass 45 Hz, 5 ms fade in, 1 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Machinery/Loop_SteelWheelsRolling.wav",
+   "purpose": "Heavy steel wheels rolling on rails (rolling hatch covers)",
+   "kind": "loop",
+   "status": "analogue recording (heavy steel trolley)",
+   "sources": [
+    {
+     "id": "216605",
+     "segment_s": [
+      3,
+      19
+     ],
+     "title": "heavy metal trolley rolling rumbling",
+     "author": "martian",
+     "url": "https://freesound.org/people/martian/sounds/216605/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/216/216605_84709-hq.ogg",
+     "sha256": "9c6a5102114c1559037e091297053c2c5bcbe5935e0cf7d4d24b32eee7868343",
+     "description": "Heavy steel trolley rolling"
+    }
+   ],
+   "edits": "Mono, high-pass 35 Hz, 2 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Impacts/Shot_HeavySteelImpact1.wav",
+   "purpose": "Heavy steel impact (a cover seating, an anchor home in its pocket, an end stop)",
+   "kind": "oneshot",
+   "status": "analogue recording (heavy steel doors)",
+   "sources": [
+    {
+     "id": "407301",
+     "segment_s": [
+      4.95,
+      6.35
+     ],
+     "title": "door metal heavy close both sides same time impact rattle1 on offmic +bg voices.wav",
+     "author": "kyles",
+     "url": "https://freesound.org/people/kyles/sounds/407301/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/407/407301_612689-hq.ogg",
+     "sha256": "144541cae1fb1a8ee1bfefc64fccc75e4beab57b1f84fbb95a9aa25172685615",
+     "description": "Heavy steel doors closing"
+    }
+   ],
+   "edits": "Mono sum, high-pass 30 Hz, 1 ms fade in, 0.5 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Impacts/Shot_HeavySteelImpact2.wav",
+   "purpose": "Heavy steel impact (a cover seating, an anchor home in its pocket, an end stop)",
+   "kind": "oneshot",
+   "status": "analogue recording (heavy steel doors)",
+   "sources": [
+    {
+     "id": "407301",
+     "segment_s": [
+      11.7,
+      13.1
+     ],
+     "title": "door metal heavy close both sides same time impact rattle1 on offmic +bg voices.wav",
+     "author": "kyles",
+     "url": "https://freesound.org/people/kyles/sounds/407301/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/407/407301_612689-hq.ogg",
+     "sha256": "144541cae1fb1a8ee1bfefc64fccc75e4beab57b1f84fbb95a9aa25172685615",
+     "description": "Heavy steel doors closing"
+    }
+   ],
+   "edits": "Mono sum, high-pass 30 Hz, 1 ms fade in, 0.5 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Impacts/Shot_HeavySteelImpact3.wav",
+   "purpose": "Heavy steel impact (a cover seating, an anchor home in its pocket, an end stop)",
+   "kind": "oneshot",
+   "status": "analogue recording (heavy steel doors)",
+   "sources": [
+    {
+     "id": "407301",
+     "segment_s": [
+      23.2,
+      24.599999999999998
+     ],
+     "title": "door metal heavy close both sides same time impact rattle1 on offmic +bg voices.wav",
+     "author": "kyles",
+     "url": "https://freesound.org/people/kyles/sounds/407301/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/407/407301_612689-hq.ogg",
+     "sha256": "144541cae1fb1a8ee1bfefc64fccc75e4beab57b1f84fbb95a9aa25172685615",
+     "description": "Heavy steel doors closing"
+    }
+   ],
+   "edits": "Mono sum, high-pass 30 Hz, 1 ms fade in, 0.5 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Impacts/Shot_HeavySteelImpact4.wav",
+   "purpose": "Heavy steel impact (a cover seating, an anchor home in its pocket, an end stop)",
+   "kind": "oneshot",
+   "status": "analogue recording (heavy steel doors)",
+   "sources": [
+    {
+     "id": "407301",
+     "segment_s": [
+      34.45,
+      35.85
+     ],
+     "title": "door metal heavy close both sides same time impact rattle1 on offmic +bg voices.wav",
+     "author": "kyles",
+     "url": "https://freesound.org/people/kyles/sounds/407301/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/407/407301_612689-hq.ogg",
+     "sha256": "144541cae1fb1a8ee1bfefc64fccc75e4beab57b1f84fbb95a9aa25172685615",
+     "description": "Heavy steel doors closing"
+    }
+   ],
+   "edits": "Mono sum, high-pass 30 Hz, 1 ms fade in, 0.5 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Impacts/Shot_MetalClunk1.wav",
+   "purpose": "Metal clunk (a brake, a stopper, a change of direction)",
+   "kind": "oneshot",
+   "status": "analogue recording (metal impact foley)",
+   "sources": [
+    {
+     "id": "569555",
+     "segment_s": [
+      2.98,
+      4.58
+     ],
+     "title": "Foley_Impact_Metal_Long_Mono.wav",
+     "author": "Nox_Sound",
+     "url": "https://freesound.org/people/Nox_Sound/sounds/569555/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/569/569555_9250976-hq.ogg",
+     "sha256": "c46b9e48d12d334990ddef38d27985a6fd178e5af1cde452184fdb04819bf680",
+     "description": "Impacts on heavy metal"
+    }
+   ],
+   "edits": "High-pass 40 Hz, 1 ms fade in, 0.6 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Impacts/Shot_MetalClunk2.wav",
+   "purpose": "Metal clunk (a brake, a stopper, a change of direction)",
+   "kind": "oneshot",
+   "status": "analogue recording (metal impact foley)",
+   "sources": [
+    {
+     "id": "569555",
+     "segment_s": [
+      5.98,
+      7.58
+     ],
+     "title": "Foley_Impact_Metal_Long_Mono.wav",
+     "author": "Nox_Sound",
+     "url": "https://freesound.org/people/Nox_Sound/sounds/569555/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/569/569555_9250976-hq.ogg",
+     "sha256": "c46b9e48d12d334990ddef38d27985a6fd178e5af1cde452184fdb04819bf680",
+     "description": "Impacts on heavy metal"
+    }
+   ],
+   "edits": "High-pass 40 Hz, 1 ms fade in, 0.6 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Impacts/Shot_MetalClunk3.wav",
+   "purpose": "Metal clunk (a brake, a stopper, a change of direction)",
+   "kind": "oneshot",
+   "status": "analogue recording (metal impact foley)",
+   "sources": [
+    {
+     "id": "569555",
+     "segment_s": [
+      10.98,
+      12.58
+     ],
+     "title": "Foley_Impact_Metal_Long_Mono.wav",
+     "author": "Nox_Sound",
+     "url": "https://freesound.org/people/Nox_Sound/sounds/569555/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/569/569555_9250976-hq.ogg",
+     "sha256": "c46b9e48d12d334990ddef38d27985a6fd178e5af1cde452184fdb04819bf680",
+     "description": "Impacts on heavy metal"
+    }
+   ],
+   "edits": "High-pass 40 Hz, 1 ms fade in, 0.6 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Impacts/Shot_MetalClunk4.wav",
+   "purpose": "Metal clunk (a brake, a stopper, a change of direction)",
+   "kind": "oneshot",
+   "status": "analogue recording (metal impact foley)",
+   "sources": [
+    {
+     "id": "569555",
+     "segment_s": [
+      13.73,
+      15.33
+     ],
+     "title": "Foley_Impact_Metal_Long_Mono.wav",
+     "author": "Nox_Sound",
+     "url": "https://freesound.org/people/Nox_Sound/sounds/569555/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/569/569555_9250976-hq.ogg",
+     "sha256": "c46b9e48d12d334990ddef38d27985a6fd178e5af1cde452184fdb04819bf680",
+     "description": "Impacts on heavy metal"
+    }
+   ],
+   "edits": "High-pass 40 Hz, 1 ms fade in, 0.6 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Anchor/Loop_ChainOverGypsy.wav",
+   "purpose": "Anchor chain links clanking over a gypsy while heaving, about 1.05 links per second at pitch 1",
+   "kind": "loop",
+   "status": "analogue recording (ship's anchor being raised, Alaska; ship and windlass unknown)",
+   "sources": [
+    {
+     "id": "477129",
+     "segment_s": [
+      15.15,
+      28.6
+     ],
+     "title": "anchor raising",
+     "author": "mycompasstv",
+     "url": "https://freesound.org/people/mycompasstv/sounds/477129/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/477/477129_3902754-hq.ogg",
+     "sha256": "a8d4aa0bafae3a017d9c92de60d25c6b20d487eeb700688d8b6889df65b7368b",
+     "description": "Ship's anchor chain clanking over the gypsy while the anchor is raised"
+    }
+   ],
+   "edits": "Mono sum, high-pass 50 Hz, 0.25 s cross-fade placed in a gap between clanks.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Anchor/Loop_ChainRunning.wav",
+   "purpose": "Anchor chain running out through a hawse",
+   "kind": "loop",
+   "status": "analogue recording (chain-ferry chain, slowed by the uploader)",
+   "sources": [
+    {
+     "id": "199282",
+     "segment_s": [
+      5,
+      19
+     ],
+     "title": "Big Metal Chain",
+     "author": "qubodup",
+     "url": "https://freesound.org/people/qubodup/sounds/199282/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/199/199282_71257-hq.ogg",
+     "sha256": "0113889de794a0a8c6c06b849c91cd1f48baaeb907cd494daa9249987b8cbfbb",
+     "description": "Heavy chain running through a mechanism (slowed segment of a CC0 chain-ferry recording by miguelstar2)"
+    }
+   ],
+   "edits": "Mono sum, high-pass 40 Hz, 1.5 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Mooring/Loop_LineStrain.wav",
+   "purpose": "Mooring lines creaking under strain",
+   "kind": "loop",
+   "status": "analogue recording (cruise-liner synthetic hawsers on a bollard)",
+   "sources": [
+    {
+     "id": "500143",
+     "segment_s": [
+      3,
+      21
+     ],
+     "title": "liner mooring hawsers creak, gangplank groans.WAV",
+     "author": "phonoflora",
+     "url": "https://freesound.org/people/phonoflora/sounds/500143/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/500/500143_401348-hq.ogg",
+     "sha256": "2c1487dbbba93cdf32a663e8928d925db425d117e1b8c955a491b479b3f0ebd9",
+     "description": "Synthetic mooring ropes of a cruise liner creaking on a bollard"
+    }
+   ],
+   "edits": "Mono sum, high-pass 60 Hz, 1045 impulsive samples interpolated, 2 s cross-faded loop.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Mooring/Shot_LineCreak1.wav",
+   "purpose": "Single creak of a loaded mooring line",
+   "kind": "oneshot",
+   "status": "analogue recording (ferry mooring rope on a cleat)",
+   "sources": [
+    {
+     "id": "145721",
+     "segment_s": [
+      31.3,
+      34.1
+     ],
+     "title": "Mooring Rope.wav",
+     "author": "Rmutt",
+     "url": "https://freesound.org/people/Rmutt/sounds/145721/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/145/145721_981371-hq.ogg",
+     "sha256": "86138d18990401987a6edc9cefbc61f9a03d67ed694893014789703cdf72df94",
+     "description": "Mooring rope on a cleat holding a ferry at a San Francisco dock"
+    }
+   ],
+   "edits": "Mono sum, high-pass 70 Hz, 20 ms fade in, 0.3 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Mooring/Shot_LineCreak2.wav",
+   "purpose": "Single creak of a loaded mooring line",
+   "kind": "oneshot",
+   "status": "analogue recording (ferry mooring rope on a cleat)",
+   "sources": [
+    {
+     "id": "145721",
+     "segment_s": [
+      36.0,
+      38.7
+     ],
+     "title": "Mooring Rope.wav",
+     "author": "Rmutt",
+     "url": "https://freesound.org/people/Rmutt/sounds/145721/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/145/145721_981371-hq.ogg",
+     "sha256": "86138d18990401987a6edc9cefbc61f9a03d67ed694893014789703cdf72df94",
+     "description": "Mooring rope on a cleat holding a ferry at a San Francisco dock"
+    }
+   ],
+   "edits": "Mono sum, high-pass 70 Hz, 20 ms fade in, 0.3 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Mooring/Shot_LineCreak3.wav",
+   "purpose": "Single creak of a loaded mooring line",
+   "kind": "oneshot",
+   "status": "analogue recording (ferry mooring rope on a cleat)",
+   "sources": [
+    {
+     "id": "145721",
+     "segment_s": [
+      54.6,
+      56.9
+     ],
+     "title": "Mooring Rope.wav",
+     "author": "Rmutt",
+     "url": "https://freesound.org/people/Rmutt/sounds/145721/",
+     "license": "CC0 1.0 Universal (public domain dedication)",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "attribution_required": false,
+     "preview_url": "https://cdn.freesound.org/previews/145/145721_981371-hq.ogg",
+     "sha256": "86138d18990401987a6edc9cefbc61f9a03d67ed694893014789703cdf72df94",
+     "description": "Mooring rope on a cleat holding a ferry at a San Francisco dock"
+    }
+   ],
+   "edits": "Mono sum, high-pass 70 Hz, 20 ms fade in, 0.3 s fade out.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Mooring/Shot_LineParted.wav",
+   "purpose": "A mooring line parting",
+   "kind": "oneshot",
+   "status": "synthesized approximation",
+   "sources": [],
+   "edits": "Original synthesis: impulse crack, high band burst, downward-sweeping whip noise, 70 Hz thump.",
+   "channels_note": null,
+   "sample_rate": 44100
+  },
+  {
+   "file": "Anchor/Shot_ChainParted.wav",
+   "purpose": "An anchor chain parting",
+   "kind": "oneshot",
+   "status": "synthesized approximation",
+   "sources": [],
+   "edits": "Original synthesis: impulse crack and inharmonic link modes (418 to 5120 Hz), 55 Hz thump.",
+   "channels_note": null,
+   "sample_rate": 44100
+  }
+ ]
+}

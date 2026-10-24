@@ -380,6 +380,7 @@ namespace ShipSimulator.Editor
             visual.AddComponent<MeshRenderer>().sharedMaterials = materials;
 
             AddCollisionHull(root, data);
+            ShipAudioBuilder.InstallSoundscape(root);
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(root, design.PrefabPath);
             Object.DestroyImmediate(root);
             return prefab;

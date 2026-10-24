@@ -1,0 +1,160 @@
+{
+    "segments": [
+        {
+            "name": "01-stopped-then-dead-slow",
+            "seconds": 20.010665893554688,
+            "peak": 0.16264545917510986,
+            "rmsDb": 0.0,
+            "maxActiveVoices": 17.0,
+            "maxSources": 17.0,
+            "eventsPlayed": 2,
+            "listeners": 1,
+            "soundscapes": 1,
+            "windows": []
+        },
+        {
+            "name": "02-acceleration-then-full-ahead",
+            "seconds": 25.002666473388672,
+            "peak": 0.3743683099746704,
+            "rmsDb": 0.0,
+            "maxActiveVoices": 15.0,
+            "maxSources": 15.0,
+            "eventsPlayed": 2,
+            "listeners": 1,
+            "soundscapes": 1,
+            "windows": []
+        },
+        {
+            "name": "03-port-full-starboard-half-from-astern",
+            "seconds": 14.997333526611328,
+            "peak": 0.4523150324821472,
+            "rmsDb": 0.0,
+            "maxActiveVoices": 17.0,
+            "maxSources": 17.0,
+            "eventsPlayed": 2,
+            "listeners": 1,
+            "soundscapes": 1,
+            "windows": []
+        },
+        {
+            "name": "04-full-ahead-to-full-astern",
+            "seconds": 34.98666763305664,
+            "peak": 0.30090421438217163,
+            "rmsDb": 0.0,
+            "maxActiveVoices": 19.0,
+            "maxSources": 19.0,
+            "eventsPlayed": 4,
+            "listeners": 1,
+            "soundscapes": 1,
+            "windows": []
+        },
+        {
+            "name": "05-bridge-then-outside",
+            "seconds": 26.005332946777344,
+            "peak": 0.34222540259361267,
+            "rmsDb": 0.0,
+            "maxActiveVoices": 17.0,
+            "maxSources": 17.0,
+            "eventsPlayed": 4,
+            "listeners": 1,
+            "soundscapes": 1,
+            "windows": [
+                "bridge: -25.0 dBFS RMS",
+                "outside: -26.1 dBFS RMS"
+            ]
+        },
+        {
+            "name": "06-wind-15ms-outside-then-bridge",
+            "seconds": 16.021333694458008,
+            "peak": 0.17577874660491943,
+            "rmsDb": 0.0,
+            "maxActiveVoices": 16.0,
+            "maxSources": 16.0,
+            "eventsPlayed": 4,
+            "listeners": 1,
+            "soundscapes": 1,
+            "windows": [
+                "outside: -31.4 dBFS RMS",
+                "bridge: -45.0 dBFS RMS"
+            ]
+        },
+        {
+            "name": "07-hatches",
+            "seconds": 52.86399841308594,
+            "peak": 0.2130431979894638,
+            "rmsDb": 0.0,
+            "maxActiveVoices": 15.0,
+            "maxSources": 15.0,
+            "eventsPlayed": 26,
+            "listeners": 1,
+            "soundscapes": 1,
+            "windows": [
+                "slide after load: -33.7 dBFS RMS"
+            ]
+        },
+        {
+            "name": "08-anchor",
+            "seconds": 33.45066833496094,
+            "peak": 0.4396793246269226,
+            "rmsDb": 0.0,
+            "maxActiveVoices": 9.0,
+            "maxSources": 9.0,
+            "eventsPlayed": 32,
+            "listeners": 1,
+            "soundscapes": 1,
+            "windows": []
+        },
+        {
+            "name": "09-mooring",
+            "seconds": 39.0186653137207,
+            "peak": 0.19159989058971405,
+            "rmsDb": 0.0,
+            "maxActiveVoices": 15.0,
+            "maxSources": 15.0,
+            "eventsPlayed": 47,
+            "listeners": 1,
+            "soundscapes": 1,
+            "windows": []
+        },
+        {
+            "name": "10-pause-speed-save-load-mute",
+            "seconds": 37.03466796875,
+            "peak": 0.28746625781059265,
+            "rmsDb": 0.0,
+            "maxActiveVoices": 17.0,
+            "maxSources": 17.0,
+            "eventsPlayed": 47,
+            "listeners": 1,
+            "soundscapes": 1,
+            "windows": [
+                "paused: -200.0 dBFS RMS",
+                "after load: -27.0 dBFS RMS",
+                "muted: -200.0 dBFS RMS"
+            ]
+        }
+    ],
+    "tickMicroseconds": 5.867199897766113,
+    "tickBytesPer1000": 0,
+    "clipMemoryBytes": 3176452,
+    "clipCount": 36,
+    "eventsReplayedAfterLoad": 0,
+    "eventsAfterHatchLoad": 0,
+    "pausedRmsDb": -200.0,
+    "mutedRmsDb": -200.0,
+    "otherVesselSoundscapes": 1,
+    "otherVesselForbiddenSources": 0,
+    "otherVesselActiveVoices": 9,
+    "riverSoundscapes": 1,
+    "riverListeners": 1,
+    "otherVessel": "volgobalt-295ar",
+    "otherVesselProfile": "volgobalt-295ar",
+    "otherVesselDisabled": [
+        "engine firing: cylinders or cycle not established in the vessel data",
+        "starting air: the engine is not established as direct-reversing with air start",
+        "propeller blade rate: blade count not established in the vessel data",
+        "wheelhouse filter: the model has no wheelhouse interior to listen from",
+        "hatch covers: no hatch cover mechanism is modelled",
+        "anchors and mooring: no ground tackle is fitted in the vessel data"
+    ],
+    "failures": []
+}

@@ -101,6 +101,11 @@ namespace ShipSimulator.Physics
         public float EngineCommand(int index) => engineCommands[index];
         public float ShaftRpm(int index) => model != null ? model.Shafts[index].Rps * 60f : 0f;
         public float EngineLoadFraction(int index) => model != null ? model.Shafts[index].LoadFraction : 0f;
+        public float PropellerThrustN(int index) => model != null ? model.PropellerThrustN[index] : 0f;
+        // Fraction of the propeller discs under water in the last step; 1 where the vessel has no loading model.
+        public float PropellerImmersion { get; private set; } = 1f;
+        // Counts restores and resets, which move the vessel and its machinery without simulating the way there.
+        public int RestoreCount { get; private set; }
         public bool HasBowThruster => model != null && model.BowThruster != null;
         public float BowThrusterCommand => bowThrusterCommand;
         public float BowThrusterOutput => HasBowThruster ? model.BowThruster.Output : 0f;
@@ -227,6 +232,7 @@ namespace ShipSimulator.Physics
                 HasPropellerImmersion = loading != null,
                 PropellerImmersion = loading != null ? LocalPropellerImmersion() : 1f
             };
+            PropellerImmersion = input.PropellerImmersion;
             externalX = externalY = externalN = 0f;
             diagnostics = model.Step(input, dt);
             if (grounding != null && grounding.isActiveAndEnabled) grounding.ResolveFriction(model, ref diagnostics, dt);
@@ -353,6 +359,7 @@ namespace ShipSimulator.Physics
             model?.BowThruster?.Restore(0f);
             Mechanisms?.RestoreState(null);
             if (tackle != null) tackle.ResetState();
+            RestoreCount++;
         }
 
         public void RestoreVoyage(ShipSimulator.Persistence.VoyageSave save)
@@ -380,6 +387,7 @@ namespace ShipSimulator.Physics
             model.RestoreActuators(save.rudderAngle * Mathf.Deg2Rad, rps);
             bowThrusterCommand = HasBowThruster ? Mathf.Clamp(save.bowThrusterCommand, -1f, 1f) : 0f;
             model.BowThruster?.Restore(save.bowThrusterOutput);
+            RestoreCount++;
             activeCurrentZones.Clear();
             UnityEngine.Physics.SyncTransforms();
             foreach (RiverCurrentZone zone in FindObjectsByType<RiverCurrentZone>())

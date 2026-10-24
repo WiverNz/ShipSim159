@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 1217667935163993910}
   - component: {fileID: 6063777681258760660}
   - component: {fileID: 2354332674919957188}
+  - component: {fileID: 1671141460250382639}
   m_Layer: 0
   m_Name: VolgoBalt295AR
   m_TagString: Untagged
@@ -310,6 +311,8 @@ MonoBehaviour:
   aftMastheadSupportBaseY: 11.84
   sternLight: {x: 0, y: 5.24, z: -56.7025}
   sternLightSupportBaseY: 4.04
+  navigationLightIntensityScale: 1
+  navigationLightRangeScale: 1
   cameraViews:
   - {x: 29.274, y: 18.212101, z: -108.344}
   - {x: 0, y: 19.8561, z: -11.387}
@@ -319,6 +322,23 @@ MonoBehaviour:
   - {x: 0, y: 12.33, z: 81.8189}
   - {x: 0, y: 13.152, z: -86.7087}
   - {x: -20.1644, y: 7.3980002, z: -20.496601}
+--- !u!114 &1671141460250382639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6629647057830981630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8989fa70244b310458d34639eced1577, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Audio.VesselSoundscape
+  profile: {fileID: 11400000, guid: 1af358bc67bf5094a98d57940e364e78, type: 2}
+  anchorPoints:
+  - Windlass_Port
+  - Windlass_Starboard
+  - Capstan_Stern
 --- !u!1 &8185985717432488237
 GameObject:
   m_ObjectHideFlags: 0

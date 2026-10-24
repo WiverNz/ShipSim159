@@ -1,5 +1,47 @@
 # ShipSim159 Project Context
 
+## Shared sound library, 2026-10-24
+
+Sound is no longer 507B-only. 36 WAVs moved (with `.meta`, GUIDs and bytes unchanged) to
+`Assets/ShipSimulator/Audio/Library/<category>/`; one `VesselSoundProfile` per catalogue vessel in
+`Audio/Profiles/<vessel id>.asset` (507B's is the moved original); pipeline, sources, registry and
+license snapshots in `Art/Source/Audio/` (`build_ship_audio.py`, README with the replacement procedure).
+Optional data facts: engine `cylinders`, `strokesPerCycle`, `engineRpmPerShaftRpm`,
+`directReversingAirStart`, propeller `bladeCount`, ground tackle `windlassDrive`/`mooringWinchDrive`;
+set only for the 507B. `VesselSoundscape` plays a layer when the profile gives a clip and the data or
+model allow it (`DisabledLayers` lists reasons): all five vessels hear diesels, wash, hull water
+(scaled by the computed support, so it fades foilborne) and wind; firing, starting air, blade rate,
+hatches, tackle and wheelhouse filter only the 507B. `ShipAudioBuilder.InstallSoundscape` is called by
+every vessel builder. EditMode 267/267, PlayMode 107/107, SHIP_AUDIO_RUNTIME, MENU_SMOKE,
+VESSEL_SHAKEDOWN PASS, sea trials identical; 507B behaviour unchanged. See PART15_REVIEW section 10.
+
+## Volgo-Don Part 15, 2026-10-24 (paths as of Part 15; superseded by the shared library above)
+
+Part 15 complete. Read `Art/Source/VolgoDon507B/PART15_REVIEW.md`. `Scripts/Audio/VesselSoundscape`
+on the 507B (profile `Audio/VolgoDon507B/VolgoDon507B_SoundProfile.asset`) reads the simulation in
+LateUpdate (order 150) and writes nothing back: engine firing pitch = shaft rpm / reference rpm
+(synthesized six-cylinder four-stroke rhythm), level from `EngineShaft.FuelFraction`, starting-air
+hiss on `IsAirBraking`, air blast on `Direction` change; wash from propeller thrust and immersion;
+hull flow, bow wave and lapping from speed through the water; wind relative to the ship; hatch
+pump/winch/rolling from the change of opening and parking; chain and line layers from
+`GroundTackle.ChainRateMps`/`LineRateMps`, commands, stall, tension and the new `ChangedAt` event.
+`RestoreCount` on the controller: a load or reset glides levels, snaps pitch, plays no events for
+0.3 s. Pitch never scales with simulation speed; Doppler 0. One-shot pool of 8. Mixer
+`Resources/Audio/ShipSimMixer.mixer` (`ShipAudioBuilder`, by reflection; menu Build Ship Audio)
+with Engines/Water/Wind/Machinery/Signals volumes and low-pass cutoffs for the wheelhouse filter.
+Settings > Sound: master, four buses, Mute; standalone mutes when unfocused. Assets: 36 WAVs in
+`Assets/ShipSimulator/Audio/VolgoDon507B/` from 19 CC0 Freesound previews kept in
+`Art/Source/VolgoDon507B/Audio/Sources/` and original synthesis; `part15_audio.py` (numpy, scipy,
+soundfile) downloads/verifies, builds, analyses; registry `AUDIO_SOURCES.md`. Import rules by name
+(`ShipAudioImportRules`): loops Vorbis 0.5, one-shots ADPCM, preload, Force To Mono off.
+No 507B recordings exist here: all are analogues. Not listened to by a person.
+
+Verified: EditMode 265/265, PlayMode 100/100, `ShipAudioRuntimeCheck.Run` SHIP_AUDIO_RUNTIME|PASS
+(ten real-time recordings in `Logs/Part15/demo`, copies in `Audio/Demo`), MENU_SMOKE|PASS,
+VESSEL_SHAKEDOWN|PASS 5 vessels, SEA_TRIALS rows identical to Part 14. Tick 6 us, 0 bytes; clip
+memory 3.2 MB; at most 29 voices. Residual: the menu pause cuts sound at once. Part 16 not started.
+No commit/push.
+
 ## Volgo-Don Part 14, 2026-10-24
 
 Part 14 complete. Read `Art/Source/VolgoDon507B/PART14_REVIEW.md`. `Physics/GroundTackle.cs` on
@@ -26,7 +68,7 @@ broke anchors out; GroundTackle reads the Rigidbody pose. Catenary returned an i
 exact slack span. Verified: EditMode 258/258, PlayMode 90/90, `GroundTackleRuntimeCheck.Run`
 GROUND_TACKLE_RUNTIME|PASS, MENU_SMOKE|PASS, VESSEL_SHAKEDOWN|PASS 5 vessels, SEA_TRIALS rows
 identical to Part 13, quality gate PASS. Stowed tackle leaves motion bit-identical. Step 20 us, draw
-8 us, 0 bytes allocated. Part 15 not started. No commit/push.
+8 us, 0 bytes allocated. Part 15 was not started at that point. No commit/push.
 
 ## Volgo-Don Part 13, 2026-10-24
 

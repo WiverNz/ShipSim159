@@ -26,6 +26,13 @@ namespace ShipSimulator.Physics
         public float Rps { get; private set; }
         public float EngineTorqueNm { get; private set; }
         public bool IsReversing { get; private set; }
+        // The running direction the engine is set for: 1 ahead, -1 astern, 0 before it has first been engaged.
+        public int Direction => direction;
+        // Engine torque in its running direction as a fraction of the maximum, which follows the fuel delivered;
+        // zero while the fuel is cut or the starting air brakes the shaft.
+        public float FuelFraction => maxTorque > 0f ? Mathf.Clamp01(EngineTorqueNm * direction / maxTorque) : 0f;
+        // Starting air is braking the shaft towards the reversal speed.
+        public bool IsAirBraking => IsReversing && Mathf.Abs(EngineTorqueNm) > 0f;
         public float RatedRps => ratedRps;
         public float LoadFraction => deliveredPower > 0f
             ? Mathf.Abs(EngineTorqueNm * 2f * Mathf.PI * Rps) / deliveredPower

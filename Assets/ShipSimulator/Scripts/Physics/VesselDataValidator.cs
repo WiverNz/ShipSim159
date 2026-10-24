@@ -68,10 +68,15 @@ namespace ShipSimulator.Physics
                 !InRange(e.reversalRpmFraction, 0f, 0.99f) || !NonNegative(e.reversalDelaySeconds) ||
                 !InRange(e.reversalBrakeTorqueFraction, 0f, 1f))
                 return Fail("Engine configuration is invalid.", out error);
+            if (e.cylinders < 0 || e.cylinders > 24 || (e.strokesPerCycle != 0 && e.strokesPerCycle != 2 && e.strokesPerCycle != 4) ||
+                !(e.engineRpmPerShaftRpm == 0f || (Finite(e.engineRpmPerShaftRpm) && e.engineRpmPerShaftRpm > 0f && e.engineRpmPerShaftRpm < 20f)))
+                return Fail("Engine equipment facts are invalid: cylinders 0-24, strokesPerCycle 0, 2 or 4, engineRpmPerShaftRpm 0 or positive.", out error);
 
             VesselPropeller p = data.propeller;
             if (p == null || p.count <= 0 || p.count != e.engineCount || !Positive(p.diameterM))
                 return Fail("Propeller configuration is invalid; each propeller needs one engine.", out error);
+            if (p.bladeCount < 0 || p.bladeCount > 12)
+                return Fail("Propeller bladeCount must be 0 (not established) to 12.", out error);
             if (!ArrayMatchesCount(p.longitudinalPositionsM, p.count) || !ArrayMatchesCount(p.lateralPositionsM, p.count))
                 return Fail("Propeller position arrays must match propeller.count.", out error);
             if (!Coefficients(p.aheadThrustCoefficients) || !Coefficients(p.aheadTorqueCoefficients) ||
@@ -180,6 +185,8 @@ namespace ShipSimulator.Physics
             return true;
         }
 
+        private static bool Drive(string drive) => string.IsNullOrEmpty(drive) || drive == "electric" || drive == "electrohydraulic";
+
         private static bool GroundTackle(VesselGroundTackle g)
         {
             if (g.anchors == null || g.anchors.Length == 0 || g.anchors.Length > 4 || g.stations == null ||
@@ -192,7 +199,7 @@ namespace ShipSimulator.Physics
                 !Positive(g.lineMinLengthM) || !(Finite(g.lineMaxLengthM) && g.lineMaxLengthM > g.lineMinLengthM) ||
                 !Positive(g.slackMps) || !InRange(g.stallPullFactor, 1f, 5f) || !InRange(g.overloadFraction, 0.05f, 1f) ||
                 !Positive(g.passReachM) || g.passReachM > g.lineMaxLengthM || !Positive(g.passMaxSpeedMps) ||
-                g.linesPerBollard < 1 || g.linesPerBollard > 8)
+                g.linesPerBollard < 1 || g.linesPerBollard > 8 || !Drive(g.windlassDrive) || !Drive(g.mooringWinchDrive))
                 return false;
             var ids = new System.Collections.Generic.HashSet<string>();
             foreach (VesselAnchor a in g.anchors)

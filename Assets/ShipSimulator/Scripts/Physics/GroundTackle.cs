@@ -50,6 +50,9 @@ namespace ShipSimulator.Physics
         private bool initialised;
 
         public event Action<TackleEvent, string> Changed;
+        // The same events with the anchor index (anchor events) or the station index (line events), for listeners
+        // that act at the place where it happened.
+        public event Action<TackleEvent, int> ChangedAt;
         // Power of the last step's forces at the attachment points' velocities, for energy checks: with the
         // brakes and winches holding, a positive running total would mean the lines created energy.
         public float PowerW { get; private set; }
@@ -59,6 +62,7 @@ namespace ShipSimulator.Physics
         private sealed class Anchor
         {
             public string Id;
+            public int Index;
             public VesselAnchor Spec;
             public Vector3 HawseLocal;
             public float Drop;
@@ -69,6 +73,7 @@ namespace ShipSimulator.Physics
             public float Embedment;
             public float SinceSlip = float.PositiveInfinity;
             public CatenaryShape Shape;
+            public float RateMps;
             public float TensionN;
             public float HorizontalN;
             public bool Stalled;
@@ -87,6 +92,7 @@ namespace ShipSimulator.Physics
             public float Length;
             public LineCommand Command;
             public LineState State;
+            public float RateMps;
             public CatenaryShape Shape;
             public bool ShipHigh;
             public float TensionN;
@@ -124,7 +130,10 @@ namespace ShipSimulator.Physics
             {
                 VesselAnchor anchorSpec = Array.Find(spec.anchors, a => a.id == anchorIds[i]);
                 if (anchorSpec == null) continue;
-                built.Add(new Anchor { Id = anchorIds[i], Spec = anchorSpec, HawseLocal = hawsesLocal[i], Drop = anchorDrops[i] });
+                built.Add(new Anchor
+                {
+                    Id = anchorIds[i], Index = built.Count, Spec = anchorSpec, HawseLocal = hawsesLocal[i], Drop = anchorDrops[i]
+                });
             }
             anchors = built.ToArray();
             var points = new List<MooringPoint>();
@@ -155,12 +164,15 @@ namespace ShipSimulator.Physics
         public float ChainOutM(int i) => anchors[i].Chain;
         public float ChainLimitM(int i) => anchors[i].Spec.chainLengthM;
         public float ChainTensionN(int i) => anchors[i].TensionN;
+        // Chain paid out per second in the last step, negative while heaving; includes the brake rendering.
+        public float ChainRateMps(int i) => anchors[i].RateMps;
         public float AnchorHorizontalN(int i) => anchors[i].HorizontalN;
         public bool Dragging(int i) => anchors[i].Phase == AnchorPhase.Bottom && anchors[i].SinceSlip < SlipMemorySeconds;
         public bool Stalled(int i) => anchors[i].Stalled;
         public bool NoBottom(int i) => anchors[i].NoBottom;
         public float Embedment(int i) => anchors[i].Embedment;
         public CatenaryShape ChainShape(int i) => anchors[i].Shape;
+        public Vector3 HawseLocal(int i) => anchors[i].HawseLocal;
         public Vector3 HawseWorld(int i) => transform.TransformPoint(anchors[i].HawseLocal);
         public Vector3 ShackleWorld(int i) => anchors[i].Shackle;
         public float HoldingCapacityN(int i) => Capacity(anchors[i], anchors[i].Shape);
@@ -199,13 +211,14 @@ namespace ShipSimulator.Physics
             if (command == ChainCommand.Heave && a.Phase == AnchorPhase.Stowed) return false;
             a.Command = command;
             a.Stalled = false;
-            if (command == ChainCommand.LetGo && a.Phase == AnchorPhase.Stowed) Raise(TackleEvent.AnchorLetGo, a.Spec.label + " anchor let go");
+            if (command == ChainCommand.LetGo && a.Phase == AnchorPhase.Stowed) Raise(TackleEvent.AnchorLetGo, a.Spec.label + " anchor let go", i);
             return true;
         }
 
         // ---- Mooring queries and commands ----
 
         public MooringPoint Station(int i) => stations[i];
+        public VesselMooringStation StationSpec(int i) => stationSpecs[i];
         public int LineAt(int station)
         {
             for (int k = 0; k < lines.Count; k++) if (lines[k].Ship == stations[station]) return k;
@@ -215,6 +228,8 @@ namespace ShipSimulator.Physics
         public MooringPoint LineShore(int k) => lines[k].Shore;
         public float LineLengthM(int k) => lines[k].Length;
         public float LineTensionN(int k) => lines[k].TensionN;
+        // Line paid out per second at the winch in the last step, negative while hauling.
+        public float LineRateMps(int k) => lines[k].RateMps;
         public float LineBreakingLoadN => spec?.lineBreakingLoadN ?? 0;
         public LineState LineStateAt(int k) => lines[k].State;
         public LineCommand LineCommandAt(int k) => lines[k].Command;
@@ -255,7 +270,7 @@ namespace ShipSimulator.Physics
             {
                 Ship = stations[station], Shore = shore, Station = stationSpecs[station], StationIndex = station, Length = length
             });
-            Raise(TackleEvent.LinePassed, $"Line passed {stations[station].Label} to {shore.Label}");
+            Raise(TackleEvent.LinePassed, $"Line passed {stations[station].Label} to {shore.Label}", station);
             return null;
         }
 
@@ -273,7 +288,7 @@ namespace ShipSimulator.Physics
             if (k < 0) return false;
             string label = lines[k].Ship.Label;
             lines.RemoveAt(k);
-            Raise(TackleEvent.LineCastOff, label + " line cast off");
+            Raise(TackleEvent.LineCastOff, label + " line cast off", station);
             return true;
         }
 
@@ -288,6 +303,13 @@ namespace ShipSimulator.Physics
         }
 
         private void StepAnchor(Anchor a, float dt)
+        {
+            float before = a.Chain;
+            StepAnchorForces(a, dt);
+            a.RateMps = (a.Chain - before) / dt;
+        }
+
+        private void StepAnchorForces(Anchor a, float dt)
         {
             a.HorizontalN = 0;
             if (a.Phase == AnchorPhase.Lost || a.Phase == AnchorPhase.Stowed && a.Command == ChainCommand.Hold)
@@ -316,7 +338,7 @@ namespace ShipSimulator.Physics
                 a.Embedment = 0;
                 a.SinceSlip = float.PositiveInfinity;
                 if (a.Command == ChainCommand.LetGo) a.Command = ChainCommand.Hold;
-                Raise(TackleEvent.AnchorOnBottom, a.Spec.label + " anchor on the bottom");
+                Raise(TackleEvent.AnchorOnBottom, a.Spec.label + " anchor on the bottom", a.Index);
             }
 
             if (Bed(a.Shackle, out float bed, out a.Soil)) a.Shackle.y = bed + a.Drop;
@@ -331,7 +353,7 @@ namespace ShipSimulator.Physics
             {
                 a.Phase = AnchorPhase.Hanging;
                 a.Shape = default;
-                Raise(TackleEvent.AnchorAweigh, a.Spec.label + " anchor aweigh");
+                Raise(TackleEvent.AnchorAweigh, a.Spec.label + " anchor aweigh", a.Index);
                 return;
             }
 
@@ -353,7 +375,7 @@ namespace ShipSimulator.Physics
                 a.Embedment = Mathf.Min(1, a.Embedment + high / spec.setDistanceM);
                 a.SinceSlip = 0;
                 shape = Solve(a, a.Chain, span, height);
-                if (wasHolding) Raise(TackleEvent.AnchorDragging, a.Spec.label + " anchor dragging");
+                if (wasHolding) Raise(TackleEvent.AnchorDragging, a.Spec.label + " anchor dragging", a.Index);
             }
             else a.SinceSlip += dt;
 
@@ -380,7 +402,7 @@ namespace ShipSimulator.Physics
                     a.Command = ChainCommand.Hold;
                     a.Shape = default;
                     a.TensionN = 0;
-                    Raise(TackleEvent.ChainParted, a.Spec.label + " chain parted");
+                    Raise(TackleEvent.ChainParted, a.Spec.label + " chain parted", a.Index);
                     return;
                 }
             }
@@ -410,7 +432,7 @@ namespace ShipSimulator.Physics
                     // Full speed up to the nominal pull, slowing to a stall at the overload pull.
                     float load = Mathf.InverseLerp(a.Spec.stallPullN, a.Spec.nominalPullN, a.TensionN);
                     bool stalled = load <= 0;
-                    if (stalled && !a.Stalled) Raise(TackleEvent.WindlassStalled, a.Spec.label + " windlass stalled");
+                    if (stalled && !a.Stalled) Raise(TackleEvent.WindlassStalled, a.Spec.label + " windlass stalled", a.Index);
                     a.Stalled = stalled;
                     a.Chain = Mathf.Max(0, a.Chain - a.Spec.heaveMps * load * dt);
                     if (a.Chain <= 0)
@@ -419,7 +441,7 @@ namespace ShipSimulator.Physics
                         a.Command = ChainCommand.Hold;
                         a.Shape = default;
                         a.TensionN = 0;
-                        Raise(TackleEvent.AnchorStowed, a.Spec.label + " anchor stowed");
+                        Raise(TackleEvent.AnchorStowed, a.Spec.label + " anchor stowed", a.Index);
                     }
                     break;
             }
@@ -434,11 +456,13 @@ namespace ShipSimulator.Physics
                 return;
             }
             float rated = line.Station.winchPullN;
+            float before = line.Length;
             if (line.Command == LineCommand.Haul)
                 line.Length = Mathf.Max(spec.lineMinLengthM, line.Length -
                     line.Station.haulMps * Mathf.InverseLerp(rated * spec.stallPullFactor, rated, line.TensionN) * dt);
             else if (line.Command == LineCommand.Slack)
                 line.Length = Mathf.Min(spec.lineMaxLengthM, line.Length + spec.slackMps * dt);
+            line.RateMps = (line.Length - before) / dt;
 
             Vector3 lead = World(stationLeads[line.StationIndex]), shore = line.Shore.LeadWorld;
             Vector3 flat = shore - lead;
@@ -454,7 +478,7 @@ namespace ShipSimulator.Physics
             {
                 string label = line.Ship.Label;
                 lines.RemoveAt(k);
-                Raise(TackleEvent.LineParted, label + " line parted");
+                Raise(TackleEvent.LineParted, label + " line parted", line.StationIndex);
                 return;
             }
             line.State = line.TensionN > spec.overloadFraction * spec.lineBreakingLoadN ? LineState.Overloaded :
@@ -543,11 +567,12 @@ namespace ShipSimulator.Physics
             return false;
         }
 
-        private void Raise(TackleEvent change, string message)
+        private void Raise(TackleEvent change, string message, int index)
         {
             Notice = message.ToUpperInvariant();
             NoticeTime = Time.unscaledTime;
             Changed?.Invoke(change, message);
+            ChangedAt?.Invoke(change, index);
         }
 
         // ---- Lifecycle ----
@@ -558,7 +583,7 @@ namespace ShipSimulator.Physics
             {
                 a.Phase = AnchorPhase.Stowed;
                 a.Command = ChainCommand.Hold;
-                a.Chain = a.Embedment = a.TensionN = a.HorizontalN = 0;
+                a.Chain = a.Embedment = a.TensionN = a.HorizontalN = a.RateMps = 0;
                 a.Shape = default;
                 a.Stalled = a.NoBottom = false;
                 a.SinceSlip = float.PositiveInfinity;

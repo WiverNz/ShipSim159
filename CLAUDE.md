@@ -62,7 +62,10 @@ missing you are on a different machine and should write your own.
 
 ## Project structure
 
-- `Assets/ShipSimulator/Scripts/{Physics,Camera,UI,Visuals}`: runtime C#.
+- `Assets/ShipSimulator/Scripts/{Physics,Camera,UI,Visuals,Audio}`: runtime C#.
+- `Assets/ShipSimulator/Audio/`: `Library/` holds the sound files every vessel shares, `Profiles/` one
+  `VesselSoundProfile` per vessel. `Art/Source/Audio/` holds the pipeline, sources and the license
+  registry with an entry for every file. Never copy a sound file for a second vessel: reference it.
 - `Assets/ShipSimulator/Scripts/Editor/`: editor-only builders and the model integrator.
 - `Assets/ShipSimulator/Tests/EditMode/`: data validation and project configuration tests.
 - `Assets/ShipSimulator/Tests/PlayMode/`: runtime physics and trigger interaction tests.
@@ -184,6 +187,10 @@ All vessels are reported even if one fails; failures include nearby collider dia
 `GroundTackleRuntimeCheck.Run`, launched the same way, moors the 507B at the Gorodets demonstration
 quay, anchors, drags and heaves her, captures `Art/Source/VolgoDon507B/Previews/part14-*.png` and
 ends with `GROUND_TACKLE_RUNTIME|PASS`.
+`ShipAudioRuntimeCheck.Run`, launched the same way, plays the 507B sound demonstration in Gorodets in
+real time, records the listener mix to `Logs/Part15/demo/`, then changes to another vessel (checking
+it plays its own profile and none of the 507B's equipment) and to another scenario, and ends with
+`SHIP_AUDIO_RUNTIME|PASS`. It proves state coupling, levels and lifecycle, not how it sounds.
 `GraphicsPhaseTwoCheck.RunBefore` / `RunAfter` capture five views in five weather conditions at
 1920x1080 and write frame timing CSVs and temporal crops under `Logs/GraphicsPhaseTwo/`.
 They refuse to overwrite an existing before/after directory. `RunSkyProbe` checks the live sky
@@ -216,6 +223,7 @@ One thing about results that has already cost time here:
 | `Arrange Navigation Buoys` | Places the fairway buoy line |
 | `Build Gorodets Scenario` | Regenerates `GorodetsTrainingScene` |
 | `Install Gorodets Demonstration Berth` | Adds or rebuilds only the estimated mooring quay in `GorodetsTrainingScene` |
+| `Build Ship Audio` | Builds the AudioMixer (if missing) and one sound profile per catalogue vessel over the shared library, and installs the soundscape on every vessel prefab |
 | `Build Serpukhov Zaton Scenario` | Regenerates `SerpukhovZatonScene` from `Data/Scenarios/SerpukhovZaton.json` |
 | `Render Serpukhov Zaton Preview` | Renders stills of the Serpukhov scene into `Logs/Serpukhov/` |
 | `Render Visual Preview` | Renders a still of the scene |
@@ -241,7 +249,7 @@ Four assembly definitions. Code in the wrong one will not compile or reference c
 
 | Assembly | Contents |
 |---|---|
-| `ShipSimulator.Runtime` | `Assets/ShipSimulator/Scripts/{Physics,Camera,UI,Visuals}` |
+| `ShipSimulator.Runtime` | `Assets/ShipSimulator/Scripts/{Physics,Camera,UI,Visuals,Audio}` |
 | `ShipSimulator.Editor` | `Assets/ShipSimulator/Scripts/Editor` (builders, model integrator; editor-only) |
 | `ShipSimulator.EditModeTests` | `Assets/ShipSimulator/Tests/EditMode` |
 | `ShipSimulator.PlayModeTests` | `Assets/ShipSimulator/Tests/PlayMode` |

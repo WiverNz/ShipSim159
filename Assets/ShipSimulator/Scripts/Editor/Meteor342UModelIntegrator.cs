@@ -134,6 +134,7 @@ namespace ShipSimulator.Editor
                 });
                 if (visual.GetComponentsInChildren<Collider>().Length != 0)
                     throw new InvalidOperationException("The render model must not introduce physics colliders.");
+                ShipAudioBuilder.InstallSoundscape(contents);
                 GameObject result = PrefabUtility.SaveAsPrefabAsset(contents, PrefabPath);
                 AssetDatabase.SaveAssets();
                 return result;

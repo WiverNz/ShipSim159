@@ -1,5 +1,14 @@
 # Luch Project 14352: Sources and Data Status
 
+## Sound (Part 15 library), 2026-10-24
+
+This vessel plays the shared sound library (`Art/Source/Audio/README.md`): diesel engine-room and
+exhaust layers driven by shaft speed and fuel, propeller wash, hull water scaled by the hull still
+in the water, and wind. No equipment facts were added to its data. 12ChN15/18 (12 cylinders,
+four-stroke by designation), but engine speed and gearing are not established, and the real craft
+has a waterjet that the model replaces with a propeller surrogate; so its engine firing rhythm,
+starting-air reversal and blade-rate layers stay off rather than guess.
+
 This file separates published particulars from prototype estimates for the skeg air-cushion craft in
 `Luch14352.json`. Projects 1435, 14351 and 14352 belong to one family; over 80 were built between 1983
 and 1999, mostly for small rivers with landing at unimproved banks. Nothing here is validated for

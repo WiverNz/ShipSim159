@@ -130,6 +130,7 @@ namespace ShipSimulator.Editor
                     throw new InvalidOperationException("The render model must not introduce physics colliders.");
                 if (contents.GetComponentsInChildren<Renderer>().Length != 3)
                     throw new InvalidOperationException("Duplicate Luch render hierarchy.");
+                ShipAudioBuilder.InstallSoundscape(contents);
                 GameObject result = PrefabUtility.SaveAsPrefabAsset(contents, PrefabPath);
                 AssetDatabase.SaveAssets();
                 return result;

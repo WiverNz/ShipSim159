@@ -1,6 +1,6 @@
 # Volgo-Don 507B: remaining fidelity work
 
-Created: 2026-10-23. Parts 9-14 complete; Parts 15-17 not started.
+Created: 2026-10-23. Parts 9-15 complete; Parts 16-17 not started.
 
 This continues Parts 1-8 of [IMPROVEMENT_CHECKLIST.md](IMPROVEMENT_CHECKLIST.md).
 The baseline and known discrepancies are recorded in [PART8_REVIEW.md](PART8_REVIEW.md).
@@ -40,7 +40,7 @@ precision. A completed prototype feature is not validated maritime training.
 | 12 | Propulsion, stopping and steering calibration | 9, 11 | Complete, 2026-10-24; audit with no refit, stop and turning published as envelopes; open-hold water and refloating fixes |
 | 13 | Evidence-based machinery rates and detail corrections | 9; reconcile with 12 | Complete, 2026-10-24; rates derived or estimated within archive limits, visual anchors only |
 | 14 | Anchor holding and mooring prototype | 11, 12, 13 | Complete, 2026-10-24; estimated soil, chain and rope values, quasi-static lines, demonstration quay in Gorodets |
-| 15 | Licensed machinery and water audio | 12, 13 | Not started |
+| 15 | Licensed machinery and water audio | 12, 13 | Complete, 2026-10-24; CC0 analogue recordings and original synthesis, no 507B recordings; not listened to by a person |
 | 16 | Improved contact geometry | 10, 11; retest 14 | Not started |
 | 17 | Integrated fidelity acceptance and discrepancy update | 9-16 | Not started |
 
@@ -195,19 +195,28 @@ tackle leaves the motion bit-identical.
 
 ## Part 15: audio production and integration
 
-- [ ] Inventory existing emitters and define engine, shaft/propeller, water,
+- [x] Inventory existing emitters and define engine, shaft/propeller, water,
   hatch, windlass and line/chain events.
-- [ ] Obtain usable recordings or create original assets. Record creator, URL,
+- [x] Obtain usable recordings or create original assets. Record creator, URL,
   license, attribution and edits for each asset; do not extract unlicensed audio.
-- [ ] Drive layers from actual RPM, load, immersion, speed and machinery state;
+- [x] Drive layers from actual RPM, load, immersion, speed and machinery state;
   use cross-fades, distance attenuation and interior/exterior balance.
-- [ ] Pool one-shots and check pause, vessel switching, save/load and reset for
+- [x] Pool one-shots and check pause, vessel switching, save/load and reset for
   duplicate loops or stale sources.
 
 Deliverables: audio assets, license manifest, mixer setup and listening checklist.
 Acceptance: audible state changes track the actual vessel; no clipping, missing
 assets or persistent sounds after stopping/switching. Generic substitute recordings
 must not be described as authentic 507B recordings.
+
+Result (2026-10-24): [PART15_REVIEW.md](PART15_REVIEW.md). `VesselSoundscape` on the 507B with 36
+game files from 19 CC0 Freesound recordings of comparable equipment and original synthesis (engine
+firing rhythm, blade rate, parting snaps), registry in `Audio/AUDIO_SOURCES.md`; layers follow shaft
+rpm, fuel, reversal, thrust, immersion, speed through the water, relative wind, hatch motion and the
+chain and line rates; AudioMixer with bus volumes, wheelhouse filter, mute. EditMode 265/265,
+PlayMode 100/100, `SHIP_AUDIO_RUNTIME|PASS` with ten recorded demonstration segments, menu,
+shakedown and sea trials pass. Subjective quality not yet judged by a listener. Later the same day
+the files became a shared library for all five vessels with a profile each (PART15_REVIEW section 10).
 
 ## Part 16: collision fidelity
 

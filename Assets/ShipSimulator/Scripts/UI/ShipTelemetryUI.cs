@@ -1299,6 +1299,7 @@ namespace ShipSimulator.UI
         private void CreateHorn()
         {
             hornSource = gameObject.AddComponent<AudioSource>();
+            hornSource.outputAudioMixerGroup = ShipSimulator.Audio.AudioMix.Group(ShipSimulator.Audio.AudioBus.Signals);
             hornSource.spatialBlend = 0f;
             hornSource.volume = 0.32f;
             const int sampleRate = 22050;

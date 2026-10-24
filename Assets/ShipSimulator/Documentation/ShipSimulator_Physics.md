@@ -291,6 +291,29 @@ MSC.137(76) envelope, which is a sanity bound, not an acceptance test for a rive
 `RiverWater.shader`, which draws a Kelvin wake, a bow wave, midship drawdown and propeller wash.
 Its amplitudes are estimated visual values; the waves apply no forces.
 
+## Sound coupling
+
+`VesselSoundscape` (every vessel, one implementation, a profile per vessel) reads the simulation once
+a frame, after the physics and the machinery have moved, and writes nothing back; its smoothing cannot
+change a force or a command (a PlayMode test compares trajectories with and without it bit for bit).
+Engine layers follow each `EngineShaft`. The firing rate is engine rpm (shaft rpm times the data's
+`engineRpmPerShaftRpm`) x cylinders x 2 / strokes / 60; its layer plays only when the data
+establishes those facts and the clip was made for that engine. Combustion level follows
+`FuelFraction` (engine torque in the running direction), starting-air braking follows
+`IsAirBraking`, and a change of `Direction` is the restart on air, both only for an engine the data
+names direct-reversing with air start. The physics reverses every vessel's engine the same way, an
+estimated surrogate; for other vessels the real reversing gear is not established, so no reversal
+sound is played. Propeller wash follows each propeller's thrust and the computed disc immersion;
+the blade rate follows shaft rpm and the data's blade count. Water layers follow
+`RelativeWaterVelocity`, scaled by the hull still in the water
+(`SupportModel.ImmersionAtFraction` of the computed support fraction); wind layers the wind
+relative to the ship. Hatch sound follows the
+change of the mechanism state between frames and its phase; chain and line sound follow the rates
+`GroundTackle` stepped (`ChainRateMps`, `LineRateMps`), its commands, stall flag, tension and
+`ChangedAt` events. A restore or reset (`RestoreCount`) restarts the continuous layers from the
+restored state and plays no events for 0.3 s. Pitch is never scaled by simulation speed. Details:
+`Art/Source/VolgoDon507B/PART15_REVIEW.md`.
+
 ## Limitations
 
 - Coefficients are estimates and not trial-calibrated; see the source table for each one.

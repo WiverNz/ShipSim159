@@ -96,6 +96,11 @@ namespace ShipSimulator.Tests
             Assert.That(Time.timeScale, Is.Zero, "Time controls must not release a menu pause.");
             menu.ShowSettings();
             yield return Capture("menu-settings.png");
+            menu.ShowSound();
+            yield return Capture("menu-sound.png");
+            Assert.That(menu.transform.Find("Maritime Menu").GetComponentsInChildren<Slider>().Length, Is.EqualTo(5),
+                "Master, engines, water, wind and machinery.");
+            menu.ShowSettings();
             menu.HandleEscape();
             Assert.That(VoyageMenu.IsOpen, Is.True, "Escape leaves settings before resuming.");
             yield return Capture("menu-pause.png");

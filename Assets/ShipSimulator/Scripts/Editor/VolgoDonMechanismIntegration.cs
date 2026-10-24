@@ -49,9 +49,9 @@ namespace ShipSimulator.Editor
             var lines = root.GetComponent<GroundTackleVisual>() ?? root.AddComponent<GroundTackleVisual>();
             lines.Configure(ChainMaterial(), RopeMaterial());
             ConfigureLayout(root);
-            AddAudioPoints(visual);
             VolgoDonLodIntegration.Install(visual);
             VolgoDonHoldIntegration.Install(root);
+            VolgoDonAudioIntegration.Install(root);
             return true;
         }
 
@@ -204,24 +204,6 @@ namespace ShipSimulator.Editor
                 new Vector3(0, 9.3f, 55), 9, new Vector3(0, 12.4f, -49), 12.1f,
                 new Vector3(0, 5.4f, -68.5f), 5.1f);
             layout.ConfigureNavigationSpill(.08f, .12f);
-        }
-
-        private static void AddAudioPoints(GameObject visual)
-        {
-            var group = new GameObject("AudioPoints");
-            group.transform.SetParent(visual.transform, false);
-            string[] names = { "Engine_Port", "Engine_Starboard", "Water_Bow", "Propeller_Port_Audio",
-                "Propeller_Starboard_Audio", "HatchMachinery_Aft", "HatchMachinery_Fore", "Windlass_Audio" };
-            Vector3[] points = { new(-3, -1, -54), new(3, -1, -54), new(0, 0, 65),
-                new(-3.6f, -2.18f, -64.65f), new(3.6f, -2.18f, -64.65f),
-                new(0, 3, -29), new(0, 3, 43), new(0, 4, 57.5f) };
-            Transform vessel = visual.transform.parent;
-            for (int i = 0; i < names.Length; i++)
-            {
-                var point = new GameObject(names[i]);
-                point.transform.SetParent(group.transform, false);
-                point.transform.position = vessel.TransformPoint(points[i]);
-            }
         }
     }
 }

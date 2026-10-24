@@ -280,10 +280,15 @@
     "reversalRpmFraction": 0.25,
     "reversalDelaySeconds": 8.0,
     "reversalBrakeTorqueFraction": 0.5,
-    "estimatedDynamics": true
+    "estimatedDynamics": true,
+    "cylinders": 6,
+    "strokesPerCycle": 4,
+    "engineRpmPerShaftRpm": 1.0,
+    "directReversingAirStart": true
   },
   "propeller": {
     "count": 2,
+    "bladeCount": 4,
     "diameterM": 1.8,
     "longitudinalPositionsM": [-64.65, -64.65],
     "lateralPositionsM": [-3.6, 3.6],
@@ -486,6 +491,8 @@
     "passReachM": 35.0,
     "passMaxSpeedMps": 0.5,
     "linesPerBollard": 2,
+    "windlassDrive": "electric",
+    "mooringWinchDrive": "electrohydraulic",
     "estimated": true
   },
   "sourceReferences": [

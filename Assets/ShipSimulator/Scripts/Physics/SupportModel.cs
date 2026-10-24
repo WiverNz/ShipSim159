@@ -21,7 +21,9 @@ namespace ShipSimulator.Physics
         }
 
         // How much hull is still working, for hull forces, squat and bank suction.
-        public static float Immersion(VesselSupport support, float speed) => 1f - 0.9f * Fraction(support, speed);
+        public static float Immersion(VesselSupport support, float speed) => ImmersionAtFraction(Fraction(support, speed));
+
+        public static float ImmersionAtFraction(float supportFraction) => 1f - 0.9f * supportFraction;
 
         public static float ResistanceFactor(VesselSupport support, float speed)
         {

@@ -86,6 +86,45 @@ restored, and the panel says so. Part 13 saves restore the chain paid out; the a
 the bottom below the hawse. Holding, rope and soil values are estimates for a prototype, not a
 mooring safety calculation; see `Art/Source/VolgoDon507B/PART14_REVIEW.md`.
 
+## Vessel sound
+
+Every vessel plays the same shared sound library through its own profile, and only for equipment it
+has and facts its data establishes. Everything you hear follows what the simulation computes, never
+a lever position on its own.
+
+All five vessels: their diesels (engine-room and exhaust layers that follow shaft speed and fuel),
+propeller wash with thrust, water along the hull with speed through the water, the bow wave and
+lapping, and wind relative to the vessel. On foils or a cushion the hull water fades as the hull
+leaves the water. The Volgo-Balt, Volgoneft, Meteor and Luch have no firing rhythm, no starting air
+and no blade beat: their engines' cylinders, gearing and propeller blades are not established in
+their data, and sound that pretends to know them would be wrong. They have no hatch, anchor or
+mooring sounds because those systems are not modelled for them. Their navigator views have no
+wheelhouse muffling: their models have no wheelhouse interior.
+
+The 507B, in addition:
+
+- Each main engine separately: the firing rhythm of a six-cylinder four-stroke engine at that
+  engine's rpm (direct drive: rpm / 20 firings per second), louder with the fuel
+  the governor delivers. Moving a telegraph changes the sound only as the shaft speeds up or slows
+  down. Reversing cuts the fuel (the firing stops), starting air hisses while it brakes the shaft,
+  and a blast of starting air marks the restart in the new direction. There is no separate engine
+  start or stop sound: the model has no such operation.
+- Propellers: the blade-passing beat at four times the shaft rate, heard near the stern.
+- Hatches: the hydraulic pump while covers are jacked up or lowered, the cover winches and rolling
+  wheels while they slide or traverse, start and stop sounds, a clunk when the direction changes
+  and a heavy seat at the end positions.
+- Anchors: the chain running out when let go, veered or rendering on the brake; the windlass motor
+  and links clanking over the gypsy while heaving, at the chain's speed; the brake being released
+  and set; the anchor seating in its pocket; the windlass stopping when it stalls.
+- Mooring lines: the winch while hauling or slackening, creaking that grows with the load and how
+  fast it changes, and a snap when a line or a chain parts.
+
+From the NAVIGATOR view the outside is muffled (an estimated wheelhouse filter, not a model of the
+real superstructure); every other view hears the ship from outside.
+
+None of these are recordings of any catalogue vessel or its engines. They are licensed recordings of
+comparable equipment and some original synthesis; see `Art/Source/Audio/AUDIO_SOURCES.md`.
+
 ## Aground
 
 The HUD shows the bottom's holding force in kN next to the grounding warning.
@@ -127,9 +166,18 @@ Choose **Resume voyage**, or press Escape again, to continue at the previous sim
 speed. Escape from a settings or confirmation page returns to the main menu first.
 Menu buttons support mouse and keyboard navigation with arrow keys and Enter.
 
-**Settings** provides master volume, camera orbit sensitivity, graphics quality, VSync
+**Settings** provides sound, camera orbit sensitivity, graphics quality, VSync
 and fullscreen/windowed display. Settings persist between launches. Display mode is
 available in standalone players; the editor controls its own Game view.
+
+**Settings > Sound** holds the master volume, separate levels for engines and propellers,
+water, wind and deck machinery, and **Mute**, which silences everything but keeps the mix.
+A standalone player also falls silent while another window has focus; the editor leaves that
+to its own Mute Audio button. Pause stops all simulation sound and resumes it unchanged. At
+2x and 4x simulation speed the machinery runs faster and the sound follows its state, but the
+pitch is never raised by the speed-up itself. Loading a voyage brings the continuous sounds back
+in from the loaded state over a fraction of a second and does not replay events such as an
+anchor being let go.
 
 Use **Save voyage** in the pause menu to record one passage. Replacing a save, loading
 over an active voyage, starting a new passage and quitting require confirmation.

@@ -21,7 +21,8 @@ left to do. Detailed references: `ShipSimulator_Physics.md` (model), the sources
 | Vessels | 5 playable: cargo ships Volgo-Don 507B, Volgo-Balt 2-95A/R, Volgoneft 1577 and fast passenger craft Meteor 342U (hydrofoil), Luch 14352 (air cushion), chosen in the start menu; KVLCC2 benchmark data for model checks |
 | Passages | `GorodetsTrainingScene` (2.27 km mission, default), `RiverTrainingScene` (familiarisation) and `SerpukhovZatonScene` (2.42 km, fast craft only) |
 | Automated tests | EditMode 197 passed, PlayMode 40 passed (2026-09-20) |
-| Batch runtime checks | Menu smoke (including vessel selection), ship wake, graphics phase one, water weather, buoy graphics, vessel catalogue build, virtual sea trials |
+| Batch runtime checks | Menu smoke (including vessel selection), ship wake, graphics phase one, water weather, buoy graphics, vessel catalogue build, virtual sea trials, 507B ground tackle, 507B ship audio (`ShipAudioRuntimeCheck`, recorded demonstration) |
+| Sound | One shared library and a profile per vessel: all five hear their diesels, propeller wash, hull water (fading on foils or cushion) and wind; the 507B also its firing rhythm, starting air, blade beat, hatches, anchors and mooring (Part 15) |
 
 ## How it looks
 
@@ -202,7 +203,10 @@ written for displacement ships, so their rows are reported without it.
   added-mass solve.
 - **Missing features.** No other traffic or ship-ship interaction, locks, tugs, autopilot, AIS or
   ECDIS. Anchors and mooring lines exist for the 507B only, as an estimated quasi-static prototype
-  (`Art/Source/VolgoDon507B/PART14_REVIEW.md`). Gorodets scenario phase 3 (discharge presets, hold point, meeting
+  (`Art/Source/VolgoDon507B/PART14_REVIEW.md`). Ship sound uses analogue CC0 recordings and
+  synthesis, not recordings of any vessel, not yet judged by a listener; firing, reversal and
+  blade-rate layers are off for the four vessels whose engine facts are not established; the menu
+  pause cuts sound at once (`Art/Source/VolgoDon507B/PART15_REVIEW.md`). Gorodets scenario phase 3 (discharge presets, hold point, meeting
   traffic, fog variant, debrief) is not built.
 - **Input and UI.** Keyboard is polled directly: no rebinding, no gamepad. The HUD uses legacy
   `UnityEngine.UI.Text` and its telegraph controls support at most two engines.

@@ -1,5 +1,13 @@
 # Volgo-Balt Project 2-95A/R: Sources and Data Status
 
+## Sound (Part 15 library), 2026-10-24
+
+This vessel plays the shared sound library (`Art/Source/Audio/README.md`): diesel engine-room and
+exhaust layers driven by shaft speed and fuel, propeller wash, hull water scaled by the hull still
+in the water, and wind. No equipment facts were added to its data. Skoda 6-27.5 A2L: the name
+suggests six cylinders, but the cycle, engine speed and gearing are not established; no blade count;
+so its engine firing rhythm, starting-air reversal and blade-rate layers stay off rather than guess.
+
 This file separates published particulars from prototype estimates for the Volgo-Balt vessel in
 `VolgoBalt295AR.json`. Individual ships differ after conversions; the data describes an unconverted
 2-95A/R in loaded river condition. Nothing here is validated for maritime training.

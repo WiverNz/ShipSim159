@@ -302,6 +302,7 @@ namespace ShipSimulator.UI
                 rudder = ship.RudderCommand, rudderAngle = ship.RudderAngleDeg,
                 engineCommands = ship.CaptureEngineCommands(), shaftRps = ship.CaptureShaftRps(),
                 mechanisms = ship.Mechanisms?.CaptureState(),
+                groundTackle = ship.GroundTackle?.CaptureState() ?? new GroundTackleSave(),
                 loading = ship.CaptureLoading(),
                 bowThrusterCommand = ship.BowThrusterCommand, bowThrusterOutput = ship.BowThrusterOutput,
                 simulationScale = open ? resumeScale : Time.timeScale,
@@ -328,6 +329,7 @@ namespace ShipSimulator.UI
                 throw new InvalidOperationException("The saved vessel is not the one in this scenario.");
             ship.RestoreVoyage(save);
             ship.Mechanisms?.RestoreState(save.mechanisms);
+            ship.GroundTackle?.RestoreState(save.groundTackle, save.mechanisms?.LegacyChainM());
             ship.Grounding?.RestoreState(save.grounding);
             FindAnyObjectByType<GorodetsScenarioController>()?.RestoreState(save.mission);
             FindAnyObjectByType<WeatherController>()?.Configure(save.windDirection, save.windSpeed, save.rain, save.fog);

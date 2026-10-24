@@ -70,6 +70,10 @@ namespace ShipSimulator.UI
 
         public ShipPhysicsController Ship => ship;
         private Text machineryText;
+        private Text tackleText;
+        private int selectedAnchor;
+        private int selectedStation;
+        private MooringPoint selectedShore;
         private Text loadingText;
         private int selectedLoadCompartment;
         private float MaxRudderDeg => ship.Data != null ? ship.Data.rudder.maxAngleDeg : 35f;
@@ -168,11 +172,10 @@ namespace ShipSimulator.UI
             {
                 var machinery = ship.Mechanisms;
                 float left = machinery.HatchSecondsRemaining;
-                machineryText.text = "DECK MACHINERY\n" + machinery.Target + " | " +
-                    (machinery.HatchesMoving ? $"{machinery.Phase} {Mathf.FloorToInt(left / 60f)}:{Mathf.FloorToInt(left % 60f):00}" : "READY") +
-                    $"\nChain P {machinery.ChainOutM(0):0} m  S {machinery.ChainOutM(1):0} m  STERN {machinery.ChainOutM(2):0} m" +
-                    (machinery.AnchorsMoving ? (machinery.AnchorsReleased ? " | LETTING GO" : " | HEAVING") : "");
+                machineryText.text = "DECK MACHINERY\nHATCHES " + machinery.Target + " | " +
+                    (machinery.HatchesMoving ? $"{machinery.Phase} {Mathf.FloorToInt(left / 60f)}:{Mathf.FloorToInt(left % 60f):00}" : "READY");
             }
+            if (tackleText != null && ship.GroundTackle != null) tackleText.text = FormatGroundTackle(ship.GroundTackle);
 
             float speedMps = ship.Body.linearVelocity.magnitude;
             float heading = ship.transform.eulerAngles.y;
@@ -288,6 +291,7 @@ namespace ShipSimulator.UI
             BuildTimeControls();
             BuildWeatherControls();
             BuildMachineryControls();
+            BuildGroundTackleControls();
             BuildLoadingControls();
 
             warningPanel = Panel("Warnings",
@@ -310,7 +314,8 @@ namespace ShipSimulator.UI
                 new Vector2(320f, 12f), new Vector2(-320f, -1016f));
             helpText.text =
                 FormatEngineControls(ship.EngineCount) + "   SPACE  STOP   1-9  CAMERAS\n" +
-                "J/L  BOW THRUSTER   K  OFF   H HORN   M MAP   N DAY/NIGHT   T TIME   F2-F5 WEATHER   RMB ORBIT";
+                "J/L  BOW THRUSTER   K  OFF   H HORN   M MAP   N DAY/NIGHT   T TIME   F2-F5 WEATHER   RMB ORBIT" +
+                (ship.GroundTackle != null ? "\nG ANCHOR  B LET GO/VEER  Y HOLD  U HEAVE   O STATION  P BOLLARD  I PASS LINE  , HAUL  / HOLD  . SLACK  F CAST OFF" : "");
             helpText.gameObject.SetActive(false);
             Text helpPrompt = Label(transform, "F1  CONTROLS", 16, TextAnchor.LowerCenter,
                 new Vector2(820f, 16f), new Vector2(-820f, -1034f));
@@ -439,8 +444,110 @@ namespace ShipSimulator.UI
                 () => ship.SetHatchPosition(HatchPosition.ForwardOpen));
             Button(block, "AFT OPEN", new Vector2(80, -39), new Vector2(145, 30),
                 () => ship.SetHatchPosition(HatchPosition.AftOpen));
-            Button(block, "LET GO / HEAVE UP ANCHORS", new Vector2(0, -74), new Vector2(305, 30),
-                () => ship.SetAnchorsReleased(!ship.Mechanisms.AnchorsReleased));
+        }
+
+        private void BuildGroundTackleControls()
+        {
+            tackleText = null;
+            GroundTackle tackle = ship.GroundTackle;
+            if (tackle == null) return;
+            selectedAnchor = Mathf.Clamp(selectedAnchor, 0, Mathf.Max(0, tackle.AnchorCount - 1));
+            selectedStation = Mathf.Clamp(selectedStation, 0, Mathf.Max(0, tackle.StationCount - 1));
+            RectTransform block = AnchoredPanel("GroundTackleBlock", new Vector2(1f, 0f), new Vector2(1f, 0f),
+                new Vector2(1f, 0f), new Vector2(-22f, 240f), new Vector2(350f, 384f));
+            // Keys: G B Y U for the selected anchor; O P I , / . F for the selected mooring station (F1 lists them).
+            tackleText = Label(block, "ANCHORS", 13, TextAnchor.UpperLeft, new Vector2(14, 118), new Vector2(-10, -8));
+            tackleText.supportRichText = true;
+            Button(block, "ANCHOR", new Vector2(-122, -78), new Vector2(78, 28), CycleAnchor);
+            Button(block, "LET GO", new Vector2(-40, -78), new Vector2(78, 28), () => ChainOrder(ChainCommand.LetGo));
+            Button(block, "HOLD", new Vector2(40, -78), new Vector2(78, 28), () => ChainOrder(ChainCommand.Hold));
+            Button(block, "HEAVE", new Vector2(122, -78), new Vector2(78, 28), () => ChainOrder(ChainCommand.Heave));
+            Button(block, "STATION", new Vector2(-110, -116), new Vector2(102, 28), CycleStation);
+            Button(block, "BOLLARD", new Vector2(0, -116), new Vector2(102, 28), CycleShore);
+            Button(block, "PASS LINE", new Vector2(110, -116), new Vector2(102, 28), PassLine);
+            Button(block, "HAUL", new Vector2(-126, -154), new Vector2(64, 28), () => LineOrder(LineCommand.Haul));
+            Button(block, "HOLD", new Vector2(-56, -154), new Vector2(64, 28), () => LineOrder(LineCommand.Hold));
+            Button(block, "SLACK", new Vector2(14, -154), new Vector2(64, 28), () => LineOrder(LineCommand.Slack));
+            Button(block, "CAST OFF", new Vector2(110, -154), new Vector2(116, 28),
+                () => ship.GroundTackle?.CastOff(selectedStation));
+        }
+
+        private void CycleAnchor()
+        {
+            GroundTackle tackle = ship.GroundTackle;
+            if (tackle != null && tackle.AnchorCount > 0) selectedAnchor = (selectedAnchor + 1) % tackle.AnchorCount;
+        }
+
+        private void ChainOrder(ChainCommand command) => ship.GroundTackle?.SetChainCommand(selectedAnchor, command);
+
+        private void CycleStation()
+        {
+            GroundTackle tackle = ship.GroundTackle;
+            if (tackle == null || tackle.StationCount == 0) return;
+            selectedStation = (selectedStation + 1) % tackle.StationCount;
+            selectedShore = null;
+        }
+
+        // Shore bollards nearest the selected station first; the selection steps outwards and wraps round.
+        private void CycleShore()
+        {
+            GroundTackle tackle = ship.GroundTackle;
+            if (tackle == null) return;
+            IReadOnlyList<MooringPoint> near = tackle.ShorePointsNear(selectedStation);
+            if (near.Count == 0) { selectedShore = null; return; }
+            int index = -1;
+            for (int i = 0; i < near.Count; i++) if (near[i] == selectedShore) index = i;
+            selectedShore = near[(index + 1) % Mathf.Min(near.Count, 6)];
+        }
+
+        private void PassLine()
+        {
+            GroundTackle tackle = ship.GroundTackle;
+            if (tackle == null) return;
+            if (selectedShore == null) CycleShore();
+            tackle.PassLine(selectedStation, selectedShore);
+        }
+
+        private void LineOrder(LineCommand command) => ship.GroundTackle?.SetLineCommand(selectedStation, command);
+
+        // Anchors with their state and chain out, then the selected mooring station and every line made fast.
+        public string FormatGroundTackle(GroundTackle tackle)
+        {
+            var text = new System.Text.StringBuilder("<color=#8AA0AD>ANCHORS</color>\n");
+            for (int i = 0; i < tackle.AnchorCount; i++)
+            {
+                string mark = i == selectedAnchor ? "<color=#F2C14E>>" : " ";
+                string status = tackle.AnchorStatus(i);
+                string colour = status == "DRAGGING" || status == "CHAIN PARTED" || status == "WINDLASS STALLED" ? "#FF6B5B" :
+                    status == "HOLDING" ? "#7BD88F" : "#D8E2E8";
+                text.Append($"{mark} {tackle.AnchorLabel(i),-6}{(i == selectedAnchor ? "</color>" : "")} <color={colour}>{status}</color>" +
+                    $"  {tackle.ChainOutM(i):0} m\n");
+            }
+            text.Append("<color=#8AA0AD>MOORING</color>\n");
+            if (tackle.StationCount > 0)
+            {
+                MooringPoint station = tackle.Station(selectedStation);
+                text.Append($"STATION <color=#F2C14E>{station.Label}</color>");
+                if (selectedShore != null)
+                {
+                    Vector3 gap = selectedShore.LeadWorld - station.LeadWorld;
+                    float reach = new Vector2(gap.x, gap.z).magnitude;
+                    text.Append($"  TO <color=#F2C14E>{selectedShore.Label}</color> {reach:0} m" +
+                        (reach > tackle.Spec.passReachM ? " <color=#FF6B5B>OUT OF REACH</color>" : ""));
+                }
+                text.Append('\n');
+            }
+            for (int k = 0; k < tackle.LineCount; k++)
+            {
+                LineState state = tackle.LineStateAt(k);
+                string colour = state == LineState.Overloaded ? "#FF6B5B" : state == LineState.Taut ? "#7BD88F" : "#D8E2E8";
+                float load = tackle.LineTensionN(k) / tackle.LineBreakingLoadN;
+                LineCommand command = tackle.LineCommandAt(k);
+                text.Append($"{tackle.LineShip(k).Label} > {tackle.LineShore(k).Label} <color={colour}>{state.ToString().ToUpperInvariant()}</color>" +
+                    $" {load * 100:0}%{(command == LineCommand.Hold ? "" : " " + (command == LineCommand.Haul ? "HAULING" : "SLACKING"))}\n");
+            }
+            if (Time.unscaledTime - tackle.NoticeTime < 8f) text.Append($"<color=#F2C14E>{tackle.Notice}</color>");
+            return text.ToString();
         }
 
         private void BuildLoadingControls()
@@ -942,6 +1049,20 @@ namespace ShipSimulator.UI
                     simulationTime?.Cycle();
                     UpdateTimeScaleText();
                 }
+            }
+            if (ship.GroundTackle != null)
+            {
+                if (keyboard.gKey.wasPressedThisFrame) CycleAnchor();
+                if (keyboard.bKey.wasPressedThisFrame) ChainOrder(ChainCommand.LetGo);
+                if (keyboard.yKey.wasPressedThisFrame) ChainOrder(ChainCommand.Hold);
+                if (keyboard.uKey.wasPressedThisFrame) ChainOrder(ChainCommand.Heave);
+                if (keyboard.oKey.wasPressedThisFrame) CycleStation();
+                if (keyboard.pKey.wasPressedThisFrame) CycleShore();
+                if (keyboard.iKey.wasPressedThisFrame) PassLine();
+                if (keyboard.commaKey.wasPressedThisFrame) LineOrder(LineCommand.Haul);
+                if (keyboard.slashKey.wasPressedThisFrame) LineOrder(LineCommand.Hold);
+                if (keyboard.periodKey.wasPressedThisFrame) LineOrder(LineCommand.Slack);
+                if (keyboard.fKey.wasPressedThisFrame) ship.GroundTackle.CastOff(selectedStation);
             }
             if (keyboard.f1Key.wasPressedThisFrame)
             {

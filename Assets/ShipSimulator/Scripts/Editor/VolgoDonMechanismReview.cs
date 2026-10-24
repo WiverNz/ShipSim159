@@ -26,7 +26,6 @@ namespace ShipSimulator.Editor
             public Transition[] transitions;
             public float minimumCoverToCargoM, cycleSecondsSampled;
             public int samples;
-            public float bowChainOnBottomM, sternChainOnBottomM, waterDepthM;
             public string note;
         }
 
@@ -104,26 +103,9 @@ namespace ShipSimulator.Editor
             Shot(camera, rig, cargo, group, full, HatchPosition.HalfOpen, lift + inner + slide * .5f, "inner-sliding-lod1", new Vector3(28, 22, 40), new Vector3(0, 2, 30), 1);
             Shot(camera, rig, cargo, group, full, HatchPosition.HalfOpen, lift + inner + slide * .5f, "inner-sliding-lod2", new Vector3(28, 22, 40), new Vector3(0, 2, 30), 2);
 
-            // Anchors: let go in the scene's water, with bathymetry from the scenario.
+            // Anchor payout and holding run on GroundTackle in Play Mode; GroundTackleRuntimeCheck captures them.
             rig.RestoreState(null);
-            var bathymetry = Object.FindAnyObjectByType<ScenarioBathymetry>();
-            rig.PreviewDepth = position => bathymetry.Sample(position).DepthM;
-            rig.SetAnchorsReleased(true);
-            rig.Advance(3, 0, 0, 0);
-            Render(camera, group, "anchor-letting-go", vessel.transform, new Vector3(16, 3, 82), new Vector3(0, 0, 64), -1);
             Render(camera, group, "windlass", vessel.transform, new Vector3(5, 8.5f, 52), new Vector3(0, 4.3f, 60.6f), -1);
-            rig.Advance(400, 0, 0, 0);
-            report.bowChainOnBottomM = rig.ChainOutM(0);
-            report.sternChainOnBottomM = rig.ChainOutM(2);
-            report.waterDepthM = bathymetry.Sample(vessel.transform.TransformPoint(new Vector3(-2, 0, 66))).DepthM;
-            Render(camera, group, "anchors-on-bottom", vessel.transform, new Vector3(18, -1.5f, 80), new Vector3(0, -3, 64), -1);
-            Render(camera, group, "anchors-on-bottom-lod2", vessel.transform, new Vector3(30, 4, 95), new Vector3(0, -2, 62), 2);
-            Render(camera, group, "stern-anchor", vessel.transform, new Vector3(10, 2, -84), new Vector3(0, -2, -68), -1);
-            rig.SetAnchorsReleased(false);
-            rig.Advance(30, 0, 0, 0);
-            Render(camera, group, "anchors-heaving", vessel.transform, new Vector3(16, 3, 82), new Vector3(0, 0, 64), -1);
-            rig.Advance(600, 0, 0, 0);
-            Render(camera, group, "anchors-stowed", vessel.transform, new Vector3(16, 3, 82), new Vector3(0, 0, 64), -1);
             rig.Advance(0, 0, 0, 35);
             Render(camera, group, "nozzles-starboard-limit", vessel.transform, new Vector3(9, -1, -76), new Vector3(0, -2, -64.65f), -1);
             rig.Advance(0, 0, 0, -35);

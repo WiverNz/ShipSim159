@@ -32,6 +32,45 @@ namespace ShipSimulator.Physics
     [Serializable] public sealed class VesselRestrictedWater { public bool shallowWaterCorrections; public float squatCoefficient; public float bankSamplingWidthBeams; public float bankSuctionCoefficient; public float bankMomentLeverPrime; public bool estimated; }
     [Serializable] public sealed class VesselControlLimits { public float maxLoadedSpeedMps; public float throttleCommandRatePerSecond; public float rudderCommandRatePerSecond; }
     [Serializable] public sealed class VesselCalibration { public float thrustMultiplier; public float resistanceMultiplier; public float rudderMultiplier; public bool trainingValidated; }
+    // One anchor and its chain, in the order of the prefab's GroundTackle hawses.
+    [Serializable] public sealed class VesselAnchor { public string id; public string label; public float massKg; public float chainDiameterMm; public float chainLengthM; public float chainMassPerMetreKg; public float chainAxialStiffnessN; public float chainBreakingLoadN; public float heaveMps; public float nominalPullN; public float stallPullN; }
+    // Winch or capstan working the line from one ship mooring point, matched by MooringPoint id.
+    [Serializable] public sealed class VesselMooringStation { public string id; public float winchPullN; public float haulMps; }
+    // Anchors, chains and mooring lines; a missing section or fitted = false means none. Hawse and mooring point
+    // positions are model-tied and live in the prefab. Holding ratios are anchor holding force over the
+    // anchor's submerged weight on each bottom type.
+    [Serializable]
+    public sealed class VesselGroundTackle
+    {
+        public bool fitted;
+        public VesselAnchor[] anchors;
+        public float letGoMps;
+        public float veerMps;
+        public float renderMaxMps;
+        public float brakeHoldingFraction;
+        public float siltHoldingRatio;
+        public float sandHoldingRatio;
+        public float rockHoldingRatio;
+        public float chainBedFriction;
+        public float initialSetFraction;
+        public float setDistanceM;
+        public float maxUpliftDeg;
+        public float breakoutWeightFactor;
+        public float dampingRatio;
+        public VesselMooringStation[] stations;
+        public float lineBreakingLoadN;
+        public float lineAxialStiffnessN;
+        public float lineMassPerMetreKg;
+        public float lineMinLengthM;
+        public float lineMaxLengthM;
+        public float slackMps;
+        public float stallPullFactor;
+        public float overloadFraction;
+        public float passReachM;
+        public float passMaxSpeedMps;
+        public int linesPerBollard;
+        public bool estimated;
+    }
 
     [Serializable]
     public sealed class VesselData
@@ -53,6 +92,7 @@ namespace ShipSimulator.Physics
         public VesselRestrictedWater restrictedWater;
         public VesselControlLimits controlLimits;
         public VesselCalibration calibration;
+        public VesselGroundTackle groundTackle;
         public string[] sourceReferences;
     }
 }

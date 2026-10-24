@@ -48,7 +48,9 @@ namespace ShipSimulator.Editor
             try
             {
                 int manifestStage = JsonUtility.FromJson<Manifest>(File.ReadAllText(VolgoDonMechanismIntegration.Folder + "/materials.json")).stage;
-                stage = manifestStage >= 13 ? 13 : manifestStage >= 10 ? 10 : 8;
+                // Part 14 changed machinery and ground tackle, not geometry; mechanisms.json carries that stage.
+                int machineryStage = JsonUtility.FromJson<Manifest>(File.ReadAllText(VolgoDonMechanismIntegration.Folder + "/mechanisms.json")).stage;
+                stage = manifestStage >= 13 ? Mathf.Max(13, machineryStage) : manifestStage >= 10 ? 10 : 8;
                 EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 VolgoDonCandidateReview.Review(false);
                 GameObject contents = PrefabUtility.LoadPrefabContents(VolgoDonMechanismIntegration.PrefabPath);

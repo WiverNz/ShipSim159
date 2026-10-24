@@ -37,6 +37,7 @@ namespace ShipSimulator.Persistence
         public MissionSave mission = new MissionSave();
         public GroundingSave grounding = new GroundingSave();
         public MechanismSave mechanisms;
+        public GroundTackleSave groundTackle = new GroundTackleSave();
         public ShipSimulator.Physics.LoadingState loading;
 
         public string VesselIdOrDefault =>
@@ -48,6 +49,7 @@ namespace ShipSimulator.Persistence
         public void Validate()
         {
             mechanisms?.Validate();
+            groundTackle?.Validate();
             if (loading != null && loading.present) loading.Validate();
             if (version != 1) throw new InvalidDataException("This save uses an unsupported version.");
             if (!IsVoyageScene(scene)) throw new InvalidDataException("The saved scenario is unavailable.");

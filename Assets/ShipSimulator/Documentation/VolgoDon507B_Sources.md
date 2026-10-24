@@ -1,5 +1,18 @@
 # Volgo-Don Project 507B: Sources and Data Status
 
+## Part 14 ground tackle, 2026-10-24
+
+See `Art/Source/VolgoDon507B/PART14_REVIEW.md` for the full table; the values live in the
+`groundTackle` block of `Data/Vessels/VolgoDon507B.json`. Sourced from archive p7-p8: Hall anchors
+2 x 1750 kg bow and 1250 kg stern; chains 43 mm x 150 m and 37 mm x 75 m; windlass BE16-4 at
+10 m/min and stern capstan ShER-1.5/3/2-1 at 18 m/min; two LEGShA2-1 mooring winches of 2.5 tf and
+the capstan's 3 tf. Estimated: chain mass and stiffness (stud-less), grade 1 breaking load, brake
+holding at 45 % of it, gypsy pulls from the chain size, Hall anchor holding ratios 2 / 3 / 1 x
+submerged weight on silt / sand / rock, chain friction, setting, uplift, damping, every mooring rope
+property, haul rates other than the capstan's, and the Gorodets demonstration quay and its dredged
+pocket. Bollard and lead positions are derived from the model mesh. None of these is a measured
+holding power or line load of a real ship.
+
 ## Part 13 machinery rates, 2026-10-24
 
 See `Art/Source/VolgoDon507B/PART13_REVIEW.md`; the values live in the `operating_rates`
@@ -9,8 +22,8 @@ horizontal 7 t jacks at 100 kgf/cm2 (70 cm2 derived), pump 1.5 m3/h, two LE-61 w
 estimated with the ranges recorded there. p5: G60 reversible at 375 rpm, the only gearbox
 drives the shaft generator, so the 1:1 shaft ratio is derived. p7: steering 35 to 35 deg in
 at most 30 s (model 28 s, estimated rate). p8: chains 43 mm x 150 m bow, 37 mm x 75 m stern;
-windlass BE16-4 10 m/min, stern capstan 18 m/min. Let-go speed 1 m/s and 1.72 m of chain per
-gypsy turn are estimates. None of these is a measured operating time of a specific ship.
+windlass BE16-4 10 m/min, stern capstan 18 m/min (moved to the vessel JSON in Part 14). Let-go
+speed 1 m/s and 1.72 m of chain per gypsy turn are estimates. None of these is a measured operating time of a specific ship.
 
 ## Part 12 propulsion, contact and hold data, 2026-10-24
 

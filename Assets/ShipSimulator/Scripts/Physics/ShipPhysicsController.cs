@@ -35,6 +35,7 @@ namespace ShipSimulator.Physics
         private CurrentFieldProvider currentField;
         private ScenarioBathymetry bathymetry;
         private GroundingController grounding;
+        private GroundTackle tackle;
         private Func<Vector3, float> depthProvider;
         private float externalX;
         private float externalY;
@@ -107,7 +108,16 @@ namespace ShipSimulator.Physics
         public ShipSimulator.Visuals.VesselMechanisms Mechanisms => GetComponent<ShipSimulator.Visuals.VesselMechanisms>();
 
         public void SetHatchPosition(ShipSimulator.Visuals.HatchPosition target) => Mechanisms?.SetHatches(target);
-        public void SetAnchorsReleased(bool released) => Mechanisms?.SetAnchorsReleased(released);
+        public GroundTackle GroundTackle => tackle != null && tackle.IsFitted ? tackle : null;
+
+        // Every anchor at once: let go, or heave up.
+        public void SetAnchorsReleased(bool released)
+        {
+            GroundTackle anchors = GroundTackle;
+            if (anchors == null) return;
+            for (int i = 0; i < anchors.AnchorCount; i++)
+                anchors.SetChainCommand(i, released ? ChainCommand.LetGo : ChainCommand.Heave);
+        }
 
         private void Awake()
         {
@@ -118,6 +128,7 @@ namespace ShipSimulator.Physics
             currentField = FindAnyObjectByType<CurrentFieldProvider>();
             bathymetry = FindAnyObjectByType<ScenarioBathymetry>();
             grounding = GetComponent<GroundingController>();
+            tackle = GetComponent<GroundTackle>();
             if (data == null)
             {
                 enabled = false;
@@ -183,6 +194,7 @@ namespace ShipSimulator.Physics
             if (model == null) return;
             StepLoading(dt);
             if (grounding != null && grounding.isActiveAndEnabled) grounding.Step(dt);
+            if (tackle != null && tackle.isActiveAndEnabled) tackle.Step(dt);
             Vector3 forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
             forward = forward.sqrMagnitude > 1e-6f ? forward.normalized : Vector3.forward;
             Vector3 right = Vector3.Cross(Vector3.up, forward);
@@ -246,6 +258,14 @@ namespace ShipSimulator.Physics
         {
             if (depthProvider != null) return depthProvider(worldPosition);
             return bathymetry != null ? bathymetry.Sample(worldPosition).DepthM : FairwayModel.DepthAt(worldPosition);
+        }
+
+        // Depth and bottom type below a point; a depth provider set for tests reports sand.
+        public BathymetrySample SampleBottom(Vector3 worldPosition)
+        {
+            if (depthProvider != null) return new BathymetrySample(depthProvider(worldPosition), RiverBottomType.Sand);
+            return bathymetry != null ? bathymetry.Sample(worldPosition)
+                : new BathymetrySample(FairwayModel.DepthAt(worldPosition), RiverBottomType.Sand);
         }
 
         public void SetDepthProvider(Func<Vector3, float> provider)
@@ -332,6 +352,7 @@ namespace ShipSimulator.Physics
             model?.RestoreActuators(0f, null);
             model?.BowThruster?.Restore(0f);
             Mechanisms?.RestoreState(null);
+            if (tackle != null) tackle.ResetState();
         }
 
         public void RestoreVoyage(ShipSimulator.Persistence.VoyageSave save)

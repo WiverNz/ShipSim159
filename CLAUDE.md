@@ -181,6 +181,9 @@ an automated complement to manual handling checks. Run it after changing a vesse
 the cameras or the wake; it does not establish subjective handling feel. The check uses a fixed
 1/60 s capture step and simulation-time sailing limit. `RunFastCrafts` runs just Meteor and Luch.
 All vessels are reported even if one fails; failures include nearby collider diagnostics.
+`GroundTackleRuntimeCheck.Run`, launched the same way, moors the 507B at the Gorodets demonstration
+quay, anchors, drags and heaves her, captures `Art/Source/VolgoDon507B/Previews/part14-*.png` and
+ends with `GROUND_TACKLE_RUNTIME|PASS`.
 `GraphicsPhaseTwoCheck.RunBefore` / `RunAfter` capture five views in five weather conditions at
 1920x1080 and write frame timing CSVs and temporal crops under `Logs/GraphicsPhaseTwo/`.
 They refuse to overwrite an existing before/after directory. `RunSkyProbe` checks the live sky
@@ -212,6 +215,7 @@ One thing about results that has already cost time here:
 | `Apply Navigation And Collision Upgrade` | Applies navigation aids and the collision hull setup |
 | `Arrange Navigation Buoys` | Places the fairway buoy line |
 | `Build Gorodets Scenario` | Regenerates `GorodetsTrainingScene` |
+| `Install Gorodets Demonstration Berth` | Adds or rebuilds only the estimated mooring quay in `GorodetsTrainingScene` |
 | `Build Serpukhov Zaton Scenario` | Regenerates `SerpukhovZatonScene` from `Data/Scenarios/SerpukhovZaton.json` |
 | `Render Serpukhov Zaton Preview` | Renders stills of the Serpukhov scene into `Logs/Serpukhov/` |
 | `Render Visual Preview` | Renders a still of the scene |

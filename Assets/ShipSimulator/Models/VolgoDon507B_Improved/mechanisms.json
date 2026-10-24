@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "stage": 13,
+  "stage": 14,
   "source_axes": "+X starboard, +Y bow, +Z up",
   "units": "metres, degrees",
   "reference": "doc257.pdf pp.4,7,8",
@@ -925,7 +925,7 @@
     "JackRods_AftOuter": "scale Z = 1 + JackLift_AftOuter lift / 0.31",
     "JackRods_ForeOuter": "scale Z = 1 + JackLift_ForeOuter lift / 0.31"
   },
-  "anchor_limit": "Part 13: visual payout to the bottom within the archive chain lengths; no seabed holding, tension or dragging force (Part 14)",
+  "anchor_limit": "Part 14: GroundTackle owns chain payout, seabed contact, holding and dragging; the clip only unseats the anchors from their pockets",
   "hydraulics_limit": "Twelve inherited jack pedestals; archive lists sixteen vertical and four horizontal jacks. Unlocated missing units are not invented.",
   "fps": 24,
   "frame_start": 1,
@@ -1022,39 +1022,6 @@
       }
     },
     "anchor": {
-      "bow_chain_limit_m": {
-        "value": 150,
-        "kind": "S",
-        "source": "p8 43 mm x 150 m each"
-      },
-      "stern_chain_limit_m": {
-        "value": 75,
-        "kind": "S",
-        "source": "p8 37 mm x 75 m"
-      },
-      "bow_heave_m_per_min": {
-        "value": 10,
-        "kind": "S",
-        "source": "p8 windlass BE16-4, one anchor from 80 m depth; first 507B ships had BER-5-2, rate not given",
-        "range": [
-          10,
-          10
-        ]
-      },
-      "stern_heave_m_per_min": {
-        "value": 18,
-        "kind": "S",
-        "source": "p8 capstan ShER-1.5/3/2-1 on project 507B ships, from 40 m depth"
-      },
-      "let_go_mps": {
-        "value": 1.0,
-        "kind": "E",
-        "source": "free fall under the windlass band brake, remote release p8; no rate given",
-        "range": [
-          0.5,
-          2.0
-        ]
-      },
       "chain_per_gypsy_turn_m": {
         "value": 1.72,
         "kind": "E",
@@ -1063,7 +1030,8 @@
           1.4,
           2.0
         ]
-      }
+      },
+      "note": "Part 14 moved chain lengths, heave and let-go rates to Data/Vessels/VolgoDon507B.json groundTackle, the single source GroundTackle reads; only the visual gypsy ratio stays here"
     },
     "steering": {
       "hard_over_s": {
@@ -1099,5 +1067,167 @@
         "source": "p5 gives port/starboard pitch 1.52/1.47 m, not the rotation sense"
       }
     }
-  }
+  },
+  "mooring_stations": [
+    {
+      "id": "bow-head-starboard",
+      "label": "BOW HEAD S",
+      "order": 0,
+      "bollard": [
+        3.35,
+        63.55,
+        4.35
+      ],
+      "lead": [
+        4.7,
+        63.9,
+        4.75
+      ],
+      "source": "Bollard and lead positions read from the VD507B_detali and hull meshes (Part 14, Logs/Part14/top-*.png); twin-post bollards (kneht) on the forecastle, abreast the hold ends and at the stern; leads at the bulwark rail beside each bollard, positions D from the mesh, line leads E"
+    },
+    {
+      "id": "bow-head-port",
+      "label": "BOW HEAD P",
+      "order": 1,
+      "bollard": [
+        -3.35,
+        63.55,
+        4.35
+      ],
+      "lead": [
+        -4.7,
+        63.9,
+        4.75
+      ],
+      "source": "Bollard and lead positions read from the VD507B_detali and hull meshes (Part 14, Logs/Part14/top-*.png); twin-post bollards (kneht) on the forecastle, abreast the hold ends and at the stern; leads at the bulwark rail beside each bollard, positions D from the mesh, line leads E"
+    },
+    {
+      "id": "bow-breast-starboard",
+      "label": "BOW BREAST S",
+      "order": 2,
+      "bollard": [
+        5.82,
+        57.99,
+        3.55
+      ],
+      "lead": [
+        6.85,
+        57.99,
+        4.45
+      ],
+      "source": "Bollard and lead positions read from the VD507B_detali and hull meshes (Part 14, Logs/Part14/top-*.png); twin-post bollards (kneht) on the forecastle, abreast the hold ends and at the stern; leads at the bulwark rail beside each bollard, positions D from the mesh, line leads E"
+    },
+    {
+      "id": "bow-breast-port",
+      "label": "BOW BREAST P",
+      "order": 3,
+      "bollard": [
+        -5.82,
+        57.99,
+        3.55
+      ],
+      "lead": [
+        -6.85,
+        57.99,
+        4.45
+      ],
+      "source": "Bollard and lead positions read from the VD507B_detali and hull meshes (Part 14, Logs/Part14/top-*.png); twin-post bollards (kneht) on the forecastle, abreast the hold ends and at the stern; leads at the bulwark rail beside each bollard, positions D from the mesh, line leads E"
+    },
+    {
+      "id": "fwd-spring-starboard",
+      "label": "FWD SPRING S",
+      "order": 4,
+      "bollard": [
+        7.88,
+        31.83,
+        2.45
+      ],
+      "lead": [
+        8.25,
+        31.83,
+        3.0
+      ],
+      "source": "Bollard and lead positions read from the VD507B_detali and hull meshes (Part 14, Logs/Part14/top-*.png); twin-post bollards (kneht) on the forecastle, abreast the hold ends and at the stern; leads at the bulwark rail beside each bollard, positions D from the mesh, line leads E"
+    },
+    {
+      "id": "fwd-spring-port",
+      "label": "FWD SPRING P",
+      "order": 5,
+      "bollard": [
+        -7.88,
+        31.83,
+        2.45
+      ],
+      "lead": [
+        -8.25,
+        31.83,
+        3.0
+      ],
+      "source": "Bollard and lead positions read from the VD507B_detali and hull meshes (Part 14, Logs/Part14/top-*.png); twin-post bollards (kneht) on the forecastle, abreast the hold ends and at the stern; leads at the bulwark rail beside each bollard, positions D from the mesh, line leads E"
+    },
+    {
+      "id": "aft-spring-starboard",
+      "label": "AFT SPRING S",
+      "order": 6,
+      "bollard": [
+        7.88,
+        -36.22,
+        2.45
+      ],
+      "lead": [
+        8.25,
+        -36.22,
+        3.0
+      ],
+      "source": "Bollard and lead positions read from the VD507B_detali and hull meshes (Part 14, Logs/Part14/top-*.png); twin-post bollards (kneht) on the forecastle, abreast the hold ends and at the stern; leads at the bulwark rail beside each bollard, positions D from the mesh, line leads E"
+    },
+    {
+      "id": "aft-spring-port",
+      "label": "AFT SPRING P",
+      "order": 7,
+      "bollard": [
+        -7.88,
+        -36.22,
+        2.45
+      ],
+      "lead": [
+        -8.25,
+        -36.22,
+        3.0
+      ],
+      "source": "Bollard and lead positions read from the VD507B_detali and hull meshes (Part 14, Logs/Part14/top-*.png); twin-post bollards (kneht) on the forecastle, abreast the hold ends and at the stern; leads at the bulwark rail beside each bollard, positions D from the mesh, line leads E"
+    },
+    {
+      "id": "stern-starboard",
+      "label": "STERN S",
+      "order": 8,
+      "bollard": [
+        2.68,
+        -66.85,
+        2.45
+      ],
+      "lead": [
+        2.68,
+        -68.4,
+        2.95
+      ],
+      "source": "Bollard and lead positions read from the VD507B_detali and hull meshes (Part 14, Logs/Part14/top-*.png); twin-post bollards (kneht) on the forecastle, abreast the hold ends and at the stern; leads at the bulwark rail beside each bollard, positions D from the mesh, line leads E"
+    },
+    {
+      "id": "stern-port",
+      "label": "STERN P",
+      "order": 9,
+      "bollard": [
+        -2.68,
+        -66.85,
+        2.45
+      ],
+      "lead": [
+        -2.68,
+        -68.4,
+        2.95
+      ],
+      "source": "Bollard and lead positions read from the VD507B_detali and hull meshes (Part 14, Logs/Part14/top-*.png); twin-post bollards (kneht) on the forecastle, abreast the hold ends and at the stern; leads at the bulwark rail beside each bollard, positions D from the mesh, line leads E"
+    }
+  ]
 }

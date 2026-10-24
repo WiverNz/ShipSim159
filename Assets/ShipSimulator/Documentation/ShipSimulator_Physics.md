@@ -252,6 +252,31 @@ thrust, (1 - t) T, shown on the HUD. Details and measured cases:
 For a vessel with a loading model the propeller immersion follows the actual hub depth each step
 (trim, heel, heave, stern squat); the pure simulator keeps the still-water value.
 
+## Anchors and mooring lines
+
+`GroundTackle` (507B only; vessel JSON `groundTackle`, hawses and `MooringPoint` leads in the
+prefab) is stepped inside `Simulate` after grounding, so pause and simulation speed reach it through
+the physics step only. Each chain and line is a quasi-static elastic catenary (`Catenary`): the
+horizontal tension is solved from unstretched length, span and height, through slack (hanging down,
+the rest on the bed), touchdown with a grounded part, fully suspended, and elastic stretch. A line
+never pushes. Damping of 0.1 of critical on the current horizontal stiffness acts on the rate the
+span opens at the attachment point's velocity and vanishes as the line slackens.
+
+The horizontal force enters the manoeuvring solve through `AddExternalForce` at the hawse or lead;
+the vertical force (line pull, less the anchor and chain weight already in the lightship mass) and
+the heel and trim moment of the lead's height above half draft act on the Rigidbody. The step reads
+points from the Rigidbody pose, which is current right after a restore when the transform is not.
+
+An anchor lands where the bathymetry says the bottom is; with no depth it keeps hanging. It holds
+up to ratio x its submerged weight (estimated per bottom type), set over the first metres of drag
+and lost as the chain lifts the shank; chain lying on the bed adds friction. Above that it slides
+towards the ship just far enough to carry its limit, so the vessel is never pinned and the work goes
+into the soil. The windlass brake renders above 45 % of the chain breaking load; the bitter end
+parts above the breaking load. Heaving runs at the windlass rate, slowing to a stall at its overload
+pull, and breaks the anchor out when the chain is short. Mooring lines haul up to the winch's stall
+pull and part at their breaking load. All holding, rope and soil values are estimates; this is not a
+mooring or anchoring safety calculation. Details: `Art/Source/VolgoDon507B/PART14_REVIEW.md`.
+
 ## Virtual sea trials
 
 `Ship Simulator > Run Virtual Sea Trials` (or `VirtualSeaTrials.Run` in batch) runs speed steps,
@@ -273,4 +298,5 @@ Its amplitudes are estimated visual values; the waves apply no forces.
   not from a seakeeping model. No wave loads.
 - Quadratic propeller curves instead of four-quadrant data; no cavitation or ventilation.
 - Bank suction model is estimated, not Lataire's formulation.
-- Not implemented (phase 7): ship-ship interaction, locks, mooring lines and anchors.
+- Not implemented (phase 7): ship-ship interaction and locks. Anchors and mooring lines exist for
+  the 507B only, as a quasi-static prototype without line hydrodynamics or fender springs.

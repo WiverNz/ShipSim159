@@ -367,6 +367,127 @@
     "rudderMultiplier": 1.0,
     "trainingValidated": false
   },
+  "groundTackle": {
+    "fitted": true,
+    "anchors": [
+      {
+        "id": "port",
+        "label": "PORT",
+        "massKg": 1750,
+        "chainDiameterMm": 43,
+        "chainLengthM": 150,
+        "chainMassPerMetreKg": 36.8,
+        "chainAxialStiffnessN": 158000000.0,
+        "chainBreakingLoadN": 1027000.0,
+        "heaveMps": 0.1667,
+        "nominalPullN": 69300,
+        "stallPullN": 104000
+      },
+      {
+        "id": "starboard",
+        "label": "STBD",
+        "massKg": 1750,
+        "chainDiameterMm": 43,
+        "chainLengthM": 150,
+        "chainMassPerMetreKg": 36.8,
+        "chainAxialStiffnessN": 158000000.0,
+        "chainBreakingLoadN": 1027000.0,
+        "heaveMps": 0.1667,
+        "nominalPullN": 69300,
+        "stallPullN": 104000
+      },
+      {
+        "id": "stern",
+        "label": "STERN",
+        "massKg": 1250,
+        "chainDiameterMm": 37,
+        "chainLengthM": 75,
+        "chainMassPerMetreKg": 27.2,
+        "chainAxialStiffnessN": 117000000.0,
+        "chainBreakingLoadN": 770000.0,
+        "heaveMps": 0.3,
+        "nominalPullN": 51300,
+        "stallPullN": 77000
+      }
+    ],
+    "letGoMps": 1.0,
+    "veerMps": 0.5,
+    "renderMaxMps": 2.0,
+    "brakeHoldingFraction": 0.45,
+    "siltHoldingRatio": 2.0,
+    "sandHoldingRatio": 3.0,
+    "rockHoldingRatio": 1.0,
+    "chainBedFriction": 0.7,
+    "initialSetFraction": 0.3,
+    "setDistanceM": 4.0,
+    "maxUpliftDeg": 10.0,
+    "breakoutWeightFactor": 1.5,
+    "dampingRatio": 0.1,
+    "stations": [
+      {
+        "id": "bow-head-starboard",
+        "winchPullN": 24525,
+        "haulMps": 0.25
+      },
+      {
+        "id": "bow-head-port",
+        "winchPullN": 24525,
+        "haulMps": 0.25
+      },
+      {
+        "id": "bow-breast-starboard",
+        "winchPullN": 24525,
+        "haulMps": 0.25
+      },
+      {
+        "id": "bow-breast-port",
+        "winchPullN": 24525,
+        "haulMps": 0.25
+      },
+      {
+        "id": "fwd-spring-starboard",
+        "winchPullN": 24525,
+        "haulMps": 0.25
+      },
+      {
+        "id": "fwd-spring-port",
+        "winchPullN": 24525,
+        "haulMps": 0.25
+      },
+      {
+        "id": "aft-spring-starboard",
+        "winchPullN": 24525,
+        "haulMps": 0.25
+      },
+      {
+        "id": "aft-spring-port",
+        "winchPullN": 24525,
+        "haulMps": 0.25
+      },
+      {
+        "id": "stern-starboard",
+        "winchPullN": 29430,
+        "haulMps": 0.3
+      },
+      {
+        "id": "stern-port",
+        "winchPullN": 29430,
+        "haulMps": 0.3
+      }
+    ],
+    "lineBreakingLoadN": 200000,
+    "lineAxialStiffnessN": 1300000,
+    "lineMassPerMetreKg": 1.0,
+    "lineMinLengthM": 2.0,
+    "lineMaxLengthM": 120.0,
+    "slackMps": 0.5,
+    "stallPullFactor": 1.5,
+    "overloadFraction": 0.5,
+    "passReachM": 35.0,
+    "passMaxSpeedMps": 0.5,
+    "linesPerBollard": 2,
+    "estimated": true
+  },
   "sourceReferences": [
     "https://russrivership.ru/public/files/doc257.pdf",
     "https://www.wartsila.com/encyclopedia/term/steering-nozzle",

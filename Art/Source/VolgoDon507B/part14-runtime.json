@@ -1,0 +1,35 @@
+{
+    "lines": [
+        "bow-head-starboard > gorodets-berth-b7: 8.1 m, 36.4 kN, Taut",
+        "bow-breast-starboard > gorodets-berth-b6: 5.8 m, 38.7 kN, Taut",
+        "fwd-spring-starboard > gorodets-berth-b4: 26.2 m, 40.9 kN, Taut",
+        "aft-spring-starboard > gorodets-berth-b3: 16.7 m, 36.3 kN, Taut",
+        "stern-starboard > gorodets-berth-b1: 5.5 m, 58.9 kN, Taut"
+    ],
+    "lineRenderers": [
+        "MooringLine_0: 19 points, (48.00, 1.70, 76.00) to (43.25, 4.37, 68.67), width 0.08, MooringRope, visible False",
+        "MooringLine_2: 19 points, (48.00, 1.70, 58.00) to (45.72, 3.57, 63.11), width 0.08, MooringRope, visible False",
+        "MooringLine_4: 19 points, (48.00, 1.70, 10.00) to (47.78, 2.47, 36.95), width 0.08, MooringRope, visible False",
+        "MooringLine_6: 19 points, (48.00, 1.70, -14.00) to (47.78, 2.47, -31.10), width 0.08, MooringRope, visible False",
+        "MooringLine_8: 19 points, (48.00, 1.70, -62.00) to (42.58, 2.48, -61.73), width 0.08, MooringRope, visible False"
+    ],
+    "alongsideDriftM": 0.005993350874632597,
+    "maxLineLoadFraction": 0.2955527603626251,
+    "drawMicroseconds": 7.8333001136779785,
+    "drawBytesPer1000": 0.0,
+    "anchorStatusAtAnchor": "HOLDING",
+    "anchorStatusUnderEngines": "DRAGGING",
+    "anchorStatusHeaving": "HEAVING",
+    "chainAtAnchorM": 30.010530471801758,
+    "chainTensionAtAnchorN": 11013.095703125,
+    "anchorDragM": 32.06396484375,
+    "depthAtAnchorM": 5.302011013031006,
+    "maxChainTensionN": 32164.814453125,
+    "maxChainTensionUnderEnginesN": 32373.919921875,
+    "groundingAtAnchor": "Shallow",
+    "groundingUnderEngines": "Shallow",
+    "linesHeld": true,
+    "anchorHeld": true,
+    "dragged": true,
+    "heaving": true
+}

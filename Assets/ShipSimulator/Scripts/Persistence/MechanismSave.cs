@@ -17,6 +17,16 @@ namespace ShipSimulator.Persistence
         // which restore it from anchorRelease.
         public float[] chainOutM;
 
+        // Chain paid out per anchor in a save from before ground tackle, or null when it has none.
+        public float[] LegacyChainM()
+        {
+            if (chainOutM != null && chainOutM.Length == 3) return (float[])chainOutM.Clone();
+            if (anchorRelease <= 0) return null;
+            // Saves from before Part 13 kept only the fraction of the 0.35 m unseat.
+            float unseat = anchorRelease * 0.35f;
+            return new[] { unseat, unseat, unseat };
+        }
+
         public void Validate()
         {
             if (hatchTarget < 0 || hatchTarget > 3 || !Range(opening, 0, 1) ||

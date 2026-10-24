@@ -1,6 +1,15 @@
 # Volgo-Don 507B editable source
 
-## Current milestone: Part 13 machinery timing and fittings
+## Current milestone: Part 14 anchors and mooring forces
+
+Part 14 is complete. Read [PART14_REVIEW.md](PART14_REVIEW.md). No geometry changed. Chain
+lengths, heave and let-go rates moved from `mechanisms.json` to the vessel JSON `groundTackle`
+block, which `GroundTackle` reads; `mechanisms.json` gained `mooring_stations` (bollards and leads
+read from the mesh), which the integrator turns into `MooringPoint` children. The quality gate takes
+its report prefix from the `mechanisms.json` stage, so its Part 14 run wrote `part14-*` files and
+left the Part 13 reports alone.
+
+## Part 13 machinery timing and fittings
 
 Part 13 is complete. Read [PART13_REVIEW.md](PART13_REVIEW.md). Hatches, anchors and steering
 run at real-time rates derived from the archive (p4, p7, p8) in the `operating_rates` block of

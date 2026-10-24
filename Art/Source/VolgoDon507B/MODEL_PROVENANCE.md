@@ -1,5 +1,13 @@
 # Volgo-Don 507B Model Provenance
 
+## Part 14 mooring points, 2026-10-24
+
+No mesh, UV, material or animation changed. Bollard and lead positions in `mechanisms.json`
+`mooring_stations` were read from the existing `VD507B_detali` and hull meshes through the registered
+Blender MCP (read-only, `Previews/part14-source-*.png`); the integrator adds empty `MooringPoint`
+objects there. The rope material is a plain generated colour. The Gorodets demonstration quay is
+built from Unity primitives and project materials. See [PART14_REVIEW.md](PART14_REVIEW.md).
+
 ## Part 13 machinery partition, 2026-10-24
 
 `part13_windlass.py` moved the existing windlass gypsy faces (hub and outboard cheek, 80 per

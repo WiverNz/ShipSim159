@@ -40,11 +40,51 @@ Simulation speed shortens the wait; pause stops it. A new command reverses an op
 from wherever it is; switching holds always passes through the half-open stack. Cargo
 transfer needs the hatches stationary at HALF OPEN.
 
-LET GO / HEAVE UP ANCHORS lets go all three anchors until each rests on the bottom (chain
-150 m forward, 75 m aft at most) or heaves them in at 10 m/min forward and 18 m/min aft.
-The panel shows the chain out per anchor. The anchors are visual only: they do not hold the
-ship until the anchoring part is implemented. Rates are estimates within archive limits; see
-`Art/Source/VolgoDon507B/PART13_REVIEW.md`.
+Anchors and mooring lines have their own panel, below.
+
+## Volgo-Don anchors and mooring lines
+
+The ANCHORS & MOORING panel on the right, under the radar, lists each anchor with its state and
+chain out, the selected mooring station, and every line made fast with its state and its load as a
+percentage of the line's breaking load. Keys (also under F1):
+
+| Key | Button | Action |
+|---|---|---|
+| G | ANCHOR | Select port, starboard or stern anchor |
+| B | LET GO | Stowed: let go; the chain runs out freely until the anchor is on the bottom, then the brake is set. On the bottom: veer (pay out on the brake at 0.5 m/s) |
+| Y | HOLD | Set the brake (stops veering or heaving) |
+| U | HEAVE | Heave in at 10 m/min (bow) or 18 m/min (stern); slows above the windlass's nominal pull and stalls at its overload pull |
+| O | STATION | Select a ship mooring station: bow head, bow breast, forward spring, aft spring, stern, starboard (S) or port (P) |
+| P | BOLLARD | Select a shore bollard, nearest to the station first |
+| I | PASS LINE | Pass a line from the station to the bollard: within 35 m, with less than 0.5 m/s way on |
+| , | HAUL | Haul the line in at the winch rate, up to the winch's stall pull |
+| / | HOLD | Hold the line at its length |
+| . | SLACK | Pay the line out at 0.5 m/s |
+| F | CAST OFF | Let the line go |
+
+Anchor states: STOWED, LETTING GO, HANGING, NO BOTTOM DATA (no depth there: the anchor is not
+landed on an invented bottom), ON BOTTOM, SLACK (on the bottom, chain carrying next to nothing),
+SETTING (dragging over the first metres while it digs in), HOLDING, DRAGGING, VEERING, HEAVING,
+HEAVING, AWEIGH, WINDLASS STALLED and CHAIN PARTED. Line states: SLACK, TAUT, OVERLOADED (above half
+the breaking load) and PARTED, announced with a notice in the panel.
+
+Practice: let go, let her drift back, then veer to three to five times the depth before relying on
+the anchor; slow astern helps it set. Chain only to the bottom lifts the shank and drags. A 1750 kg
+anchor holds about 45 kN in sand in this model, so engines or a strong beam wind will drag it.
+Heaving brings the ship up to the anchor, or the anchor home if the ship is heavier to move, then
+breaks it out. Mooring: stop alongside, pass lines to the nearest bollards, haul them taut, then
+hold. Hauling cannot exceed the winch pull, but the ship's own momentum can part a short line.
+
+Demonstration: in the Gorodets passage there is a 150 m demonstration quay on the starboard bank
+just ahead of the start, bollards B1 to B7, with a dredged pocket alongside. It is an estimated
+practice berth, not a surveyed Gorodets structure, and it lies outside the buoyed channel, so the
+mission reports OUTSIDE FAIRWAY there. The straight above it is a good place to practise anchoring.
+
+Saves keep each anchor's state, position on the bottom, chain out and current command, and every
+line's bollards, length and command. A line to a bollard that is not in the loaded scenario is not
+restored, and the panel says so. Part 13 saves restore the chain paid out; the anchors settle on
+the bottom below the hawse. Holding, rope and soil values are estimates for a prototype, not a
+mooring safety calculation; see `Art/Source/VolgoDon507B/PART14_REVIEW.md`.
 
 ## Aground
 
@@ -97,8 +137,8 @@ There is no autosave: save before leaving if you want to keep your progress.
 
 The save restores the scenario, the vessel type, its position and rotation, linear/angular velocity,
 commanded and actual engine/rudder state, camera view and orbit, day/night, weather,
-simulation speed, water-level/current multipliers, grounding damage and Gorodets mission
-phase, score and penalty accumulators. Transient visual effects and radar trails restart.
+simulation speed, water-level/current multipliers, grounding damage, the 507B's hatches,
+anchors and mooring lines, and Gorodets mission phase, score and penalty accumulators. Transient visual effects and radar trails restart.
 
 Saves use `voyage.json` in Unity's `Application.persistentDataPath`. On this Windows
 machine the default location is `%USERPROFILE%\AppData\LocalLow\DefaultCompany\ShipSim159`.
@@ -226,7 +266,6 @@ fully expose one hold. Transitions lift, slide and stack the covers, including
 returning through the half-open arrangement when changing holds. Machinery follows
 simulation time, pauses with the voyage and resumes its saved movement after load.
 
-UNSEAT / STOW ANCHORS only moves the anchors a short distance from their stowed
-positions. It does not pay out chain or anchor the vessel to the riverbed. Propeller
+Anchors and mooring lines are described under "Volgo-Don anchors and mooring lines". Propeller
 rotation follows actual shaft RPM and nozzle rotation follows actual steering.
 Day/night controls continue to operate the ship's five sector navigation lights.

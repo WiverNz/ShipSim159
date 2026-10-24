@@ -67,7 +67,6 @@ namespace ShipSimulator.Tests
         public void SaveRestore_ContinuesMidTransition_AndOldSaveStowsEverything()
         {
             rig.SetHatches(HatchPosition.ForwardOpen);
-            rig.SetAnchorsReleased(true);
             rig.Advance(12, 10, -20, 0);
             MechanismSave save = rig.CaptureState();
             Vector3 panel = Find("Hatch_AftOuter").position;
@@ -75,10 +74,9 @@ namespace ShipSimulator.Tests
             rig.RestoreState(JsonUtility.FromJson<MechanismSave>(JsonUtility.ToJson(save)));
             Assert.That(Vector3.Distance(panel, Find("Hatch_AftOuter").position), Is.LessThan(.001));
             Assert.That(rig.Target, Is.EqualTo(HatchPosition.ForwardOpen));
-            Assert.That(rig.AnchorsReleased, Is.True);
+            Assert.That(save.LegacyChainM(), Is.Null, "Anchor state is saved by GroundTackle, not here.");
             rig.RestoreState(null);
             Assert.That(rig.Opening, Is.Zero);
-            Assert.That(rig.AnchorRelease, Is.Zero);
         }
 
         [Test]
@@ -156,17 +154,14 @@ namespace ShipSimulator.Tests
         public void OneLongStep_LandsWhereManyShortStepsDo()
         {
             rig.SetHatches(HatchPosition.ForwardOpen);
-            rig.SetAnchorsReleased(true);
             rig.Advance(420, 0, 0, 0);
-            float opening = rig.Opening, parking = rig.Parking, chain = rig.ChainOutM(0);
+            float opening = rig.Opening, parking = rig.Parking;
             Vector3 panel = Find("Hatch_ForeOuter").position;
             rig.RestoreState(null);
             rig.SetHatches(HatchPosition.ForwardOpen);
-            rig.SetAnchorsReleased(true);
             for (int i = 0; i < 21000; i++) rig.Advance(.02f, 0, 0, 0);
             Assert.That(rig.Opening, Is.EqualTo(opening).Within(1e-4f));
             Assert.That(rig.Parking, Is.EqualTo(parking).Within(1e-3f));
-            Assert.That(rig.ChainOutM(0), Is.EqualTo(chain).Within(1e-2f));
             Assert.That(Vector3.Distance(panel, Find("Hatch_ForeOuter").position), Is.LessThan(.01f));
         }
 
@@ -191,50 +186,45 @@ namespace ShipSimulator.Tests
             Assert.That(rig.Opening, Is.EqualTo(1), "The end position is a limit, not overshot.");
         }
 
-        // Archive p8: bow chains 150 m, stern 75 m; windlass 10 m/min, stern capstan 18 m/min.
+        // Part 13 saves kept the chain paid out here; earlier ones only the unseat fraction. GroundTackle restores both.
         [Test]
-        public void Anchors_PayOutToTheChainLimitsAndHeaveUpAtTheArchiveRates()
+        public void LegacyAnchorSaves_GiveTheirChainToGroundTackle()
         {
-            MachineryRates r = rig.Rates;
-            rig.SetAnchorsReleased(true);
-            rig.Advance(20, 0, 0, 0);
-            Assert.That(rig.ChainOutM(0), Is.EqualTo(20 * r.letGoMetresPerSecond).Within(1e-3f));
-            Transform gypsy = Find("Windlass_Port");
-            Quaternion before = gypsy.localRotation;
-            rig.Advance(r.chainPerGypsyTurnM * .25f / r.letGoMetresPerSecond, 0, 0, 0);
-            Assert.That(Quaternion.Angle(before, gypsy.localRotation), Is.EqualTo(90).Within(.5f), "A quarter turn per quarter of the chain per turn.");
-            rig.Advance(1000, 0, 0, 0);
-            Assert.That(rig.ChainOutM(0), Is.EqualTo(150));
-            Assert.That(rig.ChainOutM(2), Is.EqualTo(75));
-            Assert.That(rig.AnchorsMoving, Is.False);
-            float anchorY = Find("Anchor_Port").position.y;
-            Assert.That(anchorY, Is.LessThan(-140), "The anchor hangs on its chain below the hawse.");
-            rig.SetAnchorsReleased(false);
-            rig.Advance(60, 0, 0, 0);
-            Assert.That(rig.ChainOutM(0), Is.EqualTo(150 - 10).Within(1e-2f));
-            Assert.That(rig.ChainOutM(2), Is.EqualTo(75 - 18).Within(1e-2f));
-            rig.SetAnchorsReleased(true);
-            rig.SetAnchorsReleased(false);
-            rig.Advance(2000, 0, 0, 0);
-            Assert.That(rig.ChainOutM(0), Is.Zero);
-            Assert.That(rig.AnchorRelease, Is.Zero, "Fully hove in is stowed in the hawse.");
+            var part13 = JsonUtility.FromJson<MechanismSave>("{\"anchorTarget\":true,\"chainOutM\":[12.5,0,3]}");
+            Assert.That(part13.LegacyChainM(), Is.EqualTo(new[] { 12.5f, 0f, 3f }));
+            var older = JsonUtility.FromJson<MechanismSave>("{\"anchorTarget\":true,\"anchorRelease\":0.5}");
+            Assert.That(older.LegacyChainM()[0], Is.EqualTo(.175f).Within(1e-4f));
+            rig.RestoreState(part13);
+            Assert.That(rig.CaptureState().LegacyChainM(), Is.Null, "Restoring hands the chain over and keeps no copy.");
+            Assert.Throws<InvalidDataException>(() => new MechanismSave { chainOutM = new[] { 1f, -1f, 0f } }.Validate());
         }
 
         [Test]
-        public void SaveRestore_MidPayout_AndOldSaveDerivesChainFromUnseat()
+        public void Prefab_HasGroundTackleAtTheModelHawsesAndBollards()
         {
-            rig.SetAnchorsReleased(true);
-            rig.Advance(33, 0, 0, 0);
-            MechanismSave save = rig.CaptureState();
-            Vector3 anchor = Find("Anchor_Starboard").position;
-            rig.Advance(40, 0, 0, 0);
-            rig.RestoreState(JsonUtility.FromJson<MechanismSave>(JsonUtility.ToJson(save)));
-            Assert.That(rig.ChainOutM(1), Is.EqualTo(33).Within(1e-3f));
-            Assert.That(Vector3.Distance(anchor, Find("Anchor_Starboard").position), Is.LessThan(.001f));
-            var old = JsonUtility.FromJson<MechanismSave>("{\"anchorTarget\":true,\"anchorRelease\":0.5}");
-            rig.RestoreState(old);
-            Assert.That(rig.ChainOutM(0), Is.EqualTo(.175f).Within(1e-4f));
-            Assert.Throws<InvalidDataException>(() => new MechanismSave { chainOutM = new[] { 1f, -1f, 0f } }.Validate());
+            var tackle = vessel.GetComponent<ShipSimulator.Physics.GroundTackle>();
+            Assert.That(tackle, Is.Not.Null);
+            Assert.That(vessel.GetComponent<GroundTackleVisual>(), Is.Not.Null);
+            Vector3[] hawses = rig.HawsesLocal;
+            Assert.That(hawses.Length, Is.EqualTo(3));
+            Assert.That(hawses[0].x, Is.LessThan(-1), "Port hawse to port.");
+            Assert.That(hawses[1].x, Is.GreaterThan(1));
+            Assert.That(hawses[0].z, Is.GreaterThan(60).And.LessThan(70));
+            Assert.That(hawses[2].z, Is.LessThan(-60));
+            var points = vessel.GetComponentsInChildren<ShipSimulator.Physics.MooringPoint>();
+            Assert.That(points.Length, Is.EqualTo(10));
+            var data = JsonUtility.FromJson<ShipSimulator.Physics.VesselData>(File.ReadAllText(
+                "Assets/ShipSimulator/Data/Vessels/VolgoDon507B.json"));
+            foreach (var point in points)
+            {
+                Assert.That(point.Kind, Is.EqualTo(ShipSimulator.Physics.MooringPointKind.Ship));
+                Assert.That(data.groundTackle.stations.Any(s => s.id == point.Id), Is.True, point.Id);
+                Vector3 local = vessel.transform.InverseTransformPoint(point.LeadWorld);
+                Assert.That(Mathf.Abs(local.x), Is.GreaterThan(Mathf.Abs(vessel.transform.InverseTransformPoint(point.transform.position).x) - .01f),
+                    point.Id + " leads outboard of its bollard.");
+                Assert.That(Mathf.Abs(local.x), Is.LessThan(8.4f), point.Id + " lead within the beam.");
+                Assert.That(local.y, Is.GreaterThan(1.9f), point.Id + " lead above the deck at side.");
+            }
         }
 
         [Test]

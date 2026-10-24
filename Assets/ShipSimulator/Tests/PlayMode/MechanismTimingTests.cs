@@ -43,7 +43,8 @@ namespace ShipSimulator.Tests
             VesselMechanisms rig = Spawn();
             yield return Frames(3);
             rig.SetHatches(HatchPosition.HalfOpen);
-            rig.SetAnchorsReleased(true);
+            ShipPhysicsController ship = vessel.GetComponent<ShipPhysicsController>();
+            ship.SetAnchorsReleased(true);
             float remaining = rig.HatchSecondsRemaining;
             yield return Frames(100);
             float normal = remaining - rig.HatchSecondsRemaining;
@@ -53,10 +54,11 @@ namespace ShipSimulator.Tests
             Time.timeScale = 0;
             yield return null;
             remaining = rig.HatchSecondsRemaining;
-            float chain = rig.ChainOutM(0);
+            float chain = ship.GroundTackle.ChainOutM(0);
+            Assert.That(chain, Is.GreaterThan(1), "The chain runs out on the physics step.");
             yield return Frames(50);
             Assert.That(rig.HatchSecondsRemaining, Is.EqualTo(remaining));
-            Assert.That(rig.ChainOutM(0), Is.EqualTo(chain), "Paused machinery stays put.");
+            Assert.That(ship.GroundTackle.ChainOutM(0), Is.EqualTo(chain), "Paused machinery stays put.");
 
             Time.timeScale = 2;
             yield return null;
@@ -80,14 +82,15 @@ namespace ShipSimulator.Tests
             Time.captureDeltaTime = 0.5f;
             Time.timeScale = 4;
             rig.SetHatches(HatchPosition.ForwardOpen);
-            rig.SetAnchorsReleased(true);
+            ShipPhysicsController ship = vessel.GetComponent<ShipPhysicsController>();
+            ship.SetAnchorsReleased(true);
             yield return Frames(30);
             Assert.That(rig.Opening, Is.GreaterThan(0));
-            Assert.That(rig.ChainOutM(0), Is.GreaterThan(1));
-            vessel.GetComponent<ShipPhysicsController>().ResetToStart();
+            Assert.That(ship.GroundTackle.ChainOutM(0), Is.GreaterThan(1));
+            ship.ResetToStart();
             Assert.That(rig.Opening, Is.Zero);
-            Assert.That(rig.ChainOutM(0), Is.Zero);
-            Assert.That(rig.AnchorsReleased, Is.False);
+            Assert.That(ship.GroundTackle.ChainOutM(0), Is.Zero);
+            Assert.That(ship.GroundTackle.Phase(0), Is.EqualTo(AnchorPhase.Stowed));
         }
     }
 }

@@ -1,6 +1,6 @@
 # Volgo-Don 507B: remaining fidelity work
 
-Created: 2026-10-23. Parts 9-13 complete; Parts 14-17 not started.
+Created: 2026-10-23. Parts 9-14 complete; Parts 15-17 not started.
 
 This continues Parts 1-8 of [IMPROVEMENT_CHECKLIST.md](IMPROVEMENT_CHECKLIST.md).
 The baseline and known discrepancies are recorded in [PART8_REVIEW.md](PART8_REVIEW.md).
@@ -39,7 +39,7 @@ precision. A completed prototype feature is not validated maritime training.
 | 11 | Section-based hydrostatics and loading response | 10 | Complete, 2026-10-23; estimated lightship LCG and no free-surface correction |
 | 12 | Propulsion, stopping and steering calibration | 9, 11 | Complete, 2026-10-24; audit with no refit, stop and turning published as envelopes; open-hold water and refloating fixes |
 | 13 | Evidence-based machinery rates and detail corrections | 9; reconcile with 12 | Complete, 2026-10-24; rates derived or estimated within archive limits, visual anchors only |
-| 14 | Anchor holding and mooring prototype | 11, 12, 13 | Not started |
+| 14 | Anchor holding and mooring prototype | 11, 12, 13 | Complete, 2026-10-24; estimated soil, chain and rope values, quasi-static lines, demonstration quay in Gorodets |
 | 15 | Licensed machinery and water audio | 12, 13 | Not started |
 | 16 | Improved contact geometry | 10, 11; retest 14 | Not started |
 | 17 | Integrated fidelity acceptance and discrepancy update | 9-16 | Not started |
@@ -170,15 +170,15 @@ and labelled estimated, with no claim of exact vessel-specific timing.
 
 ## Part 14: anchors and mooring forces
 
-- [ ] Define scope first: payout/retrieval, seabed contact, holding/dragging and
+- [x] Define scope first: payout/retrieval, seabed contact, holding/dragging and
   mooring to explicit attachment points. Identify required bathymetry inputs.
-- [ ] Add a bounded tension model through Rigidbody forces at attachment points;
+- [x] Add a bounded tension model through Rigidbody forces at attachment points;
   make chain/rope visualization follow the physical state.
-- [ ] Distinguish slack, tension, dragging and overload. Treat seabed holding
+- [x] Distinguish slack, tension, dragging and overload. Treat seabed holding
   coefficients and line elasticity as estimated unless sourced.
-- [ ] Add commands, interlocks, persistence and reset behaviour to existing APIs.
+- [x] Add commands, interlocks, persistence and reset behaviour to existing APIs.
   Avoid duplicate force application through both collision and tension systems.
-- [ ] Test slack-to-taut transitions, changing depth, current/wind loads,
+- [x] Test slack-to-taut transitions, changing depth, current/wind loads,
   retrieval, excessive payout, save/load and timestep sensitivity.
 
 Deliverables: optional anchoring/mooring subsystem, controls, tests and a small
@@ -186,6 +186,12 @@ reproducible demonstration scenario.
 Acceptance: stable bounded forces, believable dragging when holding is exceeded,
 and no teleporting or locking the vessel's Transform. This is a prototype holding
 model, not an operational anchoring or mooring safety calculation.
+
+Result (2026-10-24): [PART14_REVIEW.md](PART14_REVIEW.md). `GroundTackle` with an elastic
+catenary per chain and line, soil holding with setting, uplift loss and dragging, brake rendering
+and parting, ten ship mooring points at the model bollards and an estimated demonstration quay in
+Gorodets. EditMode 258/258, PlayMode 90/90, runtime, menu, shakedown and sea trials pass; stowed
+tackle leaves the motion bit-identical.
 
 ## Part 15: audio production and integration
 

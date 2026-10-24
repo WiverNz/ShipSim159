@@ -105,8 +105,9 @@ namespace ShipSimulator.Editor
                             throw new Exception("Cross-scene load lost compartment inventory or transfer command.");
                         if (ship.Mechanisms == null || ship.Mechanisms.Target != HatchPosition.ForwardOpen ||
                             Mathf.Abs(ship.Mechanisms.Opening - SessionState.GetFloat("ShipSim.Part13Opening", -1)) > .02f ||
-                            Mathf.Abs(ship.Mechanisms.ChainOutM(0) - SessionState.GetFloat("ShipSim.Part13Chain", -1)) > .05f ||
-                            !ship.Mechanisms.AnchorsReleased)
+                            ship.GroundTackle == null ||
+                            Mathf.Abs(ship.GroundTackle.ChainOutM(0) - SessionState.GetFloat("ShipSim.Part13Chain", -1)) > .05f ||
+                            ship.GroundTackle.Phase(0) != AnchorPhase.Bottom)
                             throw new Exception("Cross-scene load lost deck machinery state.");
                         menu.HandleEscape();
                         if (Time.timeScale != 2) throw new Exception("Resume lost saved simulation speed.");
@@ -192,10 +193,13 @@ namespace ShipSimulator.Editor
                 LandscapePreview.Render(camera, "Logs/MenuScreenshots/volgodon-machinery-night.png");
                 UnityEngine.Object.FindAnyObjectByType<DayNightController>().Apply(false);
                 ship.SetHatchPosition(HatchPosition.ForwardOpen);
-                hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == "LET GO / HEAVE UP ANCHORS").OnPointerClick(null);
+                hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == "LET GO").OnPointerClick(null);
                 rig.Advance(25, 0, 0, 0);
+                // One long step lets the port anchor run out to the bottom, where the brake is set.
+                ship.GroundTackle.Step(25);
+                if (ship.GroundTackle.Phase(0) != AnchorPhase.Bottom) throw new Exception("The port anchor did not reach the bottom.");
                 SessionState.SetFloat("ShipSim.Part13Opening", rig.Opening);
-                SessionState.SetFloat("ShipSim.Part13Chain", rig.ChainOutM(0));
+                SessionState.SetFloat("ShipSim.Part13Chain", ship.GroundTackle.ChainOutM(0));
                 if (Vector3.Distance(position, ship.transform.position) > .001f ||
                     Quaternion.Angle(rotation, ship.transform.rotation) > .01f)
                     throw new Exception("Machinery changed vessel root pose.");

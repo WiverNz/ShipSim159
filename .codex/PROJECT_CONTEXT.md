@@ -1,5 +1,33 @@
 # ShipSim159 Project Context
 
+## Volgo-Don Part 14, 2026-10-24
+
+Part 14 complete. Read `Art/Source/VolgoDon507B/PART14_REVIEW.md`. `Physics/GroundTackle.cs` on
+the 507B, stepped in `ShipPhysicsController.Simulate` after grounding: each chain and mooring line
+is a quasi-static elastic catenary (`Physics/Catenary.cs`, bisection on horizontal tension, slack,
+touchdown, suspended, elastic stretch; tension only). Horizontal force through `AddExternalForce`,
+vertical force and lead-height heel/trim moment on the Rigidbody, damping 0.1 critical on the line
+stiffness. Anchors land on scenario bathymetry (none: they hang, NO BOTTOM DATA); hold ratio x
+submerged weight (E silt 2 / sand 3 / rock 1), setting over 4 m, uplift loss to 10 deg, rigid-plastic
+drag towards the ship, breakout, brake render at 45 % of the E grade 1 breaking load, parting.
+Lines: `MooringPoint` (Ship/Shore, stable ids), pass within 35 m at under 0.5 m/s, haul to winch
+stall, slack, cast off, overload at 50 %, part at 200 kN (E). Physics values in the vessel JSON
+`groundTackle` (validated, optional); hawses and ten ship stations from the prefab, stations from
+`mechanisms.json` `mooring_stations` (bollards read from the mesh). `VesselMechanisms` no longer
+animates payout; it poses anchors and gypsies from GroundTackle; chains and ropes drawn by
+`Visuals/GroundTackleVisual.cs` from the solved shapes. HUD panel ANCHORS & MOORING, keys G B Y U,
+O P I , / . F. Saves: `VoyageSave.groundTackle` (present flag); Part 13 `chainOutM` restored as
+hanging anchors; missing shore bollards reported. Gorodets: estimated demonstration quay
+(`GorodetsBerthBuilder`, menu Install Gorodets Demonstration Berth, also called by the scenario
+builder) at x 48, z -70..80 with B1-B7 and a 5 m dredged pocket (`ScenarioBathymetry` basins).
+
+Found and fixed: right after a save restore the transform lags the Rigidbody by one simulation, which
+broke anchors out; GroundTackle reads the Rigidbody pose. Catenary returned an imprecise shape at the
+exact slack span. Verified: EditMode 258/258, PlayMode 90/90, `GroundTackleRuntimeCheck.Run`
+GROUND_TACKLE_RUNTIME|PASS, MENU_SMOKE|PASS, VESSEL_SHAKEDOWN|PASS 5 vessels, SEA_TRIALS rows
+identical to Part 13, quality gate PASS. Stowed tackle leaves motion bit-identical. Step 20 us, draw
+8 us, 0 bytes allocated. Part 15 not started. No commit/push.
+
 ## Volgo-Don Part 13, 2026-10-24
 
 Part 13 complete. Read `Art/Source/VolgoDon507B/PART13_REVIEW.md`. Archive p4/p5/p7/p8 read

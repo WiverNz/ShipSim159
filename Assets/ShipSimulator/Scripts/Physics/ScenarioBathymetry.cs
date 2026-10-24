@@ -19,6 +19,18 @@ namespace ShipSimulator.Physics
         public RiverBottomType bottomType;
     }
 
+    // A dredged area, such as a berth pocket, kept at least this deep; it blends into the natural bed over a
+    // margin around its axis-aligned rectangle.
+    [Serializable]
+    public struct BathymetryBasin
+    {
+        public Vector3 center;
+        public Vector2 sizeM;
+        public float depthM;
+        public float marginM;
+        public RiverBottomType bottomType;
+    }
+
     public readonly struct BathymetrySample
     {
         public BathymetrySample(float depthM, RiverBottomType bottomType)
@@ -37,6 +49,7 @@ namespace ShipSimulator.Physics
         [SerializeField] private float waterLevelOffsetM;
         [SerializeField] private float outsideDepthM = 1.2f;
         [SerializeField] private BathymetryHazard[] hazards = Array.Empty<BathymetryHazard>();
+        [SerializeField] private BathymetryBasin[] basins = Array.Empty<BathymetryBasin>();
 
         public float WaterLevelOffsetM => waterLevelOffsetM;
 
@@ -52,6 +65,11 @@ namespace ShipSimulator.Physics
         {
             Configure(fairwayRoute, localHazards);
             outsideDepthM = beyondEdgesDepthM;
+        }
+
+        public void SetBasins(BathymetryBasin[] dredged)
+        {
+            basins = dredged ?? Array.Empty<BathymetryBasin>();
         }
 
         public void SetWaterLevelOffset(float value)
@@ -93,6 +111,16 @@ namespace ShipSimulator.Physics
                 float blend = 1f - normalizedDistance;
                 depth -= hazard.depthReductionM * blend * blend;
                 bottom = hazard.bottomType;
+            }
+
+            foreach (BathymetryBasin basin in basins)
+            {
+                float outside = Mathf.Max(Mathf.Abs(worldPosition.x - basin.center.x) - 0.5f * basin.sizeM.x,
+                    Mathf.Abs(worldPosition.z - basin.center.z) - 0.5f * basin.sizeM.y);
+                float blend = 1f - Mathf.Clamp01(outside / Mathf.Max(basin.marginM, 0.1f));
+                if (blend <= 0f || basin.depthM <= depth) continue;
+                depth = Mathf.Lerp(depth, basin.depthM, blend * blend * (3f - 2f * blend));
+                if (outside <= 0f) bottom = basin.bottomType;
             }
 
             return new BathymetrySample(Mathf.Max(0.1f, depth + waterLevelOffsetM), bottom);

@@ -173,7 +173,38 @@ namespace ShipSimulator.Physics
                     return Fail("Initial cargo, ballast and stores must equal the loaded payload within deadweight.", out error);
             }
 
+            if (data.groundTackle != null && data.groundTackle.fitted && !GroundTackle(data.groundTackle))
+                return Fail("Ground tackle configuration is invalid.", out error);
+
             error = null;
+            return true;
+        }
+
+        private static bool GroundTackle(VesselGroundTackle g)
+        {
+            if (g.anchors == null || g.anchors.Length == 0 || g.anchors.Length > 4 || g.stations == null ||
+                g.stations.Length > 32 || !Positive(g.letGoMps) || !Positive(g.veerMps) || !Positive(g.renderMaxMps) ||
+                !InRange(g.brakeHoldingFraction, 0.05f, 1f) || !Positive(g.siltHoldingRatio) ||
+                !Positive(g.sandHoldingRatio) || !NonNegative(g.rockHoldingRatio) || !InRange(g.chainBedFriction, 0f, 2f) ||
+                !InRange(g.initialSetFraction, 0f, 1f) || !Positive(g.setDistanceM) || !InRange(g.maxUpliftDeg, 1f, 90f) ||
+                !InRange(g.breakoutWeightFactor, 1f, 20f) || !InRange(g.dampingRatio, 0f, 1f) ||
+                !Positive(g.lineBreakingLoadN) || !Positive(g.lineAxialStiffnessN) || !Positive(g.lineMassPerMetreKg) ||
+                !Positive(g.lineMinLengthM) || !(Finite(g.lineMaxLengthM) && g.lineMaxLengthM > g.lineMinLengthM) ||
+                !Positive(g.slackMps) || !InRange(g.stallPullFactor, 1f, 5f) || !InRange(g.overloadFraction, 0.05f, 1f) ||
+                !Positive(g.passReachM) || g.passReachM > g.lineMaxLengthM || !Positive(g.passMaxSpeedMps) ||
+                g.linesPerBollard < 1 || g.linesPerBollard > 8)
+                return false;
+            var ids = new System.Collections.Generic.HashSet<string>();
+            foreach (VesselAnchor a in g.anchors)
+                if (a == null || string.IsNullOrWhiteSpace(a.id) || !ids.Add(a.id) || string.IsNullOrWhiteSpace(a.label) ||
+                    !Positive(a.massKg) || !Positive(a.chainDiameterMm) || !InRange(a.chainLengthM, 1f, 1000f) ||
+                    !Positive(a.chainMassPerMetreKg) || !Positive(a.chainAxialStiffnessN) || !Positive(a.chainBreakingLoadN) ||
+                    !Positive(a.heaveMps) || !Positive(a.nominalPullN) || !(Finite(a.stallPullN) && a.stallPullN > a.nominalPullN))
+                    return false;
+            ids.Clear();
+            foreach (VesselMooringStation s in g.stations)
+                if (s == null || string.IsNullOrWhiteSpace(s.id) || !ids.Add(s.id) || !Positive(s.winchPullN) || !Positive(s.haulMps))
+                    return false;
             return true;
         }
 

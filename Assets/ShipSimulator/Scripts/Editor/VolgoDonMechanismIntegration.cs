@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using ShipSimulator.Physics;
 using ShipSimulator.Visuals;
 using UnityEditor;
 using UnityEngine;
@@ -41,8 +42,12 @@ namespace ShipSimulator.Editor
             Transform[] gypsies = { Find(visual, "Windlass_Port"), Find(visual, "Windlass_Starboard") };
             rig.ConfigureAnchors(sides.Select(s => Find(visual, "Anchor_" + s)).ToArray(),
                 sides.Select(s => Find(visual, "ChainAttachment_" + s)).ToArray(), gypsies,
-                gypsies.Select(t => t.parent.InverseTransformDirection(root.transform.right)).ToArray(),
-                ChainMaterial(), Rates());
+                gypsies.Select(t => t.parent.InverseTransformDirection(root.transform.right)).ToArray(), Rates());
+            var tackle = root.GetComponent<GroundTackle>() ?? root.AddComponent<GroundTackle>();
+            tackle.Configure(new[] { "port", "starboard", "stern" }, rig.HawsesLocal, rig.AnchorDrops);
+            AddMooringPoints(root, visual);
+            var lines = root.GetComponent<GroundTackleVisual>() ?? root.AddComponent<GroundTackleVisual>();
+            lines.Configure(ChainMaterial(), RopeMaterial());
             ConfigureLayout(root);
             AddAudioPoints(visual);
             VolgoDonLodIntegration.Install(visual);
@@ -78,17 +83,18 @@ namespace ShipSimulator.Editor
         [Serializable] private sealed class Value { public float value; }
         [Serializable] private sealed class Phases { public Value outer_lift, inner_rolling_lift, inner_slide_under, outer_lower_onto_stack, stack_traverse; }
         [Serializable] private sealed class HatchRates { public Phases phases_s; }
-        [Serializable] private sealed class AnchorRates
-        {
-            public Value bow_chain_limit_m, stern_chain_limit_m, bow_heave_m_per_min, stern_heave_m_per_min, let_go_mps, chain_per_gypsy_turn_m;
-        }
+        [Serializable] private sealed class AnchorRates { public Value chain_per_gypsy_turn_m; }
         [Serializable] private sealed class OperatingRates { public HatchRates hatch; public AnchorRates anchor; }
-        [Serializable] private sealed class Manifest { public OperatingRates operating_rates; }
+        [Serializable] private sealed class Station { public string id, label; public int order; public float[] bollard, lead; }
+        [Serializable] private sealed class Manifest { public OperatingRates operating_rates; public Station[] mooring_stations; }
 
-        // mechanisms.json is the single source of the runtime rates; its operating_rates block records sources.
+        private static Manifest ReadManifest() => JsonUtility.FromJson<Manifest>(File.ReadAllText(Folder + "/mechanisms.json"));
+
+        // mechanisms.json is the single source of the deck machinery rates; its operating_rates block records
+        // sources. Anchor and chain physics live in the vessel JSON.
         public static MachineryRates Rates()
         {
-            OperatingRates r = JsonUtility.FromJson<Manifest>(File.ReadAllText(Folder + "/mechanisms.json")).operating_rates;
+            OperatingRates r = ReadManifest().operating_rates;
             if (r?.hatch?.phases_s == null || r.anchor == null) throw new InvalidDataException("mechanisms.json has no operating_rates.");
             return new MachineryRates
             {
@@ -97,11 +103,6 @@ namespace ShipSimulator.Editor
                 innerSlideSeconds = r.hatch.phases_s.inner_slide_under.value,
                 outerLowerSeconds = r.hatch.phases_s.outer_lower_onto_stack.value,
                 traverseSeconds = r.hatch.phases_s.stack_traverse.value,
-                letGoMetresPerSecond = r.anchor.let_go_mps.value,
-                bowHeaveMetresPerSecond = r.anchor.bow_heave_m_per_min.value / 60f,
-                sternHeaveMetresPerSecond = r.anchor.stern_heave_m_per_min.value / 60f,
-                bowChainLimitM = r.anchor.bow_chain_limit_m.value,
-                sternChainLimitM = r.anchor.stern_chain_limit_m.value,
                 chainPerGypsyTurnM = r.anchor.chain_per_gypsy_turn_m.value
             };
         }
@@ -148,6 +149,45 @@ namespace ShipSimulator.Editor
             material.EnableKeyword("_ALPHATEST_ON");
             material.SetFloat("_Metallic", 0.6f);
             material.SetFloat("_Smoothness", 0.35f);
+            material.SetFloat("_Cull", 0);
+            EditorUtility.SetDirty(material);
+            return material;
+        }
+
+        // Ship mooring points at the model's bollards, in Blender coordinates (x, y forward, z up) in the manifest.
+        private static void AddMooringPoints(GameObject root, GameObject visual)
+        {
+            Station[] stations = ReadManifest().mooring_stations;
+            if (stations == null || stations.Length == 0) throw new InvalidDataException("mechanisms.json has no mooring_stations.");
+            var group = new GameObject("MooringPoints");
+            group.transform.SetParent(visual.transform, false);
+            Transform vessel = root.transform;
+            foreach (Station station in stations)
+            {
+                var point = new GameObject("Mooring_" + station.id);
+                point.transform.SetParent(group.transform, false);
+                point.transform.position = vessel.TransformPoint(Unity(station.bollard));
+                point.transform.rotation = vessel.rotation;
+                point.AddComponent<MooringPoint>().Configure(station.id, station.label, MooringPointKind.Ship,
+                    point.transform.InverseTransformPoint(vessel.TransformPoint(Unity(station.lead))), station.order);
+            }
+        }
+
+        private static Vector3 Unity(float[] blender) => new Vector3(blender[0], blender[2], blender[1]);
+
+        // Plain light synthetic rope; the line renderer stretches it along the rope.
+        private static Material RopeMaterial()
+        {
+            const string materialPath = Folder + "/materials/MooringRope.mat";
+            var material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
+            if (material == null)
+            {
+                material = new Material(Shader.Find("Universal Render Pipeline/Lit")) { name = "MooringRope" };
+                AssetDatabase.CreateAsset(material, materialPath);
+            }
+            material.SetColor("_BaseColor", new Color(0.78f, 0.72f, 0.58f));
+            material.SetFloat("_Metallic", 0);
+            material.SetFloat("_Smoothness", 0.2f);
             material.SetFloat("_Cull", 0);
             EditorUtility.SetDirty(material);
             return material;

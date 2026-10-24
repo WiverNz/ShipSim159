@@ -79,6 +79,7 @@ namespace ShipSimulator.Editor
             ShipSimulatorVisualUpgrade.ConfigureLighting(scene);
             ShipSimulatorVisualUpgrade.ConfigurePostProcessing(scene);
             RiverLandscapeBuilder.Apply(scene);
+            GorodetsBerthBuilder.Build(bathymetry);
             EditorSceneManager.SaveScene(scene, ScenePath);
             AddToBuildSettings();
             AssetDatabase.SaveAssets();

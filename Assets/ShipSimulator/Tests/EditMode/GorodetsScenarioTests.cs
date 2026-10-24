@@ -25,6 +25,35 @@ namespace ShipSimulator.Tests
                 "Assets/ShipSimulator/Scenes/RiverTrainingScene.unity"));
         }
 
+        // The demonstration berth is estimated, not surveyed: a dredged pocket outside the buoyed channel.
+        [Test]
+        public void GorodetsScene_HasTheDemonstrationBerthOutsideTheChannel()
+        {
+            EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            GameObject berth = GameObject.Find(ShipSimulator.Editor.GorodetsBerthBuilder.RootName);
+            Assert.That(berth, Is.Not.Null);
+            MooringPoint[] bollards = berth.GetComponentsInChildren<MooringPoint>();
+            Assert.That(bollards, Has.Length.EqualTo(7));
+            var ids = new System.Collections.Generic.HashSet<string>();
+            foreach (MooringPoint bollard in bollards)
+            {
+                Assert.That(bollard.Kind, Is.EqualTo(MooringPointKind.Shore));
+                Assert.That(ids.Add(bollard.Id), Is.True, "Bollard ids are unique: saves refer to them.");
+                Assert.That(bollard.LeadWorld.y, Is.InRange(1.4f, 2.2f));
+            }
+            Collider quay = berth.transform.Find("Quay").GetComponent<Collider>();
+            Assert.That(quay.bounds.min.x, Is.EqualTo(48f).Within(0.01f));
+            ScenarioBathymetry bathymetry = Object.FindAnyObjectByType<ScenarioBathymetry>();
+            ShipPhysicsController ship = Object.FindAnyObjectByType<ShipPhysicsController>();
+            // A loaded 507B lies alongside with her centreline about 39.3 m off the route and clears 3.53 m.
+            for (float z = -60f; z <= 70f; z += 10f)
+                Assert.That(bathymetry.Sample(new Vector3(39.3f, 0f, z)).DepthM, Is.GreaterThanOrEqualTo(4.9f), "z " + z);
+            Assert.That(bathymetry.Sample(new Vector3(0f, 0f, -145f)).DepthM, Is.EqualTo(5.4f).Within(0.2f),
+                "The channel at the start is unchanged.");
+            Assert.That(bathymetry.Sample(new Vector3(-30f, 0f, 0f)).DepthM, Is.LessThan(4f), "The far bank stays natural.");
+            Assert.That(Vector3.Distance(ship.transform.position, new Vector3(0f, 1.7f, -145f)), Is.LessThan(1f));
+        }
+
         [Test]
         public void GorodetsScene_HasRoutePhysicsMissionAndExistingVessel()
         {

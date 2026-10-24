@@ -134,6 +134,7 @@ namespace ShipSimulator.Editor
             }
             RiverWaterAndSkyBuilder.Apply(scene);
             EditorSceneManager.MarkSceneDirty(scene);
+            GorodetsBerthBuilder.ClearVegetation();
             Debug.Log($"LANDSCAPE|{scene.name}: {treeCount} trees, {bushCount} bushes, shoreline reeds and continuous banks");
         }
 

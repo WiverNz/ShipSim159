@@ -200,8 +200,9 @@ written for displacement ships, so their rows are reported without it.
 - **Model simplifications.** Quadratic propeller curves rather than four-quadrant data; estimated bank
   suction; wall-sided station hydrostatics; no wave loads; Unity collider contacts bypass the
   added-mass solve.
-- **Missing features.** No other traffic or ship-ship interaction, locks, mooring lines, anchors,
-  tugs, autopilot, AIS or ECDIS. Gorodets scenario phase 3 (discharge presets, hold point, meeting
+- **Missing features.** No other traffic or ship-ship interaction, locks, tugs, autopilot, AIS or
+  ECDIS. Anchors and mooring lines exist for the 507B only, as an estimated quasi-static prototype
+  (`Art/Source/VolgoDon507B/PART14_REVIEW.md`). Gorodets scenario phase 3 (discharge presets, hold point, meeting
   traffic, fog variant, debrief) is not built.
 - **Input and UI.** Keyboard is polled directly: no rebinding, no gamepad. The HUD uses legacy
   `UnityEngine.UI.Text` and its telegraph controls support at most two engines.
@@ -225,7 +226,7 @@ In priority order:
 3. **Finish the Gorodets scenario.** Discharge presets and briefing choice, hold point, meeting
    traffic with clearance rules, fog cancellation variant, debrief timeline.
 4. **Traffic and interaction.** AI vessels that reuse catalogue ships, ship-ship interaction forces,
-   locks, mooring lines, anchors (dynamics roadmap phase 7).
+   locks, and anchors and mooring lines for the other vessels (dynamics roadmap phase 7).
 5. **Better vessel models.** Textures, weathering, names and draft marks, superstructure details from
    photographs or drawings, or imported meshes to replace the generated ones; a preview in the vessel
    menu; loading conditions selectable per voyage.

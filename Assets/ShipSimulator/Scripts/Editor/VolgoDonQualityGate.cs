@@ -51,11 +51,15 @@ namespace ShipSimulator.Editor
                 // Part 14 changed machinery and ground tackle, not geometry; mechanisms.json carries that stage.
                 int machineryStage = JsonUtility.FromJson<Manifest>(File.ReadAllText(VolgoDonMechanismIntegration.Folder + "/mechanisms.json")).stage;
                 stage = manifestStage >= 13 ? Mathf.Max(13, machineryStage) : manifestStage >= 10 ? 10 : 8;
+                string[] args = Environment.GetCommandLineArgs();
+                int stageArg = Array.IndexOf(args, "-reviewStage");
+                if (stageArg >= 0) stage = int.Parse(args[stageArg + 1]);
                 EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
                 VolgoDonCandidateReview.Review(false);
                 GameObject contents = PrefabUtility.LoadPrefabContents(VolgoDonMechanismIntegration.PrefabPath);
                 try
                 {
+                    VolgoDonContactBuilder.Install(contents);
                     string physics = EditorJsonUtility.ToJson(contents.GetComponent<ShipPhysicsController>());
                     string body = EditorJsonUtility.ToJson(contents.GetComponent<Rigidbody>());
                     Collider[] colliders = contents.GetComponentsInChildren<Collider>();
@@ -81,6 +85,43 @@ namespace ShipSimulator.Editor
                 EditorApplication.Exit(0);
             }
             catch (Exception e) { Debug.LogException(e); EditorApplication.Exit(1); }
+        }
+
+        public static void CaptureBallast()
+        {
+            bool asynchronous = ShaderUtil.allowAsyncCompilation;
+            ShaderUtil.allowAsyncCompilation = false;
+            try
+            {
+                EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+                var vessel = Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(VolgoDonMechanismIntegration.PrefabPath));
+                var data = JsonUtility.FromJson<VesselData>(File.ReadAllText("Assets/ShipSimulator/Data/Vessels/VolgoDon507B.json"));
+                var loading = LoadingModel.Initial(data, 0);
+                for (int i = 2; i < loading.massKg.Length; i++) loading.massKg[i] = data.loading.compartments[i].capacityKg;
+                var condition = VesselParameters.Create(data, loading);
+                vessel.transform.SetPositionAndRotation(Vector3.up * (-condition.Draft - condition.KeelLocalY),
+                    Quaternion.Euler(Mathf.Atan(condition.TrimSlope) * Mathf.Rad2Deg, 0, 0));
+                vessel.GetComponentInChildren<LODGroup>().ForceLOD(0);
+                var water = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                water.transform.localScale = Vector3.one * 100;
+                var material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+                material.color = new Color(.09f, .22f, .28f);
+                water.GetComponent<Renderer>().sharedMaterial = material;
+                var camera = new GameObject("Ballast review camera").AddComponent<Camera>();
+                camera.orthographic = true; camera.orthographicSize = 44; camera.farClipPlane = 5000;
+                camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = new Color(.2f,.25f,.3f);
+                camera.transform.position = new Vector3(180,8,0); camera.transform.LookAt(new Vector3(0,3,0));
+                var sun = new GameObject("Ballast review sun").AddComponent<Light>();
+                sun.type = LightType.Directional; sun.intensity = 1.5f; sun.transform.rotation = Quaternion.Euler(35,65,0);
+                RenderSettings.ambientMode = AmbientMode.Flat; RenderSettings.ambientLight = new Color(.6f,.6f,.6f);
+                Directory.CreateDirectory(Output);
+                for (int warmup = 0; warmup < 3; warmup++)
+                    LandscapePreview.Render(camera, Output + "/part17-unity-ballast.png");
+                Debug.Log(FormattableString.Invariant($"BALLAST_CAPTURE|PASS|draft={condition.Draft}|trimSlope={condition.TrimSlope}"));
+                EditorApplication.Exit(0);
+            }
+            catch (Exception error) { Debug.LogException(error); EditorApplication.Exit(1); }
+            finally { ShaderUtil.allowAsyncCompilation = asynchronous; }
         }
 
         public static Level[] Measure(LODGroup group)
@@ -145,10 +186,9 @@ namespace ShipSimulator.Editor
             var collisions = new List<Collision>();
             foreach (Collider collider in vessel.GetComponentsInChildren<Collider>())
             {
-                Require(collider is BoxCollider, "Expected existing compound box hull");
-                var box = (BoxCollider)collider;
-                collisions.Add(new Collision { name = box.name, type = "BoxCollider", centre = box.transform.TransformPoint(box.center),
-                    size = Vector3.Scale(box.size, box.transform.lossyScale) });
+                Require(collider is BoxCollider || collider is MeshCollider { convex: true }, "Dynamic hull must be primitive or convex");
+                collisions.Add(new Collision { name = collider.name, type = collider.GetType().Name,
+                    centre = collider.bounds.center, size = collider.bounds.size });
             }
             Require(collisions.Count > 0, "No collision hull");
             Bounds bounds = group.GetLODs()[0].renderers[0].bounds;
@@ -171,9 +211,10 @@ namespace ShipSimulator.Editor
             camera.orthographic = true; camera.farClipPlane = 5000;
             var group = vessel.GetComponentInChildren<LODGroup>();
             var rig = vessel.GetComponent<VesselMechanisms>();
-            string[] names = { "front", "side", "top", "perspective", "underwater", "bridge", "hatches", "lightship", "night" };
+            var data = JsonUtility.FromJson<VesselData>(File.ReadAllText("Assets/ShipSimulator/Data/Vessels/VolgoDon507B.json"));
+            string[] names = { "front", "side", "top", "perspective", "underwater", "bridge", "hatches", "lightship", "night", "back" };
             Vector3[] positions = { new(0, 6, 180), new(180, 8, 0), new(0, 180, 0), new(110, 80, 114),
-                new(9, -1, -74), new(-1.8f, 9.1f, -43.3f), new(85, 95, 25), new(180, 8, 0), new(110, 80, 114) };
+                new(9, -1, -74), new(-1.8f, 9.1f, -43.3f), new(85, 95, 25), new(180, 8, 0), new(110, 80, 114), new(0,6,-180) };
             var lights = vessel.GetComponent<NavigationLightRig>() ?? vessel.AddComponent<NavigationLightRig>();
             lights.EnsureCreated();
             var water = GameObject.CreatePrimitive(PrimitiveType.Plane);
@@ -190,12 +231,18 @@ namespace ShipSimulator.Editor
                 camera.orthographic = i != 5;
                 camera.transform.position = positions[i];
                 camera.transform.LookAt(i == 4 ? new Vector3(0, -2, -64.65f) : i == 5 ? new Vector3(-1.8f, 9.1f, 55) : new Vector3(0, 3, 0));
-                camera.orthographicSize = i == 0 ? 11 : i == 2 ? 78 : i == 4 ? 4 : 44;
+                camera.orthographicSize = i == 0 || i == 9 ? 11 : i == 2 ? 78 : i == 4 ? 4 : 44;
                 sun.transform.rotation = Quaternion.Euler(35, camera.transform.eulerAngles.y - 25, 0);
                 if (i == 6) { rig.SetHatches(HatchPosition.HalfOpen); rig.Advance(1000, 0, 0, 0); }
                 else { rig.SetHatches(HatchPosition.Closed); rig.Advance(1000, 0, 0, 0); }
                 // Static review of the calculated waterline; runtime flotation is tested separately.
-                vessel.transform.position = i == 7 ? Vector3.up * (3.53f - .915185f) : Vector3.zero;
+                if (i == 1 || i == 7)
+                {
+                    var condition = VesselParameters.Create(data, LoadingModel.Initial(data, i == 7 ? 0f : 1f));
+                    vessel.transform.SetPositionAndRotation(Vector3.up * (-condition.Draft - condition.KeelLocalY),
+                        Quaternion.Euler(Mathf.Atan(condition.TrimSlope) * Mathf.Rad2Deg, 0, 0));
+                }
+                else vessel.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
                 lights.SetNight(i == 8);
                 sun.intensity = i == 8 ? .05f : 1.5f;
                 RenderSettings.ambientLight = i == 8 ? new Color(.04f, .05f, .07f) : new Color(.6f, .6f, .6f);

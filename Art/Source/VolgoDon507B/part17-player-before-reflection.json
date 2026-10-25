@@ -1,0 +1,3106 @@
+{
+  "anchor-grounding": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 71.5180892944336,
+        "y": 45.00315856933594,
+        "z": -59.768836975097656
+      },
+      "shipPosition": {
+        "x": 0.00012268719729036093,
+        "y": 0.04960352182388306,
+        "z": -144.99993896484375
+      },
+      "night": false,
+      "windMps": 3.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 5,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 11697,
+    "over_16_67ms": 2,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 11697,
+        "median": 2.30530044063926,
+        "p95": 3.18630249239504,
+        "p99": 10.268149562179966,
+        "max": 24.441497400403,
+        "mean": 2.5654045145248765
+      },
+      "cpu_frame_ms": {
+        "samples": 11697,
+        "median": 2.3053,
+        "p95": 3.1850799999999997,
+        "p99": 10.308295999999993,
+        "max": 24.4478,
+        "mean": 2.5659636573480378
+      },
+      "gpu_ms": {
+        "samples": 11394,
+        "median": 1.038336,
+        "p95": 1.275904,
+        "p99": 1.50016,
+        "max": 1.878016,
+        "mean": 1.0594768278041073
+      },
+      "gc_alloc_bytes": {
+        "samples": 11697,
+        "median": 11764.0,
+        "p95": 11865.0,
+        "p99": 16180.0,
+        "max": 28304.0,
+        "mean": 11829.726083611182
+      },
+      "memory_bytes": {
+        "samples": 11697,
+        "median": 904447335.0,
+        "p95": 906459632.4,
+        "p99": 908237658.28,
+        "max": 912306044.0,
+        "mean": 904570199.5222707
+      },
+      "draw_calls": {
+        "samples": 11697,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 11697,
+        "median": 113.0,
+        "p95": 113.0,
+        "p99": 226.0,
+        "max": 226.0,
+        "mean": 113.01231084893563
+      },
+      "triangles": {
+        "samples": 11697,
+        "median": 3417046.0,
+        "p95": 3417046.0,
+        "p99": 6834092.0,
+        "max": 6942292.0,
+        "mean": 3418694.2817816534
+      },
+      "physics_ns": {
+        "samples": 11697,
+        "median": 0.0,
+        "p95": 102400.0,
+        "p99": 112503.99999999991,
+        "max": 273900.0,
+        "mean": 13222.911857741301
+      },
+      "ship_ns": {
+        "samples": 11697,
+        "median": 0.0,
+        "p95": 431700.0,
+        "p99": 477107.9999999998,
+        "max": 662700.0,
+        "mean": 56181.47388219202
+      },
+      "lines_ns": {
+        "samples": 11697,
+        "median": 5300.0,
+        "p95": 6700.0,
+        "p99": 8400.0,
+        "max": 72400.0,
+        "mean": 5446.148585107292
+      },
+      "mechanisms_ns": {
+        "samples": 11697,
+        "median": 15900.0,
+        "p95": 20000.0,
+        "p99": 27403.999999999905,
+        "max": 238600.0,
+        "mean": 16344.832008207233
+      },
+      "audio_ns": {
+        "samples": 11697,
+        "median": 17400.0,
+        "p95": 22800.0,
+        "p99": 32003.999999999905,
+        "max": 110800.0,
+        "mean": 18052.3895015816
+      },
+      "tackle_ns": {
+        "samples": 11697,
+        "median": 0.0,
+        "p95": 4400.0,
+        "p99": 6000.0,
+        "max": 36800.0,
+        "mean": 583.2179191245618
+      },
+      "water_submission_ns": {
+        "samples": 11697,
+        "median": 591800.0,
+        "p95": 762079.9999999995,
+        "p99": 885011.9999999998,
+        "max": 4917600.0,
+        "mean": 606931.4439599897
+      },
+      "gc_collections": {
+        "samples": 11697,
+        "median": 64.0,
+        "p95": 122.0,
+        "p99": 127.0,
+        "max": 128.0,
+        "mean": 63.96751303753099
+      }
+    }
+  },
+  "empty-open": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 0.0,
+      "massKg": 1750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 71.62757110595703,
+        "y": 49.16398620605469,
+        "z": -60.67941665649414
+      },
+      "shipPosition": {
+        "x": 0.07969886809587479,
+        "y": 2.5884435176849365,
+        "z": -145.00393676757812
+      },
+      "night": false,
+      "windMps": 3.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 9,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 11829,
+    "over_16_67ms": 1,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 11829,
+        "median": 2.19209888018668,
+        "p95": 3.205659054219721,
+        "p99": 10.503813996911036,
+        "max": 24.4443956762552,
+        "mean": 2.5365203901454874
+      },
+      "cpu_frame_ms": {
+        "samples": 11829,
+        "median": 2.1918,
+        "p95": 3.201940000000001,
+        "p99": 10.506032,
+        "max": 24.45,
+        "mean": 2.534819545185561
+      },
+      "gpu_ms": {
+        "samples": 11431,
+        "median": 1.089536,
+        "p95": 1.14688,
+        "p99": 1.3568,
+        "max": 1.668096,
+        "mean": 1.0976393148455954
+      },
+      "gc_alloc_bytes": {
+        "samples": 11829,
+        "median": 11448.0,
+        "p95": 11549.0,
+        "p99": 15864.0,
+        "max": 28089.0,
+        "mean": 11514.443824499112
+      },
+      "memory_bytes": {
+        "samples": 11829,
+        "median": 885816844.0,
+        "p95": 887716631.4,
+        "p99": 889255584.28,
+        "max": 892204005.0,
+        "mean": 885902563.7486686
+      },
+      "draw_calls": {
+        "samples": 11829,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 11829,
+        "median": 103.0,
+        "p95": 103.0,
+        "p99": 206.0,
+        "max": 238.0,
+        "mean": 103.26046157747908
+      },
+      "triangles": {
+        "samples": 11829,
+        "median": 3471977.0,
+        "p95": 3476927.0,
+        "p99": 6943566.0,
+        "max": 6953854.0,
+        "mean": 3472695.3088173135
+      },
+      "physics_ns": {
+        "samples": 11829,
+        "median": 0.0,
+        "p95": 99600.0,
+        "p99": 107900.0,
+        "max": 185400.0,
+        "mean": 12652.836249894328
+      },
+      "ship_ns": {
+        "samples": 11829,
+        "median": 0.0,
+        "p95": 449200.0,
+        "p99": 485371.99999999994,
+        "max": 814400.0,
+        "mean": 57484.43655423113
+      },
+      "lines_ns": {
+        "samples": 11829,
+        "median": 2400.0,
+        "p95": 3200.0,
+        "p99": 3900.0,
+        "max": 802100.0,
+        "mean": 2530.467495139065
+      },
+      "mechanisms_ns": {
+        "samples": 11829,
+        "median": 15300.0,
+        "p95": 18700.0,
+        "p99": 23971.999999999935,
+        "max": 835500.0,
+        "mean": 15702.832022994337
+      },
+      "audio_ns": {
+        "samples": 11829,
+        "median": 15300.0,
+        "p95": 19400.0,
+        "p99": 24771.999999999935,
+        "max": 122400.0,
+        "mean": 15722.208132555585
+      },
+      "tackle_ns": {
+        "samples": 11829,
+        "median": 0.0,
+        "p95": 1400.0,
+        "p99": 2100.0,
+        "max": 11800.0,
+        "mean": 182.32310423535378
+      },
+      "water_submission_ns": {
+        "samples": 11829,
+        "median": 571500.0,
+        "p95": 720900.0,
+        "p99": 813475.9999999995,
+        "max": 1389600.0,
+        "mean": 583738.1350917238
+      },
+      "gc_collections": {
+        "samples": 11829,
+        "median": 63.0,
+        "p95": 120.0,
+        "p99": 125.0,
+        "max": 126.0,
+        "mean": 62.83286837433426
+      }
+    }
+  },
+  "far-auto-lod": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 327.7679443359375,
+        "y": 206.06256103515625,
+        "z": 245.6756591796875
+      },
+      "shipPosition": {
+        "x": 0.010668559931218624,
+        "y": 0.033898890018463135,
+        "z": -144.9988250732422
+      },
+      "night": false,
+      "windMps": 3.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 5,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 10461,
+    "over_16_67ms": 5,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 10461,
+        "median": 2.47580069117248,
+        "p95": 3.59739945270121,
+        "p99": 12.07375694066288,
+        "max": 26.734197512269,
+        "mean": 2.867827005346069
+      },
+      "cpu_frame_ms": {
+        "samples": 10461,
+        "median": 2.4753,
+        "p95": 3.5816,
+        "p99": 12.077019999999997,
+        "max": 26.7373,
+        "mean": 2.866486683873435
+      },
+      "gpu_ms": {
+        "samples": 9931,
+        "median": 1.0752,
+        "p95": 1.306624,
+        "p99": 1.4302208000000007,
+        "max": 1.758208,
+        "mean": 1.0928984650085591
+      },
+      "gc_alloc_bytes": {
+        "samples": 10461,
+        "median": 11264.0,
+        "p95": 11365.0,
+        "p99": 15680.0,
+        "max": 27804.0,
+        "mean": 11339.132778893032
+      },
+      "memory_bytes": {
+        "samples": 10461,
+        "median": 888361920.0,
+        "p95": 890900779.0,
+        "p99": 893876278.6,
+        "max": 899048971.0,
+        "mean": 888330973.1414778
+      },
+      "draw_calls": {
+        "samples": 10461,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 10461,
+        "median": 109.0,
+        "p95": 109.0,
+        "p99": 218.0,
+        "max": 218.0,
+        "mean": 109.01835388586177
+      },
+      "triangles": {
+        "samples": 10461,
+        "median": 4124440.0,
+        "p95": 4124922.0,
+        "p99": 8248880.0,
+        "max": 8249844.0,
+        "mean": 4114083.526144728
+      },
+      "physics_ns": {
+        "samples": 10461,
+        "median": 0.0,
+        "p95": 103800.0,
+        "p99": 115039.99999999997,
+        "max": 242200.0,
+        "mean": 14827.808048943696
+      },
+      "ship_ns": {
+        "samples": 10461,
+        "median": 0.0,
+        "p95": 484300.0,
+        "p99": 564479.9999999999,
+        "max": 749800.0,
+        "mean": 70453.17847242138
+      },
+      "lines_ns": {
+        "samples": 10461,
+        "median": 2700.0,
+        "p95": 3700.0,
+        "p99": 4600.0,
+        "max": 51200.0,
+        "mean": 2780.632826689609
+      },
+      "mechanisms_ns": {
+        "samples": 10461,
+        "median": 17000.0,
+        "p95": 21700.0,
+        "p99": 27400.0,
+        "max": 108300.0,
+        "mean": 17431.603097218238
+      },
+      "audio_ns": {
+        "samples": 10461,
+        "median": 16900.0,
+        "p95": 22300.0,
+        "p99": 28400.0,
+        "max": 83900.0,
+        "mean": 17503.192811394703
+      },
+      "tackle_ns": {
+        "samples": 10461,
+        "median": 0.0,
+        "p95": 1700.0,
+        "p99": 2700.0,
+        "max": 14900.0,
+        "mean": 247.52891692954785
+      },
+      "water_submission_ns": {
+        "samples": 10461,
+        "median": 678500.0,
+        "p95": 853700.0,
+        "p99": 969600.0,
+        "max": 1751500.0,
+        "mean": 694926.4315075041
+      },
+      "gc_collections": {
+        "samples": 10461,
+        "median": 55.0,
+        "p95": 105.0,
+        "p99": 109.0,
+        "max": 110.0,
+        "mean": 55.45980307809961
+      }
+    }
+  },
+  "full-open": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 71.52344512939453,
+        "y": 44.98537063598633,
+        "z": -59.76344299316406
+      },
+      "shipPosition": {
+        "x": 0.011414952576160431,
+        "y": 0.033897995948791504,
+        "z": -144.9999237060547
+      },
+      "night": false,
+      "windMps": 3.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 9,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 11526,
+    "over_16_67ms": 4,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 11526,
+        "median": 2.213049214333295,
+        "p95": 3.3469210611656326,
+        "p99": 10.624774731695625,
+        "max": 24.5653986930847,
+        "mean": 2.603356933290145
+      },
+      "cpu_frame_ms": {
+        "samples": 11526,
+        "median": 2.2126,
+        "p95": 3.339475,
+        "p99": 10.62565,
+        "max": 24.5714,
+        "mean": 2.6017009630400834
+      },
+      "gpu_ms": {
+        "samples": 11125,
+        "median": 1.089536,
+        "p95": 1.144832,
+        "p99": 1.347584,
+        "max": 1.620992,
+        "mean": 1.0958956613033708
+      },
+      "gc_alloc_bytes": {
+        "samples": 11526,
+        "median": 11430.0,
+        "p95": 11531.0,
+        "p99": 15846.0,
+        "max": 27970.0,
+        "mean": 11498.19052576783
+      },
+      "memory_bytes": {
+        "samples": 11526,
+        "median": 885945274.5,
+        "p95": 887771200.75,
+        "p99": 889502711.5,
+        "max": 892521900.0,
+        "mean": 886009981.0084157
+      },
+      "draw_calls": {
+        "samples": 11526,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 11526,
+        "median": 103.0,
+        "p95": 103.0,
+        "p99": 206.0,
+        "max": 206.0,
+        "mean": 103.00772167273989
+      },
+      "triangles": {
+        "samples": 11526,
+        "median": 3478473.0,
+        "p95": 3479527.0,
+        "p99": 6956458.0,
+        "max": 6959062.0,
+        "mean": 3461443.5517959394
+      },
+      "physics_ns": {
+        "samples": 11526,
+        "median": 0.0,
+        "p95": 100000.0,
+        "p99": 110200.0,
+        "max": 203100.0,
+        "mean": 13067.412805830296
+      },
+      "ship_ns": {
+        "samples": 11526,
+        "median": 0.0,
+        "p95": 482900.0,
+        "p99": 518575.0,
+        "max": 895500.0,
+        "mean": 63151.34478570189
+      },
+      "lines_ns": {
+        "samples": 11526,
+        "median": 2300.0,
+        "p95": 3200.0,
+        "p99": 4000.0,
+        "max": 793100.0,
+        "mean": 2497.891723060906
+      },
+      "mechanisms_ns": {
+        "samples": 11526,
+        "median": 15300.0,
+        "p95": 18700.0,
+        "p99": 24200.0,
+        "max": 122800.0,
+        "mean": 15717.022384174908
+      },
+      "audio_ns": {
+        "samples": 11526,
+        "median": 15400.0,
+        "p95": 19600.0,
+        "p99": 25475.0,
+        "max": 98600.0,
+        "mean": 15851.023772340795
+      },
+      "tackle_ns": {
+        "samples": 11526,
+        "median": 0.0,
+        "p95": 1500.0,
+        "p99": 2100.0,
+        "max": 5900.0,
+        "mean": 194.28249175776506
+      },
+      "water_submission_ns": {
+        "samples": 11526,
+        "median": 580200.0,
+        "p95": 734175.0,
+        "p99": 823800.0,
+        "max": 1832200.0,
+        "mean": 591865.6168662155
+      },
+      "gc_collections": {
+        "samples": 11526,
+        "median": 62.0,
+        "p95": 117.0,
+        "p99": 122.0,
+        "max": 123.0,
+        "mean": 61.76626756897449
+      }
+    }
+  },
+  "heavy-weather": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 71.49600219726562,
+        "y": 44.92380142211914,
+        "z": -59.537925720214844
+      },
+      "shipPosition": {
+        "x": 0.22128432989120483,
+        "y": 0.03388535976409912,
+        "z": -144.98834228515625
+      },
+      "night": false,
+      "windMps": 15.0,
+      "rain": 1.0,
+      "fog": 0.800000011920929,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 6,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 10579,
+    "over_16_67ms": 3,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 10579,
+        "median": 2.392205176875,
+        "p95": 4.160564765334139,
+        "p99": 10.995381399989139,
+        "max": 24.2917016148567,
+        "mean": 2.8364388503038116
+      },
+      "cpu_frame_ms": {
+        "samples": 10579,
+        "median": 2.3924,
+        "p95": 4.137600000000002,
+        "p99": 10.999461999999985,
+        "max": 24.2967,
+        "mean": 2.834999810946214
+      },
+      "gpu_ms": {
+        "samples": 10108,
+        "median": 1.149952,
+        "p95": 1.416192,
+        "p99": 1.63525632,
+        "max": 2.238464,
+        "mean": 1.1735288959240207
+      },
+      "gc_alloc_bytes": {
+        "samples": 10579,
+        "median": 11284.0,
+        "p95": 11385.0,
+        "p99": 15700.0,
+        "max": 27925.0,
+        "mean": 11358.294734852065
+      },
+      "memory_bytes": {
+        "samples": 10579,
+        "median": 906997140.0,
+        "p95": 908910110.5,
+        "p99": 910536521.1,
+        "max": 913936610.0,
+        "mean": 907072707.5086492
+      },
+      "draw_calls": {
+        "samples": 10579,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 10579,
+        "median": 106.0,
+        "p95": 116.0,
+        "p99": 216.0,
+        "max": 260.0,
+        "mean": 107.95254749976368
+      },
+      "triangles": {
+        "samples": 10579,
+        "median": 3500139.0,
+        "p95": 3536531.0,
+        "p99": 7016407.76,
+        "max": 7083340.0,
+        "mean": 3507524.3633613763
+      },
+      "physics_ns": {
+        "samples": 10579,
+        "median": 0.0,
+        "p95": 101300.0,
+        "p99": 112021.99999999994,
+        "max": 202100.0,
+        "mean": 14367.407127327724
+      },
+      "ship_ns": {
+        "samples": 10579,
+        "median": 0.0,
+        "p95": 488100.0,
+        "p99": 526600.0,
+        "max": 709300.0,
+        "mean": 69556.1489743832
+      },
+      "lines_ns": {
+        "samples": 10579,
+        "median": 2700.0,
+        "p95": 3600.0,
+        "p99": 4600.0,
+        "max": 927800.0,
+        "mean": 3319.9546270914075
+      },
+      "mechanisms_ns": {
+        "samples": 10579,
+        "median": 16700.0,
+        "p95": 20810.000000000036,
+        "p99": 27721.999999999935,
+        "max": 1343800.0,
+        "mean": 17292.210984024954
+      },
+      "audio_ns": {
+        "samples": 10579,
+        "median": 16100.0,
+        "p95": 21310.000000000036,
+        "p99": 28600.0,
+        "max": 865900.0,
+        "mean": 16873.589186123452
+      },
+      "tackle_ns": {
+        "samples": 10579,
+        "median": 0.0,
+        "p95": 1600.0,
+        "p99": 2400.0,
+        "max": 5800.0,
+        "mean": 223.0456564892712
+      },
+      "water_submission_ns": {
+        "samples": 10579,
+        "median": 610800.0,
+        "p95": 800410.0,
+        "p99": 926409.9999999997,
+        "max": 1823700.0,
+        "mean": 627970.2240287361
+      },
+      "gc_collections": {
+        "samples": 10579,
+        "median": 56.0,
+        "p95": 106.0,
+        "p99": 111.0,
+        "max": 112.0,
+        "mean": 56.04404953209188
+      }
+    }
+  },
+  "lod-transition": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 71.51156616210938,
+        "y": 44.98384475708008,
+        "z": -59.74684143066406
+      },
+      "shipPosition": {
+        "x": 0.013613545335829258,
+        "y": 0.03389197587966919,
+        "z": -144.9954833984375
+      },
+      "night": false,
+      "windMps": 3.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 5,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 10407,
+    "over_16_67ms": 7,
+    "over_50ms": 2,
+    "metrics": {
+      "frame_ms": {
+        "samples": 10407,
+        "median": 2.44949688203633,
+        "p95": 3.689265181310473,
+        "p99": 11.567643620073772,
+        "max": 259.457617998123,
+        "mean": 2.883193843291581
+      },
+      "cpu_frame_ms": {
+        "samples": 10407,
+        "median": 2.4493,
+        "p95": 3.682629999999996,
+        "p99": 11.573352000000007,
+        "max": 259.4705,
+        "mean": 2.8818608532718364
+      },
+      "gpu_ms": {
+        "samples": 9815,
+        "median": 1.173504,
+        "p95": 1.3100031999999993,
+        "p99": 1.512448,
+        "max": 1.977344,
+        "mean": 1.181606693428426
+      },
+      "gc_alloc_bytes": {
+        "samples": 10407,
+        "median": 11264.0,
+        "p95": 11369.0,
+        "p99": 15680.0,
+        "max": 27808.0,
+        "mean": 11339.93850293072
+      },
+      "memory_bytes": {
+        "samples": 10407,
+        "median": 887626991.0,
+        "p95": 890769724.3,
+        "p99": 892801663.98,
+        "max": 896893734.0,
+        "mean": 887766682.7681369
+      },
+      "draw_calls": {
+        "samples": 10407,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 10407,
+        "median": 156.0,
+        "p95": 181.0,
+        "p99": 313.880000000001,
+        "max": 366.0,
+        "mean": 157.93763812818295
+      },
+      "triangles": {
+        "samples": 10407,
+        "median": 4066251.0,
+        "p95": 4356392.8,
+        "p99": 8140990.560000001,
+        "max": 8821064.0,
+        "mean": 4000009.0626501394
+      },
+      "physics_ns": {
+        "samples": 10407,
+        "median": 0.0,
+        "p95": 103069.99999999988,
+        "p99": 115800.0,
+        "max": 454100.0,
+        "mean": 14634.323051792064
+      },
+      "ship_ns": {
+        "samples": 10407,
+        "median": 0.0,
+        "p95": 486000.0,
+        "p99": 579188.0000000001,
+        "max": 5331700.0,
+        "mean": 70950.42759680984
+      },
+      "lines_ns": {
+        "samples": 10407,
+        "median": 2600.0,
+        "p95": 3700.0,
+        "p99": 4600.0,
+        "max": 31200.0,
+        "mean": 2752.7145190737006
+      },
+      "mechanisms_ns": {
+        "samples": 10407,
+        "median": 16700.0,
+        "p95": 21800.0,
+        "p99": 28394.00000000005,
+        "max": 102000.0,
+        "mean": 17232.939367733255
+      },
+      "audio_ns": {
+        "samples": 10407,
+        "median": 16600.0,
+        "p95": 22800.0,
+        "p99": 30500.0,
+        "max": 87300.0,
+        "mean": 17315.585663495724
+      },
+      "tackle_ns": {
+        "samples": 10407,
+        "median": 0.0,
+        "p95": 1700.0,
+        "p99": 2700.0,
+        "max": 8500.0,
+        "mean": 240.9628134909196
+      },
+      "water_submission_ns": {
+        "samples": 10407,
+        "median": 655300.0,
+        "p95": 837339.9999999998,
+        "p99": 958276.0000000002,
+        "max": 1765500.0,
+        "mean": 670620.6207360431
+      },
+      "gc_collections": {
+        "samples": 10407,
+        "median": 55.0,
+        "p95": 104.0,
+        "p99": 109.0,
+        "max": 110.0,
+        "mean": 55.06639761698857
+      }
+    }
+  },
+  "mechanisms": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 71.53240966796875,
+        "y": 44.985050201416016,
+        "z": -59.747291564941406
+      },
+      "shipPosition": {
+        "x": 0.0114100631326437,
+        "y": 0.03394383192062378,
+        "z": -144.97122192382812
+      },
+      "night": false,
+      "windMps": 3.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 20,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 11034,
+    "over_16_67ms": 2,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 11034,
+        "median": 2.3111996706575146,
+        "p95": 3.7479372927919,
+        "p99": 10.724474610760792,
+        "max": 25.1355934888124,
+        "mean": 2.719000779706019
+      },
+      "cpu_frame_ms": {
+        "samples": 11034,
+        "median": 2.31105,
+        "p95": 3.740985000000001,
+        "p99": 10.72639,
+        "max": 25.1428,
+        "mean": 2.7177929671923144
+      },
+      "gpu_ms": {
+        "samples": 10574,
+        "median": 1.093632,
+        "p95": 1.32608,
+        "p99": 1.5839334400000014,
+        "max": 2.255872,
+        "mean": 1.1136836951011917
+      },
+      "gc_alloc_bytes": {
+        "samples": 11034,
+        "median": 11484.0,
+        "p95": 11593.0,
+        "p99": 15900.0,
+        "max": 28032.0,
+        "mean": 11556.07422512235
+      },
+      "memory_bytes": {
+        "samples": 11034,
+        "median": 886004737.5,
+        "p95": 887838604.55,
+        "p99": 889308423.16,
+        "max": 892896119.0,
+        "mean": 886071025.7099873
+      },
+      "draw_calls": {
+        "samples": 11034,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 11034,
+        "median": 103.0,
+        "p95": 111.0,
+        "p99": 206.0,
+        "max": 238.0,
+        "mean": 103.76780859162588
+      },
+      "triangles": {
+        "samples": 11034,
+        "median": 3474979.0,
+        "p95": 3477403.0,
+        "p99": 6950282.0,
+        "max": 6960782.0,
+        "mean": 3473347.178448432
+      },
+      "physics_ns": {
+        "samples": 11034,
+        "median": 0.0,
+        "p95": 101000.0,
+        "p99": 112100.0,
+        "max": 285100.0,
+        "mean": 13807.241254304876
+      },
+      "ship_ns": {
+        "samples": 11034,
+        "median": 0.0,
+        "p95": 482935.00000000006,
+        "p99": 523670.00000000006,
+        "max": 859700.0,
+        "mean": 66335.99782490484
+      },
+      "lines_ns": {
+        "samples": 11034,
+        "median": 2500.0,
+        "p95": 3500.0,
+        "p99": 4600.0,
+        "max": 1307300.0,
+        "mean": 3018.37049120899
+      },
+      "mechanisms_ns": {
+        "samples": 11034,
+        "median": 16400.0,
+        "p95": 21200.0,
+        "p99": 29100.0,
+        "max": 135300.0,
+        "mean": 17003.144825086096
+      },
+      "audio_ns": {
+        "samples": 11034,
+        "median": 17500.0,
+        "p95": 25200.0,
+        "p99": 34400.0,
+        "max": 202800.0,
+        "mean": 18530.922602863877
+      },
+      "tackle_ns": {
+        "samples": 11034,
+        "median": 0.0,
+        "p95": 1600.0,
+        "p99": 2300.0,
+        "max": 45100.0,
+        "mean": 215.71506253398587
+      },
+      "water_submission_ns": {
+        "samples": 11034,
+        "median": 598200.0,
+        "p95": 790500.0,
+        "p99": 930336.0,
+        "max": 2132800.0,
+        "mean": 614735.8981330433
+      },
+      "gc_collections": {
+        "samples": 11034,
+        "median": 59.0,
+        "p95": 112.35000000000036,
+        "p99": 117.0,
+        "max": 118.0,
+        "mean": 59.09516041326808
+      }
+    }
+  },
+  "moving-audio": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 71.50737762451172,
+        "y": 44.98650360107422,
+        "z": -55.438209533691406
+      },
+      "shipPosition": {
+        "x": 0.09256991744041443,
+        "y": 0.035118162631988525,
+        "z": -140.57774353027344
+      },
+      "night": false,
+      "windMps": 3.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 13,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 10724,
+    "over_16_67ms": 6,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 10724,
+        "median": 2.36024660989642,
+        "p95": 3.940447792410853,
+        "p99": 10.919698253273987,
+        "max": 33.2350991666317,
+        "mean": 2.7976349788490045
+      },
+      "cpu_frame_ms": {
+        "samples": 10724,
+        "median": 2.3602499999999997,
+        "p95": 3.9297950000000004,
+        "p99": 10.923637000000003,
+        "max": 33.2444,
+        "mean": 2.797782795598657
+      },
+      "gpu_ms": {
+        "samples": 10291,
+        "median": 1.104896,
+        "p95": 1.314816,
+        "p99": 1.4091264000000003,
+        "max": 1.970176,
+        "mean": 1.1188971178699834
+      },
+      "gc_alloc_bytes": {
+        "samples": 10724,
+        "median": 11328.0,
+        "p95": 11429.0,
+        "p99": 15744.0,
+        "max": 27868.0,
+        "mean": 11401.827582991422
+      },
+      "memory_bytes": {
+        "samples": 10724,
+        "median": 906840095.5,
+        "p95": 908741963.85,
+        "p99": 910414548.01,
+        "max": 915064784.0,
+        "mean": 906924326.8888475
+      },
+      "draw_calls": {
+        "samples": 10724,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 10724,
+        "median": 108.0,
+        "p95": 124.0,
+        "p99": 218.0,
+        "max": 254.0,
+        "mean": 109.09548675867214
+      },
+      "triangles": {
+        "samples": 10724,
+        "median": 3496305.0,
+        "p95": 3514407.0,
+        "p99": 6995952.16,
+        "max": 7028814.0,
+        "mean": 3493600.0173442746
+      },
+      "physics_ns": {
+        "samples": 10724,
+        "median": 0.0,
+        "p95": 101400.0,
+        "p99": 113754.00000000009,
+        "max": 251300.0,
+        "mean": 14237.756434166356
+      },
+      "ship_ns": {
+        "samples": 10724,
+        "median": 0.0,
+        "p95": 488985.00000000006,
+        "p99": 528154.0000000001,
+        "max": 937000.0,
+        "mean": 68782.00298396121
+      },
+      "lines_ns": {
+        "samples": 10724,
+        "median": 2500.0,
+        "p95": 3500.0,
+        "p99": 4400.0,
+        "max": 822000.0,
+        "mean": 2658.7560611712047
+      },
+      "mechanisms_ns": {
+        "samples": 10724,
+        "median": 16000.0,
+        "p95": 20185.000000000036,
+        "p99": 27677.000000000044,
+        "max": 203200.0,
+        "mean": 16493.780305856024
+      },
+      "audio_ns": {
+        "samples": 10724,
+        "median": 17300.0,
+        "p95": 23500.0,
+        "p99": 32177.000000000044,
+        "max": 857500.0,
+        "mean": 18236.851920925026
+      },
+      "tackle_ns": {
+        "samples": 10724,
+        "median": 0.0,
+        "p95": 1600.0,
+        "p99": 2400.0,
+        "max": 15200.0,
+        "mean": 226.5852293920179
+      },
+      "water_submission_ns": {
+        "samples": 10724,
+        "median": 609500.0,
+        "p95": 794400.0,
+        "p99": 912647.0000000005,
+        "max": 1355100.0,
+        "mean": 623317.5307721
+      },
+      "gc_collections": {
+        "samples": 10724,
+        "median": 57.0,
+        "p95": 108.0,
+        "p99": 112.0,
+        "max": 113.0,
+        "mean": 56.68808280492354
+      }
+    }
+  },
+  "navigator": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "NAVIGATOR",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": -1.788004994392395,
+        "y": 9.1337251663208,
+        "z": -188.298583984375
+      },
+      "shipPosition": {
+        "x": 0.008154723793268204,
+        "y": 0.033889591693878174,
+        "z": -144.99838256835938
+      },
+      "night": false,
+      "windMps": 3.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 5,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 7384,
+    "over_16_67ms": 58,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 7384,
+        "median": 3.747456008568405,
+        "p95": 4.788612131960687,
+        "p99": 15.78771499916915,
+        "max": 32.3822982609272,
+        "mean": 4.063443717723843
+      },
+      "cpu_frame_ms": {
+        "samples": 7384,
+        "median": 3.7467,
+        "p95": 4.782379999999999,
+        "p99": 15.790605000000017,
+        "max": 32.3947,
+        "mean": 4.0616850352112674
+      },
+      "gpu_ms": {
+        "samples": 6426,
+        "median": 1.73568,
+        "p95": 2.121728,
+        "p99": 2.364416,
+        "max": 2.783232,
+        "mean": 1.7637768963585434
+      },
+      "gc_alloc_bytes": {
+        "samples": 7384,
+        "median": 11272.0,
+        "p95": 11373.0,
+        "p99": 15688.0,
+        "max": 27913.0,
+        "mean": 11377.843445287108
+      },
+      "memory_bytes": {
+        "samples": 7384,
+        "median": 908731985.5,
+        "p95": 916053988.1,
+        "p99": 922324882.08,
+        "max": 933811726.0,
+        "mean": 908632422.5599946
+      },
+      "draw_calls": {
+        "samples": 7384,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 7384,
+        "median": 220.0,
+        "p95": 221.0,
+        "p99": 440.0,
+        "max": 442.0,
+        "mean": 220.16481581798485
+      },
+      "triangles": {
+        "samples": 7384,
+        "median": 6580237.0,
+        "p95": 6583037.0,
+        "p99": 13160454.0,
+        "max": 13166072.0,
+        "mean": 6574388.8187974
+      },
+      "physics_ns": {
+        "samples": 7384,
+        "median": 0.0,
+        "p95": 110200.0,
+        "p99": 133600.0,
+        "max": 326700.0,
+        "mean": 22054.604550379197
+      },
+      "ship_ns": {
+        "samples": 7384,
+        "median": 0.0,
+        "p95": 517584.99999999994,
+        "p99": 648975.0000000006,
+        "max": 1075900.0,
+        "mean": 104092.0232936078
+      },
+      "lines_ns": {
+        "samples": 7384,
+        "median": 3100.0,
+        "p95": 4400.0,
+        "p99": 5800.0,
+        "max": 830600.0,
+        "mean": 3357.272481040087
+      },
+      "mechanisms_ns": {
+        "samples": 7384,
+        "median": 19600.0,
+        "p95": 26200.0,
+        "p99": 34200.0,
+        "max": 141900.0,
+        "mean": 20418.26923076923
+      },
+      "audio_ns": {
+        "samples": 7384,
+        "median": 20800.0,
+        "p95": 28600.0,
+        "p99": 36200.0,
+        "max": 108800.0,
+        "mean": 21679.83477789816
+      },
+      "tackle_ns": {
+        "samples": 7384,
+        "median": 0.0,
+        "p95": 2400.0,
+        "p99": 3600.0,
+        "max": 17300.0,
+        "mean": 458.4507042253521
+      },
+      "water_submission_ns": {
+        "samples": 7384,
+        "median": 1037800.0,
+        "p95": 1298354.9999999998,
+        "p99": 1542246.0000000002,
+        "max": 5705600.0,
+        "mean": 1064116.4680390032
+      },
+      "gc_collections": {
+        "samples": 7384,
+        "median": 39.0,
+        "p95": 74.0,
+        "p99": 77.0,
+        "max": 78.0,
+        "mean": 38.99106175514626
+      }
+    }
+  },
+  "near-day-full": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 71.51821899414062,
+        "y": 44.984886169433594,
+        "z": -59.7548713684082
+      },
+      "shipPosition": {
+        "x": 0.012457529082894325,
+        "y": 0.034108102321624756,
+        "z": -144.99696350097656
+      },
+      "night": false,
+      "windMps": 3.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 5,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 11897,
+    "over_16_67ms": 7,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 11897,
+        "median": 2.19730008393526,
+        "p95": 3.2124801073223357,
+        "p99": 10.39590984582897,
+        "max": 24.5421975851059,
+        "mean": 2.5217390013392897
+      },
+      "cpu_frame_ms": {
+        "samples": 11897,
+        "median": 2.1979,
+        "p95": 3.2095399999999987,
+        "p99": 10.400759999999996,
+        "max": 24.5501,
+        "mean": 2.5219580314364967
+      },
+      "gpu_ms": {
+        "samples": 11523,
+        "median": 0.9984,
+        "p95": 1.230848,
+        "p99": 1.3954867200000007,
+        "max": 1.815552,
+        "mean": 1.0168219581706153
+      },
+      "gc_alloc_bytes": {
+        "samples": 11897,
+        "median": 11264.0,
+        "p95": 11365.0,
+        "p99": 15680.0,
+        "max": 27905.0,
+        "mean": 11330.07749852904
+      },
+      "memory_bytes": {
+        "samples": 11897,
+        "median": 838631579.0,
+        "p95": 840759798.4,
+        "p99": 842333126.4399999,
+        "max": 845377096.0,
+        "mean": 838717737.7088342
+      },
+      "draw_calls": {
+        "samples": 11897,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 11897,
+        "median": 103.0,
+        "p95": 103.0,
+        "p99": 206.0,
+        "max": 206.0,
+        "mean": 103.02210641338152
+      },
+      "triangles": {
+        "samples": 11897,
+        "median": 3476893.0,
+        "p95": 3478275.0,
+        "p99": 6952596.4,
+        "max": 6956558.0,
+        "mean": 3462274.9553668993
+      },
+      "physics_ns": {
+        "samples": 11897,
+        "median": 0.0,
+        "p95": 99900.0,
+        "p99": 110103.99999999991,
+        "max": 188000.0,
+        "mean": 12649.399008153316
+      },
+      "ship_ns": {
+        "samples": 11897,
+        "median": 0.0,
+        "p95": 474419.9999999999,
+        "p99": 509915.99999999965,
+        "max": 737600.0,
+        "mean": 60502.51323863159
+      },
+      "lines_ns": {
+        "samples": 11897,
+        "median": 2400.0,
+        "p95": 3300.0,
+        "p99": 4200.0,
+        "max": 830300.0,
+        "mean": 2569.0089938639994
+      },
+      "mechanisms_ns": {
+        "samples": 11897,
+        "median": 15300.0,
+        "p95": 18900.0,
+        "p99": 23803.999999999905,
+        "max": 68700.0,
+        "mean": 15648.877868370177
+      },
+      "audio_ns": {
+        "samples": 11897,
+        "median": 14900.0,
+        "p95": 19019.99999999989,
+        "p99": 23800.0,
+        "max": 66900.0,
+        "mean": 15377.876775657729
+      },
+      "tackle_ns": {
+        "samples": 11897,
+        "median": 0.0,
+        "p95": 1500.0,
+        "p99": 2103.9999999999054,
+        "max": 9100.0,
+        "mean": 186.9210725392956
+      },
+      "water_submission_ns": {
+        "samples": 11897,
+        "median": 573900.0,
+        "p95": 732300.0,
+        "p99": 826207.9999999998,
+        "max": 1179800.0,
+        "mean": 586833.0083214255
+      },
+      "gc_collections": {
+        "samples": 11897,
+        "median": 62.0,
+        "p95": 119.0,
+        "p99": 124.0,
+        "max": 125.0,
+        "mean": 62.412288812305626
+      }
+    }
+  },
+  "night": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 71.5174789428711,
+        "y": 44.98524856567383,
+        "z": -59.755157470703125
+      },
+      "shipPosition": {
+        "x": 0.011366141028702259,
+        "y": 0.03389042615890503,
+        "z": -144.9969024658203
+      },
+      "night": true,
+      "windMps": 3.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 5,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 11324,
+    "over_16_67ms": 5,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 11324,
+        "median": 2.2907489910721752,
+        "p95": 3.5161334788426766,
+        "p99": 10.53948577493428,
+        "max": 25.6262961775064,
+        "mean": 2.64933111973624
+      },
+      "cpu_frame_ms": {
+        "samples": 11324,
+        "median": 2.2904,
+        "p95": 3.5124700000000004,
+        "p99": 10.544908000000005,
+        "max": 25.6363,
+        "mean": 2.6487001324620274
+      },
+      "gpu_ms": {
+        "samples": 10995,
+        "median": 1.117184,
+        "p95": 1.183744,
+        "p99": 1.439866879999999,
+        "max": 2.505728,
+        "mean": 1.125997478126421
+      },
+      "gc_alloc_bytes": {
+        "samples": 11324,
+        "median": 11264.0,
+        "p95": 11365.0,
+        "p99": 15680.0,
+        "max": 27804.0,
+        "mean": 11333.40692334864
+      },
+      "memory_bytes": {
+        "samples": 11324,
+        "median": 903143796.0,
+        "p95": 905017146.95,
+        "p99": 906816015.43,
+        "max": 910674299.0,
+        "mean": 903214903.9818085
+      },
+      "draw_calls": {
+        "samples": 11324,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 11324,
+        "median": 107.0,
+        "p95": 107.0,
+        "p99": 214.0,
+        "max": 214.0,
+        "mean": 107.01695513952667
+      },
+      "triangles": {
+        "samples": 11324,
+        "median": 3541668.0,
+        "p95": 3543304.0,
+        "p99": 7081981.75,
+        "max": 7086628.0,
+        "mean": 3529135.0595196043
+      },
+      "physics_ns": {
+        "samples": 11324,
+        "median": 0.0,
+        "p95": 100800.0,
+        "p99": 111300.0,
+        "max": 367500.0,
+        "mean": 13462.628046626634
+      },
+      "ship_ns": {
+        "samples": 11324,
+        "median": 0.0,
+        "p95": 481785.00000000006,
+        "p99": 527700.0,
+        "max": 860900.0,
+        "mean": 64824.92935358531
+      },
+      "lines_ns": {
+        "samples": 11324,
+        "median": 2500.0,
+        "p95": 3500.0,
+        "p99": 4500.0,
+        "max": 21000.0,
+        "mean": 2558.062522077005
+      },
+      "mechanisms_ns": {
+        "samples": 11324,
+        "median": 15700.0,
+        "p95": 20100.0,
+        "p99": 27700.0,
+        "max": 870300.0,
+        "mean": 16350.547509713882
+      },
+      "audio_ns": {
+        "samples": 11324,
+        "median": 15400.0,
+        "p95": 21000.0,
+        "p99": 28600.0,
+        "max": 121200.0,
+        "mean": 16110.217237725186
+      },
+      "tackle_ns": {
+        "samples": 11324,
+        "median": 0.0,
+        "p95": 1500.0,
+        "p99": 2400.0,
+        "max": 15000.0,
+        "mean": 207.7004592016955
+      },
+      "water_submission_ns": {
+        "samples": 11324,
+        "median": 608100.0,
+        "p95": 791500.0,
+        "p99": 911477.0,
+        "max": 2736600.0,
+        "mean": 624719.6750264924
+      },
+      "gc_collections": {
+        "samples": 11324,
+        "median": 59.0,
+        "p95": 113.0,
+        "p99": 117.77000000000044,
+        "max": 119.0,
+        "mean": 59.223595902507945
+      }
+    }
+  },
+  "quay-lines": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 10.0,
+      "measurementS": 30.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 111.37667846679688,
+        "y": 44.79623031616211,
+        "z": 85.31192016601562
+      },
+      "shipPosition": {
+        "x": 39.745277404785156,
+        "y": 0.02981323003768921,
+        "z": 0.0775880217552185
+      },
+      "night": false,
+      "windMps": 3.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 5,
+      "voices": 15,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 10404,
+    "over_16_67ms": 4,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 10404,
+        "median": 2.49584740959108,
+        "p95": 3.7225531763397153,
+        "p99": 11.555659798905225,
+        "max": 26.3339001685381,
+        "mean": 2.883679345632362
+      },
+      "cpu_frame_ms": {
+        "samples": 10404,
+        "median": 2.49655,
+        "p95": 3.7211600000000007,
+        "p99": 11.559297999999998,
+        "max": 26.3422,
+        "mean": 2.8839059304113803
+      },
+      "gpu_ms": {
+        "samples": 10044,
+        "median": 1.10592,
+        "p95": 1.33632,
+        "p99": 1.5193190399999992,
+        "max": 2.632704,
+        "mean": 1.1217381951413778
+      },
+      "gc_alloc_bytes": {
+        "samples": 10404,
+        "median": 14876.0,
+        "p95": 14977.0,
+        "p99": 19292.0,
+        "max": 31416.0,
+        "mean": 14950.070549788543
+      },
+      "memory_bytes": {
+        "samples": 10404,
+        "median": 906769587.0,
+        "p95": 909322849.05,
+        "p99": 912779723.62,
+        "max": 918282638.0,
+        "mean": 906858155.2327951
+      },
+      "draw_calls": {
+        "samples": 10404,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 10404,
+        "median": 147.0,
+        "p95": 147.0,
+        "p99": 294.0,
+        "max": 294.0,
+        "mean": 147.01384083044982
+      },
+      "triangles": {
+        "samples": 10404,
+        "median": 4011726.0,
+        "p95": 4011770.0,
+        "p99": 8023452.0,
+        "max": 8028616.0,
+        "mean": 4011743.27710496
+      },
+      "physics_ns": {
+        "samples": 10404,
+        "median": 0.0,
+        "p95": 113400.0,
+        "p99": 130287.99999999974,
+        "max": 288100.0,
+        "mean": 16057.852748942714
+      },
+      "ship_ns": {
+        "samples": 10404,
+        "median": 0.0,
+        "p95": 527900.0,
+        "p99": 577296.9999999999,
+        "max": 823600.0,
+        "mean": 76866.91657054979
+      },
+      "lines_ns": {
+        "samples": 10404,
+        "median": 16100.0,
+        "p95": 20100.0,
+        "p99": 25996.999999999935,
+        "max": 123300.0,
+        "mean": 16622.001153402536
+      },
+      "mechanisms_ns": {
+        "samples": 10404,
+        "median": 16600.0,
+        "p95": 20900.0,
+        "p99": 27700.0,
+        "max": 161300.0,
+        "mean": 17092.550941945407
+      },
+      "audio_ns": {
+        "samples": 10404,
+        "median": 20900.0,
+        "p95": 28000.0,
+        "p99": 37396.999999999935,
+        "max": 932800.0,
+        "mean": 21828.325643983084
+      },
+      "tackle_ns": {
+        "samples": 10404,
+        "median": 0.0,
+        "p95": 41500.0,
+        "p99": 47293.99999999987,
+        "max": 120800.0,
+        "mean": 6079.133025759324
+      },
+      "water_submission_ns": {
+        "samples": 10404,
+        "median": 665700.0,
+        "p95": 831485.0,
+        "p99": 940696.9999999999,
+        "max": 1232400.0,
+        "mean": 679488.014225298
+      },
+      "gc_collections": {
+        "samples": 10404,
+        "median": 73.0,
+        "p95": 139.0,
+        "p99": 145.0,
+        "max": 146.0,
+        "mean": 72.789600153787
+      }
+    }
+  },
+  "soak-0-meteor-342u": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "RiverTrainingScene",
+      "vessel": "meteor-342u",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 5.0,
+      "measurementS": 15.0,
+      "loadFraction": 1.0,
+      "massKg": 53400.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 11.604599952697754,
+        "y": 5.844006538391113,
+        "z": -151.0045166015625
+      },
+      "shipPosition": {
+        "x": -0.09640730917453766,
+        "y": 0.0012452006340026855,
+        "z": -117.68871307373047
+      },
+      "night": false,
+      "windMps": 4.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 12,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 5041,
+    "over_16_67ms": 6,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 5041,
+        "median": 2.68069724552333,
+        "p95": 3.51849501021206,
+        "p99": 13.138840533793013,
+        "max": 20.7304004579782,
+        "mean": 2.975755247879205
+      },
+      "cpu_frame_ms": {
+        "samples": 5041,
+        "median": 2.6808,
+        "p95": 3.5116,
+        "p99": 13.142560000000035,
+        "max": 20.7406,
+        "mean": 2.9757922436024598
+      },
+      "gpu_ms": {
+        "samples": 4654,
+        "median": 1.339392,
+        "p95": 1.6612863999999994,
+        "p99": 1.8681958400000007,
+        "max": 2.359296,
+        "mean": 1.3528817808336915
+      },
+      "gc_alloc_bytes": {
+        "samples": 5041,
+        "median": 7066.0,
+        "p95": 7127.0,
+        "p99": 11478.0,
+        "max": 28018.0,
+        "mean": 7136.167427097798
+      },
+      "memory_bytes": {
+        "samples": 5041,
+        "median": 967438767.0,
+        "p95": 979928603.0,
+        "p99": 982726079.6,
+        "max": 991752385.0,
+        "mean": 970407446.1309264
+      },
+      "draw_calls": {
+        "samples": 5041,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 5041,
+        "median": 161.0,
+        "p95": 189.0,
+        "p99": 314.0,
+        "max": 384.0,
+        "mean": 162.89248165046618
+      },
+      "triangles": {
+        "samples": 5041,
+        "median": 4989520.0,
+        "p95": 5068154.0,
+        "p99": 9883334.4,
+        "max": 10137246.0,
+        "mean": 4984155.529458441
+      },
+      "physics_ns": {
+        "samples": 5041,
+        "median": 0.0,
+        "p95": 95500.0,
+        "p99": 123380.00000000012,
+        "max": 353800.0,
+        "mean": 14454.195596111882
+      },
+      "ship_ns": {
+        "samples": 5041,
+        "median": 0.0,
+        "p95": 44900.0,
+        "p99": 63300.0,
+        "max": 114000.0,
+        "mean": 6958.619321563182
+      },
+      "lines_ns": {
+        "samples": 5041,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "mechanisms_ns": {
+        "samples": 5041,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "audio_ns": {
+        "samples": 5041,
+        "median": 13700.0,
+        "p95": 19900.0,
+        "p99": 28860.000000000036,
+        "max": 66600.0,
+        "mean": 14469.152945844078
+      },
+      "tackle_ns": {
+        "samples": 5041,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "water_submission_ns": {
+        "samples": 5041,
+        "median": 754200.0,
+        "p95": 937800.0,
+        "p99": 1095980.0000000007,
+        "max": 1994800.0,
+        "mean": 771910.1765522714
+      },
+      "gc_collections": {
+        "samples": 5041,
+        "median": 13.0,
+        "p95": 30.0,
+        "p99": 31.0,
+        "max": 31.0,
+        "mean": 14.287244594326523
+      }
+    }
+  },
+  "soak-0-volgobalt-295ar": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "RiverTrainingScene",
+      "vessel": "volgobalt-295ar",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 5.0,
+      "measurementS": 15.0,
+      "loadFraction": 1.0,
+      "massKg": 4761000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 29.260602951049805,
+        "y": 18.28827667236328,
+        "z": -228.3343963623047
+      },
+      "shipPosition": {
+        "x": -0.0050619677640497684,
+        "y": 0.04873967170715332,
+        "z": -119.98702239990234
+      },
+      "night": false,
+      "windMps": 4.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 11,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 5085,
+    "over_16_67ms": 4,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 5085,
+        "median": 2.64910003170371,
+        "p95": 3.5426983144134288,
+        "p99": 12.8406804054975,
+        "max": 19.9272036552429,
+        "mean": 2.949943126755288
+      },
+      "cpu_frame_ms": {
+        "samples": 5085,
+        "median": 2.6492,
+        "p95": 3.5374200000000005,
+        "p99": 12.845487999999987,
+        "max": 19.9391,
+        "mean": 2.9498947689282202
+      },
+      "gpu_ms": {
+        "samples": 4632,
+        "median": 1.25952,
+        "p95": 1.6204287999999998,
+        "p99": 1.8975436799999987,
+        "max": 2.392064,
+        "mean": 1.296557982728843
+      },
+      "gc_alloc_bytes": {
+        "samples": 5085,
+        "median": 6918.0,
+        "p95": 6979.0,
+        "p99": 11334.0,
+        "max": 23458.0,
+        "mean": 6987.525663716814
+      },
+      "memory_bytes": {
+        "samples": 5085,
+        "median": 959932080.0,
+        "p95": 967062149.0,
+        "p99": 969506679.68,
+        "max": 976927968.0,
+        "mean": 960576340.380531
+      },
+      "draw_calls": {
+        "samples": 5085,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 5085,
+        "median": 138.0,
+        "p95": 143.0,
+        "p99": 276.0,
+        "max": 286.0,
+        "mean": 137.68318584070798
+      },
+      "triangles": {
+        "samples": 5085,
+        "median": 4877624.0,
+        "p95": 4878008.0,
+        "p99": 9755248.0,
+        "max": 9757156.0,
+        "mean": 4875316.843264503
+      },
+      "physics_ns": {
+        "samples": 5085,
+        "median": 0.0,
+        "p95": 94100.0,
+        "p99": 122947.99999999996,
+        "max": 197700.0,
+        "mean": 13997.423795476892
+      },
+      "ship_ns": {
+        "samples": 5085,
+        "median": 0.0,
+        "p95": 47000.0,
+        "p99": 65831.99999999997,
+        "max": 159200.0,
+        "mean": 7188.613569321534
+      },
+      "lines_ns": {
+        "samples": 5085,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "mechanisms_ns": {
+        "samples": 5085,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "audio_ns": {
+        "samples": 5085,
+        "median": 13700.0,
+        "p95": 19100.0,
+        "p99": 25215.999999999985,
+        "max": 60100.0,
+        "mean": 14364.79842674533
+      },
+      "tackle_ns": {
+        "samples": 5085,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "water_submission_ns": {
+        "samples": 5085,
+        "median": 751900.0,
+        "p95": 938940.0,
+        "p99": 1070503.9999999998,
+        "max": 1693900.0,
+        "mean": 771752.9203539822
+      },
+      "gc_collections": {
+        "samples": 5085,
+        "median": 15.0,
+        "p95": 31.0,
+        "p99": 33.0,
+        "max": 33.0,
+        "mean": 15.577384464110128
+      }
+    }
+  },
+  "soak-0-volgodon-507b": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgodon-507b",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 5.0,
+      "measurementS": 15.0,
+      "loadFraction": 1.0,
+      "massKg": 6750000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 27.993656158447266,
+        "y": 18.073110580444336,
+        "z": -202.99920654296875
+      },
+      "shipPosition": {
+        "x": -0.0034691612236201763,
+        "y": 0.0488472580909729,
+        "z": -144.99209594726562
+      },
+      "night": false,
+      "windMps": 4.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 15,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 3512,
+    "over_16_67ms": 45,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 3512,
+        "median": 3.8808495737612247,
+        "p95": 4.918002034537493,
+        "p99": 17.439388390630462,
+        "max": 20.3030966222286,
+        "mean": 4.271317883895854
+      },
+      "cpu_frame_ms": {
+        "samples": 3512,
+        "median": 3.8786,
+        "p95": 4.911969999999999,
+        "p99": 17.444882999999976,
+        "max": 20.3094,
+        "mean": 4.271752334851937
+      },
+      "gpu_ms": {
+        "samples": 3043,
+        "median": 1.801216,
+        "p95": 2.1410816,
+        "p99": 2.37320192,
+        "max": 2.765824,
+        "mean": 1.8296679224449555
+      },
+      "gc_alloc_bytes": {
+        "samples": 3512,
+        "median": 11328.0,
+        "p95": 11429.0,
+        "p99": 15744.0,
+        "max": 27969.0,
+        "mean": 11440.551822323463
+      },
+      "memory_bytes": {
+        "samples": 3512,
+        "median": 1002942884.0,
+        "p95": 1021992491.25,
+        "p99": 1026948396.71,
+        "max": 1040521373.0,
+        "mean": 1006522703.0660592
+      },
+      "draw_calls": {
+        "samples": 3512,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 3512,
+        "median": 221.0,
+        "p95": 231.0,
+        "p99": 442.0,
+        "max": 462.0,
+        "mean": 222.7989749430524
+      },
+      "triangles": {
+        "samples": 3512,
+        "median": 6959465.0,
+        "p95": 6965087.0,
+        "p99": 13912973.12,
+        "max": 13931468.0,
+        "mean": 6959427.679384965
+      },
+      "physics_ns": {
+        "samples": 3512,
+        "median": 0.0,
+        "p95": 112500.0,
+        "p99": 127300.99999999988,
+        "max": 226400.0,
+        "mean": 23402.50569476082
+      },
+      "ship_ns": {
+        "samples": 3512,
+        "median": 0.0,
+        "p95": 513134.99999999994,
+        "p99": 607326.9999999994,
+        "max": 732700.0,
+        "mean": 108329.38496583143
+      },
+      "lines_ns": {
+        "samples": 3512,
+        "median": 2900.0,
+        "p95": 4200.0,
+        "p99": 5000.0,
+        "max": 941000.0,
+        "mean": 3334.99430523918
+      },
+      "mechanisms_ns": {
+        "samples": 3512,
+        "median": 19700.0,
+        "p95": 25500.0,
+        "p99": 35288.999999999985,
+        "max": 121000.0,
+        "mean": 20530.637813211844
+      },
+      "audio_ns": {
+        "samples": 3512,
+        "median": 27300.0,
+        "p95": 35800.0,
+        "p99": 45088.999999999985,
+        "max": 956300.0,
+        "mean": 28257.887243735764
+      },
+      "tackle_ns": {
+        "samples": 3512,
+        "median": 0.0,
+        "p95": 2200.0,
+        "p99": 3300.0,
+        "max": 141500.0,
+        "mean": 479.07175398633257
+      },
+      "water_submission_ns": {
+        "samples": 3512,
+        "median": 1069050.0,
+        "p95": 1338149.9999999998,
+        "p99": 1609956.9999999998,
+        "max": 2096600.0,
+        "mean": 1095999.5159453303
+      },
+      "gc_collections": {
+        "samples": 3512,
+        "median": 12.0,
+        "p95": 29.0,
+        "p99": 30.0,
+        "max": 31.0,
+        "mean": 13.3624715261959
+      }
+    }
+  },
+  "soak-0-volgoneft-1577": {
+    "conditions": {
+      "unity": "6000.6.0f1",
+      "cpu": "13th Gen Intel(R) Core(TM) i9-13900K",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "api": "Direct3D 12 [level 12.2]",
+      "os": "Windows 11  (10.0.22631)",
+      "quality": "PC",
+      "scenario": "GorodetsTrainingScene",
+      "vessel": "volgoneft-1577",
+      "camera": "CHASE",
+      "build": "Development, no deep profiling",
+      "ramMB": 32451,
+      "gpuMB": 24138,
+      "width": 1920,
+      "height": 1080,
+      "vSync": 0,
+      "targetFrameRate": -1,
+      "workingSetBytes": 0,
+      "privateBytes": 0,
+      "warmupS": 5.0,
+      "measurementS": 15.0,
+      "loadFraction": 1.0,
+      "massKg": 6477000.0,
+      "fixedDt": 0.019999992102384567,
+      "simulationScale": 1.0,
+      "cameraPosition": {
+        "x": 34.75738525390625,
+        "y": 19.599552154541016,
+        "z": -271.1662902832031
+      },
+      "shipPosition": {
+        "x": -0.00461213942617178,
+        "y": 0.029755830764770508,
+        "z": -144.99191284179688
+      },
+      "night": false,
+      "windMps": 4.0,
+      "rain": 0.0,
+      "fog": 0.0,
+      "sources": 1,
+      "listeners": 1,
+      "soundscapes": 1,
+      "lines": 0,
+      "voices": 11,
+      "counterAvailable": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ]
+    },
+    "frames": 3703,
+    "over_16_67ms": 38,
+    "over_50ms": 0,
+    "metrics": {
+      "frame_ms": {
+        "samples": 3703,
+        "median": 3.68960457853973,
+        "p95": 4.757473245263102,
+        "p99": 16.7905155569315,
+        "max": 24.6108993887901,
+        "mean": 4.051169078236749
+      },
+      "cpu_frame_ms": {
+        "samples": 3703,
+        "median": 3.6892,
+        "p95": 4.758549999999999,
+        "p99": 16.795348000000004,
+        "max": 24.6212,
+        "mean": 4.051194896030245
+      },
+      "gpu_ms": {
+        "samples": 3273,
+        "median": 1.69984,
+        "p95": 2.2237183999999988,
+        "p99": 2.5985843199999983,
+        "max": 3.441664,
+        "mean": 1.7582227045523984
+      },
+      "gc_alloc_bytes": {
+        "samples": 3703,
+        "median": 7144.0,
+        "p95": 7205.0,
+        "p99": 11560.0,
+        "max": 23684.0,
+        "mean": 7242.061571698623
+      },
+      "memory_bytes": {
+        "samples": 3703,
+        "median": 1004569276.0,
+        "p95": 1012892406.7,
+        "p99": 1018288007.38,
+        "max": 1031315481.0,
+        "mean": 1004930752.099919
+      },
+      "draw_calls": {
+        "samples": 3703,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "setpass": {
+        "samples": 3703,
+        "median": 196.0,
+        "p95": 206.0,
+        "p99": 392.0,
+        "max": 438.0,
+        "mean": 197.45422630299757
+      },
+      "triangles": {
+        "samples": 3703,
+        "median": 6821710.0,
+        "p95": 6822439.2,
+        "p99": 13641320.0,
+        "max": 13652278.0,
+        "mean": 6821068.34836619
+      },
+      "physics_ns": {
+        "samples": 3703,
+        "median": 0.0,
+        "p95": 102400.0,
+        "p99": 143670.00000000003,
+        "max": 398300.0,
+        "mean": 20487.38860383473
+      },
+      "ship_ns": {
+        "samples": 3703,
+        "median": 0.0,
+        "p95": 104300.0,
+        "p99": 131196.0,
+        "max": 182000.0,
+        "mean": 18506.75128274372
+      },
+      "lines_ns": {
+        "samples": 3703,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "mechanisms_ns": {
+        "samples": 3703,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "audio_ns": {
+        "samples": 3703,
+        "median": 16200.0,
+        "p95": 21900.0,
+        "p99": 29098.0,
+        "max": 70600.0,
+        "mean": 16784.877126654064
+      },
+      "tackle_ns": {
+        "samples": 3703,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "water_submission_ns": {
+        "samples": 3703,
+        "median": 1079300.0,
+        "p95": 1400470.0,
+        "p99": 1637890.0,
+        "max": 2655600.0,
+        "mean": 1112245.098568728
+      },
+      "gc_collections": {
+        "samples": 3703,
+        "median": 11.0,
+        "p95": 23.0,
+        "p99": 24.0,
+        "max": 24.0,
+        "mean": 11.268701053200108
+      }
+    }
+  }
+}

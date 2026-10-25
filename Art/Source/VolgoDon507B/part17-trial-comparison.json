@@ -1,0 +1,8 @@
+{
+  "comparison": "table rows only, identical trial conditions and current pure manoeuvring runner",
+  "reference": "part12-sea-trials-after.md",
+  "identical": true,
+  "reference_rows": 15,
+  "current_rows": 15,
+  "differences": []
+}

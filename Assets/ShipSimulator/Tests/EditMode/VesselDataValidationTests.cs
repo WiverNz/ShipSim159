@@ -102,13 +102,20 @@ namespace ShipSimulator.Tests
                 "Assets/ShipSimulator/Prefabs/Vessels/VolgoDon507B.prefab");
 
             Transform collisionHull = prefab.transform.Find("CollisionHull");
-            BoxCollider[] sections = collisionHull.GetComponentsInChildren<BoxCollider>();
-
+            MeshCollider[] sections = collisionHull.GetComponentsInChildren<MeshCollider>();
             Assert.That(collisionHull, Is.Not.Null);
-            Assert.That(sections, Has.Length.EqualTo(3));
-            Assert.That(collisionHull.Find("BowCollision"), Is.Not.Null);
-            Assert.That(collisionHull.Find("MidshipCollision"), Is.Not.Null);
-            Assert.That(collisionHull.Find("SternCollision"), Is.Not.Null);
+            Assert.That(sections, Has.Length.EqualTo(13));
+            Assert.That(prefab.GetComponentsInChildren<Collider>(), Has.Length.EqualTo(13));
+            foreach (MeshCollider section in sections)
+            {
+                Assert.That(section.convex, Is.True);
+                Assert.That(section.sharedMesh, Is.Not.Null);
+                Assert.That(section.isTrigger, Is.False);
+                Assert.That(section.GetComponent<Rigidbody>(), Is.Null);
+                Assert.That(section.sharedMesh.bounds.min.y, Is.GreaterThanOrEqualTo(-3.55f));
+            }
+            Assert.That(sections[0].sharedMesh.bounds.min.z, Is.LessThan(-68f));
+            Assert.That(sections[12].sharedMesh.bounds.max.z, Is.GreaterThan(68f));
         }
 
         [Test]

@@ -29,6 +29,8 @@ namespace ShipSimulator.Editor
             public string note;
         }
 
+        private static string Prefix => "part" + (Environment.GetCommandLineArgs().Contains("-finalReview") ? "17" : "13");
+
         public static void Run()
         {
             try
@@ -112,7 +114,7 @@ namespace ShipSimulator.Editor
             Render(camera, group, "nozzles-port-limit", vessel.transform, new Vector3(9, -1, -76), new Vector3(0, -2, -64.65f), -1);
             group.ForceLOD(-1);
             Object.DestroyImmediate(camera.gameObject);
-            File.WriteAllText("Art/Source/VolgoDon507B/part13-machinery.json", JsonUtility.ToJson(report, true));
+            File.WriteAllText($"Art/Source/VolgoDon507B/{Prefix}-machinery.json", JsonUtility.ToJson(report, true));
         }
 
         // Smallest height of any cover part above the cargo heap top, over the footprint they share.
@@ -174,7 +176,7 @@ namespace ShipSimulator.Editor
             group?.ForceLOD(lod);
             camera.transform.position = vessel.TransformPoint(eye);
             camera.transform.LookAt(vessel.TransformPoint(look));
-            LandscapePreview.Render(camera, $"{Output}/part13-machinery-{name}.png");
+            LandscapePreview.Render(camera, $"{Output}/{Prefix}-machinery-{name}.png");
         }
     }
 }

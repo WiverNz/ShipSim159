@@ -7708,6 +7708,7 @@ GameObject:
   - component: {fileID: 74618639}
   - component: {fileID: 74618638}
   - component: {fileID: 74618637}
+  - component: {fileID: 74618640}
   m_Layer: 0
   m_Name: Right Bank 1440
   m_TagString: Untagged
@@ -7808,6 +7809,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 74618635}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &74618640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74618635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &77254523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8264,6 +8277,7 @@ GameObject:
   - component: {fileID: 80916259}
   - component: {fileID: 80916258}
   - component: {fileID: 80916257}
+  - component: {fileID: 80916260}
   m_Layer: 0
   m_Name: Right Bank 0960
   m_TagString: Untagged
@@ -8364,6 +8378,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 80916255}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &80916260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 80916255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &83060618
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11226,6 +11252,7 @@ GameObject:
   - component: {fileID: 114109100}
   - component: {fileID: 114109099}
   - component: {fileID: 114109098}
+  - component: {fileID: 114109101}
   m_Layer: 0
   m_Name: Left Bank 0240
   m_TagString: Untagged
@@ -11326,6 +11353,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 114109096}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114109101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114109096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &115346902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12499,7 +12538,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a854d597e8afbe145bcbddae7b346ace, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.UI.ShipTelemetryUI
   ship: {fileID: 1591016101}
   readout: {fileID: 0}
@@ -12513,7 +12552,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
   m_IgnoreReversedGraphics: 1
   m_BlockingObjects: 0
@@ -12530,7 +12569,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
@@ -16214,7 +16253,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ba8794f95acbd459d0a7897a513419, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.MooringPoint
   id: gorodets-berth-b7
   label: B7
@@ -17231,7 +17270,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0a2ac4504117164883c4ac86c0c0bcb, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.LeadingMarkPair
   frontMark: {fileID: 637293429}
   rearMark: {fileID: 2018990830}
@@ -18265,7 +18304,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72b1499c3c508ca438787199191656b1, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.WeatherController
   windDirectionDeg: 270
   windSpeedMps: 4
@@ -20084,6 +20123,7 @@ GameObject:
   - component: {fileID: 200070924}
   - component: {fileID: 200070923}
   - component: {fileID: 200070922}
+  - component: {fileID: 200070925}
   m_Layer: 0
   m_Name: Right Bank 2040
   m_TagString: Untagged
@@ -20184,6 +20224,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 200070920}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &200070925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200070920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &200141224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21232,6 +21284,7 @@ GameObject:
   - component: {fileID: 207239547}
   - component: {fileID: 207239546}
   - component: {fileID: 207239545}
+  - component: {fileID: 207239548}
   m_Layer: 0
   m_Name: Right Bank 0000
   m_TagString: Untagged
@@ -21332,6 +21385,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 207239543}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &207239548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207239543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &207391917
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37043,6 +37108,7 @@ GameObject:
   - component: {fileID: 372749457}
   - component: {fileID: 372749456}
   - component: {fileID: 372749455}
+  - component: {fileID: 372749458}
   m_Layer: 0
   m_Name: Left Bank 0120
   m_TagString: Untagged
@@ -37143,6 +37209,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 372749453}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &372749458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 372749453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &374733257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40780,6 +40858,7 @@ GameObject:
   - component: {fileID: 407194932}
   - component: {fileID: 407194931}
   - component: {fileID: 407194930}
+  - component: {fileID: 407194933}
   m_Layer: 0
   m_Name: Right Bank 0360
   m_TagString: Untagged
@@ -40880,6 +40959,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 407194928}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &407194933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407194928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &407598410
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44661,7 +44752,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ba8794f95acbd459d0a7897a513419, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.MooringPoint
   id: gorodets-berth-b1
   label: B1
@@ -45864,6 +45955,7 @@ GameObject:
   - component: {fileID: 455384315}
   - component: {fileID: 455384314}
   - component: {fileID: 455384313}
+  - component: {fileID: 455384316}
   m_Layer: 0
   m_Name: Left Bank 0720
   m_TagString: Untagged
@@ -45964,6 +46056,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 455384311}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &455384316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455384311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &456129700
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61672,6 +61776,7 @@ GameObject:
   - component: {fileID: 596003860}
   - component: {fileID: 596003859}
   - component: {fileID: 596003858}
+  - component: {fileID: 596003861}
   m_Layer: 0
   m_Name: Right Bank 0720
   m_TagString: Untagged
@@ -61772,6 +61877,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 596003856}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &596003861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596003856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &597044235
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65497,6 +65614,7 @@ GameObject:
   - component: {fileID: 642595708}
   - component: {fileID: 642595707}
   - component: {fileID: 642595706}
+  - component: {fileID: 642595709}
   m_Layer: 0
   m_Name: Right Bank 0600
   m_TagString: Untagged
@@ -65597,6 +65715,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 642595704}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &642595709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642595704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &643071783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -71665,6 +71795,7 @@ GameObject:
   - component: {fileID: 696763665}
   - component: {fileID: 696763664}
   - component: {fileID: 696763663}
+  - component: {fileID: 696763666}
   m_Layer: 0
   m_Name: Right Bank 1920
   m_TagString: Untagged
@@ -71765,6 +71896,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 696763661}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &696763666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696763661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &696914914
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -77566,6 +77709,7 @@ GameObject:
   - component: {fileID: 720246989}
   - component: {fileID: 720246988}
   - component: {fileID: 720246987}
+  - component: {fileID: 720246990}
   m_Layer: 0
   m_Name: Left Bank 2040
   m_TagString: Untagged
@@ -77666,6 +77810,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 720246985}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &720246990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720246985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &720753217
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -86695,6 +86851,7 @@ GameObject:
   - component: {fileID: 808802376}
   - component: {fileID: 808802375}
   - component: {fileID: 808802374}
+  - component: {fileID: 808802377}
   m_Layer: 0
   m_Name: Right Bank 0240
   m_TagString: Untagged
@@ -86795,6 +86952,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 808802372}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &808802377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808802372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &809298903
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -87437,6 +87606,7 @@ GameObject:
   - component: {fileID: 815334267}
   - component: {fileID: 815334266}
   - component: {fileID: 815334265}
+  - component: {fileID: 815334268}
   m_Layer: 0
   m_Name: Left Bank 1200
   m_TagString: Untagged
@@ -87537,6 +87707,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815334263}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &815334268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815334263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &816240658
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -88550,7 +88732,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 067a7667891f9f5438e6a103adb941c6, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.ScenarioBathymetry
   route: {fileID: 1655743501}
   waterLevelOffsetM: 0
@@ -88592,7 +88774,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b555c59d51937d4d8a5451fc12b05d7, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.CurrentFieldProvider
   baseCurrentMps: {x: 0, y: 0, z: 0.22}
   regions:
@@ -91983,6 +92165,7 @@ GameObject:
   - component: {fileID: 851293971}
   - component: {fileID: 851293970}
   - component: {fileID: 851293969}
+  - component: {fileID: 851293972}
   m_Layer: 0
   m_Name: Left Bank 0840
   m_TagString: Untagged
@@ -92083,6 +92266,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 851293967}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &851293972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851293967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &851463134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -95219,6 +95414,7 @@ GameObject:
   - component: {fileID: 886295440}
   - component: {fileID: 886295439}
   - component: {fileID: 886295438}
+  - component: {fileID: 886295441}
   m_Layer: 0
   m_Name: Right Bank 0120
   m_TagString: Untagged
@@ -95319,6 +95515,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 886295436}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &886295441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886295436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &888813908
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -101024,6 +101232,7 @@ GameObject:
   - component: {fileID: 949004447}
   - component: {fileID: 949004446}
   - component: {fileID: 949004445}
+  - component: {fileID: 949004448}
   m_Layer: 0
   m_Name: Right Bank 0840
   m_TagString: Untagged
@@ -101124,6 +101333,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 949004443}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &949004448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949004443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &949362956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -102958,7 +103179,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0a2ac4504117164883c4ac86c0c0bcb, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.LeadingMarkPair
   frontMark: {fileID: 1519294067}
   rearMark: {fileID: 825402386}
@@ -105098,7 +105319,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bafa5eafb7e1d6540a7435833b395963, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.UI.GorodetsScenarioController
   ship: {fileID: 1591016101}
   route: {fileID: 1655743501}
@@ -106363,7 +106584,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ba8794f95acbd459d0a7897a513419, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.MooringPoint
   id: gorodets-berth-b3
   label: B3
@@ -106413,7 +106634,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ba8794f95acbd459d0a7897a513419, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.MooringPoint
   id: gorodets-berth-b4
   label: B4
@@ -110983,6 +111204,7 @@ GameObject:
   - component: {fileID: 1030960019}
   - component: {fileID: 1030960018}
   - component: {fileID: 1030960017}
+  - component: {fileID: 1030960020}
   m_Layer: 0
   m_Name: Right Bank 1800
   m_TagString: Untagged
@@ -111083,6 +111305,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1030960015}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1030960020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030960015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1031432334
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -114135,6 +114369,7 @@ GameObject:
   - component: {fileID: 1055308849}
   - component: {fileID: 1055308848}
   - component: {fileID: 1055308847}
+  - component: {fileID: 1055308850}
   m_Layer: 0
   m_Name: Left Bank 1560
   m_TagString: Untagged
@@ -114235,6 +114470,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1055308845}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1055308850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055308845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1056047787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -121980,6 +122227,7 @@ GameObject:
   - component: {fileID: 1150291358}
   - component: {fileID: 1150291357}
   - component: {fileID: 1150291356}
+  - component: {fileID: 1150291359}
   m_Layer: 0
   m_Name: Right Bank 1080
   m_TagString: Untagged
@@ -122080,6 +122328,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1150291354}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1150291359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150291354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1 &1151230992
 GameObject:
   m_ObjectHideFlags: 0
@@ -125120,7 +125380,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c583538f7bc2ed41a51341685be421f, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.UI.RadarObstacle
 --- !u!23 &1185004683
 MeshRenderer:
@@ -128356,7 +128616,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d3c589ddbda95345861760bf2edc3c3, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.CameraSystem.ShipFollowCamera
   target: {fileID: 1591016101}
   localViews:
@@ -128399,7 +128659,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 2
@@ -130553,7 +130813,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dccf34a1de814f4e8f1d98e2c0fcee17, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Visuals.RiverPlanarReflection
   resolution: 768
 --- !u!1001 &1233935561
@@ -131191,7 +131451,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ba8794f95acbd459d0a7897a513419, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.MooringPoint
   id: gorodets-berth-b2
   label: B2
@@ -135343,7 +135603,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ba8794f95acbd459d0a7897a513419, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.MooringPoint
   id: gorodets-berth-b5
   label: B5
@@ -141942,6 +142202,7 @@ GameObject:
   - component: {fileID: 1344328985}
   - component: {fileID: 1344328984}
   - component: {fileID: 1344328983}
+  - component: {fileID: 1344328986}
   m_Layer: 0
   m_Name: Left Bank 1440
   m_TagString: Untagged
@@ -142042,6 +142303,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1344328981}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1344328986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344328981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1345570430
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -143572,6 +143845,7 @@ GameObject:
   - component: {fileID: 1355475469}
   - component: {fileID: 1355475468}
   - component: {fileID: 1355475467}
+  - component: {fileID: 1355475470}
   m_Layer: 0
   m_Name: Left Bank 1920
   m_TagString: Untagged
@@ -143672,6 +143946,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1355475465}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1355475470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355475465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1356328891
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -149069,6 +149355,7 @@ GameObject:
   - component: {fileID: 1408228968}
   - component: {fileID: 1408228967}
   - component: {fileID: 1408228966}
+  - component: {fileID: 1408228969}
   m_Layer: 0
   m_Name: Right Bank 1560
   m_TagString: Untagged
@@ -149169,6 +149456,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1408228964}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1408228969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1408228964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1408946914
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -153656,6 +153955,7 @@ GameObject:
   - component: {fileID: 1461467732}
   - component: {fileID: 1461467731}
   - component: {fileID: 1461467730}
+  - component: {fileID: 1461467733}
   m_Layer: 0
   m_Name: Left Bank 0480
   m_TagString: Untagged
@@ -153756,6 +154056,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1461467728}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1461467733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461467728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1462393001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -155362,6 +155674,7 @@ GameObject:
   - component: {fileID: 1472585278}
   - component: {fileID: 1472585277}
   - component: {fileID: 1472585276}
+  - component: {fileID: 1472585279}
   m_Layer: 0
   m_Name: Left Bank 2160
   m_TagString: Untagged
@@ -155462,6 +155775,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1472585274}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1472585279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472585274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1473009139
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -157694,6 +158019,7 @@ GameObject:
   - component: {fileID: 1488681535}
   - component: {fileID: 1488681534}
   - component: {fileID: 1488681533}
+  - component: {fileID: 1488681536}
   m_Layer: 0
   m_Name: Right Bank 2160
   m_TagString: Untagged
@@ -157794,6 +158120,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488681531}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1488681536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488681531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1489068890
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -164950,6 +165288,7 @@ GameObject:
   - component: {fileID: 1570437053}
   - component: {fileID: 1570437052}
   - component: {fileID: 1570437051}
+  - component: {fileID: 1570437054}
   m_Layer: 0
   m_Name: Left Bank 1080
   m_TagString: Untagged
@@ -165050,6 +165389,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1570437049}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1570437054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570437049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1570641693
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165950,6 +166301,7 @@ GameObject:
   - component: {fileID: 1581227816}
   - component: {fileID: 1581227815}
   - component: {fileID: 1581227814}
+  - component: {fileID: 1581227817}
   m_Layer: 0
   m_Name: Left Bank 0360
   m_TagString: Untagged
@@ -166050,6 +166402,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1581227812}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1581227817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1581227812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1581464920
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -167341,7 +167705,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fc0f77ea359fb8498ce3d44ad6eeb68, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ShipSimulator.Physics.ShipPhysicsController
 --- !u!1 &1591016102 stripped
 GameObject:
@@ -167358,7 +167722,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 675885d5450daba4bbfec2a2e12a67c6, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.GroundingController
   ship: {fileID: 1591016101}
   bathymetry: {fileID: 823154028}
@@ -174049,7 +174413,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9085f7af9c600e4087fd316f15f1a04, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.FairwayRoute
   samples:
   - position: {x: 0, y: 0, z: -180}
@@ -176134,6 +176498,7 @@ GameObject:
   - component: {fileID: 1672337986}
   - component: {fileID: 1672337985}
   - component: {fileID: 1672337984}
+  - component: {fileID: 1672337987}
   m_Layer: 0
   m_Name: Left Bank 0000
   m_TagString: Untagged
@@ -176234,6 +176599,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1672337982}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1672337987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672337982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1672801698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -180609,6 +180986,7 @@ GameObject:
   - component: {fileID: 1724377803}
   - component: {fileID: 1724377802}
   - component: {fileID: 1724377801}
+  - component: {fileID: 1724377804}
   m_Layer: 0
   m_Name: Right Bank 1200
   m_TagString: Untagged
@@ -180709,6 +181087,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1724377799}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1724377804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1724377799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1725389827
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -182019,6 +182409,7 @@ GameObject:
   - component: {fileID: 1736527036}
   - component: {fileID: 1736527035}
   - component: {fileID: 1736527034}
+  - component: {fileID: 1736527037}
   m_Layer: 0
   m_Name: Left Bank 1800
   m_TagString: Untagged
@@ -182119,6 +182510,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1736527032}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1736527037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736527032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1740187874
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -184426,6 +184829,7 @@ GameObject:
   - component: {fileID: 1759559843}
   - component: {fileID: 1759559842}
   - component: {fileID: 1759559841}
+  - component: {fileID: 1759559844}
   m_Layer: 0
   m_Name: Right Bank 0480
   m_TagString: Untagged
@@ -184526,6 +184930,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1759559839}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1759559844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759559839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1759630507
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -186777,7 +187193,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
   m_IsGlobal: 1
   priority: 10
@@ -194342,6 +194758,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1854534978}
+  - component: {fileID: 1854534979}
   m_Layer: 0
   m_Name: Visible Rocky Shoals
   m_TagString: Untagged
@@ -194396,6 +194813,18 @@ Transform:
   - {fileID: 739531327}
   m_Father: {fileID: 1609722815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1854534979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854534977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1855885279
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -198254,6 +198683,7 @@ GameObject:
   - component: {fileID: 1891193580}
   - component: {fileID: 1891193579}
   - component: {fileID: 1891193578}
+  - component: {fileID: 1891193581}
   m_Layer: 0
   m_Name: Right Bank 1680
   m_TagString: Untagged
@@ -198354,6 +198784,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891193576}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1891193581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891193576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1892290646
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -207889,7 +208331,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0a2ac4504117164883c4ac86c0c0bcb, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.LeadingMarkPair
   frontMark: {fileID: 23328955}
   rearMark: {fileID: 951207970}
@@ -209621,6 +210063,7 @@ GameObject:
   - component: {fileID: 1990058452}
   - component: {fileID: 1990058451}
   - component: {fileID: 1990058450}
+  - component: {fileID: 1990058453}
   m_Layer: 0
   m_Name: Left Bank 1320
   m_TagString: Untagged
@@ -209721,6 +210164,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1990058448}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1990058453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990058448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &1990378044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -211656,6 +212111,7 @@ GameObject:
   - component: {fileID: 2007262296}
   - component: {fileID: 2007262295}
   - component: {fileID: 2007262294}
+  - component: {fileID: 2007262297}
   m_Layer: 0
   m_Name: Left Bank 1680
   m_TagString: Untagged
@@ -211756,6 +212212,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2007262292}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2007262297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007262292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &2007363848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -215101,6 +215569,7 @@ GameObject:
   - component: {fileID: 2039997813}
   - component: {fileID: 2039997812}
   - component: {fileID: 2039997811}
+  - component: {fileID: 2039997814}
   m_Layer: 0
   m_Name: Left Bank 0600
   m_TagString: Untagged
@@ -215201,6 +215670,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2039997809}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2039997814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039997809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &2040289532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -220746,6 +221227,7 @@ GameObject:
   - component: {fileID: 2091423309}
   - component: {fileID: 2091423308}
   - component: {fileID: 2091423307}
+  - component: {fileID: 2091423310}
   m_Layer: 0
   m_Name: Left Bank 0960
   m_TagString: Untagged
@@ -220846,6 +221328,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2091423305}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2091423310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091423305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1 &2091570789
 GameObject:
   m_ObjectHideFlags: 0
@@ -221466,6 +221960,7 @@ GameObject:
   - component: {fileID: 2098277775}
   - component: {fileID: 2098277774}
   - component: {fileID: 2098277773}
+  - component: {fileID: 2098277776}
   m_Layer: 0
   m_Name: Right Bank 1320
   m_TagString: Untagged
@@ -221566,6 +222061,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2098277771}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2098277776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098277771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603750a11806ba74a93b5e12e89eedde, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.BathymetryContactSurface
 --- !u!1001 &2099095558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -221905,7 +222412,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ba8794f95acbd459d0a7897a513419, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: ShipSimulator.Runtime::ShipSimulator.Physics.MooringPoint
   id: gorodets-berth-b6
   label: B6

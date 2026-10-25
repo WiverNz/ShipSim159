@@ -326,3 +326,18 @@ derived volume and checks. The independent closed surface is not yet consumed
 by runtime hydrostatics. No vessel JSON, displacement, thrust location or force
 coefficient changed in this stage. This remains an estimated prototype geometry.
 
+
+## Parts 16-17 contact and reproducibility
+
+Contact is derived from the corrected render hull, thirteen convex longitudinal
+pieces below y=1.97 m. Section cuts and 0.02 m contact skin are engineering
+approximations, not sourced ship particulars. Sampled maximum excess breadth is
+0.481 m, missing breadth 0.033 m; vertex coverage maximum gap 0.066 m. See
+`Art/Source/VolgoDon507B/PART16_REVIEW.md` for measurement scope and runtime tests.
+The 0.743 m historical family-trace discrepancy is not reduced by this work.
+
+The saved Blender source and all LOD exports reproduce Part 13 mesh signatures;
+original resources retain their SHA-256. Current acceptance and resource/license
+limits are in `PART17_REVIEW.md` alongside the source. No new historical parameter
+or external game resource was introduced. Standalone performance is reported
+separately from editor render timings and target-hardware acceptance.

@@ -1,3 +1,4 @@
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -7,6 +8,8 @@ namespace ShipSimulator.Visuals
     [ExecuteAlways]
     public sealed class RiverPlanarReflection : MonoBehaviour
     {
+        private static readonly ProfilerMarker PerformanceMarker = new ProfilerMarker(ProfilerCategory.Scripts, "ShipSim.WaterReflectionSubmission");
+
         [SerializeField, Range(256, 1024)] private int resolution = 768;
         private Camera reflectionCamera;
         private RenderTexture reflection;
@@ -22,6 +25,7 @@ namespace ShipSimulator.Visuals
 
         private void Render(ScriptableRenderContext context, Camera source)
         {
+            using var measurement = PerformanceMarker.Auto();
             if (rendering || source == null || source.cameraType == CameraType.Reflection || source.cameraType == CameraType.Preview) return;
             if (source.transform.position.y < transform.position.y + 0.1f)
             {
@@ -42,19 +46,8 @@ namespace ShipSimulator.Visuals
             data.renderShadows = false;
             data.requiresColorOption = CameraOverrideOption.Off;
             data.requiresDepthOption = CameraOverrideOption.Off;
-            float height = transform.position.y;
-            Matrix4x4 mirror = Matrix4x4.identity;
-            mirror.m11 = -1;
-            mirror.m13 = 2 * height;
-            Vector3 position = source.transform.position;
-            reflectionCamera.transform.position = new Vector3(position.x, 2 * height - position.y, position.z);
-            reflectionCamera.transform.rotation = Quaternion.LookRotation(Vector3.Reflect(source.transform.forward, Vector3.up), Vector3.Reflect(source.transform.up, Vector3.up));
-            reflectionCamera.worldToCameraMatrix = source.worldToCameraMatrix * mirror;
+            SetReflectionMatrices(source, reflectionCamera, transform.position.y);
             Matrix4x4 view = reflectionCamera.worldToCameraMatrix;
-            Vector3 point = view.MultiplyPoint(new Vector3(0, height + 0.08f, 0));
-            Vector3 normal = view.MultiplyVector(Vector3.up).normalized;
-            Vector4 clipPlane = new Vector4(normal.x, normal.y, normal.z, -Vector3.Dot(point, normal));
-            reflectionCamera.projectionMatrix = ObliqueProjection(source, clipPlane);
             bool inverted = GL.invertCulling;
             try
             {
@@ -72,6 +65,26 @@ namespace ShipSimulator.Visuals
                 GL.invertCulling = inverted;
                 rendering = false;
             }
+        }
+
+        public static void SetReflectionMatrices(Camera source, Camera reflectionCamera, float height)
+        {
+            Matrix4x4 mirror = Matrix4x4.identity;
+            mirror.m11 = -1;
+            mirror.m13 = 2 * height;
+            Vector3 position = source.transform.position;
+            reflectionCamera.transform.position = new Vector3(position.x, 2 * height - position.y, position.z);
+            reflectionCamera.transform.rotation = Quaternion.LookRotation(Vector3.Reflect(source.transform.forward, Vector3.up), Vector3.Reflect(source.transform.up, Vector3.up));
+            reflectionCamera.worldToCameraMatrix = source.worldToCameraMatrix * mirror;
+            Matrix4x4 view = reflectionCamera.worldToCameraMatrix;
+            Vector3 point = view.MultiplyPoint(new Vector3(0, height + 0.08f, 0));
+            Vector3 normal = view.MultiplyVector(Vector3.up).normalized;
+            Vector4 clipPlane = new Vector4(normal.x, normal.y, normal.z, -Vector3.Dot(point, normal));
+            reflectionCamera.projectionMatrix = ObliqueProjection(source, clipPlane);
+            // Oblique near planes can invalidate Unity's far-corner culling reconstruction.
+            // Cull conservatively with the mirrored ordinary frustum; raster clipping stays oblique.
+            reflectionCamera.cullingMatrix = source.nonJitteredProjectionMatrix * view;
+            reflectionCamera.useOcclusionCulling = false;
         }
 
         private static Matrix4x4 ObliqueProjection(Camera source, Vector4 plane)

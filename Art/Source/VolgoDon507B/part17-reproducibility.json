@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "reopened": true,
+  "meshes_checked": 146,
+  "levels": 3,
+  "matches_part13": true,
+  "archive_hull_sha256": "a0c1ff0fdf69f44b42d8dca29873c55ca090f95a9d9de59a2b9dbdf16f71d8fb",
+  "archive_matches_part9": true,
+  "updated_mcp_protocol": 15
+}

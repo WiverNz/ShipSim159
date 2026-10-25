@@ -52,6 +52,7 @@ namespace ShipSimulator.Editor
             VolgoDonLodIntegration.Install(visual);
             VolgoDonHoldIntegration.Install(root);
             VolgoDonAudioIntegration.Install(root);
+            VolgoDonContactBuilder.Install(root);
             return true;
         }
 

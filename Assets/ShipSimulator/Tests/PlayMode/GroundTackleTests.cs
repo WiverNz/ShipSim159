@@ -102,6 +102,7 @@ namespace ShipSimulator.Tests
             Assert.That(shortScope.anchorTravelM, Is.GreaterThan(5f), "With the shank lifted the anchor drags.");
             Assert.That(shortScope.finite, Is.True);
 
+            Object.DestroyImmediate(ship.gameObject);
             ship = Spawn(12f);
             tackle = ship.GroundTackle;
             Anchor(ship, Port, 90);

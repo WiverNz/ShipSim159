@@ -1,0 +1,12 @@
+{
+    "samples": 4253,
+    "colliders": 13,
+    "oldMaxGapM": 5.969207286834717,
+    "newMaxGapM": 0.06635890901088715,
+    "oldMeanGapM": 0.9545739889144897,
+    "newMeanGapM": 0.0022143772803246975,
+    "raySamples": 649,
+    "maxExcessBreadthM": 0.48054689168930054,
+    "maxMissingBreadthM": 0.03305238485336304,
+    "scope": "Hull mesh vertices at or below y=1.97 m, distance to closed collider solids; convex envelopes can bridge concavities."
+}

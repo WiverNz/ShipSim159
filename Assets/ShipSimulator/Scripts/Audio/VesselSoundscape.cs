@@ -1,3 +1,4 @@
+using Unity.Profiling;
 using System.Collections.Generic;
 using ShipSimulator.Physics;
 using ShipSimulator.Visuals;
@@ -16,6 +17,8 @@ namespace ShipSimulator.Audio
     [RequireComponent(typeof(ShipPhysicsController))]
     public sealed class VesselSoundscape : MonoBehaviour
     {
+        private static readonly ProfilerMarker PerformanceMarker = new ProfilerMarker(ProfilerCategory.Scripts, "ShipSim.Audio");
+
         public const string PointsName = "AudioPoints";
         private const float EventCooldown = 0.25f;
         private const float RestoreQuiet = 0.3f;
@@ -189,6 +192,7 @@ namespace ShipSimulator.Audio
         // whether the simulation moved this frame (zero while paused).
         public void Tick(float realDt, float simDt)
         {
+            using var measurement = PerformanceMarker.Auto();
             if (!built && !Build()) return;
             clock += realDt;
             bool restored = ship.RestoreCount != seenRestore;

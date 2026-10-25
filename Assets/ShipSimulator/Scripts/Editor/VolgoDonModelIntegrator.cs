@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -62,6 +63,7 @@ namespace ShipSimulator.Editor
             try
             {
                 if (!AddLegacyVisual(root)) throw new InvalidOperationException("Legacy model is missing.");
+                EnsureCollisionHull(root);
                 PrefabUtility.SaveAsPrefabAsset(root, VesselPrefabPath);
             }
             finally { PrefabUtility.UnloadPrefabContents(root); }
@@ -223,6 +225,11 @@ namespace ShipSimulator.Editor
 
         public static void EnsureCollisionHull(GameObject vesselRoot)
         {
+            if (vesselRoot.GetComponentsInChildren<MeshFilter>(true).Any(f => f.name == "VD507B_hull"))
+            {
+                VolgoDonContactBuilder.Install(vesselRoot);
+                return;
+            }
             Transform existing = vesselRoot.transform.Find("CollisionHull");
             if (existing != null) Object.DestroyImmediate(existing.gameObject);
 

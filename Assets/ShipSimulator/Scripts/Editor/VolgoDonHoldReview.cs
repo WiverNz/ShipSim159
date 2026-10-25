@@ -113,7 +113,7 @@ namespace ShipSimulator.Editor
                 group?.ForceLOD(lod);
                 camera.transform.position = vessel.transform.TransformPoint(eye);
                 camera.transform.LookAt(vessel.transform.TransformPoint(target));
-                LandscapePreview.Render(camera, $"{Output}/part12-{prefix}-hold-{name}.png");
+                LandscapePreview.Render(camera, $"{Output}/{(prefix == "part17" ? "part17" : "part12-" + prefix)}-hold-{name}.png");
             }
         }
 

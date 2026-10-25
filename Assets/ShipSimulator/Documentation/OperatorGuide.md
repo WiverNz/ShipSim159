@@ -318,3 +318,16 @@ simulation time, pauses with the voyage and resumes its saved movement after loa
 Anchors and mooring lines are described under "Volgo-Don anchors and mooring lines". Propeller
 rotation follows actual shaft RPM and nozzle rotation follows actual steering.
 Day/night controls continue to operate the ship's five sector navigation lights.
+
+## Volgo-Don contact checks, Part 16
+
+The hull now contacts quays along its corrected bow, stern and sides. Use low
+approach speeds; chain/line tension remains active against the quay. A light sand
+shoal may allow a gradual astern departure when thrust exceeds bottom holding,
+while a heavy grounding may require reduced draft or external assistance. The
+sideways recovery check uses a specified external 30 kN pull, not a promise of
+sideways self-propulsion. No teleport or automatic release is applied.
+
+Loading restores ground contact from the restored Rigidbody pose. Old saves keep
+the existing fallback rules for loading, engines, mechanisms and ground tackle.
+The physics and contact values are prototype estimates, not navigation guidance.

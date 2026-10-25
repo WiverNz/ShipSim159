@@ -24,6 +24,11 @@ instrumentation.
 
 Windows release packaging and Unity license setup are documented in
 [`scripts/README.md`](scripts/README.md).
+Local builds that do not change Git use `ShipSimulator.Editor.LocalWindowsBuild.Run`;
+see [local build and profiling](Tools/README.md#local-windows-player-and-performance-capture).
+The 507B final evidence is in [Part 16](Art/Source/VolgoDon507B/PART16_REVIEW.md),
+[Part 17](Art/Source/VolgoDon507B/PART17_REVIEW.md) and
+[built-player performance](Art/Source/VolgoDon507B/PLAYER_PERFORMANCE.md).
 
 - Data-driven vessels: each ship is a JSON specification plus a model prefab, so the same
   simulation runs any hull.
@@ -39,7 +44,7 @@ Windows release packaging and Unity license setup are documented in
 - Virtual sea trials (turning circle, zig-zag, crash stop) against the IMO envelope.
 - Ambient and trigger-based river currents.
 - Curved river fairway with estimated bathymetry and under-keel clearance.
-- Compound bow, midship, and stern collision hull.
+- Builder-generated compound contact hulls; 13 convex sections on the corrected 507B.
 - Heading-up river radar with:
   - depth zones and minimum depth ahead;
   - curved fairway route and marked channel edges;

@@ -143,7 +143,11 @@ namespace ShipSimulator.Editor
                     right + Vector3.up * 2f, new Vector3(120f, 6f, 135f), bank);
             }
 
+            foreach (Transform bankObject in root)
+                if (bankObject.name.Contains("Bank")) bankObject.gameObject.AddComponent<BathymetryContactSurface>();
+
             Transform hazards = new GameObject("Visible Rocky Shoals").transform;
+            hazards.gameObject.AddComponent<BathymetryContactSurface>();
             hazards.SetParent(root, false);
             foreach (BathymetryHazard hazard in CreateHazards())
             {

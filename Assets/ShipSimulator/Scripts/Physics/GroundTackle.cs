@@ -1,3 +1,4 @@
+using Unity.Profiling;
 using System;
 using System.Collections.Generic;
 using ShipSimulator.Persistence;
@@ -24,6 +25,8 @@ namespace ShipSimulator.Physics
     // step only. A prototype holding model with estimated soil and line values, not a mooring safety analysis.
     public sealed class GroundTackle : MonoBehaviour
     {
+        private static readonly ProfilerMarker PerformanceMarker = new ProfilerMarker(ProfilerCategory.Scripts, "ShipSim.Tackle");
+
         // Chain paid out while the anchor leaves its hawse pocket (the Part 13 unseat clip).
         public const float UnseatChainM = 0.35f;
         private const float Gravity = 9.81f;
@@ -296,6 +299,7 @@ namespace ShipSimulator.Physics
 
         public void Step(float dt)
         {
+            using var measurement = PerformanceMarker.Auto();
             PowerW = 0;
             if (dt <= 0 || !EnsureReady() || ship.Body == null || ship.Parameters == null) return;
             foreach (Anchor a in anchors) StepAnchor(a, dt);

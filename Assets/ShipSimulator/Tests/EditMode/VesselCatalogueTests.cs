@@ -30,7 +30,7 @@ namespace ShipSimulator.Tests
                 VesselLayout layout = entry.prefab.GetComponent<VesselLayout>();
                 Assert.That(layout, Is.Not.Null, entry.id);
                 Assert.That(layout.VesselId, Is.EqualTo(entry.id));
-                Assert.That(entry.prefab.GetComponentsInChildren<BoxCollider>().Length, Is.GreaterThanOrEqualTo(3), entry.id);
+                Assert.That(entry.prefab.GetComponentsInChildren<Collider>().Length, Is.EqualTo(entry.id == "volgodon-507b" ? 13 : 3), entry.id);
                 Assert.That(entry.menuName, Is.Not.Empty);
                 Assert.That(entry.vesselClass, Is.Not.Empty);
             }

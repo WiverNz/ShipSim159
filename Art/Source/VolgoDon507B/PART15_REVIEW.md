@@ -259,7 +259,7 @@ rendering (no `-quit`, no `-nographics`), about 8 minutes; then
   its tests rely on that). The measured step at the cut is 0.025 at about -30 dBFS.
 - Positions of the exhaust uptake, the hull water points and the stern capstan are estimated.
 - No room acoustics, occlusion or reverb; the wheelhouse is a filter. No sound of rain, of the bow
-  thruster (the 507B has none), of the steering gear or of the auxiliary generators.
+  waterjet thruster, of the steering gear or of the auxiliary generators.
 - Busy scenes reach 29 of Unity's 32 real voices; above that Unity virtualizes the least
   important (priorities: one-shots, engines, machinery, water, wind).
 - The windlass, stern capstan and cover winches share one motor recording at different pitches.

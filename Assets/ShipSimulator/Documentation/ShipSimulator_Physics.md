@@ -252,6 +252,24 @@ thrust, (1 - t) T, shown on the HUD. Details and measured cases:
 For a vessel with a loading model the propeller immersion follows the actual hub depth each step
 (trim, heel, heave, stern squat); the pure simulator keeps the still-water value.
 
+## Hull collision ownership (Part 16)
+
+The 507B uses thirteen convex slices of the corrected hull, installed by
+`VolgoDonContactBuilder` through the normal model integrator. Decorative fittings
+and propellers are excluded from PhysX hull contact; grounding retains its
+section-grid and propeller-tip samples. Quay/independent-obstacle reactions belong
+to PhysX; soil normal pressure and friction belong to GroundingController.
+Gorodets bank/rock geometry represented by the bathymetry is explicitly marked
+`BathymetryContactSurface`; those collider pairs are ignored while bathymetric
+grounding is enabled. Disabling either owner restores ordinary collision pairs.
+Anchors and moorings apply line forces only, with no duplicate contact joints.
+
+Grounding evaluates contact points and normals from the Rigidbody pose, including
+immediately after loading a save. The force law, mass, CG, inertia and saved data
+schema are unchanged. Convex approximation and measured contact/grounding limits:
+`Art/Source/VolgoDon507B/PART16_REVIEW.md`. No walkable decks or interior collision
+system is provided by this contact hull.
+
 ## Anchors and mooring lines
 
 `GroundTackle` (507B only; vessel JSON `groundTackle`, hawses and `MooringPoint` leads in the

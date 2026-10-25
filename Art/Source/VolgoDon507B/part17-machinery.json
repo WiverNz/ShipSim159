@@ -1,0 +1,28 @@
+{
+    "transitions": [
+        {
+            "from": "Closed",
+            "to": "HalfOpen",
+            "seconds": 365.0
+        },
+        {
+            "from": "HalfOpen",
+            "to": "ForwardOpen",
+            "seconds": 371.0003662109375
+        },
+        {
+            "from": "ForwardOpen",
+            "to": "AftOpen",
+            "seconds": 742.0
+        },
+        {
+            "from": "AftOpen",
+            "to": "Closed",
+            "seconds": 736.0
+        }
+    ],
+    "minimumCoverToCargoM": 1.9280540943145752,
+    "cycleSecondsSampled": 2214.0,
+    "samples": 2214,
+    "note": "Editor edit-mode stepping at 1 s; real-time rates from mechanisms.json operating_rates."
+}

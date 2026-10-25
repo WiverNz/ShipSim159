@@ -1,5 +1,15 @@
 # Volgo-Don 507B Model Provenance
 
+## Parts 16-17 contact and reproducibility, 2026-10-24
+
+The 13 convex contact meshes are generated from the corrected visual hull by
+`VolgoDonContactBuilder`. No third-party asset was added. All 45 protected legacy
+assets match their Part 9 SHA-256; the archived hull mesh also matches.
+The three re-exported FBXs retain Part 13 geometry signatures; export metadata
+can change binary hashes. See [PART17_REVIEW.md](PART17_REVIEW.md) and
+`part17-protected-hashes.json`. The original model license remains unresolved.
+Reference photos were viewed outside game resources, not copied into textures.
+
 ## Part 14 mooring points, 2026-10-24
 
 No mesh, UV, material or animation changed. Bollard and lead positions in `mechanisms.json`
@@ -129,3 +139,10 @@ were added. Primary geometry, material lineage and the classic two-covered-hold
 variant are unchanged. All 45 original model resources match their audit hashes.
 See `PART8_REVIEW.md` and `part8-reproducibility.json` for evidence and limitations.
 
+
+
+Part 17 player packaging adds two project-generated dependency materials in
+`Assets/ShipSimulator/Resources/RuntimeShaders/`: NavigationUnlit and RainUnlit.
+They reference the already installed Unity URP package shaders, with plain colour
+and transparent-particle settings; no downloaded image, mesh or audio is embedded.
+They preserve build-time shader dependencies, not a new third-party art license.

@@ -1,6 +1,6 @@
 # Volgo-Don 507B: remaining fidelity work
 
-Created: 2026-10-23. Parts 9-15 complete; Parts 16-17 not started.
+Created: 2026-10-23. Parts 9-17 implemented and reviewed; documented fidelity limits and external target acceptance remain.
 
 This continues Parts 1-8 of [IMPROVEMENT_CHECKLIST.md](IMPROVEMENT_CHECKLIST.md).
 The baseline and known discrepancies are recorded in [PART8_REVIEW.md](PART8_REVIEW.md).
@@ -41,8 +41,8 @@ precision. A completed prototype feature is not validated maritime training.
 | 13 | Evidence-based machinery rates and detail corrections | 9; reconcile with 12 | Complete, 2026-10-24; rates derived or estimated within archive limits, visual anchors only |
 | 14 | Anchor holding and mooring prototype | 11, 12, 13 | Complete, 2026-10-24; estimated soil, chain and rope values, quasi-static lines, demonstration quay in Gorodets |
 | 15 | Licensed machinery and water audio | 12, 13 | Complete, 2026-10-24; CC0 analogue recordings and original synthesis, no 507B recordings; not listened to by a person |
-| 16 | Improved contact geometry | 10, 11; retest 14 | Not started |
-| 17 | Integrated fidelity acceptance and discrepancy update | 9-16 | Not started |
+| 16 | Improved contact geometry | 10, 11; retest 14 | Complete with documented approximation limits |
+| 17 | Integrated fidelity acceptance and discrepancy update | 9-16 | Complete with documented limits; available-host player PASS |
 
 Part 9 may retain a representative classic configuration if no specific ship can
 be identified. Document that decision; do not block all work on a speculative name.
@@ -220,13 +220,13 @@ the files became a shared library for all five vessels with a profile each (PART
 
 ## Part 16: collision fidelity
 
-- [ ] Compare the current compound boxes with the corrected hull, especially
+- [x] Compare the current compound boxes with the corrected hull, especially
   the uncovered extremities, waterline and berth-contact areas.
-- [ ] Improve contact using a small documented set of primitive or convex shapes.
+- [x] Improve contact using a small documented set of primitive or convex shapes.
   Do not install a non-convex MeshCollider on the dynamic vessel.
-- [ ] Keep decorative fittings and propellers out of hull contact unless a
+- [x] Keep decorative fittings and propellers out of hull contact unless a
   concrete gameplay requirement justifies their collision cost.
-- [ ] Test glancing bank/quay contact, bow/stern contact, grounding and moored
+- [x] Test glancing bank/quay contact, bow/stern contact, grounding and moored
   contact under tension. Check jitter, tunnelling and artificial snagging.
 
 Deliverables: builder-backed collision layout, diagnostic overlays and regression
@@ -234,22 +234,30 @@ scenarios. Acceptance: measured contact coverage improves while physics remains
 stable. A walking character, climbable decks and interior navigation are outside
 this plan; they require their own gameplay scope and separate collision layers.
 
+Result: [PART16_REVIEW.md](PART16_REVIEW.md), 13 convex sections, sampled maximum
+uncovered distance 0.066 m, 48 contact cases and grounding/tackle regressions pass.
+
 ## Part 17: integrated acceptance
 
-- [ ] Reopen the final source, regenerate all exports and reinstall through the
+- [x] Reopen the final source, regenerate all exports and reinstall through the
   standard builders. Verify original fallback hashes and resource licenses.
-- [ ] Run applicable EditMode/PlayMode suites, all-vessel shakedown, numerical
+- [x] Run applicable EditMode/PlayMode suites, all-vessel shakedown, numerical
   trials, menu/save/load and new anchor/mooring/contact scenarios.
-- [ ] Compare reference overlays and capture loaded/ballast, day/night, bridge,
+- [x] Compare reference overlays and capture loaded/ballast, day/night, bridge,
   underwater and operating-mechanism views at all relevant LODs.
-- [ ] Confirm no unintended regression in controls, loading, water effects,
+- [x] Confirm no unintended regression in controls, loading, water effects,
   other vessels, materials or the Part 8 resource budgets.
-- [ ] Update README, provenance, parameter sources, operator documentation and
+- [x] Update README, provenance, parameter sources, operator documentation and
   project context. Reconcile this plan with the final discrepancy ledger.
 
 Acceptance: a reproducible source and integrated vessel with measured improvements
 and honest unresolved items. Built-player GPU/frame-time/GC acceptance is still a
 separate requirement: link its results if available, otherwise leave it unchecked.
+
+Result (2026-10-25): [PART17_REVIEW.md](PART17_REVIEW.md) and
+[PLAYER_PERFORMANCE.md](PLAYER_PERFORMANCE.md). EditMode 269/269, PlayMode 161/161,
+actual Windows player 27 cases and 15 switches PASS. Target hardware and unsupported
+metrics are explicitly blocked, not checked off as measured.
 
 ## Completion record for each part
 
@@ -258,3 +266,8 @@ artifacts, evidence and estimates, exact tests/results, screenshots and remainin
 discrepancies. Explain missing evidence and complete independent work where possible.
 Do not mark a part complete solely because its code runs. Leave subsequent parts
 unstarted until requested.
+
+Cold-path performance limitation: a fresh-process LOD repeat reproduced two >50 ms frames
+(maximum 234.93 ms); the next two identical repeats peaked at 31.97/26.46 ms.
+First-use preparation is a hypothesis, not a diagnosed cause. Stall elimination
+remains open; see PLAYER_PERFORMANCE.md. Final full-run PASS does not erase this finding.

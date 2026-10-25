@@ -24,6 +24,7 @@ namespace ShipSimulator.Editor
     {
         private const string StageKey = "ShipSimulator.Part14.Stage";
         private const string SceneName = "GorodetsTrainingScene";
+        private static string Prefix => Array.IndexOf(Environment.GetCommandLineArgs(), "-finalReview") >= 0 ? "part17" : "part14";
         private const string Output = "Art/Source/VolgoDon507B/Previews";
         private static readonly string[] Lines =
             { "bow-head-starboard", "bow-breast-starboard", "fwd-spring-starboard", "aft-spring-starboard", "stern-starboard" };
@@ -283,7 +284,7 @@ namespace ShipSimulator.Editor
             camera.fieldOfView = 50;
             holder.transform.SetPositionAndRotation(position, Quaternion.LookRotation(target - position));
             Directory.CreateDirectory(Output);
-            LandscapePreview.Render(camera, $"{Output}/{name}.png");
+            LandscapePreview.Render(camera, $"{Output}/{name.Replace("part14", Prefix)}.png");
             UnityEngine.Object.DestroyImmediate(holder);
         }
 
@@ -305,7 +306,7 @@ namespace ShipSimulator.Editor
                 text.SetAllDirty();
             }
             Canvas.ForceUpdateCanvases();
-            LandscapePreview.Render(camera, $"{Output}/{name}.png");
+            LandscapePreview.Render(camera, $"{Output}/{name.Replace("part14", Prefix)}.png");
             hudCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
             hudCanvas.worldCamera = null;
         }
@@ -314,7 +315,7 @@ namespace ShipSimulator.Editor
         {
             Directory.CreateDirectory("Logs/Part14");
             string json = JsonUtility.ToJson(report, true);
-            File.WriteAllText("Art/Source/VolgoDon507B/part14-runtime.json", json);
+            File.WriteAllText($"Art/Source/VolgoDon507B/{Prefix}-runtime.json", json);
             Debug.Log("GROUND_TACKLE_RUNTIME|REPORT " + json);
             bool pass = !failed && report.linesHeld && report.alongsideDriftM < 3f && report.anchorHeld && report.dragged &&
                 report.heaving && report.drawBytesPer1000 < 1024;

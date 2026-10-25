@@ -1,3 +1,4 @@
+using Unity.Profiling;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace ShipSimulator.Physics
     [RequireComponent(typeof(Rigidbody), typeof(VesselDataLoader))]
     public sealed class ShipPhysicsController : MonoBehaviour
     {
+        private static readonly ProfilerMarker PerformanceMarker = new ProfilerMarker(ProfilerCategory.Scripts, "ShipSim.Physics");
+
         private const int BankSamplesPerSide = 8;
 
         [Header("Environment")]
@@ -196,6 +199,7 @@ namespace ShipSimulator.Physics
 
         public void Simulate(float dt)
         {
+            using var measurement = PerformanceMarker.Auto();
             if (model == null) return;
             StepLoading(dt);
             if (grounding != null && grounding.isActiveAndEnabled) grounding.Step(dt);

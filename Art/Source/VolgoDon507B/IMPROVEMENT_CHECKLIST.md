@@ -1,6 +1,8 @@
 # Volgo-Don Project 507B Improvement Checklist
 
-Status: Parts 1-5 complete. Part 5 completed on 2026-10-22. Parts 6-8 not started.
+Status: Parts 1-8 implemented. Refinement Parts 9-16 implemented and Part 17 completed with documented limits on 2026-10-25.
+See [REFINEMENT_PLAN.md](REFINEMENT_PLAN.md), [PART17_REVIEW.md](PART17_REVIEW.md) and
+[PLAYER_PERFORMANCE.md](PLAYER_PERFORMANCE.md). Target-hardware acceptance remains open.
 Created: 2026-10-21.
 
 ## How to execute this document
@@ -344,7 +346,7 @@ textures or inverted visible surfaces, functioning mechanisms, acceptable measur
 performance, preserved controls and an honest final list of remaining differences.
 
 - [ ] External acceptance: measure a 1080p built player on target hardware.
-  RTX 4090 editor/batch measurements are recorded, not a target GPU certification.
+  RTX 4090 built-player measurements are recorded in PLAYER_PERFORMANCE.md, not a target GPU certification.
 
 ## Completion record template
 
@@ -415,3 +417,8 @@ Hull sections, coarse three-bladed propellers, faceted nozzles, detailed PBR map
 and transparent glazing remain Part 3. Anchoring/mooring islands and covers are
 editable within existing meshes; independent mechanisms/pivots remain Part 4.
 README and AUDIT document limitations and before/after images. No commit or push.
+
+Cold-path performance limitation: a fresh-process LOD repeat reproduced two >50 ms frames
+(maximum 234.93 ms); the next two identical repeats peaked at 31.97/26.46 ms.
+First-use preparation is a hypothesis, not a diagnosed cause. Stall elimination
+remains open; see PLAYER_PERFORMANCE.md. Final full-run PASS does not erase this finding.

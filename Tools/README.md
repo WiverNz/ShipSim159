@@ -77,3 +77,41 @@ Run `powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File
 .\Tools\test-shipsim-tools.ps1`. It uses temporary fixtures and mocked Unity/process APIs,
 including a checkout path with spaces. No Unity editor starts. It checks compile/test
 success, compiler errors, exit codes, missing outputs and refusal of a busy project.
+
+
+## Local Windows player and performance capture
+
+`ShipSimulator.Editor.LocalWindowsBuild.Run` builds Windows x64 with the enabled
+EditorBuildSettings scenes and the Unity version from ProjectVersion.txt. It checks
+BuildReport and writes `build/StandaloneWindows64/ShipSim159.exe` and
+`Logs/Part17/build-report.txt`. It is a Development build with frame timing enabled,
+without deep profiling or script debugging. No Git/release operation is involved.
+`RuntimeShaderBuildAssets` preserves the navigation and transparent rain shaders
+that runtime Shader.Find calls would otherwise omit from a player build.
+
+Validate the package with `bash scripts/release-smoke.sh --pkg-dir build/StandaloneWindows64`.
+Run the Windows executable normally, without batchmode or nographics. Opt in to the
+reproducible benchmark with `--shipsim-profile --profile-output <absolute-folder>`.
+`--profile-smoke` runs only the first case with a 2 s warmup and 5 s sample; it is
+an instrumentation/startup check, not the full acceptance run.
+The full run uses 12 vessel cases (10 s warmup, 30 s samples) and 15 scene/vessel
+switches (5 s warmup, 15 s samples). Extra setup lets motion/lines/anchors develop.
+It checks pause, volume/mute and save/load, restores audio/vessel preferences, and
+quits with a result file and exit status. The full watchdog is 30 minutes.
+
+Summarize completed case pairs with:
+
+```sh
+python3 Tools/summarize-player-profile.py Logs/Part17/Player --output /tmp/player-summary.json
+```
+
+CPU/GPU timing comes from FrameTimingManager in the actual player; negative values
+are unavailable. CSV frame_ms is the unscaled frame interval. ProfilerRecorder
+values include script CPU costs, not GPU water cost or audio DSP execution. A
+valid recorder can still return unusable zero data, which must be identified in
+the report. CPU markers nest (tackle inside ship physics); do not add them together.
+The measurement buffer is preallocated; CSV/JSON writes and screenshots occur
+after sampling. Scene transition cost is recorded separately from warmed frames.
+
+Use `--profile-case lod-transition --profile-repeat 3` to repeat one case with
+identical setup, warmup and sampling, without the complete multi-vessel soak.

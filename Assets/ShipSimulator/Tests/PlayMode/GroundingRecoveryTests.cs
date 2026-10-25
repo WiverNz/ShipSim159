@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+using UnityEditor;
 using System;
 using System.Collections;
 using System.IO;
@@ -347,6 +349,19 @@ namespace ShipSimulator.Tests
 
         private ShipPhysicsController CreateShip(VesselData data)
         {
+            if (data.identity.project == "507B")
+            {
+                var inactive = new GameObject("Inactive grounding setup"); inactive.SetActive(false);
+                shipObject = Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(
+                    "Assets/ShipSimulator/Prefabs/Vessels/VolgoDon507B.prefab"), inactive.transform);
+                shipObject.SetActive(false); shipObject.transform.SetParent(null); Object.DestroyImmediate(inactive);
+                shipObject.AddComponent<GroundingController>(); shipObject.SetActive(true);
+                var integrated = shipObject.GetComponent<ShipPhysicsController>();
+                integrated.ManualStepping = true;
+                integrated.SetAmbientCurrent(Vector3.zero);
+                integrated.Grounding.Configure(integrated, null);
+                return integrated;
+            }
             shipObject = new GameObject("Grounding test ship");
             shipObject.SetActive(false);
             shipObject.AddComponent<Rigidbody>();
@@ -374,3 +389,5 @@ namespace ShipSimulator.Tests
         }
     }
 }
+
+#endif

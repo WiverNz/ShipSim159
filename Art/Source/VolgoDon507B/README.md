@@ -1,6 +1,14 @@
 # Volgo-Don 507B editable source
 
-## Current milestone: Part 15 audio
+## Current milestone: Parts 16-17
+
+Contact geometry and final source/integration checks are implemented. Read
+[PART16_REVIEW.md](PART16_REVIEW.md), [PART17_REVIEW.md](PART17_REVIEW.md) and
+[PLAYER_PERFORMANCE.md](PLAYER_PERFORMANCE.md) for measured evidence and remaining
+limits. Current LOD triangles: 59,543 / 36,044 / 24,474. The normal integrator
+regenerates 13 convex hull sections; it preserves the physical root and legacy fallback.
+
+## Part 15 audio
 
 Part 15 is complete. Read [PART15_REVIEW.md](PART15_REVIEW.md). No geometry changed. The sound
 library, its pipeline, sources, license registry and license snapshots are shared by all vessels in
@@ -50,7 +58,7 @@ The blend and FBX exports are unchanged in this stage.
 
 Part 10 is implemented. Read [PART10_REVIEW.md](PART10_REVIEW.md) for the corrected
 lower shell, separate closed hydrostatic surface, source uncertainty, validation
-and screenshots. Current LOD triangle counts are 59,543 / 35,972 / 24,362.
+and screenshots. Part 10 LOD triangle counts were 59,543 / 35,972 / 24,362.
 The blend contains source, two LOD, archival hull and hydrostatic scenes.
 The hydrostatic surface is excluded from FBX exports; Part 11 derives the physics table from it.
 The largest trace-to-section residual is 0.743 m and remains explicitly unresolved.
@@ -59,7 +67,7 @@ The largest trace-to-section residual is 0.743 m and remains explicitly unresolv
 
 Parts 1-8 are implemented, with target-machine performance acceptance still open.
 Remaining fidelity work is staged as Parts 9-17 in
-[REFINEMENT_PLAN.md](REFINEMENT_PLAN.md). Parts 9-11 are complete; Parts 12-17 are not started.
+[REFINEMENT_PLAN.md](REFINEMENT_PLAN.md). Parts 9-17 have implementation and review evidence; unresolved fidelity and target-hardware acceptance are explicitly retained in the final reports.
 
 Read [REFERENCE_DECISIONS.md](REFERENCE_DECISIONS.md) before hull or physics edits.
 It records the retained representative two-hold variant, source applicability,
@@ -250,3 +258,22 @@ configuration; develop PBR surface maps and measured wear. Preserve the repaired
 atlas mapping. Part 4 separates covers and other mechanisms with verified pivots.
 Parts 5-7 handle live integration, nozzle forces and loading/ballast. LODs and
 performance validation remain Part 8. No new dynamics accuracy is claimed here.
+
+
+## Repeating the final export without overwriting historical reports
+
+Use the registered Blender MCP, open the saved final blend in one call, then execute
+this in a separate `execute_blender_code` call:
+
+```python
+from pathlib import Path
+path = Path('G:/Projects/ShipSim159/Art/Source/VolgoDon507B/part8_export.py')
+code = path.read_text().replace("f'part{stage}-source.json'", "'part17-source.json'")
+exec(compile(code, str(path), 'exec'))
+```
+
+This is the same export used for Part 17. It rebuilds both LODs, exports all three
+FBXs and saves the blend. Compare mesh signatures with `part17-source.json`;
+FBX byte hashes may differ due to export metadata. Do not rerun hull-construction
+or machinery-edit scripts merely to validate an already completed model.
+Then run `VolgoDonQualityGate.Run -reviewStage 17` through the normal Unity editor.

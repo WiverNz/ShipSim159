@@ -93,7 +93,7 @@ namespace ShipSimulator.Physics
                 for (int k = 0; k < activeContacts; k++)
                 {
                     int i = active[k];
-                    Vector3 velocity = ship.Body.GetPointVelocity(ship.transform.TransformPoint(contactPoints[i]));
+                    Vector3 velocity = ship.Body.GetPointVelocity((ship.Body.position + ship.Body.rotation * contactPoints[i]));
                     velocity.y = 0f;
                     power += Vector3.Dot(frictionForces[i], velocity);
                 }
@@ -103,11 +103,15 @@ namespace ShipSimulator.Physics
         public RiverBottomType ContactBottomType { get; private set; }
         public ScenarioBathymetry Bathymetry => bathymetry;
 
+        private void OnEnable() => BathymetryContactSurface.Apply(this);
+        private void OnDisable() => BathymetryContactSurface.Apply(this);
+
         public void Configure(ShipPhysicsController targetShip, ScenarioBathymetry provider)
         {
             ship = targetShip;
             bathymetry = provider;
             contactPoints = null;
+            BathymetryContactSurface.Apply(this);
         }
 
         public Vector3 ContactPoint(int index) => contactPoints[index];
@@ -129,7 +133,7 @@ namespace ShipSimulator.Physics
             for (int i = 0; i < contactPoints.Length; i++)
             {
                 frictionForces[i] = Vector3.zero;
-                Vector3 world = ship.transform.TransformPoint(contactPoints[i]);
+                Vector3 world = (ship.Body.position + ship.Body.rotation * contactPoints[i]);
                 BathymetrySample bottom = bathymetry != null
                     ? bathymetry.Sample(world)
                     : new BathymetrySample(ship.SampleDepth(world), RiverBottomType.Sand);
@@ -150,7 +154,7 @@ namespace ShipSimulator.Physics
                 if (contactAreas[i] > 0f)
                 {
                     SectionSoil(bottom.BottomType, out float modulus, out float bearing, out friction);
-                    direction = ship.transform.TransformDirection(contactNormals[i]);
+                    direction = (body.rotation * contactNormals[i]);
                     // Explicit penalty contact: the point stiffness is limited to what the step can integrate.
                     float stiffness = Mathf.Min(modulus * contactAreas[i], 0.5f * pointMass / (dt * dt));
                     float damping = 2f * contactDampingRatio * Mathf.Sqrt(stiffness * pointMass);
@@ -207,11 +211,10 @@ namespace ShipSimulator.Physics
         {
             FrictionForceN = 0f;
             if (activeContacts == 0 || model == null || dt <= 0f) return;
-            Transform frame = ship.transform;
             Rigidbody body = ship.Body;
-            Vector3 forward = Vector3.ProjectOnPlane(frame.forward, Vector3.up).normalized;
+            Vector3 forward = Vector3.ProjectOnPlane(body.rotation * Vector3.forward, Vector3.up).normalized;
             Vector3 right = Vector3.Cross(Vector3.up, forward);
-            Vector3 midship = frame.position;
+            Vector3 midship = body.position;
             Vector3 centre = body.worldCenterOfMass;
 
             // Velocity at the end of the step without friction.

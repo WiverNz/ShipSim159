@@ -1,3 +1,4 @@
+using Unity.Profiling;
 using ShipSimulator.Physics;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ namespace ShipSimulator.Visuals
     [DefaultExecutionOrder(100)]
     public sealed class GroundTackleVisual : MonoBehaviour
     {
+        private static readonly ProfilerMarker PerformanceMarker = new ProfilerMarker(ProfilerCategory.Scripts, "ShipSim.Lines");
+
         private const int ChainPoints = 28;
         private const int LinePoints = 18;
         // One texture tile shows two links of 4 d each for the archive 43 mm bow chain.
@@ -45,6 +48,7 @@ namespace ShipSimulator.Visuals
         // Public so a check can time it on its own.
         public void Draw()
         {
+            using var measurement = PerformanceMarker.Auto();
             if (tackle == null || !tackle.IsFitted) return;
             if (chains.Length != tackle.AnchorCount) chains = Create("AnchorChain_", tackle.AnchorCount, chainMaterial, chainWidthM, true);
             if (ropes.Length != tackle.StationCount) ropes = Create("MooringLine_", tackle.StationCount, ropeMaterial, ropeWidthM, false);

@@ -1,0 +1,482 @@
+[
+  {
+    "contact": "side",
+    "dt": 0.009999999776482582,
+    "load": -1.0,
+    "penetrationM": 1.9073486328125e-06,
+    "maxSpeedMps": 0.5024911761283875,
+    "maxRiseM": 0.0008733272552490234,
+    "finalSpeedMps": 0.42990460991859436,
+    "travelM": 0.12364441156387329
+  },
+  {
+    "contact": "side",
+    "dt": 0.009999999776482582,
+    "load": 0.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024884343147278,
+    "maxRiseM": 4.9114227294921875e-05,
+    "finalSpeedMps": 0.42509689927101135,
+    "travelM": 0.19532988965511322
+  },
+  {
+    "contact": "side",
+    "dt": 0.009999999776482582,
+    "load": 0.5,
+    "penetrationM": 1.9073486328125e-06,
+    "maxSpeedMps": 0.5024912357330322,
+    "maxRiseM": 0.0004881620407104492,
+    "finalSpeedMps": 0.4328303635120392,
+    "travelM": 0.19172810018062592
+  },
+  {
+    "contact": "side",
+    "dt": 0.009999999776482582,
+    "load": 1.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024919509887695,
+    "maxRiseM": 0.0006768107414245605,
+    "finalSpeedMps": 0.42920392751693726,
+    "travelM": 0.03662792965769768
+  },
+  {
+    "contact": "side",
+    "dt": 0.019999999552965164,
+    "load": -1.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024885535240173,
+    "maxRiseM": 0.0006300210952758789,
+    "finalSpeedMps": 0.43283483386039734,
+    "travelM": 0.19286172091960907
+  },
+  {
+    "contact": "side",
+    "dt": 0.019999999552965164,
+    "load": 0.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024831295013428,
+    "maxRiseM": 4.38690185546875e-05,
+    "finalSpeedMps": 0.42510393261909485,
+    "travelM": 0.19614465534687042
+  },
+  {
+    "contact": "side",
+    "dt": 0.019999999552965164,
+    "load": 0.5,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024886727333069,
+    "maxRiseM": 0.00046753883361816406,
+    "finalSpeedMps": 0.4330533444881439,
+    "travelM": 0.19592079520225525
+  },
+  {
+    "contact": "side",
+    "dt": 0.019999999552965164,
+    "load": 1.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024901032447815,
+    "maxRiseM": 0.0005044937133789062,
+    "finalSpeedMps": 0.43511316180229187,
+    "travelM": 0.1948624849319458
+  },
+  {
+    "contact": "side",
+    "dt": 0.03999999910593033,
+    "load": -1.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024833679199219,
+    "maxRiseM": 0.0005505084991455078,
+    "finalSpeedMps": 0.43294990062713623,
+    "travelM": 0.19570979475975037
+  },
+  {
+    "contact": "side",
+    "dt": 0.03999999910593033,
+    "load": 0.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024724006652832,
+    "maxRiseM": 0.00018024444580078125,
+    "finalSpeedMps": 0.42510750889778137,
+    "travelM": 0.1954713761806488
+  },
+  {
+    "contact": "side",
+    "dt": 0.03999999910593033,
+    "load": 0.5,
+    "penetrationM": 3.814697265625e-06,
+    "maxSpeedMps": 0.502483606338501,
+    "maxRiseM": 0.0003731250762939453,
+    "finalSpeedMps": 0.4329071640968323,
+    "travelM": 0.19253088533878326
+  },
+  {
+    "contact": "side",
+    "dt": 0.03999999910593033,
+    "load": 1.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024864077568054,
+    "maxRiseM": 0.0007382631301879883,
+    "finalSpeedMps": 0.43508464097976685,
+    "travelM": 0.1956966370344162
+  },
+  {
+    "contact": "bow",
+    "dt": 0.009999999776482582,
+    "load": -1.0,
+    "penetrationM": 0.00997161865234375,
+    "maxSpeedMps": 0.4999975562095642,
+    "maxRiseM": 0.0014573335647583008,
+    "finalSpeedMps": 0.0004636164230760187,
+    "travelM": 0.18185710906982422
+  },
+  {
+    "contact": "bow",
+    "dt": 0.009999999776482582,
+    "load": 0.0,
+    "penetrationM": 0.0099639892578125,
+    "maxSpeedMps": 0.4999949038028717,
+    "maxRiseM": 0.0005171298980712891,
+    "finalSpeedMps": 0.0005030668689869344,
+    "travelM": 0.178131103515625
+  },
+  {
+    "contact": "bow",
+    "dt": 0.009999999776482582,
+    "load": 0.5,
+    "penetrationM": 0.0099945068359375,
+    "maxSpeedMps": 0.499997615814209,
+    "maxRiseM": 0.0011868476867675781,
+    "finalSpeedMps": 0.00029893414466641843,
+    "travelM": 0.1891026496887207
+  },
+  {
+    "contact": "bow",
+    "dt": 0.009999999776482582,
+    "load": 1.0,
+    "penetrationM": 0.0049896240234375,
+    "maxSpeedMps": 0.4999983012676239,
+    "maxRiseM": 0.0012794137001037598,
+    "finalSpeedMps": 0.00021986206411384046,
+    "travelM": 0.1906263828277588
+  },
+  {
+    "contact": "bow",
+    "dt": 0.019999999552965164,
+    "load": -1.0,
+    "penetrationM": 0.00997161865234375,
+    "maxSpeedMps": 0.4999951124191284,
+    "maxRiseM": 0.0014508962631225586,
+    "finalSpeedMps": 0.0004661708080675453,
+    "travelM": 0.18184614181518555
+  },
+  {
+    "contact": "bow",
+    "dt": 0.019999999552965164,
+    "load": 0.0,
+    "penetrationM": 0.0099639892578125,
+    "maxSpeedMps": 0.499989777803421,
+    "maxRiseM": 0.0004990100860595703,
+    "finalSpeedMps": 0.0005064451834186912,
+    "travelM": 0.18178939819335938
+  },
+  {
+    "contact": "bow",
+    "dt": 0.019999999552965164,
+    "load": 0.5,
+    "penetrationM": 0.0099945068359375,
+    "maxSpeedMps": 0.4999952018260956,
+    "maxRiseM": 0.001181483268737793,
+    "finalSpeedMps": 0.0003013949899468571,
+    "travelM": 0.18819570541381836
+  },
+  {
+    "contact": "bow",
+    "dt": 0.019999999552965164,
+    "load": 1.0,
+    "penetrationM": 0.00998687744140625,
+    "maxSpeedMps": 0.4999965727329254,
+    "maxRiseM": 0.0012943744659423828,
+    "finalSpeedMps": 0.0002267653471790254,
+    "travelM": 0.19140440225601196
+  },
+  {
+    "contact": "bow",
+    "dt": 0.03999999910593033,
+    "load": -1.0,
+    "penetrationM": 0.0199737548828125,
+    "maxSpeedMps": 0.4999902546405792,
+    "maxRiseM": 0.001498103141784668,
+    "finalSpeedMps": 0.0004669560876209289,
+    "travelM": 0.1823134422302246
+  },
+  {
+    "contact": "bow",
+    "dt": 0.03999999910593033,
+    "load": 0.0,
+    "penetrationM": 0.01995849609375,
+    "maxSpeedMps": 0.49997958540916443,
+    "maxRiseM": 0.0005106925964355469,
+    "finalSpeedMps": 0.0005344749079085886,
+    "travelM": 0.1799602508544922
+  },
+  {
+    "contact": "bow",
+    "dt": 0.03999999910593033,
+    "load": 0.5,
+    "penetrationM": 0.019989013671875,
+    "maxSpeedMps": 0.49999043345451355,
+    "maxRiseM": 0.0012166500091552734,
+    "finalSpeedMps": 0.0003143128124065697,
+    "travelM": 0.1882004737854004
+  },
+  {
+    "contact": "bow",
+    "dt": 0.03999999910593033,
+    "load": 1.0,
+    "penetrationM": 0.01998138427734375,
+    "maxSpeedMps": 0.4999931752681732,
+    "maxRiseM": 0.001326441764831543,
+    "finalSpeedMps": 0.00024115372798405588,
+    "travelM": 0.1908336877822876
+  },
+  {
+    "contact": "stern",
+    "dt": 0.009999999776482582,
+    "load": -1.0,
+    "penetrationM": 0.009979248046875,
+    "maxSpeedMps": 0.4999975562095642,
+    "maxRiseM": 0.0005897283554077148,
+    "finalSpeedMps": 0.002589305629953742,
+    "travelM": 0.19632339477539062
+  },
+  {
+    "contact": "stern",
+    "dt": 0.009999999776482582,
+    "load": 0.0,
+    "penetrationM": 0.00997161865234375,
+    "maxSpeedMps": 0.4999949038028717,
+    "maxRiseM": 0.00010347366333007812,
+    "finalSpeedMps": 0.0029864409007132053,
+    "travelM": 0.1991291046142578
+  },
+  {
+    "contact": "stern",
+    "dt": 0.009999999776482582,
+    "load": 0.5,
+    "penetrationM": 0.009979248046875,
+    "maxSpeedMps": 0.499997615814209,
+    "maxRiseM": 0.00031256675720214844,
+    "finalSpeedMps": 0.002571737626567483,
+    "travelM": 0.1981668472290039
+  },
+  {
+    "contact": "stern",
+    "dt": 0.009999999776482582,
+    "load": 1.0,
+    "penetrationM": 0.00998687744140625,
+    "maxSpeedMps": 0.4999983012676239,
+    "maxRiseM": 0.000750422477722168,
+    "finalSpeedMps": 0.002523299539461732,
+    "travelM": 0.19681060314178467
+  },
+  {
+    "contact": "stern",
+    "dt": 0.019999999552965164,
+    "load": -1.0,
+    "penetrationM": 0.00997161865234375,
+    "maxSpeedMps": 0.4999951422214508,
+    "maxRiseM": 0.0005857944488525391,
+    "finalSpeedMps": 0.002606962574645877,
+    "travelM": 0.19632530212402344
+  },
+  {
+    "contact": "stern",
+    "dt": 0.019999999552965164,
+    "load": 0.0,
+    "penetrationM": 0.00994873046875,
+    "maxSpeedMps": 0.4999898374080658,
+    "maxRiseM": 0.00010204315185546875,
+    "finalSpeedMps": 0.0030029870104044676,
+    "travelM": 0.19661521911621094
+  },
+  {
+    "contact": "stern",
+    "dt": 0.019999999552965164,
+    "load": 0.5,
+    "penetrationM": 0.009979248046875,
+    "maxSpeedMps": 0.49999523162841797,
+    "maxRiseM": 0.0003108978271484375,
+    "finalSpeedMps": 0.002586398273706436,
+    "travelM": 0.19909095764160156
+  },
+  {
+    "contact": "stern",
+    "dt": 0.019999999552965164,
+    "load": 1.0,
+    "penetrationM": 0.00998687744140625,
+    "maxSpeedMps": 0.4999966025352478,
+    "maxRiseM": 0.0007486343383789062,
+    "finalSpeedMps": 0.0025374600663781166,
+    "travelM": 0.19680559635162354
+  },
+  {
+    "contact": "stern",
+    "dt": 0.03999999910593033,
+    "load": -1.0,
+    "penetrationM": 0.01996612548828125,
+    "maxSpeedMps": 0.4999902844429016,
+    "maxRiseM": 0.0006040334701538086,
+    "finalSpeedMps": 0.00260804477147758,
+    "travelM": 0.19632720947265625
+  },
+  {
+    "contact": "stern",
+    "dt": 0.03999999910593033,
+    "load": 0.0,
+    "penetrationM": 0.01993560791015625,
+    "maxSpeedMps": 0.4999796748161316,
+    "maxRiseM": 0.00010561943054199219,
+    "finalSpeedMps": 0.0030026319436728954,
+    "travelM": 0.1981678009033203
+  },
+  {
+    "contact": "stern",
+    "dt": 0.03999999910593033,
+    "load": 0.5,
+    "penetrationM": 0.0199737548828125,
+    "maxSpeedMps": 0.49999046325683594,
+    "maxRiseM": 0.0003222227096557617,
+    "finalSpeedMps": 0.002589448820799589,
+    "travelM": 0.19863414764404297
+  },
+  {
+    "contact": "stern",
+    "dt": 0.03999999910593033,
+    "load": 1.0,
+    "penetrationM": 0.019989013671875,
+    "maxSpeedMps": 0.4999931752681732,
+    "maxRiseM": 0.0007689595222473145,
+    "finalSpeedMps": 0.002537261927500367,
+    "travelM": 0.19669508934020996
+  },
+  {
+    "contact": "angle",
+    "dt": 0.009999999776482582,
+    "load": -1.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024911761283875,
+    "maxRiseM": 0.0,
+    "finalSpeedMps": 0.47313129901885986,
+    "travelM": 1.240765929222107
+  },
+  {
+    "contact": "angle",
+    "dt": 0.009999999776482582,
+    "load": 0.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024884343147278,
+    "maxRiseM": 4.0531158447265625e-06,
+    "finalSpeedMps": 0.469657301902771,
+    "travelM": 1.1190965175628662
+  },
+  {
+    "contact": "angle",
+    "dt": 0.009999999776482582,
+    "load": 0.5,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024912357330322,
+    "maxRiseM": 0.0,
+    "finalSpeedMps": 0.4729456305503845,
+    "travelM": 1.2400610446929932
+  },
+  {
+    "contact": "angle",
+    "dt": 0.009999999776482582,
+    "load": 1.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024919509887695,
+    "maxRiseM": 0.0,
+    "finalSpeedMps": 0.4742032289505005,
+    "travelM": 1.2929376363754272
+  },
+  {
+    "contact": "angle",
+    "dt": 0.019999999552965164,
+    "load": -1.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024885535240173,
+    "maxRiseM": 0.0,
+    "finalSpeedMps": 0.47322914004325867,
+    "travelM": 1.2428114414215088
+  },
+  {
+    "contact": "angle",
+    "dt": 0.019999999552965164,
+    "load": 0.0,
+    "penetrationM": 5.7220458984375e-06,
+    "maxSpeedMps": 0.5024831295013428,
+    "maxRiseM": 1.5020370483398438e-05,
+    "finalSpeedMps": 0.4697302281856537,
+    "travelM": 1.1216610670089722
+  },
+  {
+    "contact": "angle",
+    "dt": 0.019999999552965164,
+    "load": 0.5,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024886727333069,
+    "maxRiseM": 0.0,
+    "finalSpeedMps": 0.47301185131073,
+    "travelM": 1.2410776615142822
+  },
+  {
+    "contact": "angle",
+    "dt": 0.019999999552965164,
+    "load": 1.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024901032447815,
+    "maxRiseM": 0.0,
+    "finalSpeedMps": 0.474377304315567,
+    "travelM": 1.2960840463638306
+  },
+  {
+    "contact": "angle",
+    "dt": 0.03999999910593033,
+    "load": -1.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024833679199219,
+    "maxRiseM": 0.0,
+    "finalSpeedMps": 0.47327178716659546,
+    "travelM": 1.2437267303466797
+  },
+  {
+    "contact": "angle",
+    "dt": 0.03999999910593033,
+    "load": 0.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024724006652832,
+    "maxRiseM": 5.078315734863281e-05,
+    "finalSpeedMps": 0.46971842646598816,
+    "travelM": 1.121132493019104
+  },
+  {
+    "contact": "angle",
+    "dt": 0.03999999910593033,
+    "load": 0.5,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.502483606338501,
+    "maxRiseM": 0.0,
+    "finalSpeedMps": 0.4730468690395355,
+    "travelM": 1.2417728900909424
+  },
+  {
+    "contact": "angle",
+    "dt": 0.03999999910593033,
+    "load": 1.0,
+    "penetrationM": 0.0,
+    "maxSpeedMps": 0.5024864077568054,
+    "maxRiseM": 0.0,
+    "finalSpeedMps": 0.4744543135166168,
+    "travelM": 1.2975358963012695
+  }
+]

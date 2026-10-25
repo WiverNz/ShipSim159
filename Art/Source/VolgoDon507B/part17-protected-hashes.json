@@ -1,0 +1,272 @@
+[
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/proxy_mat.mat",
+    "expected": "4f3ce7eb94e6f2909ac20a82847eed9094f71acbb077ec891d6dbe7908832175",
+    "actual": "4f3ce7eb94e6f2909ac20a82847eed9094f71acbb077ec891d6dbe7908832175",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/proxy_mat.mat.meta",
+    "expected": "9f604c76b15ddb72dfeab132b2ba0e4277661d69a98996d12ecb0ed8a44de095",
+    "actual": "9f604c76b15ddb72dfeab132b2ba0e4277661d69a98996d12ecb0ed8a44de095",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_gms_axalp_main.mat",
+    "expected": "c24576e31baec53f8ada95a655474368dfba897c404f3e7c498f0cb040f083f6",
+    "actual": "c24576e31baec53f8ada95a655474368dfba897c404f3e7c498f0cb040f083f6",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_gms_axalp_main.mat.meta",
+    "expected": "1b04d396e977eac165608fef6f59a0bb00c98cba4902d35c146f1f780b9ef14a",
+    "actual": "1b04d396e977eac165608fef6f59a0bb00c98cba4902d35c146f1f780b9ef14a",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_boats.mat",
+    "expected": "608fb34158918743116e9e81c4d6c5137f04bd358795bd6966d23207ffbd2b36",
+    "actual": "608fb34158918743116e9e81c4d6c5137f04bd358795bd6966d23207ffbd2b36",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_boats.mat.meta",
+    "expected": "1da8e1599b4b75c0462145cb38aea17c65d4ec21a061fdcba82d686c80fb1799",
+    "actual": "1da8e1599b4b75c0462145cb38aea17c65d4ec21a061fdcba82d686c80fb1799",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_deck.mat",
+    "expected": "1f83e0827fcbf0ecac9af1a641368b95ed435905383fc7798d6292ae6060d8f7",
+    "actual": "1f83e0827fcbf0ecac9af1a641368b95ed435905383fc7798d6292ae6060d8f7",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_deck.mat.meta",
+    "expected": "874ee6be2a75851fa44214bb1c96e72defec13c028ff1d755d480c8581b05897",
+    "actual": "874ee6be2a75851fa44214bb1c96e72defec13c028ff1d755d480c8581b05897",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_detali.mat",
+    "expected": "a80bdd4cad8bbb679e4bb7744900ba737c92176c66bae817bf11f0bf8b0ffdf5",
+    "actual": "a80bdd4cad8bbb679e4bb7744900ba737c92176c66bae817bf11f0bf8b0ffdf5",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_detali.mat.meta",
+    "expected": "55522e31b933d723a2793ee7651ba05fbd993ce6b7224cebeb5e22cb8e341a31",
+    "actual": "55522e31b933d723a2793ee7651ba05fbd993ce6b7224cebeb5e22cb8e341a31",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_hold.mat",
+    "expected": "a3b094177da88d899b6ce6ec6420044fa83b378f2169cffa7e42f7cfdc94c301",
+    "actual": "a3b094177da88d899b6ce6ec6420044fa83b378f2169cffa7e42f7cfdc94c301",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_hold.mat.meta",
+    "expected": "dea24ccbb4dea95331e2a7512592d17b338c73b7d79b16ee57889fd8a5f84a52",
+    "actual": "dea24ccbb4dea95331e2a7512592d17b338c73b7d79b16ee57889fd8a5f84a52",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_hull.mat",
+    "expected": "66b320ed56d3b87bd51857cd8cbc4e007b40b50c6ed843742a32b9a71dbfa405",
+    "actual": "66b320ed56d3b87bd51857cd8cbc4e007b40b50c6ed843742a32b9a71dbfa405",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_hull.mat.meta",
+    "expected": "be2e885fa3bfcd116a7505495e4ef2715594451feec24ed5ec6021112d796569",
+    "actual": "be2e885fa3bfcd116a7505495e4ef2715594451feec24ed5ec6021112d796569",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_interior.mat",
+    "expected": "83175b012e14be5436deb136b8c2b64c3d93ff1b5682708ee6e68e30b593392f",
+    "actual": "83175b012e14be5436deb136b8c2b64c3d93ff1b5682708ee6e68e30b593392f",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_interior.mat.meta",
+    "expected": "00491d41a29c8a9cf0b49e554bde62377b8f57d3b887f1e37cd7cbd326f94616",
+    "actual": "00491d41a29c8a9cf0b49e554bde62377b8f57d3b887f1e37cd7cbd326f94616",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_lights.mat",
+    "expected": "300d89f10b25a6a39a155c19ff8f11ae0a43e1030d247bdb69e9031db083e947",
+    "actual": "300d89f10b25a6a39a155c19ff8f11ae0a43e1030d247bdb69e9031db083e947",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_lights.mat.meta",
+    "expected": "a475c81eeae66929c0890e516865ae056c11bc66c355aea9ab56800f1c4210de",
+    "actual": "a475c81eeae66929c0890e516865ae056c11bc66c355aea9ab56800f1c4210de",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_rubka.mat",
+    "expected": "699fa6b8262a17370024bb0fde1bbd0e219d0a39f4443fff840ed6b3e36c91c1",
+    "actual": "699fa6b8262a17370024bb0fde1bbd0e219d0a39f4443fff840ed6b3e36c91c1",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_rubka.mat.meta",
+    "expected": "7e532c4a8d2ab936c336ca41b46230f88625564bf2497db47e5ba4bd648b5633",
+    "actual": "7e532c4a8d2ab936c336ca41b46230f88625564bf2497db47e5ba4bd648b5633",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_rubka_detali.mat",
+    "expected": "ae1dc093c30d447df8943d34dc66aac21b2c3adf69909ee437e396f4eaf7e29b",
+    "actual": "ae1dc093c30d447df8943d34dc66aac21b2c3adf69909ee437e396f4eaf7e29b",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/ship_type_507_rubka_detali.mat.meta",
+    "expected": "5240b4218937f6f8150200bfc0bb0320a61a369b3d370922fa5b2c7977cd5f02",
+    "actual": "5240b4218937f6f8150200bfc0bb0320a61a369b3d370922fa5b2c7977cd5f02",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/unassigned.mat",
+    "expected": "b820670bda7916a4102f3b73a6126e3f60f1a57670774b638077fdab3d9cc58e",
+    "actual": "b820670bda7916a4102f3b73a6126e3f60f1a57670774b638077fdab3d9cc58e",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials/unassigned.mat.meta",
+    "expected": "4954797320ffe6d341bc3b3d1f8d00834e45353a87ba4887d9178fabf8279832",
+    "actual": "4954797320ffe6d341bc3b3d1f8d00834e45353a87ba4887d9178fabf8279832",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/Materials.meta",
+    "expected": "fb562a783d03da96acbdd48df1d04a493fd0bef216c130573b09e3aad57eab9b",
+    "actual": "fb562a783d03da96acbdd48df1d04a493fd0bef216c130573b09e3aad57eab9b",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_boats_ao.dds",
+    "expected": "a350b772b8ccd77691be08229ce1d9ef9741e6dc00c7de60e0608c08f440ef4c",
+    "actual": "a350b772b8ccd77691be08229ce1d9ef9741e6dc00c7de60e0608c08f440ef4c",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_boats_ao.dds.meta",
+    "expected": "cd4476362ca9257516952c3f0cfc91298d1f3abe950144487357be66f097afe9",
+    "actual": "cd4476362ca9257516952c3f0cfc91298d1f3abe950144487357be66f097afe9",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_deck_ao.dds",
+    "expected": "cb3a1fb3ce9a1ab9ff1bdf2fd91a1a4bac59089100f6f3a1d6b65f4f609854a1",
+    "actual": "cb3a1fb3ce9a1ab9ff1bdf2fd91a1a4bac59089100f6f3a1d6b65f4f609854a1",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_deck_ao.dds.meta",
+    "expected": "dd3ebe90eb041970236f7b8051541851ad05d015538a32d77851f515aded8fa3",
+    "actual": "dd3ebe90eb041970236f7b8051541851ad05d015538a32d77851f515aded8fa3",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_detali_ao.dds",
+    "expected": "e2ff64cb78eda392458f778dc2625fe2dab13a5e1fe75c4dfa80660545ae8681",
+    "actual": "e2ff64cb78eda392458f778dc2625fe2dab13a5e1fe75c4dfa80660545ae8681",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_detali_ao.dds.meta",
+    "expected": "345452a44d9ef3cd38fee41ab44f2147c3b8f52683e6133666b645d51e783d25",
+    "actual": "345452a44d9ef3cd38fee41ab44f2147c3b8f52683e6133666b645d51e783d25",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_hold_ao.dds",
+    "expected": "15e03de98e61fcc989f8f50877a351922f029198580ea9ce4ad3234a5bb1e9d7",
+    "actual": "15e03de98e61fcc989f8f50877a351922f029198580ea9ce4ad3234a5bb1e9d7",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_hold_ao.dds.meta",
+    "expected": "6fea428555d38e0336ec2b745f98aba570668314972627b9d76a966d832f3bc3",
+    "actual": "6fea428555d38e0336ec2b745f98aba570668314972627b9d76a966d832f3bc3",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_hull_ao.dds",
+    "expected": "d6cb2e94d738d09b096f2a6b47da35f3f6fb8fc57e120185e322c5ae63095957",
+    "actual": "d6cb2e94d738d09b096f2a6b47da35f3f6fb8fc57e120185e322c5ae63095957",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_hull_ao.dds.meta",
+    "expected": "0a32efd1acc7ce4dd608517bae5aedd4c8748d4e3d4b0e24cd4c1f63f556090c",
+    "actual": "0a32efd1acc7ce4dd608517bae5aedd4c8748d4e3d4b0e24cd4c1f63f556090c",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_interior_ao.dds",
+    "expected": "62030f57e8d8fbda038690262a57dcf23958634d81f348c98af1d6e98a631d48",
+    "actual": "62030f57e8d8fbda038690262a57dcf23958634d81f348c98af1d6e98a631d48",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_interior_ao.dds.meta",
+    "expected": "493626e28d9a7e1080e9d78ec28bb1f86f20a1a9220e20ef7690a6e5877244fe",
+    "actual": "493626e28d9a7e1080e9d78ec28bb1f86f20a1a9220e20ef7690a6e5877244fe",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_lights.hdr",
+    "expected": "9e37fb09cca0507b7b6ce40e721c7444fbefb3abe987c5e3568d67c190d78cfc",
+    "actual": "9e37fb09cca0507b7b6ce40e721c7444fbefb3abe987c5e3568d67c190d78cfc",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_lights.hdr.meta",
+    "expected": "721ab26b9b9edcec23ccc55105b57e0a1487a15ce73f1224e29aad02b29c4856",
+    "actual": "721ab26b9b9edcec23ccc55105b57e0a1487a15ce73f1224e29aad02b29c4856",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_rubka_ao.dds",
+    "expected": "d63ec59bb77c3e8f4e0e7609279e5be39dfff11bf70dee263f2f40701a4af080",
+    "actual": "d63ec59bb77c3e8f4e0e7609279e5be39dfff11bf70dee263f2f40701a4af080",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_rubka_ao.dds.meta",
+    "expected": "2324382b1d43dba14a11adc21c2b9e483c4bb0ef26002c12583b236e8f814ec6",
+    "actual": "2324382b1d43dba14a11adc21c2b9e483c4bb0ef26002c12583b236e8f814ec6",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_rubka_detali_ao.dds",
+    "expected": "45435ffaf6866ae8f8f7b7ff389244765908688eb4a7851f3fcc2033c720e7ef",
+    "actual": "45435ffaf6866ae8f8f7b7ff389244765908688eb4a7851f3fcc2033c720e7ef",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/ship_type_507_rubka_detali_ao.dds.meta",
+    "expected": "73b5343c1b6a49563b80f6b67bbfde1670fb460e6e5c2cc958fc7b894f35248a",
+    "actual": "73b5343c1b6a49563b80f6b67bbfde1670fb460e6e5c2cc958fc7b894f35248a",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/volgo_don.fbx",
+    "expected": "d4de8b05f8798708350d31dac70b23b6b2479f595d36af824bc267f3e3cfe8b4",
+    "actual": "d4de8b05f8798708350d31dac70b23b6b2479f595d36af824bc267f3e3cfe8b4",
+    "match": true
+  },
+  {
+    "path": "Assets/ShipSimulator/Models/VolgoDon507/volgo_don.fbx.meta",
+    "expected": "7aebcc7339b7f956ba7d18e8f1b4500f7624d9d26189632589beccdfb2e8877c",
+    "actual": "7aebcc7339b7f956ba7d18e8f1b4500f7624d9d26189632589beccdfb2e8877c",
+    "match": true
+  }
+]

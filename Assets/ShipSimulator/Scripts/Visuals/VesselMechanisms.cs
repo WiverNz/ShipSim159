@@ -1,3 +1,4 @@
+using Unity.Profiling;
 using System;
 using ShipSimulator.Persistence;
 using ShipSimulator.Physics;
@@ -14,6 +15,7 @@ namespace ShipSimulator.Visuals
     [Serializable]
     public sealed class MachineryRates
     {
+
         [Min(1)] public float outerLiftSeconds = 141;
         [Min(1)] public float innerLiftSeconds = 34;
         [Min(1)] public float innerSlideSeconds = 174;
@@ -27,6 +29,8 @@ namespace ShipSimulator.Visuals
     // GroundTackle, which owns the chain paid out and the anchor positions; this only poses them.
     public sealed class VesselMechanisms : MonoBehaviour
     {
+        private static readonly ProfilerMarker PerformanceMarker = new ProfilerMarker(ProfilerCategory.Scripts, "ShipSim.Mechanisms");
+
         // Review-clip frames bounding each opening phase (part4_rig.py): outer lift, inner rolling lift and
         // forward-outer shift, inner slide under, outer lowered onto the stack.
         private static readonly float[] OpeningFrames = { 90, 100, 120, 180, 210 };
@@ -159,6 +163,7 @@ namespace ShipSimulator.Visuals
 
         public void Advance(float seconds, float portRpm, float starboardRpm, float rudderDegrees)
         {
+            using var measurement = PerformanceMarker.Auto();
             if (!IsConfigured || seconds < 0 || !float.IsFinite(seconds)) return;
             AdvanceHatches(seconds);
             state.portAngle = Mathf.Repeat(state.portAngle + portRpm * 6 * seconds, 360);

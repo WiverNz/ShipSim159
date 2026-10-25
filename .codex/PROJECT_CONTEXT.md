@@ -1,5 +1,43 @@
 # ShipSim159 Project Context
 
+## Volgo-Don Parts 16-17 and built player, 2026-10-25
+
+Read Art/Source/VolgoDon507B/PART16_REVIEW.md, PART17_REVIEW.md and PLAYER_PERFORMANCE.md.
+Parts 9-15 audited; user-confirmed Part 15 retained. ContactBuilder now regenerates
+13 convex sections from the corrected hull: sampled maximum missing coverage
+5.969 -> 0.066 m, sampled excess breadth 0.481 m. Physical root/mass/CG/inertia
+preserved. Gorodets bathymetry-owned bank/shoal colliders avoid double reaction;
+quays remain PhysX. Grounding uses Rigidbody pose immediately after restore.
+48 contact/load/timestep combinations, light/heavy ground/recovery and combined
+anchor-ground contact pass. Side recovery uses an explicit 30 kN pull, not a promise
+of self-refloating from any shoal.
+
+Registered Windows Blender MCP verified: uvx.exe, 127.0.0.1:9876, protocol 15,
+execute_blender_code and look both work. Source reopened/exported/reopened; 146 mesh
+signatures match Part 13; 45 protected legacy assets and archived Part 9 hull match.
+LOD triangles 59543/36044/24474. No new external model/texture/photo/audio assets.
+
+Final tests: EditMode 269/269 (20261025-111830-366), PlayMode 161/161
+(20261025-111903-137). Numerical trials match all 15 Part 12 after-report rows;
+menu, five-vessel shakedown, machinery/hold/tackle reviews pass. Images in Previews/part17-*.
+LocalWindowsBuild produces build/StandaloneWindows64/ShipSim159.exe, Unity6000.6.0f1,
+Windows x64 Mono Development, three existing scenes. Package smoke and actual
+27-case player run/15 switches pass. Player-only fixes: retained runtime navigation/rain
+shader resources; conservative mirrored culling with oblique reflection clipping.
+No graphical/physics subsystem disabled to hit budget.
+
+RTX4090/i9-13900K/32GB, 1080p PC, VSync off: final whole-frame p95 3.04-4.92 ms,
+no sampled >50 ms frames. Some p99/rare frames exceed 16.67 ms. Earlier rejected run
+has 175/259 ms stalls, retained honestly. GPU FrameTimingManager works; draw-call
+counter unusable; water GPU/audio DSP not isolated. Target RTX3060 unavailable.
+Known fidelity/legacy license/free-surface/lightship-trim/hold-volume/analogue-audio
+limits remain. Small soak memory growth is recorded, not a no-leak certification.
+No commit/tag/push. Do not rerun completed modelling to fix these external limits.
+
+Cold-path follow-up: independent LOD repeats passed runtime checks but the first
+fresh-process path again stalled (max 234.93 ms, two frames >50 ms). Later repeats
+max 31.97/26.46 ms. Cause unestablished; cold-path stall elimination remains open.
+
 ## Shared sound library, 2026-10-24
 
 Sound is no longer 507B-only. 36 WAVs moved (with `.meta`, GUIDs and bytes unchanged) to

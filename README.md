@@ -5,6 +5,13 @@
 
 # ShipSim159
 
+[Русская версия](README.ru.md)
+
+The [usability improvement plan](Assets/ShipSimulator/Documentation/UsabilityImprovementPlan.md)
+defines nine separately executable parts for UI, languages, camera, map, collisions,
+grounded-bow water rendering, recovery and cargo. These improvements are planned,
+not yet implemented.
+
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator. It is
 built to carry several ship models, chosen in the start menu before a passage:
 three cargo vessels (Volgo-Don 507B, Volgo-Balt 2-95A/R, Volgoneft 1577) and two
@@ -39,6 +46,9 @@ The 507B final evidence is in [Part 16](Art/Source/VolgoDon507B/PART16_REVIEW.md
   engines, shafts and propellers, MMG rudders in the propeller slipstream, optional bow
   thruster, Blendermann wind loads, shallow-water corrections, squat and bank suction.
 - Station buoyancy with loading-dependent draft, trim and heel; grounding with bottom friction.
+- Volgo-Don compartment loading, animated hatch machinery, mass-driven nominal bulk
+  cargo visuals, anchors and mooring lines, with persistent voyage state.
+- Shared vessel sound library with per-vessel profiles and persistent sound mix settings.
 - Fast craft support model: an air cushion or hydrofoils unload the hull as speed builds, so draft,
   drag and hull forces change between hullborne and foilborne running.
 - Virtual sea trials (turning circle, zig-zag, crash stop) against the IMO envelope.
@@ -67,8 +77,8 @@ The 507B final evidence is in [Part 16](Art/Source/VolgoDon507B/PART16_REVIEW.md
 | Volgo-Don Project 507B, 138.3 m twin-screw river cargo ship | Imported detailed mesh | Playable |
 | Volgo-Balt Project 2-95A/R, 113.9 m twin-screw river-sea cargo ship | Generated from dimensions | Playable |
 | Volgoneft Project 1577, 132.6 m twin-screw river-sea oil tanker | Generated from dimensions | Playable |
-| Meteor Project 342U, 34.6 m passenger hydrofoil | Generated from dimensions | Playable |
-| Luch Project 14352, 23.7 m skeg air-cushion passenger craft | Generated from dimensions | Playable |
+| Meteor Project 342U, 34.6 m passenger hydrofoil | Authored Blender model with LODs | Playable |
+| Luch Project 14352, 23.7 m skeg air-cushion passenger craft | Authored Blender model with LODs | Playable |
 | KVLCC2 MMG benchmark | none | Data only, used by tests and virtual sea trials |
 
 Choose the vessel under **New voyage** in the start menu, then the passage. Every vessel uses
@@ -100,6 +110,10 @@ Press **Escape** while sailing to pause, save/load a voyage, change settings, or
 the bridge. Settings include volume, camera sensitivity, graphics quality, VSync and
 standalone fullscreen mode. See the [operator guide](Assets/ShipSimulator/Documentation/OperatorGuide.md)
 for save contents and storage details.
+
+Serpukhov zaton is also available for compatible fast craft. Cargo vessels are excluded
+by its passage limits. UI scale, language selection, separate zoom sensitivity and
+last-safe-position recovery are part of the planned usability work.
 
 The training scene is already configured as the first enabled scene in Build
 Settings.
@@ -193,16 +207,20 @@ Run both suites from:
 
 - EditMode tests validate vessel data, scene configuration, fairway depth,
   collision setup, navigation lights, buoy flashing, and HUD formatting.
-- PlayMode tests validate river-current trigger behavior and overlapping zones.
+- PlayMode tests cover current zones, vessel contact/grounding, recovery physics,
+  loading/hold visuals, mechanisms, tackle and menu/save behavior.
 
 Unity tests can also be executed in batch mode:
 
 ```powershell
-Unity.exe -batchmode -projectPath . -runTests `
-  -testPlatform EditMode -testResults TestResults.xml -quit
+Unity.exe -batchmode -buildTarget Win64 -projectPath <absolute-project-path> -runTests `
+  -testPlatform EditMode -testResults <absolute-results-path>
 ```
 
-Replace `EditMode` with `PlayMode` for the runtime suite.
+Replace `EditMode` with `PlayMode` for the runtime suite and keep rendering enabled.
+Use Unity 6000.6.0f1 explicitly. Prefer the shared launchers in [Tools/README.md](Tools/README.md);
+the test runner controls exit. Latest recorded baseline on 2026-10-25: EditMode
+269/269 and PlayMode 161/161, before the usability work.
 
 ## Project Structure
 
@@ -212,7 +230,7 @@ Assets/ShipSimulator/
 |-- Documentation/         Operator, physics, source, and roadmap documents
 |-- Models/VolgoDon507/    First vessel: imported model and materials
 |-- Prefabs/               Vessel, navigation, and environment prefabs
-|-- Scenes/                Gorodets and river familiarisation passages
+|-- Scenes/                Gorodets, river familiarisation and Serpukhov zaton
 |-- Scripts/
 |   |-- Camera/            Camera views and tracking
 |   |-- Editor/            Project builders and model integration
@@ -245,10 +263,17 @@ for implementation details.
 ## Known Limitations
 
 - Hydrodynamic coefficients are estimated and not trial-calibrated.
-- Bathymetry is procedural and not based on surveyed river data.
+- Bathymetry and navigation depths are estimates; scenario geography may use traced
+  source data, but is not certified for navigation.
 - Propeller curves are not four-quadrant data, and the bank model is estimated.
-- The simulation does not yet model ship-ship interaction, locks, cavitation,
-  anchors, mooring lines, fuel, flooding, or autopilot.
+- The simulation does not yet model hydrodynamic ship-ship interaction, lock operation,
+  cavitation, fuel consumption, flooding, or autopilot. Anchors and mooring are implemented
+  for the Volgo-Don with estimated parameters.
+- Detailed buoy visuals currently make their colliders triggers; physical buoy contact
+  is planned. R returns the ship to its startup pose; validated safe-position recovery
+  is not yet available.
+- Open-hold cargo visuals currently use one nominal bulk material on the Volgo-Don;
+  sulphur, steel channel sections and grain are planned.
 - Wake and propeller wash are visual effects only.
 - Keyboard input is polled directly and is not yet rebindable.
 - The HUD currently uses legacy `UnityEngine.UI.Text`.

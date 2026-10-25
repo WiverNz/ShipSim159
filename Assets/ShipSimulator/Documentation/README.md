@@ -1,9 +1,12 @@
 # ShipSim159 Documentation
 
-ShipSim159 is a Unity 6 URP prototype for a Project 507B Volgo-Don river cargo
-vessel. It is not a validated maritime training product.
+ShipSim159 is a Unity 6 URP river navigation prototype with five selectable vessels.
+It is not a validated maritime training product.
 
 ## Documents
+
+- [UsabilityImprovementPlan.md](UsabilityImprovementPlan.md): source audit and nine
+  executable parts for interface, languages, camera, map, collisions, recovery and cargo.
 
 - [ProjectStatus.md](ProjectStatus.md): what is implemented, what is verified,
   screenshots, known limits and prioritised next work. Start here.
@@ -26,9 +29,11 @@ vessel. It is not a validated maritime training product.
 
 ## Current Prototype Status
 
-The main scene contains the detailed Volgo-Don model, procedural river and
-terrain, current trigger zones, compact bridge HUD, eight camera views,
-simulator controls, fairway minimap, warnings, and shader-drawn ship waves.
+Three passage scenes support five vessels subject to passage restrictions. Runtime
+systems include nine camera views, HUD/radar, save/load, weather and sound. The
+Volgo-Don also has loading, hold visuals, animated machinery, anchors and mooring.
 
-Latest verified tests: EditMode `5/5`, PlayMode `2/2`.
+Latest recorded baseline, 2026-10-25: EditMode `269/269`, PlayMode `161/161`.
+These precede the planned usability changes; see ProjectStatus and project context
+for evidence and limitations.
 

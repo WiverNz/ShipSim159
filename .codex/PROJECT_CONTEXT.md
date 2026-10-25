@@ -1,5 +1,25 @@
 # ShipSim159 Project Context
 
+## Usability audit and execution plan, 2026-10-25
+
+User requested source investigation and a numbered plan before implementation.
+`Assets/ShipSimulator/Documentation/UsabilityImprovementPlan.md` defines usability
+Parts 1-9, independent of completed modelling Parts 1-17: UI/settings, four languages,
+camera, map, buoy/contact physics, grounded-bow water, recovery, typed cargo and
+integrated acceptance. All parts are unstarted. Execute the requested part only.
+
+Confirmed in code: BuoyVisualRig makes colliders triggers; camera consumes raw wheel
+units and lacks UI ownership; radar scale is constant; localization is absent; hold
+visuals use mass-driven nominal bulk without commodity ids; R resets to startup pose
+without safe-position history. Bow water and reported empty holds need reproduction.
+Preserve Part 16 contact/grounding work. Plan selects validated safe-pose recovery
+with inventory/mission preservation and scenario fallback; extend existing loading
+for sulphur, steel channels and grain.
+
+README corrected; README.ru.md added per the explicit Russian documentation request.
+Documentation index updated. No runtime code, scenes or model assets changed; no
+Unity tests run for this documentation stage.
+
 ## Volgo-Don Parts 16-17 and built player, 2026-10-25
 
 Read Art/Source/VolgoDon507B/PART16_REVIEW.md, PART17_REVIEW.md and PLAYER_PERFORMANCE.md.

@@ -1,5 +1,6 @@
 using System.IO;
 using ShipSimulator.Physics;
+using ShipSimulator.UI;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -57,6 +58,12 @@ namespace ShipSimulator.Editor
         {
             var target = new RenderTexture(1600, 900, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
             camera.targetTexture = target;
+            // A synchronous capture has no LateUpdate after its target size changes.
+            Canvas.ForceUpdateCanvases();
+            foreach (Canvas canvas in Object.FindObjectsByType<Canvas>())
+                if (canvas.renderMode == RenderMode.ScreenSpaceCamera && canvas.worldCamera == camera)
+                    canvas.GetComponent<HudLayout>()?.RefreshLayout();
+            Canvas.ForceUpdateCanvases();
             camera.Render();
             var previous = RenderTexture.active;
             RenderTexture.active = target;

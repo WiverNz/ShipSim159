@@ -35,6 +35,7 @@ namespace ShipSimulator.Tests
             yield return null;
             yield return null;
 
+            hudObject.GetComponent<HudLayout>().Select(2);
             Assert.That(Readout(hudObject, "TIME "), Is.EqualTo("TIME 1x"));
 
             hudObject.GetComponent<SimulationTimeController>().SetScale(4f);
@@ -59,6 +60,7 @@ namespace ShipSimulator.Tests
             UnityEngine.Physics.SyncTransforms();
             ship.Simulate(0.02f);
             yield return null;
+            hudObject.GetComponent<HudLayout>().Select(4);
             string text = Readout(hudObject, "DEPTH ");
             Assert.That(ship.EffectiveDraftM, Is.LessThan(ship.EstimatedDraftM - 0.2f));
             Assert.That(text, Does.Contain($"DRAFT</color> {ship.EffectiveDraftM:F1} m"));

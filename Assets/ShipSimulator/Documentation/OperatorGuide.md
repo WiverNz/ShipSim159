@@ -331,3 +331,26 @@ sideways self-propulsion. No teleport or automatic release is applied.
 Loading restores ground contact from the restored Rigidbody pose. Old saves keep
 the existing fallback rules for loading, engines, mechanisms and ground tackle.
 The physics and contact values are prototype estimates, not navigation guidance.
+
+
+## Scalable interface and control groups
+
+Settings > Interface & camera provides interface scale (80-150%), camera rotation
+sensitivity and independent zoom sensitivity. Changes apply immediately; Back, Done,
+pause-menu resume, focus loss and application exit flush preferences. Restore defaults
+on this page resets only these three controls, preserving sound and display choices.
+The previous camera-sensitivity preference migrates without losing its value.
+
+The HUD uses labelled icon tabs: Helm, Deck, Camera, Weather, Map, Help and Settings.
+Deck is disabled on vessels without loading or deck machinery. Panels scroll vertically
+when space is limited. Use the visible scrollbar or mouse wheel; settings also scroll
+to keyboard-selected controls. Important engine orders and warnings retain text.
+At wide logical resolutions navigation stays in a separate right-hand scroll pane;
+at narrower sizes Map opens it in the control drawer. M toggles the side map on wide
+screens, or switches between Map and Helm on narrow screens. F1 toggles Help.
+
+Only left-click activates HUD commands. Wheel and right-button gestures that begin over
+UI belong to UI; camera orbit started in the world retains its gesture until release.
+Editing sliders blocks vessel keyboard commands. Opening the pause menu, changing
+camera view or losing focus releases an orbit cursor. Camera smoothing itself remains
+scheduled for usability Part 3.

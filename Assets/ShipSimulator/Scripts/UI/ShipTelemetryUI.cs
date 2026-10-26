@@ -80,8 +80,6 @@ namespace ShipSimulator.UI
 
         // Effective only before Start, which builds the HUD for the vessel it has then.
         public void SetShip(ShipPhysicsController value) => ship = value;
-        private bool helpVisible;
-        private bool mapVisible = true;
         private Vector3 objectivePosition = new Vector3(0f, 0f, 650f);
         private const float MapPixelsPerMeter = 0.82f;
         private const float RadarVesselOffsetY = -82f;
@@ -160,13 +158,20 @@ namespace ShipSimulator.UI
                 BuildInterface();
                 return;
             }
-            UpdateKeyboardShortcuts();
+            if (!GameplayInput.KeyboardBlocked) UpdateKeyboardShortcuts();
             if (loadingText != null && ship.HasLoading)
             {
                 var c = ship.Data.loading.compartments[selectedLoadCompartment];
                 loadingText.text = $"{c.id.ToUpperInvariant()}\n{ship.CompartmentMassKg(selectedLoadCompartment) / 1000:F1} / {c.capacityKg / 1000:F0} t" +
                     $"   TOTAL {ship.CurrentMassKg / 1000:F0} t\nDRAFT {ship.EstimatedDraftM:F2} m  TRIM {ship.EstimatedTrimM:+0.00;-0.00} m\n{ship.LoadingStatus}" +
                     (ship.HydrostaticRange == HydrostaticRange.Supported ? "" : " | OUTSIDE TABLES");
+                var loadingPanel = (RectTransform)loadingText.transform.parent;
+                float height = Mathf.Max(168, loadingText.preferredHeight + 84);
+                if (Mathf.Abs(loadingPanel.sizeDelta.y - height) > 1)
+                {
+                    loadingPanel.sizeDelta = new Vector2(loadingPanel.sizeDelta.x, height);
+                    GetComponent<HudLayout>()?.Invalidate();
+                }
             }
             if (machineryText != null && ship.Mechanisms != null)
             {
@@ -175,7 +180,17 @@ namespace ShipSimulator.UI
                 machineryText.text = "DECK MACHINERY\nHATCHES " + machinery.Target + " | " +
                     (machinery.HatchesMoving ? $"{machinery.Phase} {Mathf.FloorToInt(left / 60f)}:{Mathf.FloorToInt(left % 60f):00}" : "READY");
             }
-            if (tackleText != null && ship.GroundTackle != null) tackleText.text = FormatGroundTackle(ship.GroundTackle);
+            if (tackleText != null && ship.GroundTackle != null)
+            {
+                tackleText.text = FormatGroundTackle(ship.GroundTackle);
+                var panel = (RectTransform)tackleText.transform.parent;
+                float height = Mathf.Max(384, tackleText.preferredHeight + 132);
+                if (Mathf.Abs(panel.sizeDelta.y - height) > 1)
+                {
+                    panel.sizeDelta = new Vector2(panel.sizeDelta.x, height);
+                    GetComponent<HudLayout>()?.Invalidate();
+                }
+            }
 
             float speedMps = ship.Body.linearVelocity.magnitude;
             float heading = ship.transform.eulerAngles.y;
@@ -250,6 +265,7 @@ namespace ShipSimulator.UI
 
         private void BuildInterface()
         {
+            telegraphButtons.Clear(); rudderButtons.Clear(); cameraButtons.Clear();
             // Instruments only. Other components park their own rigs on this object, because the HUD
             // creates the weather controller when a scene has none, and that adds the lighting, which
             // parents a sky capture camera here. Destroying those leaves them throwing for the rest of
@@ -320,6 +336,10 @@ namespace ShipSimulator.UI
             Text helpPrompt = Label(transform, "F1  CONTROLS", 16, TextAnchor.LowerCenter,
                 new Vector2(820f, 16f), new Vector2(-820f, -1034f));
             helpPrompt.color = accentColor;
+            helpPrompt.gameObject.SetActive(false);
+            var layout = GetComponent<HudLayout>();
+            if (layout == null) layout = gameObject.AddComponent<HudLayout>();
+            layout.Build(helpText);
             if (readout != null) readout.gameObject.SetActive(false);
         }
 
@@ -327,12 +347,12 @@ namespace ShipSimulator.UI
         {
             RectTransform block = AnchoredPanel("RudderBlock", new Vector2(0f, 0f),
                 new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(20f, 24f),
-                new Vector2(420f, 146f));
-            Icon(block, HudIcon.Rudder, new Vector2(-176f, 112f), 20f, HudTheme.Accent);
+                new Vector2(420f, 180f));
+            Icon(block, HudIcon.Rudder, new Vector2(-185f, 76f), 20f, HudTheme.Accent);
             rudderText = Label(block, "RUDDER  0.0 deg", 19, TextAnchor.UpperCenter,
                 new Vector2(8f, 108f), new Vector2(-8f, -8f));
             RectTransform dial = ImageRect(block, "RudderScale", new Color(0.03f, 0.07f, 0.10f, 0.95f),
-                new Vector2(0f, 12f), new Vector2(350f, 38f));
+                new Vector2(0f, -4f), new Vector2(350f, 38f));
             Image dialImage = dial.GetComponent<Image>();
             dialImage.sprite = HudTheme.Rounded(10);
             dialImage.type = Image.Type.Sliced;
@@ -358,11 +378,11 @@ namespace ShipSimulator.UI
             needleImage.sprite = HudTheme.Rounded(2);
             needleImage.type = Image.Type.Sliced;
             needleImage.raycastTarget = false;
-            rudderButtons.Add(Button(block, "< PORT  [A]", new Vector2(-118f, -43f),
+            rudderButtons.Add(Button(block, "< PORT  [A]", new Vector2(-118f, -60f),
                 new Vector2(108f, 38f), () => ship.SetRudderCommand(-1f)));
-            rudderButtons.Add(Button(block, "MIDSHIPS [C]", new Vector2(0f, -43f),
+            rudderButtons.Add(Button(block, "MIDSHIPS [C]", new Vector2(0f, -60f),
                 new Vector2(122f, 38f), ship.CenterRudder));
-            rudderButtons.Add(Button(block, "STBD [D] >", new Vector2(118f, -43f),
+            rudderButtons.Add(Button(block, "STBD [D] >", new Vector2(118f, -60f),
                 new Vector2(108f, 38f), () => ship.SetRudderCommand(1f)));
         }
 
@@ -371,7 +391,7 @@ namespace ShipSimulator.UI
             RectTransform block = AnchoredPanel("TelegraphBlock", new Vector2(0.5f, 0f),
                 new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 28f),
                 new Vector2(680f, 154f));
-            Icon(block, HudIcon.Speed, new Vector2(-300f, 118f), 22f, HudTheme.Accent);
+            Icon(block, HudIcon.Speed, new Vector2(-310f, 50f), 22f, HudTheme.Accent);
             engineText = Label(block, "TELEGRAPH  STOP", 19, TextAnchor.UpperCenter,
                 new Vector2(8f, 80f), new Vector2(-8f, -8f));
             string[] labels =
@@ -396,7 +416,7 @@ namespace ShipSimulator.UI
             Icon(block, HudIcon.Camera, new Vector2(-150f, 50f), 22f, HudTheme.Accent);
             cameraText = Label(block, "CAMERA", 18, TextAnchor.UpperCenter,
                 new Vector2(8f, 70f), new Vector2(-8f, -8f));
-            cameraButtons.Add(Button(block, "PREV  [V]", new Vector2(-112f, -38f),
+            cameraButtons.Add(Button(block, "PREV", new Vector2(-112f, -38f),
                 new Vector2(104f, 38f), PreviousCamera));
             cameraButtons.Add(Button(block, "NEXT  [V]", new Vector2(0f, -38f),
                 new Vector2(104f, 38f), NextCamera));
@@ -404,10 +424,10 @@ namespace ShipSimulator.UI
                 new Vector2(104f, 38f), () => SetCamera(7));
             Button(block, "NAV  [9]", new Vector2(112f, 5f),
                 new Vector2(104f, 34f), () => SetCamera(8));
-            Button(block, "DAY/NIGHT [N]", new Vector2(-112f, 5f),
+            Button(block, "DAY [N]", new Vector2(-112f, 5f),
                 new Vector2(104f, 34f), ToggleDayNight);
             timeOfDayText = Label(block, "DAY", 14, TextAnchor.MiddleCenter,
-                new Vector2(145f, 72f), new Vector2(-145f, -40f));
+                new Vector2(135f, 52f), new Vector2(-135f, -42f));
             timeOfDayText.color = accentColor;
         }
 
@@ -418,7 +438,7 @@ namespace ShipSimulator.UI
                 new Vector2(-22f, 170f), new Vector2(350f, 58f));
             Icon(block, HudIcon.Time, new Vector2(-150f, 0f), 20f, HudTheme.Accent);
             timeScaleText = Label(block, "TIME 1x", 16, TextAnchor.MiddleLeft,
-                new Vector2(30f, 8f), new Vector2(-230f, -8f));
+                new Vector2(46f, 8f), new Vector2(-230f, -8f));
             timeScaleText.color = accentColor;
             Button(block, "1x", new Vector2(-30f, 0f), new Vector2(58f, 34f),
                 () => SetTimeScale(1f));
@@ -454,14 +474,14 @@ namespace ShipSimulator.UI
             selectedAnchor = Mathf.Clamp(selectedAnchor, 0, Mathf.Max(0, tackle.AnchorCount - 1));
             selectedStation = Mathf.Clamp(selectedStation, 0, Mathf.Max(0, tackle.StationCount - 1));
             RectTransform block = AnchoredPanel("GroundTackleBlock", new Vector2(1f, 0f), new Vector2(1f, 0f),
-                new Vector2(1f, 0f), new Vector2(-22f, 240f), new Vector2(350f, 384f));
+                new Vector2(1f, 0f), new Vector2(-22f, 240f), new Vector2(400f, 384f));
             // Keys: G B Y U for the selected anchor; O P I , / . F for the selected mooring station (F1 lists them).
-            tackleText = Label(block, "ANCHORS", 13, TextAnchor.UpperLeft, new Vector2(14, 118), new Vector2(-10, -8));
+            tackleText = Label(block, "ANCHORS", 16, TextAnchor.UpperLeft, new Vector2(14, 118), new Vector2(-10, -8));
             tackleText.supportRichText = true;
-            Button(block, "ANCHOR", new Vector2(-122, -78), new Vector2(78, 28), CycleAnchor);
-            Button(block, "LET GO", new Vector2(-40, -78), new Vector2(78, 28), () => ChainOrder(ChainCommand.LetGo));
-            Button(block, "HOLD", new Vector2(40, -78), new Vector2(78, 28), () => ChainOrder(ChainCommand.Hold));
-            Button(block, "HEAVE", new Vector2(122, -78), new Vector2(78, 28), () => ChainOrder(ChainCommand.Heave));
+            Button(block, "ANCHOR", new Vector2(-138, -78), new Vector2(92, 32), CycleAnchor);
+            Button(block, "LET GO", new Vector2(-46, -78), new Vector2(92, 32), () => ChainOrder(ChainCommand.LetGo));
+            Button(block, "HOLD", new Vector2(46, -78), new Vector2(92, 32), () => ChainOrder(ChainCommand.Hold));
+            Button(block, "HEAVE", new Vector2(138, -78), new Vector2(92, 32), () => ChainOrder(ChainCommand.Heave));
             Button(block, "STATION", new Vector2(-110, -116), new Vector2(102, 28), CycleStation);
             Button(block, "BOLLARD", new Vector2(0, -116), new Vector2(102, 28), CycleShore);
             Button(block, "PASS LINE", new Vector2(110, -116), new Vector2(102, 28), PassLine);
@@ -470,6 +490,12 @@ namespace ShipSimulator.UI
             Button(block, "SLACK", new Vector2(14, -154), new Vector2(64, 28), () => LineOrder(LineCommand.Slack));
             Button(block, "CAST OFF", new Vector2(110, -154), new Vector2(116, 28),
                 () => ship.GroundTackle?.CastOff(selectedStation));
+            foreach (HudButton button in block.GetComponentsInChildren<HudButton>())
+            {
+                var rect = (RectTransform)button.transform;
+                rect.anchorMin = rect.anchorMax = new Vector2(.5f, 0);
+                rect.anchoredPosition += Vector2.up * 192;
+            }
         }
 
         private void CycleAnchor()
@@ -557,7 +583,7 @@ namespace ShipSimulator.UI
             selectedLoadCompartment = 0;
             RectTransform block = AnchoredPanel("LoadingBlock", Vector2.zero, Vector2.zero, Vector2.zero,
                 new Vector2(20, 512), new Vector2(330, 168));
-            loadingText = Label(block, "LOADING", 13, TextAnchor.UpperCenter,
+            loadingText = Label(block, "LOADING", 16, TextAnchor.UpperCenter,
                 new Vector2(8, 76), new Vector2(-8, -8));
             Button(block, "SELECT COMPARTMENT", new Vector2(0, -28), new Vector2(305, 28),
                 () => selectedLoadCompartment = (selectedLoadCompartment + 1) % ship.Data.loading.compartments.Length);
@@ -566,16 +592,22 @@ namespace ShipSimulator.UI
             Button(block, "EMPTY", new Vector2(0, -63), new Vector2(95, 28),
                 () => ship.SetLoadingCommand(selectedLoadCompartment, -1));
             Button(block, "STOP ALL", new Vector2(105, -63), new Vector2(95, 28), ship.StopLoading);
+            foreach (HudButton button in block.GetComponentsInChildren<HudButton>())
+            {
+                var rect = (RectTransform)button.transform;
+                rect.anchorMin = rect.anchorMax = new Vector2(.5f, 0);
+                rect.anchoredPosition += Vector2.up * 84;
+            }
         }
 
         private void BuildWeatherControls()
         {
             RectTransform block = AnchoredPanel("WeatherBlock",
                 new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(0f, 0f),
-                new Vector2(20f, 182f), new Vector2(330f, 132f));
+                new Vector2(20f, 182f), new Vector2(330f, 174f));
             Icon(block, HudIcon.Wind, new Vector2(-142f, 44f), 18f, HudTheme.Accent);
-            weatherText = Label(block, "WEATHER", 13, TextAnchor.UpperCenter,
-                new Vector2(26f, 56f), new Vector2(-10f, -6f));
+            weatherText = Label(block, "WEATHER", 16, TextAnchor.UpperCenter,
+                new Vector2(26f, 76f), new Vector2(-10f, -6f));
             weatherText.color = HudTheme.AccentSoft;
             Button(block, "DIR -", new Vector2(-112f, -26f), new Vector2(92f, 32f),
                 () => ChangeWindDirection(-45f));
@@ -597,14 +629,14 @@ namespace ShipSimulator.UI
             radarTrack.Clear();
             miniMap = Panel("MiniMap",
                 new Vector2(1f, 1f), new Vector2(1f, 1f),
-                new Vector2(1f, 1f), new Vector2(-22f, -22f), new Vector2(420f, 420f));
-            Icon(miniMap, HudIcon.Compass, new Vector2(-178f, 181f), 20f, HudTheme.Accent);
+                new Vector2(1f, 1f), new Vector2(-22f, -22f), new Vector2(420f, 464f));
+            Icon(miniMap, HudIcon.Compass, new Vector2(-178f, 203f), 20f, HudTheme.Accent);
             Text radarTitle = Label(miniMap, "RIVER RADAR  ·  HEAD-UP  ·  200 m",
-                17, TextAnchor.UpperLeft, new Vector2(52f, 380f), new Vector2(-16f, -10f));
+                17, TextAnchor.UpperLeft, new Vector2(52f, 424f), new Vector2(-16f, -10f));
             radarTitle.color = HudTheme.AccentSoft;
             RectTransform viewport = ImageRect(miniMap, "Viewport",
                 new Color(0.035f, 0.058f, 0.094f, 0.98f), // calm dark navy
-                new Vector2(0f, 14f), new Vector2(384f, 300f));
+                new Vector2(0f, 36f), new Vector2(384f, 300f));
             Image viewportImage = viewport.GetComponent<Image>();
             viewportImage.sprite = HudTheme.Rounded(12);
             viewportImage.type = Image.Type.Sliced;
@@ -1032,8 +1064,7 @@ namespace ShipSimulator.UI
             if (keyboard.hKey.wasPressedThisFrame) PlayHorn();
             if (keyboard.mKey.wasPressedThisFrame)
             {
-                mapVisible = !mapVisible;
-                if (miniMap != null) miniMap.gameObject.SetActive(mapVisible);
+                GetComponent<HudLayout>()?.ToggleMap();
             }
             if (keyboard.nKey.wasPressedThisFrame) ToggleDayNight();
             if (keyboard.f2Key.wasPressedThisFrame) CycleWind();
@@ -1066,8 +1097,7 @@ namespace ShipSimulator.UI
             }
             if (keyboard.f1Key.wasPressedThisFrame)
             {
-                helpVisible = !helpVisible;
-                helpText.gameObject.SetActive(helpVisible);
+                GetComponent<HudLayout>()?.ToggleHelp();
             }
             Key[] viewKeys = { Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4,
                 Key.Digit5, Key.Digit6, Key.Digit7, Key.Digit8, Key.Digit9 };
@@ -1505,11 +1535,12 @@ namespace ShipSimulator.UI
             rect.offsetMax = offsetMax;
             Text label = labelObject.GetComponent<Text>();
             label.font = font;
-            label.fontSize = size;
+            label.fontSize = Mathf.Max(16, size);
             label.color = HudTheme.TextPrimary;
             label.alignment = alignment;
             label.text = value;
             label.supportRichText = true;
+            label.raycastTarget = false;
             Shadow shadow = labelObject.AddComponent<Shadow>();
             shadow.effectColor = new Color(0f, 0.01f, 0.02f, 0.6f);
             shadow.effectDistance = new Vector2(1f, -1f);

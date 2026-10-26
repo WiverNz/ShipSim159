@@ -1,3 +1,4 @@
+using System;
 using ShipSimulator.Audio;
 using UnityEngine;
 
@@ -6,7 +7,35 @@ namespace ShipSimulator.UI
     public static class VoyageSettings
     {
         private const string Prefix = "ShipSim159.Settings.";
-        public static float CameraSensitivity => PlayerPrefs.GetFloat(Prefix + "Sensitivity", 1f);
+        public static event Action Changed;
+        public static float UiScale => Read("UiScale", 1f, .8f, 1.5f);
+        public static float CameraSensitivity => Read("RotationSensitivity",
+            Read("Sensitivity", 1f, .25f, 2f), .25f, 2f);
+        public static float ZoomSensitivity => Read("ZoomSensitivity", 1f, .25f, 3f);
+
+        private static float Valid(float value, float fallback, float min, float max) =>
+            float.IsNaN(value) || float.IsInfinity(value) ? fallback : Mathf.Clamp(value, min, max);
+
+        private static float Read(string key, float fallback, float min, float max) =>
+            Valid(PlayerPrefs.GetFloat(Prefix + key, fallback), fallback, min, max);
+
+        private static void Write(string key, float value, float fallback, float min, float max)
+        {
+            PlayerPrefs.SetFloat(Prefix + key, Valid(value, fallback, min, max));
+            Changed?.Invoke();
+        }
+
+        public static void SetUiScale(float value) => Write("UiScale", value, 1f, .8f, 1.5f);
+        public static void SetZoomSensitivity(float value) => Write("ZoomSensitivity", value, 1f, .25f, 3f);
+        public static void Save() => PlayerPrefs.Save();
+
+        public static void RestoreControlDefaults()
+        {
+            SetUiScale(1f);
+            SetSensitivity(1f);
+            SetZoomSensitivity(1f);
+            Save();
+        }
         public static float Volume => PlayerPrefs.GetFloat(Prefix + "Volume", 0.8f);
         public static bool Muted => PlayerPrefs.GetInt(Prefix + "Mute", 0) == 1;
         // A standalone player falls silent while another window has focus; the editor keeps its own audio controls.
@@ -17,6 +46,8 @@ namespace ShipSimulator.UI
 
         public static void Apply()
         {
+            if (!PlayerPrefs.HasKey(Prefix + "RotationSensitivity"))
+                PlayerPrefs.SetFloat(Prefix + "RotationSensitivity", CameraSensitivity);
             ApplyListenerVolume();
             for (int i = 0; i < AudioMix.BusCount; i++) AudioMix.SetUserVolume((AudioBus)i, BusVolume((AudioBus)i));
             if (PlayerPrefs.HasKey(Prefix + "Quality"))
@@ -63,7 +94,7 @@ namespace ShipSimulator.UI
         }
 
         public static void SetSensitivity(float value) =>
-            PlayerPrefs.SetFloat(Prefix + "Sensitivity", Mathf.Clamp(value, 0.25f, 2f));
+            Write("RotationSensitivity", value, 1f, .25f, 2f);
 
         public static void CycleQuality()
         {

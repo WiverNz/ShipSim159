@@ -179,7 +179,7 @@ namespace ShipSimulator.Physics
 
         private void Update()
         {
-            if (ShipSimulator.UI.VoyageMenu.IsOpen || data == null) return;
+            if (ShipSimulator.UI.GameplayInput.KeyboardBlocked || data == null) return;
             Keyboard keyboard = Keyboard.current;
             if (keyboard == null) return;
             float throttleInput = (keyboard.wKey.isPressed ? 1f : 0f) - (keyboard.sKey.isPressed ? 1f : 0f);

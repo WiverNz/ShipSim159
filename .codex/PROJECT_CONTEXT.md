@@ -1,5 +1,27 @@
 # ShipSim159 Project Context
 
+## Usability Part 1 complete, 2026-10-27
+
+Read `Assets/ShipSimulator/Documentation/UsabilityPart1Review.md`. Part 1 of the
+usability plan is complete; Parts 2-9 remain unstarted. Shared 80-150% UI scale,
+scrollable responsive menu, labelled icon HUD tabs, independent persisted rotation
+and zoom multipliers, legacy sensitivity migration and control-default reset added.
+HUD commands accept only left-click. Gameplay keyboard input is blocked by visible
+editing controls; hidden sliders do not block resume. UI owns gestures begun over it;
+camera orbit releases on pause/focus/view change. Camera smoothing remains Part 3.
+Readouts and loading/tackle status fit content; lower controls remain scrollable.
+No physics parameters, prefabs, scenes or save DTOs changed.
+
+Verification: full EditMode 282/282 (20261026-223113-163), full PlayMode 175/175
+(20261027-000936-077), final UI/focus/menu 7/7 (`Logs/usability-acceptance.xml`).
+Matrix: five resolutions x three scales, all HUD groups/menu pages, scroll reach and
+empty/full holds; captures under `Logs/Usability/`. Shakedown PASS 7 commands
+(20261027-004101-773); menu smoke PASS (20261027-004200-375). Synchronous capture now
+refreshes layout after target resize. Existing test/diagnostic lookups now open tabs,
+with explicit left-pointer events, preserving their original state assertions.
+README/README.ru/OperatorGuide and the plan updated. No external assets, commit or
+push. No new standalone executable: integrated player release remains Part 9.
+
 ## Usability audit and execution plan, 2026-10-25
 
 User requested source investigation and a numbered plan before implementation.

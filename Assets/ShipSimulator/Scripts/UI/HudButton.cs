@@ -24,6 +24,8 @@ namespace ShipSimulator.UI
         private bool active;
         private bool hovered;
         private bool pressed;
+        public bool Interactable { get; private set; } = true;
+        public void SetInteractable(bool value) { Interactable = value; Refresh(); }
 
         public Image Fill => fill;
         public Text Label => label;
@@ -49,10 +51,14 @@ namespace ShipSimulator.UI
 
         public void OnPointerEnter(PointerEventData eventData) { hovered = true; Refresh(); }
         public void OnPointerExit(PointerEventData eventData) { hovered = false; pressed = false; Refresh(); }
-        public void OnPointerDown(PointerEventData eventData) { pressed = true; Refresh(); }
+        public void OnPointerDown(PointerEventData eventData) { if (eventData.button == PointerEventData.InputButton.Left && Interactable) { pressed = true; Refresh(); } }
         public void OnPointerUp(PointerEventData eventData) { pressed = false; Refresh(); }
 
-        public void OnPointerClick(PointerEventData eventData) => onClick?.Invoke();
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (Interactable && eventData.button == PointerEventData.InputButton.Left) onClick?.Invoke();
+        }
+        private void OnDisable() { pressed = hovered = false; Refresh(); }
 
         private void Refresh()
         {
@@ -61,7 +67,7 @@ namespace ShipSimulator.UI
             Color baseColor = active ? HudTheme.ButtonActive : HudTheme.ButtonIdle;
             if (pressed) baseColor = Multiply(baseColor, 0.84f);
             else if (hovered) baseColor = Multiply(baseColor, active ? 1.12f : 1.30f);
-            fill.color = baseColor;
+            fill.color = Interactable ? baseColor : Multiply(baseColor, .45f);
 
             if (outline != null)
                 outline.color = active
@@ -82,8 +88,7 @@ namespace ShipSimulator.UI
                 label.fontStyle = active ? FontStyle.Bold : FontStyle.Normal;
             }
 
-            transform.localScale = active ? Vector3.one * 1.08f
-                : pressed ? Vector3.one * 0.96f : Vector3.one;
+            transform.localScale = Vector3.one;
         }
 
         private static Color Multiply(Color color, float factor)

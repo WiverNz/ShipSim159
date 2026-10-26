@@ -1,6 +1,7 @@
 # Ship, camera and interface usability plan
 
-Status: source audit complete on 2026-10-25. Parts 1-9 are not implemented.
+Status: Part 1 complete on 2026-10-27; see [its review](UsabilityPart1Review.md).
+Parts 2-9 are not implemented. The source audit below records the 2026-10-25 baseline.
 This plan is independent of the completed Volgo-Don modelling Parts 1-17.
 Commands such as `сделай часть 1` refer to the numbered parts below in this workstream.
 Implement only the requested part, including its tests and documentation. Record its
@@ -40,22 +41,22 @@ Do not import UI frameworks, replace hydrodynamics or create a parallel save sys
 
 Dependencies: none.
 
-- [ ] Capture the current HUD, menu, help, loading and tackle panels at representative
+- [x] Capture the current HUD, menu, help, loading and tackle panels at representative
   resolutions. Record clipped/overlapping text and inaccessible controls before editing.
-- [ ] Extend VoyageSettings with validated UI scale, separate rotation/zoom preferences,
+- [x] Extend VoyageSettings with validated UI scale, separate rotation/zoom preferences,
   defaults and change notifications. Preserve the existing Sensitivity key through an
   explicit migration; save on settings completion and application lifecycle boundaries.
-- [ ] Apply a shared UI-scale policy to HUD, menu and popups, initially targeting
+- [x] Apply a shared UI-scale policy to HUD, menu and popups, initially targeting
   80-150%. Add scrollable settings categories and responsive panel placement so scale
   increases do not simply push controls outside the viewport. Provide Restore defaults.
-- [ ] Keep readable minimum font sizes, text wrapping and flexible heights; use
+- [x] Keep readable minimum font sizes, text wrapping and flexible heights; use
   scroll/reflow for long content. Do not solve clipping by shrinking every label.
-- [ ] Extend HudTheme icons for settings, help, map, camera, zoom and recovery. Use
+- [x] Extend HudTheme icons for settings, help, map, camera, zoom and recovery. Use
   icon plus short caption or localized tooltip; retain explicit text for engine orders,
   grounding warnings and destructive actions. Show active/disabled/hover states.
-- [ ] Fix pointer button acceptance and prevent gameplay commands while editing controls.
+- [x] Fix pointer button acceptance and prevent gameplay commands while editing controls.
   Establish the input ownership contract used by Parts 3-4.
-- [ ] Add settings persistence/migration and layout regression checks. Save screenshots
+- [x] Add settings persistence/migration and layout regression checks. Save screenshots
   at 1280x720, 1920x1080, 2560x1440, 3440x1440 and 1280x1024 at scale extremes.
 
 Acceptance: all essential actions remain reachable, labels do not clip, scale changes
@@ -287,7 +288,7 @@ compile success. Keep all changes in the working tree; no commit or push.
 
 | Part | Status | Verification |
 |---|---|---|
-| 1 | Not started | Pending |
+| 1 | Complete | [Review and evidence](UsabilityPart1Review.md) |
 | 2 | Not started | Pending |
 | 3 | Not started | Pending |
 | 4 | Not started | Pending |

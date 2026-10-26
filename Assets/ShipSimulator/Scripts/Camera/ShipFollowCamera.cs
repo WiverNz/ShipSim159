@@ -37,6 +37,7 @@ namespace ShipSimulator.CameraSystem
         private int viewIndex;
         private Vector3 velocity;
         private Camera controlledCamera;
+        private bool orbitGesture;
         private float orbitYaw;
         private float orbitPitch;
         private float orbitDistance;
@@ -76,8 +77,11 @@ namespace ShipSimulator.CameraSystem
             if (!IsNavigatorView) ResetOrbitToView();
         }
 
-        private void OnDisable()
+        private void OnDisable() => ReleaseOrbit();
+        private void OnApplicationFocus(bool focused) { if (!focused) ReleaseOrbit(); }
+        private void ReleaseOrbit()
         {
+            orbitGesture = false;
             if (Cursor.lockState == CursorLockMode.Locked)
             {
                 Cursor.lockState = CursorLockMode.None;
@@ -87,9 +91,9 @@ namespace ShipSimulator.CameraSystem
 
         private void LateUpdate()
         {
-            if (ShipSimulator.UI.VoyageMenu.IsOpen) return;
+            if (ShipSimulator.UI.VoyageMenu.IsOpen) { ReleaseOrbit(); return; }
             if (target == null) return;
-            if (Keyboard.current != null && Keyboard.current.vKey.wasPressedThisFrame)
+            if (!ShipSimulator.UI.GameplayInput.KeyboardBlocked && Keyboard.current != null && Keyboard.current.vKey.wasPressedThisFrame)
                 NextView();
 
             if (!IsNavigatorView) UpdateMouseOrbit();
@@ -122,19 +126,16 @@ namespace ShipSimulator.CameraSystem
         {
             Mouse mouse = Mouse.current;
             if (mouse == null) return;
-
-            if (mouse.rightButton.wasPressedThisFrame)
+            if (mouse.rightButton.wasReleasedThisFrame) ReleaseOrbit();
+            if (mouse.rightButton.wasPressedThisFrame && !ShipSimulator.UI.GameplayInput.PointerOverUi())
             {
+                orbitGesture = true;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
-            else if (mouse.rightButton.wasReleasedThisFrame)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
+            if (!orbitGesture && ShipSimulator.UI.GameplayInput.PointerOverUi()) return;
 
-            if (mouse.rightButton.isPressed)
+            if (orbitGesture && mouse.rightButton.isPressed)
             {
                 Vector2 delta = mouse.delta.ReadValue();
                 orbitYaw += delta.x * orbitSensitivity * ShipSimulator.UI.VoyageSettings.CameraSensitivity;
@@ -146,7 +147,7 @@ namespace ShipSimulator.CameraSystem
             if (Mathf.Abs(scroll) > 0.01f)
             {
                 orbitDistance = Mathf.Clamp(
-                    orbitDistance * Mathf.Exp(-scroll * zoomSensitivity),
+                    orbitDistance * Mathf.Exp(-scroll * zoomSensitivity * ShipSimulator.UI.VoyageSettings.ZoomSensitivity),
                     MinDistance,
                     MaxDistance);
             }
@@ -199,6 +200,7 @@ namespace ShipSimulator.CameraSystem
             if (ViewCount == 0) return;
             var temporal = GetComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>();
             if (temporal != null) temporal.resetHistory = true;
+            ReleaseOrbit();
             viewIndex = Mathf.Clamp(index, 0, ViewCount - 1);
             if (!IsNavigatorView) ResetOrbitToView();
         }

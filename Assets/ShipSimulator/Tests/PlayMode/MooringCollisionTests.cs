@@ -39,7 +39,8 @@ namespace ShipSimulator.Tests
             Assert.That(moorings, Is.Not.Null);
             RadarObstacle[] obstacles = moorings.GetComponentsInChildren<RadarObstacle>();
             Assert.That(obstacles.Length, Is.GreaterThan(20));
-            Transform world = hud.transform.Find("MiniMap/Viewport/MovingWorld");
+            hud.GetComponent<HudLayout>().Select(4);
+            Transform world = hud.GetComponentInChildren<RadarChannel>().transform.parent;
             Assert.That(world, Is.Not.Null);
             collisionScene = SceneManager.CreateScene("Mooring collision test",
                 new CreateSceneParameters(LocalPhysicsMode.Physics3D));

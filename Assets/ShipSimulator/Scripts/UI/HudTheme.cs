@@ -20,7 +20,12 @@ namespace ShipSimulator.UI
         Camera,
         Time,
         Rudder,
-        Warning
+        Warning,
+        Settings,
+        Help,
+        Map,
+        Zoom,
+        Recovery
     }
 
     /// <summary>
@@ -309,6 +314,34 @@ namespace ShipSimulator.UI
                     Line(a, s, c, s * 0.50f, c, s * 0.16f, 3.2f);
                     Line(a, s, c - s * 0.10f, s * 0.30f, c, s * 0.16f, 3.0f);
                     Line(a, s, c + s * 0.10f, s * 0.30f, c, s * 0.16f, 3.0f);
+                    break;
+                case HudIcon.Settings:
+                    for (int k = 0; k < 3; k++)
+                    {
+                        float x = s * (.25f + k * .25f);
+                        Line(a, s, x, s * .2f, x, s * .8f, 3f);
+                        Ring(a, s, x, s * (k == 1 ? .65f : .4f), s * .08f, 3f);
+                    }
+                    break;
+                case HudIcon.Help:
+                    Ring(a, s, c, c, s * .38f, 3f);
+                    Arc(a, s, c, s * .4f, s * .12f, 180, 260, 3f);
+                    Line(a, s, c, c, c, s * .6f, 3f);
+                    Ring(a, s, c, s * .72f, s * .015f, 3f);
+                    break;
+                case HudIcon.Map:
+                    Rect(a, s, s * .18f, s * .2f, s * .82f, s * .8f, 3f);
+                    Line(a, s, s * .4f, s * .2f, s * .4f, s * .8f, 3f);
+                    Line(a, s, s * .6f, s * .2f, s * .6f, s * .8f, 3f);
+                    break;
+                case HudIcon.Zoom:
+                    Ring(a, s, s * .4f, s * .4f, s * .24f, 3f);
+                    Line(a, s, s * .6f, s * .6f, s * .84f, s * .84f, 4f);
+                    break;
+                case HudIcon.Recovery:
+                    Arc(a, s, c, c, s * .32f, 30, 290, 3f);
+                    Line(a, s, s * .22f, s * .22f, s * .22f, s * .48f, 3f);
+                    Line(a, s, s * .22f, s * .48f, s * .46f, s * .48f, 3f);
                     break;
                 case HudIcon.Warning:
                     Line(a, s, c, s * 0.18f, s * 0.16f, s * 0.80f, 3.2f);

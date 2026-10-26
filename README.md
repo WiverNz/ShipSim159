@@ -9,8 +9,8 @@
 
 The [usability improvement plan](Assets/ShipSimulator/Documentation/UsabilityImprovementPlan.md)
 defines nine separately executable parts for UI, languages, camera, map, collisions,
-grounded-bow water rendering, recovery and cargo. These improvements are planned,
-not yet implemented.
+grounded-bow water rendering, recovery and cargo. Part 1 adds scalable, scrollable UI and settings; Parts 2-9 remain planned.
+See the [Part 1 review](Assets/ShipSimulator/Documentation/UsabilityPart1Review.md) for changes and verification.
 
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator. It is
 built to carry several ship models, chosen in the start menu before a passage:
@@ -112,8 +112,10 @@ standalone fullscreen mode. See the [operator guide](Assets/ShipSimulator/Docume
 for save contents and storage details.
 
 Serpukhov zaton is also available for compatible fast craft. Cargo vessels are excluded
-by its passage limits. UI scale, language selection, separate zoom sensitivity and
-last-safe-position recovery are part of the planned usability work.
+by its passage limits. Interface scale (80-150%) and independent rotation/zoom sensitivity are available under
+Settings > Interface & camera. Language selection and last-safe-position recovery remain planned.
+The HUD groups helm, deck, camera, weather, map and help controls into labelled icon tabs.
+Overflowing panels scroll, and the map remains beside the controls when space allows.
 
 The training scene is already configured as the first enabled scene in Build
 Settings.

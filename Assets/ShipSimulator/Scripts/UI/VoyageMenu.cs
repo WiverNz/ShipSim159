@@ -38,6 +38,12 @@ namespace ShipSimulator.UI
         private string projectName = "507B";
         private GameObject overlay;
         private RectTransform pageRoot;
+        private RectTransform pageViewport;
+        private RectTransform shell;
+        private ScrollRect pageScroll;
+        private float nextRow;
+        private Vector2 shellSize;
+        private float shellScale;
         private Text heading;
         private Text eyebrow;
         private Text status;
@@ -172,6 +178,7 @@ namespace ShipSimulator.UI
 
         private void Update()
         {
+            RefreshLayout();
             if (loading) return;
             if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
                 HandleEscape();
@@ -181,7 +188,7 @@ namespace ShipSimulator.UI
         {
             if (loading) return;
             if (!open) OpenPause();
-            else if (page != "home") ShowHome();
+            else if (page != "home") { VoyageSettings.Save(); ShowHome(); }
             else if (hasVoyage) Resume();
         }
 
@@ -446,18 +453,40 @@ namespace ShipSimulator.UI
         public void ShowSettings()
         {
             ShowPage("settings", "MAKE YOURSELF AT HOME", "Bridge settings");
-            ActionButton("Sound  /  " + (VoyageSettings.Muted ? "Muted" : Mathf.RoundToInt(VoyageSettings.Volume * 100) + "%"),
-                "Master volume, mix and mute", 0, ShowSound);
-            SettingSlider("Camera sensitivity", VoyageSettings.CameraSensitivity, 0.25f, 2f, 92, VoyageSettings.SetSensitivity, value => value.ToString("0.00") + "x");
-            ActionButton("Graphics  /  " + QualitySettings.names[QualitySettings.GetQualityLevel()], "Select the next quality preset", 200, () => { VoyageSettings.CycleQuality(); ShowSettings(); });
-            ActionButton("VSync  /  " + (QualitySettings.vSyncCount > 0 ? "On" : "Off"), "Synchronise frames with your display", 280, () => { VoyageSettings.ToggleVSync(); ShowSettings(); });
-            ActionButton("Display  /  " + (Screen.fullScreen ? "Fullscreen" : "Windowed"), Application.isEditor ? "Available in the standalone player" : "Toggle fullscreen display", 360,
-                () => { VoyageSettings.ToggleFullscreen(); StartCoroutine(RefreshDisplay()); }, false, !Application.isEditor);
-            ActionButton("Done", "Settings are saved automatically", 462, () => { PlayerPrefs.Save(); ShowHome(); }, true);
+            ActionButton("Interface & camera", "Scale and independent camera sensitivities", 0, ShowInterface);
+            ActionButton("Sound", "Master volume, mix and mute", 0, ShowSound);
+            ActionButton("Display", "Quality, synchronisation and fullscreen", 0, ShowDisplay);
+            ActionButton("Done", "Settings are saved automatically", 0, () => { VoyageSettings.Save(); ShowHome(); }, true);
             SelectFirst();
         }
 
-        private IEnumerator RefreshDisplay() { yield return null; ShowSettings(); }
+        public void ShowInterface()
+        {
+            ShowPage("interface", "INTERFACE & CAMERA", "Comfort settings");
+            SettingSlider("Interface scale", VoyageSettings.UiScale, .8f, 1.5f, 0,
+                VoyageSettings.SetUiScale, value => Mathf.RoundToInt(value * 100) + "%");
+            SettingSlider("Camera rotation", VoyageSettings.CameraSensitivity, .25f, 2f, 0,
+                VoyageSettings.SetSensitivity, value => value.ToString("0.00") + "x");
+            SettingSlider("Camera zoom", VoyageSettings.ZoomSensitivity, .25f, 3f, 0,
+                VoyageSettings.SetZoomSensitivity, value => value.ToString("0.00") + "x");
+            ActionButton("Restore defaults", "Interface scale and camera sensitivities only", 0,
+                () => { VoyageSettings.RestoreControlDefaults(); ShowInterface(); });
+            ActionButton("Back", "Save and return to settings", 0, () => { VoyageSettings.Save(); ShowSettings(); }, true);
+            SelectFirst();
+        }
+
+        public void ShowDisplay()
+        {
+            ShowPage("display", "DISPLAY", "Graphics settings");
+            ActionButton("Graphics  /  " + QualitySettings.names[QualitySettings.GetQualityLevel()], "Select the next quality preset", 0, () => { VoyageSettings.CycleQuality(); ShowDisplay(); });
+            ActionButton("VSync  /  " + (QualitySettings.vSyncCount > 0 ? "On" : "Off"), "Synchronise frames with your display", 0, () => { VoyageSettings.ToggleVSync(); ShowDisplay(); });
+            ActionButton("Display  /  " + (Screen.fullScreen ? "Fullscreen" : "Windowed"), Application.isEditor ? "Available in the standalone player" : "Toggle fullscreen display", 0,
+                () => { VoyageSettings.ToggleFullscreen(); StartCoroutine(RefreshDisplay()); }, false, !Application.isEditor);
+            ActionButton("Back", "Save and return to settings", 0, () => { VoyageSettings.Save(); ShowSettings(); }, true);
+            SelectFirst();
+        }
+
+        private IEnumerator RefreshDisplay() { yield return null; ShowDisplay(); }
 
         public void ShowSound()
         {
@@ -478,7 +507,13 @@ namespace ShipSimulator.UI
             SelectFirst();
         }
 
-        private void OnApplicationFocus(bool hasFocus) => VoyageSettings.SetFocused(hasFocus);
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            VoyageSettings.SetFocused(hasFocus);
+            if (!hasFocus) VoyageSettings.Save();
+        }
+        private void OnApplicationPause(bool paused) { if (paused) VoyageSettings.Save(); }
+        private void OnApplicationQuit() => VoyageSettings.Save();
 
         private void Confirm(string title, string description, Action action)
         {
@@ -492,6 +527,8 @@ namespace ShipSimulator.UI
         private void ShowPage(string name, string kicker, string title)
         {
             page = name;
+            nextRow = 0;
+            if (pageScroll != null) { pageScroll.StopMovement(); pageScroll.verticalNormalizedPosition = 1; }
             foreach (Transform child in pageRoot) { child.gameObject.SetActive(false); Destroy(child.gameObject); }
             eyebrow.text = kicker;
             heading.text = title;
@@ -515,6 +552,7 @@ namespace ShipSimulator.UI
             fillRect.anchorMin = Vector2.zero; fillRect.anchorMax = Vector2.one; fillRect.sizeDelta = Vector2.zero;
             fill.GetComponent<Image>().color = Navy;
             RectTransform layout = Rect(overlay.transform, "Bridge layout", 0, 0, 1440, 900);
+            shell = layout;
             layout.anchorMin = layout.anchorMax = layout.pivot = new Vector2(0.5f, 0.5f);
             layout.anchoredPosition = Vector2.zero;
             RectTransform chart = Rect(layout, "River chart", 0, 0, 820, 900);
@@ -533,15 +571,23 @@ namespace ShipSimulator.UI
             Label(layout, "Engineering & gameplay prototype. Estimated navigation data.", 14, Muted, 64, 851, 720, 25);
             eyebrow = Label(layout, "", 16, Brass, 885, 64, 495, 30);
             heading = Label(layout, "", 38, White, 882, 108, 500, 64, FontStyle.Bold);
-            pageRoot = Rect(layout, "Menu page", 885, 206, 480, 560);
+            pageViewport = Rect(layout, "Menu page", 885, 206, 480, 560);
+            pageRoot = Rect(pageViewport, "Content", 0, 0, 480, 560);
+            pageScroll = UiLayout.Scroll(pageViewport, pageRoot);
             status = Label(layout, "", 16, Muted, 885, 787, 478, 72);
             Text version = Label(layout, "v" + Application.version, 14, Muted, 885, 859, 478, 25);
             version.name = "Game version";
             version.alignment = TextAnchor.MiddleRight;
+            RefreshLayout();
         }
 
         private Button ActionButton(string title, string detail, float y, Action action, bool primary = false, bool enabled = true, float height = 70)
         {
+            height = Mathf.Max(84, height);
+            float detailHeight = Measure(detail, 16, 425);
+            height = Mathf.Max(height, 45 + detailHeight + 12);
+            y = nextRow;
+            nextRow += height + 12;
             RectTransform rect = Rect(pageRoot, title, 0, y, 478, height);
             Image image = rect.gameObject.AddComponent<Image>();
             image.sprite = HudTheme.Rounded(8); image.type = Image.Type.Sliced;
@@ -556,17 +602,20 @@ namespace ShipSimulator.UI
             colors.disabledColor = new Color(0.48f, 0.48f, 0.48f, 0.65f);
             button.colors = colors;
             Label(rect, title, 22, primary ? Navy : enabled ? White : Muted, 20, 9, 425, 29, FontStyle.Bold);
-            Label(rect, detail, 15, primary ? Navy : Muted, 20, height < 70 ? 33 : 39, 425, 24);
+            Label(rect, detail, 16, primary ? Navy : Muted, 20, 42, 425, detailHeight);
             button.onClick.AddListener(() => action());
             return button;
         }
 
         private void SettingSlider(string title, float value, float min, float max, float y, Action<float> setter, Func<float, string> format)
         {
-            Label(pageRoot, title, 22, White, 0, y, 330, 32);
-            Text number = Label(pageRoot, format(value), 20, Brass, 360, y, 116, 32);
+            y = nextRow;
+            nextRow += 98;
+            RectTransform row = Rect(pageRoot, title, 0, y, 478, 86);
+            Label(row, title, 22, White, 0, 0, 330, 32);
+            Text number = Label(row, format(value), 20, Brass, 360, 0, 116, 32);
             number.alignment = TextAnchor.MiddleRight;
-            RectTransform control = Rect(pageRoot, title + " slider", 0, y + 37, 478, 32);
+            RectTransform control = Rect(row, title + " slider", 0, 42, 478, 36);
             control.gameObject.AddComponent<Image>().color = Color.clear;
             Slider slider = control.gameObject.AddComponent<Slider>();
             slider.minValue = min; slider.maxValue = max;
@@ -599,11 +648,51 @@ namespace ShipSimulator.UI
 
         private Text Label(Transform parent, string text, int size, Color tint, float x, float y, float width, float height, FontStyle style = FontStyle.Normal)
         {
+            if (parent == pageRoot)
+            {
+                y = nextRow;
+                height = Mathf.Max(height, Measure(text, size, width));
+                nextRow += height + 16;
+            }
             Text label = Rect(parent, text, x, y, width, height).gameObject.AddComponent<Text>();
             label.font = font; label.text = text; label.fontSize = size; label.color = tint;
             label.fontStyle = style; label.alignment = TextAnchor.UpperLeft;
             label.raycastTarget = false;
             return label;
+        }
+
+        private float Measure(string text, int size, float width)
+        {
+            var settings = new TextGenerationSettings { font = font, fontSize = size,
+                generationExtents = new Vector2(width, 0), scaleFactor = 1,
+                lineSpacing = 1, horizontalOverflow = HorizontalWrapMode.Wrap,
+                verticalOverflow = VerticalWrapMode.Overflow, richText = true };
+            return Mathf.Max(size + 6, new TextGenerator().GetPreferredHeight(text, settings) + 6);
+        }
+
+        private void RefreshLayout()
+        {
+            if (overlay == null || shell == null || pageRoot == null) return;
+            Vector2 size = UiLayout.Apply(overlay.GetComponent<Canvas>());
+            pageRoot.sizeDelta = new Vector2(480, Mathf.Max(nextRow, pageViewport.rect.height));
+            if (size == shellSize && shellScale == VoyageSettings.UiScale) return;
+            shellSize = size;
+            shellScale = VoyageSettings.UiScale;
+            bool wide = size.x >= 1440 && size.y >= 850;
+            UiLayout.Place(shell, 0, 0, size.x, size.y);
+            float x = wide ? size.x * .58f : (size.x - 480) * .5f;
+            x = Mathf.Min(x, size.x - 510);
+            foreach (Transform child in shell)
+            {
+                if (child == pageViewport || child == heading.transform || child == eyebrow.transform ||
+                    child == status.transform || child.name == "Game version") continue;
+                child.gameObject.SetActive(wide);
+            }
+            UiLayout.Place(eyebrow.rectTransform, x, 24, 480, 28);
+            UiLayout.Place(heading.rectTransform, x, 62, 500, 96);
+            UiLayout.Place(pageViewport, x, 168, 500, Mathf.Max(150, size.y - 280));
+            UiLayout.Place(status.rectTransform, x, size.y - 100, 478, 64);
+            UiLayout.Place((RectTransform)shell.Find("Game version"), x, size.y - 32, 478, 25);
         }
 
         private void SelectFirst()

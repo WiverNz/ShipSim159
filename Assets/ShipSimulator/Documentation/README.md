@@ -5,6 +5,7 @@ It is not a validated maritime training product.
 
 ## Documents
 
+- [UsabilityPart1Review.md](UsabilityPart1Review.md): scalable interface, settings and verification.
 - [UsabilityImprovementPlan.md](UsabilityImprovementPlan.md): source audit and nine
   executable parts for interface, languages, camera, map, collisions, recovery and cargo.
 
@@ -33,7 +34,6 @@ Three passage scenes support five vessels subject to passage restrictions. Runti
 systems include nine camera views, HUD/radar, save/load, weather and sound. The
 Volgo-Don also has loading, hold visuals, animated machinery, anchors and mooring.
 
-Latest recorded baseline, 2026-10-25: EditMode `269/269`, PlayMode `161/161`.
-These precede the planned usability changes; see ProjectStatus and project context
-for evidence and limitations.
+Usability Part 1 verification, 2026-10-27: full EditMode `282/282`, PlayMode `175/175`,
+final UI regression `7/7`; see its review and ProjectStatus for evidence and limitations.
 

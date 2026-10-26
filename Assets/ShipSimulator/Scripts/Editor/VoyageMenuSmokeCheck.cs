@@ -5,6 +5,7 @@ using ShipSimulator.Physics;
 using ShipSimulator.UI;
 using ShipSimulator.Visuals;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -129,15 +130,16 @@ namespace ShipSimulator.Editor
         {
             ship.ConfigureLoading(.5f);
             var hud = UnityEngine.Object.FindAnyObjectByType<ShipTelemetryUI>();
+            hud.GetComponent<HudLayout>().Select(1);
             var buttons = hud.GetComponentsInChildren<HudButton>();
-            buttons.Single(b => b.Label.text == "EMPTY").OnPointerClick(null);
+            buttons.Single(b => b.Label.text == "EMPTY").OnPointerClick(new PointerEventData(EventSystem.current) { button = PointerEventData.InputButton.Left });
             float mass = ship.CurrentMassKg;
             ship.Simulate(.02f);
             if (ship.CurrentMassKg != mass) throw new Exception("Cargo transfer must wait for accessible hatches.");
-            buttons.Single(b => b.Label.text == "STOP ALL").OnPointerClick(null);
-            buttons.Single(b => b.Label.text == "SELECT COMPARTMENT").OnPointerClick(null);
-            buttons.Single(b => b.Label.text == "SELECT COMPARTMENT").OnPointerClick(null);
-            buttons.Single(b => b.Label.text == "FILL").OnPointerClick(null);
+            buttons.Single(b => b.Label.text == "STOP ALL").OnPointerClick(new PointerEventData(EventSystem.current) { button = PointerEventData.InputButton.Left });
+            buttons.Single(b => b.Label.text == "SELECT COMPARTMENT").OnPointerClick(new PointerEventData(EventSystem.current) { button = PointerEventData.InputButton.Left });
+            buttons.Single(b => b.Label.text == "SELECT COMPARTMENT").OnPointerClick(new PointerEventData(EventSystem.current) { button = PointerEventData.InputButton.Left });
+            buttons.Single(b => b.Label.text == "FILL").OnPointerClick(new PointerEventData(EventSystem.current) { button = PointerEventData.InputButton.Left });
             ship.Simulate(.02f);
             if (Mathf.Abs(ship.CurrentMassKg - mass - 1) > .5f)
                 throw new Exception("HUD ballast command did not add the rate-limited mass.");
@@ -153,6 +155,7 @@ namespace ShipSimulator.Editor
             Quaternion rotation = ship.transform.rotation;
             var camera = new GameObject("Mechanism runtime review").AddComponent<Camera>();
             var hud = UnityEngine.Object.FindAnyObjectByType<ShipTelemetryUI>().GetComponent<Canvas>();
+            hud.GetComponent<HudLayout>().Select(1);
             CanvasGroup hudGroup = hud.GetComponent<CanvasGroup>();
             float previousAlpha = hudGroup != null ? hudGroup.alpha : 1;
             try
@@ -176,7 +179,7 @@ namespace ShipSimulator.Editor
                 foreach (HatchPosition target in new[] { HatchPosition.ForwardOpen, HatchPosition.AftOpen, HatchPosition.Closed })
                 {
                     string caption = target == HatchPosition.ForwardOpen ? "FORE OPEN" : target == HatchPosition.AftOpen ? "AFT OPEN" : "CLOSE";
-                    hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == caption).OnPointerClick(null);
+                    hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == caption).OnPointerClick(new PointerEventData(EventSystem.current) { button = PointerEventData.InputButton.Left });
                     if (rig.Target != target) throw new Exception("HUD machinery command did not reach the vessel.");
                     for (int i = 0; i < 1000; i++) rig.Advance(1, 0, 0, 0);
                     if (rig.IsMoving) throw new Exception("Hatches never reached " + target);
@@ -193,7 +196,7 @@ namespace ShipSimulator.Editor
                 LandscapePreview.Render(camera, "Logs/MenuScreenshots/volgodon-machinery-night.png");
                 UnityEngine.Object.FindAnyObjectByType<DayNightController>().Apply(false);
                 ship.SetHatchPosition(HatchPosition.ForwardOpen);
-                hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == "LET GO").OnPointerClick(null);
+                hud.GetComponentsInChildren<HudButton>().Single(b => b.Label.text == "LET GO").OnPointerClick(new PointerEventData(EventSystem.current) { button = PointerEventData.InputButton.Left });
                 rig.Advance(25, 0, 0, 0);
                 // One long step lets the port anchor run out to the bottom, where the brake is set.
                 ship.GroundTackle.Step(25);

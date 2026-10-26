@@ -1,5 +1,15 @@
 # ShipSim159 Project Status
 
+## Usability Part 1, 2026-10-27
+
+Scalable UI (80-150%), responsive scrollable menu/HUD groups, independent camera
+preferences and UI input ownership are implemented. See [the review](UsabilityPart1Review.md)
+for the five-resolution/three-scale matrix, screenshots and limitations. Full tests:
+EditMode 282/282, PlayMode 175/175; final UI regression 7/7; seven-command shakedown
+and menu/save-load smoke PASS. Camera feel, localization and remaining usability
+parts are still planned. The standalone executable has not been rebuilt in this stage.
+
+
 Updated 2026-09-13. ShipSim159 is an engineering and gameplay prototype of a river navigation
 simulator built for several ship models, chosen in the start menu before a passage. Five vessels are
 playable: the cargo ships Volgo-Don 507B, Volgo-Balt 2-95A/R and Volgoneft 1577, and the fast

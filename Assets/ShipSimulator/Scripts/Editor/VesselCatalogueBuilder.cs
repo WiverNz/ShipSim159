@@ -66,7 +66,8 @@ namespace ShipSimulator.Editor
                 Entry(ProceduralVesselBuilder.Volgoneft, volgoneft),
                 Entry(ProceduralVesselBuilder.Meteor, meteor),
                 Entry(ProceduralVesselBuilder.Luch, luch),
-                SerpukhovR96ModelIntegrator.CatalogueEntry(SerpukhovR96ModelIntegrator.UpdatePrefab())
+                SerpukhovR96ModelIntegrator.CatalogueEntry(SerpukhovR96ModelIntegrator.UpdatePrefab()),
+                MN52ModelIntegrator.CatalogueEntry(AssetDatabase.LoadAssetAtPath<GameObject>(MN52ModelIntegrator.UnitPath))
             });
             EditorUtility.SetDirty(catalogue);
             AssetDatabase.SaveAssets();

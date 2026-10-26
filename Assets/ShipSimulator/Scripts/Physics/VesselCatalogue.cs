@@ -18,6 +18,13 @@ namespace ShipSimulator.Physics
             public string menuName;
             public string vesselClass;
             public GameObject prefab;
+            public string displayName;
+            public Vector3 formationSizeM;
+
+            public string DisplayName => string.IsNullOrEmpty(displayName) ? LoadData()?.identity.displayName ?? id : displayName;
+            public string Description => formationSizeM.z > 0
+                ? $"{formationSizeM.z:0.0} m push unit  /  Loaded MN-52  /  Tug controls"
+                : Describe(LoadData());
 
             public VesselData LoadData()
             {

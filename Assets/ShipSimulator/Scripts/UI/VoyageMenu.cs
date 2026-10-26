@@ -305,6 +305,7 @@ namespace ShipSimulator.UI
                 mechanisms = ship.Mechanisms?.CaptureState(),
                 groundTackle = ship.GroundTackle?.CaptureState() ?? new GroundTackleSave(),
                 loading = ship.CaptureLoading(),
+                pushUnit = ship.GetComponent<PushUnit>()?.Capture(),
                 bowThrusterCommand = ship.BowThrusterCommand, bowThrusterOutput = ship.BowThrusterOutput,
                 simulationScale = open ? resumeScale : Time.timeScale,
                 night = FindAnyObjectByType<DayNightController>()?.IsNight ?? false,
@@ -391,13 +392,13 @@ namespace ShipSimulator.UI
             {
                 VesselData data = entry.LoadData();
                 string id = entry.id;
-                ActionButton(data != null ? data.identity.displayName : id, VesselCatalogue.Entry.Describe(data), y, () =>
+                ActionButton(entry.DisplayName, entry.Description, y, () =>
                 {
                     VesselSelection.SelectedId = id;
                     UpdateVesselLabels();
                     ShowVoyages();
-                }, id == VesselSelection.SelectedId);
-                y += catalogue.Entries.Count > 5 ? 76 : 94;
+                }, id == VesselSelection.SelectedId, true, catalogue.Entries.Count > 6 ? 60 : 70);
+                y += catalogue.Entries.Count > 6 ? 64 : catalogue.Entries.Count > 5 ? 76 : 94;
             }
             ActionButton("Back", "Return to the menu", 462, ShowHome);
             SelectFirst();
@@ -412,7 +413,7 @@ namespace ShipSimulator.UI
             bool first = true;
             foreach (VoyagePassage passage in VoyagePassage.All)
             {
-                string restriction = passage.Restriction(data);
+                string restriction = passage.FormationRestriction(vessel);
                 string scene = passage.SceneName;
                 ActionButton(passage.Title, restriction ?? passage.Detail, y,
                     () => StartVoyage(scene), first && restriction == null, restriction == null);
@@ -420,7 +421,7 @@ namespace ShipSimulator.UI
                 y += 88;
             }
             string vesselText = data != null
-                ? data.identity.displayName + "\n" + VesselCatalogue.Entry.Describe(data)
+                ? vessel.DisplayName + "\n" + vessel.Description
                 : "Volgo-Don Project 507B";
             Label(pageRoot, "YOUR VESSEL\n\n" + vesselText + "\n\nW / S  Engines     A / D  Rudder\nV  Camera     Right mouse  Look around\nESC  Pause, settings & save", 18, Muted, 0, y + 10, 450, 180);
             ActionButton("Back", "Choose another vessel", 462, ShowVessels);
@@ -539,9 +540,9 @@ namespace ShipSimulator.UI
             version.alignment = TextAnchor.MiddleRight;
         }
 
-        private Button ActionButton(string title, string detail, float y, Action action, bool primary = false, bool enabled = true)
+        private Button ActionButton(string title, string detail, float y, Action action, bool primary = false, bool enabled = true, float height = 70)
         {
-            RectTransform rect = Rect(pageRoot, title, 0, y, 478, 70);
+            RectTransform rect = Rect(pageRoot, title, 0, y, 478, height);
             Image image = rect.gameObject.AddComponent<Image>();
             image.sprite = HudTheme.Rounded(8); image.type = Image.Type.Sliced;
             image.color = primary ? Brass : new Color(0.075f, 0.145f, 0.175f);
@@ -555,7 +556,7 @@ namespace ShipSimulator.UI
             colors.disabledColor = new Color(0.48f, 0.48f, 0.48f, 0.65f);
             button.colors = colors;
             Label(rect, title, 22, primary ? Navy : enabled ? White : Muted, 20, 9, 425, 29, FontStyle.Bold);
-            Label(rect, detail, 15, primary ? Navy : Muted, 20, 39, 425, 24);
+            Label(rect, detail, 15, primary ? Navy : Muted, 20, height < 70 ? 33 : 39, 425, 24);
             button.onClick.AddListener(() => action());
             return button;
         }

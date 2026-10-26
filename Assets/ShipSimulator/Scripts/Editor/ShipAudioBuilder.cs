@@ -204,7 +204,7 @@ namespace ShipSimulator.Editor
                 if (entry.id == VolgoDonId) VolgoDon(profile);
                 // The real 14352 is driven by a waterjet (Luch14352_Sources.md); the wash clip carries the recorded
                 // ferry's propeller and engine tones, so it would sound like the propeller the model only stands in for.
-                if (entry.id == LuchId || entry.id == "serpukhov-r96") profile.propellerWash.clip = null;
+                if (entry.id == LuchId || entry.id == "serpukhov-r96" || entry.id == "serpukhov-mn52") profile.propellerWash.clip = null;
                 EditorUtility.SetDirty(profile);
             }
             AssetDatabase.SaveAssets();

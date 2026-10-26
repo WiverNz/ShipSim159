@@ -60,53 +60,68 @@ namespace ShipSimulator.Physics
                 hull.crossFlowStations < 4)
                 return Fail("Hull manoeuvring coefficients are invalid.", out error);
 
-            VesselEngine e = data.engine;
-            if (e == null || e.engineCount <= 0 || !Positive(e.powerPerEngineW) ||
-                !InRange(e.gearEfficiency, 0.01f, 1f) || !InRange(e.shaftEfficiency, 0.01f, 1f) ||
-                !Positive(e.ratedPropellerRpm) || !Positive(e.shaftInertiaKgM2) ||
-                !InRange(e.governorBandFraction, 0.001f, 0.5f) || !Positive(e.rpmRampSecondsFullRange) ||
-                !InRange(e.reversalRpmFraction, 0f, 0.99f) || !NonNegative(e.reversalDelaySeconds) ||
-                !InRange(e.reversalBrakeTorqueFraction, 0f, 1f))
-                return Fail("Engine configuration is invalid.", out error);
-            if (e.cylinders < 0 || e.cylinders > 24 || (e.strokesPerCycle != 0 && e.strokesPerCycle != 2 && e.strokesPerCycle != 4) ||
-                !(e.engineRpmPerShaftRpm == 0f || (Finite(e.engineRpmPerShaftRpm) && e.engineRpmPerShaftRpm > 0f && e.engineRpmPerShaftRpm < 20f)))
-                return Fail("Engine equipment facts are invalid: cylinders 0-24, strokesPerCycle 0, 2 or 4, engineRpmPerShaftRpm 0 or positive.", out error);
-
-            VesselPropeller p = data.propeller;
-            if (p == null || p.count <= 0 || p.count != e.engineCount || !Positive(p.diameterM))
-                return Fail("Propeller configuration is invalid; each propeller needs one engine.", out error);
-            if (p.bladeCount < 0 || p.bladeCount > 12)
-                return Fail("Propeller bladeCount must be 0 (not established) to 12.", out error);
-            if (!ArrayMatchesCount(p.longitudinalPositionsM, p.count) || !ArrayMatchesCount(p.lateralPositionsM, p.count))
-                return Fail("Propeller position arrays must match propeller.count.", out error);
-            if (!Coefficients(p.aheadThrustCoefficients) || !Coefficients(p.aheadTorqueCoefficients) ||
-                !Coefficients(p.asternThrustCoefficients) || !Coefficients(p.asternTorqueCoefficients))
-                return Fail("Propeller thrust and torque polynomials need three finite coefficients with a positive bollard value.", out error);
-            if (!InRange(p.wakeFraction, 0f, 0.8f) || !InRange(p.thrustDeduction, 0f, 0.6f) ||
-                !NonNegative(p.wakeDriftC1) || !Positive(p.wakeDriftC2))
-                return Fail("Propeller wake and thrust deduction values are invalid.", out error);
-
-            VesselRudder rd = data.rudder;
-            if (rd == null || rd.count <= 0 || !InRange(rd.maxAngleDeg, 1f, 89f) || !Positive(rd.rateDegPerSecond) ||
-                !Positive(rd.areaPerRudderM2) || !Positive(rd.spanM) || !Finite(rd.longitudinalPositionM) ||
-                !ArrayMatchesCount(rd.lateralPositionsM, rd.count) || !NonNegative(rd.normalForceSlope) ||
-                !InRange(rd.stallAngleDeg, 1f, 89f) || !NonNegative(rd.postStallNormalCoefficient) ||
-                !InRange(rd.steeringResistanceDeduction, 0f, 0.99f) || !NonNegative(rd.hullInteractionFactor) ||
-                !Finite(rd.hullInteractionPositionPrime) || !Positive(rd.wakeRatio) ||
-                !InRange(rd.slipstreamFactor, 0f, 1f) || !NonNegative(rd.flowStraightening) ||
-                !Finite(rd.flowStraighteningLeverPrime))
-                return Fail("Rudder configuration is invalid.", out error);
-
-            VesselSteeringNozzle nozzle = data.steeringNozzle;
-            if (nozzle != null && nozzle.enabled)
+            if (data.nonSelfPropelled)
             {
-                if (!InRange(nozzle.thrustDeflectionFactor, 0f, 1f) || !Positive(nozzle.passiveAreaM2) ||
-                    !Positive(nozzle.passiveNormalSlope) || rd.count != p.count)
-                    return Fail("Steering nozzles require valid coefficients and one nozzle per shaft.", out error);
-                for (int i = 0; i < p.count; i++)
-                    if (Mathf.Abs(rd.lateralPositionsM[i] - p.lateralPositionsM[i]) > .01f ||
-                        Mathf.Abs(rd.longitudinalPositionM - p.longitudinalPositionsM[i]) > .01f)
-                        return Fail("Steering nozzle and shaft positions must coincide.", out error);
+                if (data.engine == null || data.engine.engineCount != 0 || data.engine.powerPerEngineW != 0 ||
+                    data.propeller == null || data.propeller.count != 0 || data.rudder == null || data.rudder.count != 0 ||
+                    data.bowThruster != null && data.bowThruster.fitted || data.steeringNozzle != null && data.steeringNozzle.enabled ||
+                    data.loading != null && data.loading.enabled)
+                    return Fail("A passive vessel must have no propulsion, rudders or powered loading model.", out error);
+                if (!AllFinite(data.engine.ratedPropellerRpm, data.engine.gearEfficiency, data.engine.shaftEfficiency,
+                    data.rudder.maxAngleDeg, data.rudder.rateDegPerSecond))
+                    return Fail("Passive vessel actuator placeholders must be finite.", out error);
+            }
+            else
+            {
+                VesselEngine e = data.engine;
+                if (e == null || e.engineCount <= 0 || !Positive(e.powerPerEngineW) ||
+                    !InRange(e.gearEfficiency, 0.01f, 1f) || !InRange(e.shaftEfficiency, 0.01f, 1f) ||
+                    !Positive(e.ratedPropellerRpm) || !Positive(e.shaftInertiaKgM2) ||
+                    !InRange(e.governorBandFraction, 0.001f, 0.5f) || !Positive(e.rpmRampSecondsFullRange) ||
+                    !InRange(e.reversalRpmFraction, 0f, 0.99f) || !NonNegative(e.reversalDelaySeconds) ||
+                    !InRange(e.reversalBrakeTorqueFraction, 0f, 1f))
+                    return Fail("Engine configuration is invalid.", out error);
+                if (e.cylinders < 0 || e.cylinders > 24 || (e.strokesPerCycle != 0 && e.strokesPerCycle != 2 && e.strokesPerCycle != 4) ||
+                    !(e.engineRpmPerShaftRpm == 0f || (Finite(e.engineRpmPerShaftRpm) && e.engineRpmPerShaftRpm > 0f && e.engineRpmPerShaftRpm < 20f)))
+                    return Fail("Engine equipment facts are invalid: cylinders 0-24, strokesPerCycle 0, 2 or 4, engineRpmPerShaftRpm 0 or positive.", out error);
+
+                VesselPropeller p = data.propeller;
+                if (p == null || p.count <= 0 || p.count != e.engineCount || !Positive(p.diameterM))
+                    return Fail("Propeller configuration is invalid; each propeller needs one engine.", out error);
+                if (p.bladeCount < 0 || p.bladeCount > 12)
+                    return Fail("Propeller bladeCount must be 0 (not established) to 12.", out error);
+                if (!ArrayMatchesCount(p.longitudinalPositionsM, p.count) || !ArrayMatchesCount(p.lateralPositionsM, p.count))
+                    return Fail("Propeller position arrays must match propeller.count.", out error);
+                if (!Coefficients(p.aheadThrustCoefficients) || !Coefficients(p.aheadTorqueCoefficients) ||
+                    !Coefficients(p.asternThrustCoefficients) || !Coefficients(p.asternTorqueCoefficients))
+                    return Fail("Propeller thrust and torque polynomials need three finite coefficients with a positive bollard value.", out error);
+                if (!InRange(p.wakeFraction, 0f, 0.8f) || !InRange(p.thrustDeduction, 0f, 0.6f) ||
+                    !NonNegative(p.wakeDriftC1) || !Positive(p.wakeDriftC2))
+                    return Fail("Propeller wake and thrust deduction values are invalid.", out error);
+
+                VesselRudder rd = data.rudder;
+                if (rd == null || rd.count <= 0 || !InRange(rd.maxAngleDeg, 1f, 89f) || !Positive(rd.rateDegPerSecond) ||
+                    !Positive(rd.areaPerRudderM2) || !Positive(rd.spanM) || !Finite(rd.longitudinalPositionM) ||
+                    !ArrayMatchesCount(rd.lateralPositionsM, rd.count) || !NonNegative(rd.normalForceSlope) ||
+                    !InRange(rd.stallAngleDeg, 1f, 89f) || !NonNegative(rd.postStallNormalCoefficient) ||
+                    !InRange(rd.steeringResistanceDeduction, 0f, 0.99f) || !NonNegative(rd.hullInteractionFactor) ||
+                    !Finite(rd.hullInteractionPositionPrime) || !Positive(rd.wakeRatio) ||
+                    !InRange(rd.slipstreamFactor, 0f, 1f) || !NonNegative(rd.flowStraightening) ||
+                    !Finite(rd.flowStraighteningLeverPrime))
+                    return Fail("Rudder configuration is invalid.", out error);
+
+                VesselSteeringNozzle nozzle = data.steeringNozzle;
+                if (nozzle != null && nozzle.enabled)
+                {
+                    if (!InRange(nozzle.thrustDeflectionFactor, 0f, 1f) || !Positive(nozzle.passiveAreaM2) ||
+                        !Positive(nozzle.passiveNormalSlope) || rd.count != p.count)
+                        return Fail("Steering nozzles require valid coefficients and one nozzle per shaft.", out error);
+                    for (int i = 0; i < p.count; i++)
+                        if (Mathf.Abs(rd.lateralPositionsM[i] - p.lateralPositionsM[i]) > .01f ||
+                            Mathf.Abs(rd.longitudinalPositionM - p.longitudinalPositionsM[i]) > .01f)
+                            return Fail("Steering nozzle and shaft positions must coincide.", out error);
+                }
+
             }
 
             VesselBowThruster bt = data.bowThruster;

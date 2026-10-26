@@ -39,6 +39,7 @@ namespace ShipSimulator.Persistence
         public MechanismSave mechanisms;
         public GroundTackleSave groundTackle = new GroundTackleSave();
         public ShipSimulator.Physics.LoadingState loading;
+        public PushUnitSave pushUnit;
 
         public string VesselIdOrDefault =>
             string.IsNullOrEmpty(vesselId) ? ShipSimulator.Physics.VesselCatalogue.DefaultVesselId : vesselId;
@@ -49,6 +50,7 @@ namespace ShipSimulator.Persistence
         public void Validate()
         {
             mechanisms?.Validate();
+            pushUnit?.Validate();
             groundTackle?.Validate();
             if (loading != null && loading.present) loading.Validate();
             if (version != 1) throw new InvalidDataException("This save uses an unsupported version.");

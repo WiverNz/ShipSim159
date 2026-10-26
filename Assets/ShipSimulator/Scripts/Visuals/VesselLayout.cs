@@ -25,6 +25,15 @@ namespace ShipSimulator.Visuals
         [SerializeField, Min(0)] private float navigationLightRangeScale = 1;
         [Header("Orbit camera views, in model metres. Empty means the camera scales its own set by length.")]
         [SerializeField] private Vector3[] cameraViews = new Vector3[0];
+        [SerializeField] private bool overrideExternalLookAt;
+        [SerializeField] private Vector3 externalLookAt;
+
+        public Vector3 ExternalLookAtOr(Vector3 fallback) => overrideExternalLookAt ? externalLookAt : fallback;
+        public void ConfigureExternalLookAt(Vector3 point)
+        {
+            overrideExternalLookAt = true;
+            externalLookAt = point;
+        }
 
         public string VesselId => vesselId;
         public float CameraScale => cameraScale;

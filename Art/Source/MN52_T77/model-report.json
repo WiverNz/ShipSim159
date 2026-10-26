@@ -1,0 +1,28 @@
+{
+  "source_meshes": 386,
+  "lods": [
+    {
+      "level": 0,
+      "triangles": 41264,
+      "renderers": 2
+    },
+    {
+      "level": 1,
+      "triangles": 23393,
+      "renderers": 2
+    },
+    {
+      "level": 2,
+      "triangles": 13552,
+      "renderers": 2
+    }
+  ],
+  "dimensions_m": [
+    6.29,
+    28.92,
+    8.6
+  ],
+  "nominal_hull_length_m": 28.8,
+  "nominal_hull_breadth_m": 6.0,
+  "estimated": true
+}

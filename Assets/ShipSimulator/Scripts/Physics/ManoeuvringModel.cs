@@ -153,7 +153,7 @@ namespace ShipSimulator.Physics
             VesselPropeller propeller = data.propeller;
             bool nozzles = data.steeringNozzle != null && data.steeringNozzle.enabled;
             float wake = 0f;
-            if (u > 0f)
+            if (u > 0f && propeller.count > 0)
             {
                 float reference = Mathf.Max(speed, Mathf.Max(data.hull.lowSpeedBlendStartMps, 0.05f));
                 float drift = Mathf.Atan2(-v, u) - propeller.longitudinalPositionsM[0] / lpp * (r * lpp / reference);

@@ -1866,3 +1866,39 @@ model. Trial speed 14.44 km/h is close to 14.9, but 61.01 m tactical diameter an
 47.22 m crash stop differ from the original sheet. Not training validated.
 Lower accommodation is not detailed; moving parts have pivots but no animation;
 no new towing-coupling or freewalk system.
+
+## 2026-10-26: MN-52 T-77 passive barge and Serpukhov push unit
+
+Authored through registered Blender MCP, source and scripts in
+`Art/Source/MN52_T77/`. Exact MN-52 photos examined: 89189, 32577, 4585,
+35342, 508862. The underway photo is RT-291 alongside, not proof of the
+requested Serpukhov centreline pairing. No verified lines plan recovered.
+README documents period paint, fitted offsets, pipework and rigging uncertainty.
+No reference photographs redistributed. Hull 28.8 x 6 x 1.5 m, guards about
+6.29 m. LODs 41,264 / 23,393 / 13,552 triangles, 11 materials, 18 original maps.
+Source has 386 meshes, UVs, three batched LODs and nine collision references.
+
+MN52_T77.prefab has independent PassiveVessel/Rigidbody, no player controller,
+zero actuators, 153000 kg loaded, 19 hydrostatic stations and 16 strips. Fitted
+loaded/empty drafts 1.2/0.5 m. Shared MMG resistance/current/weather/bathymetry.
+Serpukhov_MN52.prefab is a variant of the unchanged solo tug. PushUnit creates
+a separate barge root and locks a ConfigurableJoint with pair-only collision
+suppression, reversible Attach/Detach, save/reset support. Seven catalogue
+commands; choose Серпухов + МН-52 for River or Gorodets. The 50.65 m unit is
+excluded by the existing zaton 40 m limit. Existing ships/settings unchanged.
+External camera look target is optional in VesselLayout; solo defaults preserved.
+
+Final camera import exited 0. EditMode 277/277 passed in
+check-EditMode-20261026-132724-794.xml. Full PlayMode 173/173 passed in
+check-PlayMode-20261026-131701-439.xml before the camera-only correction.
+Forward/reverse, both turns, coasting, barge world collisions, detached drift,
+save/reset tested. Calm-water speeds solo4.012/pushed2.593/reverse-2.034 m/s.
+Initial actual-scene RunPushUnits passed both vessels. See VALIDATION.md for
+final camera capture evidence. No player build or human handling trial claimed.
+
+Limits: fitted underwater offsets, period paint and hidden fittings inferred;
+coupling not documented historical hardware. Cabin blocks navigator forward
+view; external views frame the combination. HUD/grounding scoring remains
+tug-specific. No cargo-transfer UI, tank slosh or shader-wave force sampling.
+No player-facing detach controls. Prototype physics is not training validated.
+Changes remain uncommitted; ChangedFiles.txt inventories the handoff.

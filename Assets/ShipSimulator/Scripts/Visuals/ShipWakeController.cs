@@ -61,6 +61,17 @@ namespace ShipSimulator.Visuals
             float length = ship.Data.dimensions.lengthOverallM;
             float beam = ship.Data.dimensions.beamOverallM;
             Vector2 center = new Vector2(transform.position.x, transform.position.z);
+            float displacement = ship.CurrentMassKg / Mathf.Max(ship.Data.hydrostatics.waterDensityKgM3, 1f);
+            PushUnit unit = ship.GetComponent<PushUnit>();
+            if (unit != null && unit.Coupled && unit.Barge != null)
+            {
+                Vector3 bow = unit.Barge.transform.TransformPoint(Vector3.forward * (unit.Barge.Parameters.Loa * .5f));
+                Vector3 stern = transform.TransformPoint(Vector3.back * (length * .5f));
+                center = new Vector2((bow.x + stern.x) * .5f, (bow.z + stern.z) * .5f);
+                length = Vector3.Dot(bow - stern, heading);
+                beam = Mathf.Max(beam, unit.Barge.Parameters.BeamOverall);
+                displacement += unit.Barge.Parameters.DisplacementVolume;
+            }
             Vector3 water = ship.RelativeWaterVelocity;
             float speed = Vector2.Dot(new Vector2(water.x, water.z), forward);
             float wash = Mathf.Abs(ship.ActualThrottle);
@@ -77,7 +88,7 @@ namespace ShipSimulator.Visuals
             Shader.SetGlobalVector(ShipId, new Vector4(center.x, center.y, forward.x, forward.y));
             Shader.SetGlobalVector(HullId, new Vector4(length * 0.5f, beam * 0.5f, speed, wash));
             Shader.SetGlobalFloat(AmplitudeId, waveAmplitude * AmplitudeScale(
-                ship.CurrentMassKg / Mathf.Max(ship.Data.hydrostatics.waterDensityKgM3, 1f),
+                displacement,
                 length, SupportModel.Immersion(ship.Data.support, speed),
                 referenceDisplacementLengthRatio));
         }

@@ -123,7 +123,7 @@ namespace ShipSimulator.Tests
         }
 
         [Test]
-        public void Passages_AdmitEveryVesselToTheOpenRiverAndOnlyTheLuchToTheZaton()
+        public void Passages_AdmitOpenRiverCommandsAndKeepLongPushUnitsOutOfTheZaton()
         {
             VesselCatalogue catalogue = VesselCatalogue.Load();
             VoyagePassage zaton = VoyagePassage.Find("SerpukhovZatonScene");
@@ -134,8 +134,8 @@ namespace ShipSimulator.Tests
             {
                 VesselData data = entry.LoadData();
                 Assert.That(river.Accepts(data), Is.True, entry.id);
-                if (zaton.Accepts(data)) admitted.Add(entry.id);
-                else Assert.That(zaton.Restriction(data), Is.Not.Empty, entry.id);
+                if (zaton.FormationRestriction(entry) == null) admitted.Add(entry.id);
+                else Assert.That(zaton.FormationRestriction(entry), Is.Not.Empty, entry.id);
             }
 
             Assert.That(admitted, Is.EquivalentTo(new[] { "luch-14352", "serpukhov-r96" }));

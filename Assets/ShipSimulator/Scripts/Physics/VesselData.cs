@@ -82,6 +82,7 @@ namespace ShipSimulator.Physics
     [Serializable]
     public sealed class VesselData
     {
+        public bool nonSelfPropelled;
         public VesselIdentity identity;
         public VesselDimensions dimensions;
         public VesselMassProperties massProperties;

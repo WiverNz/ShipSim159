@@ -58,6 +58,7 @@ namespace ShipSimulator.Editor
 
         public static void Run() => RunAt(0);
         public static void RunFastCrafts() => RunAt(3);
+        public static void RunPushUnits() => RunAt(5);
 
         private static void RunAt(int firstVessel)
         {

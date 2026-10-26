@@ -35,6 +35,10 @@ Volgo-Don 507B, Volgo-Balt 2-95A/R and Volgoneft 1577, and the fast passenger cr
 (hydrofoil) and Luch 14352 (skeg air cushion), plus the Serpukhov R-96 tug-pusher. Treat each as one catalogue entry, not as the
 project's identity.
 
+The seventh command is the Serpukhov + MN-52 push unit. MN-52 is a separate
+passive T-77 barge, not another player ship controller. Its 50.65 m formation
+is admitted to the open-river passages and exceeds the zaton's 40 m limit.
+
 Read these before changing the project, in the order they are usually needed:
 
 - `.codex/PROJECT_CONTEXT.md`: the living log of completed work, verification status, known
@@ -217,6 +221,7 @@ One thing about results that has already cost time here:
 | `Integrate Luch 14352 Blender Model` | Re-imports the authored Luch model into its prefab |
 | `Integrate Meteor 342U Blender Model` | Re-imports the authored Meteor model into its prefab |
 | `Integrate Serpukhov R-96 Blender Model` | Imports the authored R-96 model, materials, prefab and catalogue entry |
+| `Integrate MN-52 and Serpukhov push unit` | Imports the authored T-77 barge and adds a separate push-unit variant and catalogue command |
 | `Inspect Detailed Vessel Model` | Prints model bounds and hierarchy for diagnosis |
 | `Render Detailed Vessel Preview` | Renders a still of the vessel |
 | `Apply Visual Upgrade` | Applies the URP materials, lighting and visual rig |
@@ -312,6 +317,15 @@ positions (navigation lights, navigator eye point, camera scale) belong in the p
 entry, and sea-trial and catalogue test cases.
 
 ### UI and visuals
+
+`PassiveVessel` reuses the section hydrostatics and MMG model with explicitly
+zero actuators. Do not add `ShipPhysicsController` to the barge: scene lookup,
+input and camera ownership must remain on the tug. `PushUnit` spawns a separate
+scene-root Rigidbody and connects it with a configurable joint, suppressing
+only pair collisions. `PushUnitSave` is optional for backward-compatible saves.
+See `Art/Source/MN52_T77/README.md` and `Documentation/MN52T77_Sources.md`.
+Passage admission must use `FormationRestriction(entry)` for catalogue entries,
+so the tug's dimensions alone cannot admit an oversized combination.
 
 `Scripts/UI/` (`ShipTelemetryUI`, `HudButton`, `HudTheme`, `RadarChannel`,
 `SimulationTimeController`, `GorodetsScenarioController`) is built at runtime and calls

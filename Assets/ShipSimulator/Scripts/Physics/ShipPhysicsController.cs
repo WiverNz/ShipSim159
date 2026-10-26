@@ -363,6 +363,7 @@ namespace ShipSimulator.Physics
             model?.BowThruster?.Restore(0f);
             Mechanisms?.RestoreState(null);
             if (tackle != null) tackle.ResetState();
+            GetComponent<PushUnit>()?.Restore(null);
             RestoreCount++;
         }
 
@@ -391,6 +392,7 @@ namespace ShipSimulator.Physics
             model.RestoreActuators(save.rudderAngle * Mathf.Deg2Rad, rps);
             bowThrusterCommand = HasBowThruster ? Mathf.Clamp(save.bowThrusterCommand, -1f, 1f) : 0f;
             model.BowThruster?.Restore(save.bowThrusterOutput);
+            GetComponent<PushUnit>()?.Restore(save.pushUnit);
             RestoreCount++;
             activeCurrentZones.Clear();
             UnityEngine.Physics.SyncTransforms();

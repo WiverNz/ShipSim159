@@ -1,0 +1,34 @@
+{
+  "result": "PASS",
+  "source_meshes": 386,
+  "lods": [
+    {
+      "name": "MN52_LOD0_Opaque",
+      "triangles": 40400
+    },
+    {
+      "name": "MN52_LOD0_Glass",
+      "triangles": 864
+    },
+    {
+      "name": "MN52_LOD1_Opaque",
+      "triangles": 22961
+    },
+    {
+      "name": "MN52_LOD1_Glass",
+      "triangles": 432
+    },
+    {
+      "name": "MN52_LOD2_Opaque",
+      "triangles": 13392
+    },
+    {
+      "name": "MN52_LOD2_Glass",
+      "triangles": 160
+    }
+  ],
+  "hull_nonmanifold_edges": 0,
+  "hull_signed_volume_m3": 203.26537663457236,
+  "packed_maps": 18,
+  "limitations": "Submerged offsets fitted to published displacement/draft pairs, not surveyed shipyard lines."
+}

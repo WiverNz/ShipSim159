@@ -52,6 +52,18 @@ namespace ShipSimulator.UI
 
         public bool Accepts(VesselData data) => Restriction(data) == null;
 
+        public string FormationRestriction(VesselCatalogue.Entry entry)
+        {
+            if (entry == null) return null;
+            if (MaxLengthOverallM > 0 && entry.formationSizeM.z > MaxLengthOverallM)
+                return $"Push unit too long  /  {entry.formationSizeM.z:0.0} m, limit {MaxLengthOverallM:0} m";
+            if (MaxBeamOverallM > 0 && entry.formationSizeM.x > MaxBeamOverallM)
+                return "Push unit too wide for this passage";
+            if (MaxDraftM > 0 && entry.formationSizeM.y > MaxDraftM)
+                return "Push unit too deep for this passage";
+            return Restriction(entry.LoadData());
+        }
+
         // Foils and skegs reach below the keel and touch the bottom first, so the draft that matters
         // to a shallow waterway is the deepest point, not the hull's.
         public static float DeepestDraftM(VesselData data) =>
@@ -82,9 +94,9 @@ namespace ShipSimulator.UI
             VoyagePassage passage = Find(sceneName);
             if (passage == null || catalogue == null) return preferredId;
             VesselCatalogue.Entry preferred = catalogue.Find(preferredId);
-            if (preferred != null && passage.Accepts(preferred.LoadData())) return preferredId;
+            if (preferred != null && passage.FormationRestriction(preferred) == null) return preferredId;
             foreach (VesselCatalogue.Entry entry in catalogue.Entries)
-                if (entry != null && passage.Accepts(entry.LoadData())) return entry.id;
+                if (entry != null && passage.FormationRestriction(entry) == null) return entry.id;
             return preferredId;
         }
     }

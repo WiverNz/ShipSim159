@@ -56,7 +56,7 @@ namespace ShipSimulator.CameraSystem
         private Vector3 NavigatorPosition => layout != null ? layout.NavigatorEye : navigatorPosition;
         private Vector3 NavigatorLook => layout != null ? layout.NavigatorLookAt : navigatorLookOffset;
         private Vector3 LookOffset => viewIndex == 1 && ModelViews != null
-            ? NavigatorLook : lookOffset * Scale;
+            ? NavigatorLook : layout != null ? layout.ExternalLookAtOr(lookOffset * Scale) : lookOffset * Scale;
         private float MinDistance => minDistance * Scale;
         private float MaxDistance => maxDistance * Scale;
         public ShipPhysicsController Target => target;

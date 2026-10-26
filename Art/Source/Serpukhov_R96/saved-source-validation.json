@@ -1,0 +1,28 @@
+{
+  "result": "PASS",
+  "closed_shells": {
+    "Hull_StationLoft": {
+      "nonmanifold_edges": 0,
+      "signed_volume_m3": 122.99016502162534
+    },
+    "RaisedForecastle": {
+      "nonmanifold_edges": 0,
+      "signed_volume_m3": 46.61057275893706
+    },
+    "BridgeShell": {
+      "nonmanifold_edges": 0,
+      "signed_volume_m3": 1.897628018288657
+    },
+    "MainDeck": {
+      "nonmanifold_edges": 0,
+      "signed_volume_m3": 4.362337679092119
+    }
+  },
+  "triangles": [
+    77154,
+    30120,
+    8072
+  ],
+  "packed_original_maps": 30,
+  "limitations": "Render assembly is not a displacement solid. Inferred sections and colors are not surveyed shipyard data."
+}

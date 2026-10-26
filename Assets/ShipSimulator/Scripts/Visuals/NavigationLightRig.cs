@@ -36,8 +36,9 @@ namespace ShipSimulator.Visuals
                 layout.SideLightSupportBaseY, new Color(0.02f, 1f, 0.18f), 5.5f, 45f, 56.25f, 112.5f);
             CreateLight("Forward Masthead Light", layout.ForwardMastheadLight,
                 layout.ForwardMastheadSupportBaseY, Color.white, 6f, 70f, 0, 225);
-            CreateLight("Aft Masthead Light", layout.AftMastheadLight,
-                layout.AftMastheadSupportBaseY, Color.white, 6f, 70f, 0, 225);
+            if (!layout.SingleMasthead)
+                CreateLight("Aft Masthead Light", layout.AftMastheadLight,
+                    layout.AftMastheadSupportBaseY, Color.white, 6f, 70f, 0, 225);
             CreateLight("Stern Light", layout.SternLight,
                 layout.SternLightSupportBaseY, Color.white, 4.5f, 45f, 180, 135);
             SetNight(false);

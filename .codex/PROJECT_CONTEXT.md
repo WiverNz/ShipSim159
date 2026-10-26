@@ -1832,3 +1832,37 @@ and material preview enabled. Previews/textured-{quarter,bow-detail}.png show
 this revision. Colors and wear are authored estimates, not surveyed paint data.
 
 Changes remain uncommitted.
+
+
+## Serpukhov R-96 reconstruction and integration, 2026-10-26
+
+Added the original 1973 R-96 as sixth playable vessel, id `serpukhov-r96`.
+Source: `Art/Source/Serpukhov_R96/Serpukhov_R96.blend`, authored through Blender
+MCP from the original six-page GA and actual vessel photos, especially July 1989.
+README.md there records sources and uncertainty. No copyrighted photos are shipped.
+487 editable source meshes, three LODs (77,154 / 30,120 / 8,072 triangles),
+30 original packed PBR maps, transparent bridge with controls, single waterjet,
+eight box colliders. Final FBX, URP materials, prefab, JSON and shared-library
+audio profile are integrated. No existing ship assets or scenes were replaced.
+
+SerpukhovR96ModelIntegrator rebuilds the asset and catalogue entry. Catalogue
+builder preserves it. Existing cameras, buoyancy and signed single-drive physics
+are reused. Single masthead is optional in VesselLayout; other ships retain two.
+Six-vessel menu spacing is tested. Select Серпухов, Р-96 (1973) then a passage;
+the existing Serpukhov zaton admission limits allow this shallow-draft tug.
+
+Final import integration-clean.log exited 0. Final EditMode 273/273 passed in
+check-EditMode-20261026-075827-050.xml. Full PlayMode 165/165 passed in
+check-PlayMode-20261025-234437-344.xml before final material-slot cleanup and
+new menu test; focused final menu suite 5/5 passed in serpukhov-menu-final.xml.
+Final shakedown passed all six vessels, check-Shakedown-20261026-075432-341.log.
+Saved Blender geometry validation passed; eight Blender views, Unity LODs,
+runtime chase/bridge and sixth-vessel menu were inspected. VALIDATION.md contains
+the evidence inventory. Changes remain uncommitted.
+
+Limits: monochrome period photos do not establish colors; fine offsets and hidden
+fittings are inferred. Estimated waterjet force surrogate is not a flap transient
+model. Trial speed 14.44 km/h is close to 14.9, but 61.01 m tactical diameter and
+47.22 m crash stop differ from the original sheet. Not training validated.
+Lower accommodation is not detailed; moving parts have pivots but no animation;
+no new towing-coupling or freewalk system.

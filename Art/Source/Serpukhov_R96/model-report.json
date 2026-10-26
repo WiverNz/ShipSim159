@@ -1,0 +1,38 @@
+{
+  "lods": [
+    {
+      "level": 0,
+      "triangles": 77154,
+      "renderers": 15,
+      "degenerate_triangles": 0
+    },
+    {
+      "level": 1,
+      "triangles": 30120,
+      "renderers": 2,
+      "degenerate_triangles": 0
+    },
+    {
+      "level": 2,
+      "triangles": 8072,
+      "renderers": 2,
+      "degenerate_triangles": 0
+    }
+  ],
+  "source_objects": 487,
+  "source_closed_shell_checks": {
+    "Hull_StationLoft": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "RaisedForecastle": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "BridgeShell": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    }
+  },
+  "axes": "Blender X starboard, Y forward, Z up; baseline origin; landmarks used by Unity"
+}

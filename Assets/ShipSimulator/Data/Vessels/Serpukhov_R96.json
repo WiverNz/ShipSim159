@@ -1,0 +1,202 @@
+{
+  "identity": {
+    "displayName": "Серпухов, Р-96 (1973)",
+    "project": "R-96",
+    "vesselType": "Single-waterjet river tug-pusher"
+  },
+  "dimensions": {
+    "lengthOverallM": 21.8,
+    "lengthBetweenPerpendicularsM": 19.9,
+    "beamOverallM": 5.3,
+    "beamMouldedM": 5,
+    "depthMouldedM": 1.4,
+    "loadedDraftM": 0.62
+  },
+  "massProperties": {
+    "loadedMassKg": 45230,
+    "deadweightKg": 6660,
+    "lightshipMassKg": 38570,
+    "loadFraction": 1.0,
+    "loadingCondition": "Full stores, original R-96 sheet",
+    "centerOfMassLocalM": {
+      "x": 0,
+      "y": 0.82,
+      "z": 0.41
+    },
+    "rollGyrationRadiusM": 1.8,
+    "pitchGyrationRadiusM": 5.1,
+    "yawGyrationRadiusM": 5.1,
+    "estimated": true
+  },
+  "hydrostatics": {
+    "waterDensityKgM3": 1000.0,
+    "waterlineLocalY": 0.0,
+    "blockCoefficient": 0.733,
+    "midshipCoefficient": 0.996,
+    "waterplaneCoefficient": 0.79,
+    "longitudinalCentreOfBuoyancyM": 0.34,
+    "stationCount": 24,
+    "stripsAcross": 6,
+    "heaveDampingRatio": 0.35,
+    "heaveAddedMassFraction": 0.8,
+    "rollDampingRatio": 0.2,
+    "estimated": true
+  },
+  "resistance": {
+    "kinematicViscosityM2PerS": 1.14e-06,
+    "wettedSurfaceM2": 108,
+    "formFactor": 1.25,
+    "correlationAllowance": 0.0004,
+    "residualResistanceCoefficient": 0.011,
+    "estimated": true
+  },
+  "hull": {
+    "surgeAddedMassPrime": 0.005938,
+    "swayAddedMassPrime": 0.16,
+    "yawAddedInertiaPrime": 0.008,
+    "xVV": -0.04,
+    "xVR": 0.002,
+    "xRR": 0.011,
+    "xVVVV": 0.771,
+    "yV": -0.3,
+    "yR": 0.08,
+    "yVVV": -1.607,
+    "yVVR": 0.379,
+    "yVRR": -0.391,
+    "yRRR": 0.008,
+    "nV": -0.08,
+    "nR": -0.05,
+    "nVVV": -0.03,
+    "nVVR": -0.294,
+    "nVRR": 0.055,
+    "nRRR": -0.013,
+    "maxYawRatePrime": 1.2,
+    "lowSpeedBlendStartMps": 0.4,
+    "lowSpeedBlendEndMps": 1.6,
+    "crossFlowStations": 12,
+    "estimated": true,
+    "derivation": "Estimated shallow tug coefficients; no measured R-96 manoeuvring derivatives. Compare original sheet trial observations without asserting validation."
+  },
+  "engine": {
+    "engineCount": 1,
+    "engineType": "3D6N-150",
+    "powerPerEngineW": 110000,
+    "gearEfficiency": 0.95,
+    "shaftEfficiency": 0.98,
+    "ratedPropellerRpm": 490.2,
+    "shaftInertiaKgM2": 35,
+    "governorBandFraction": 0.01,
+    "rpmRampSecondsFullRange": 10,
+    "reversalRpmFraction": 0.25,
+    "reversalDelaySeconds": 7.5,
+    "reversalBrakeTorqueFraction": 0.5,
+    "estimatedDynamics": true,
+    "cylinders": 6,
+    "strokesPerCycle": 4,
+    "engineRpmPerShaftRpm": 2.04
+  },
+  "propeller": {
+    "count": 1,
+    "diameterM": 0.846,
+    "longitudinalPositionsM": [
+      -10.2
+    ],
+    "lateralPositionsM": [
+      0.0
+    ],
+    "aheadThrustCoefficients": [
+      0.64,
+      -0.4,
+      -0.1
+    ],
+    "aheadTorqueCoefficients": [
+      0.062,
+      -0.022,
+      -0.012
+    ],
+    "asternThrustCoefficients": [
+      0.38,
+      -0.25,
+      -0.08
+    ],
+    "asternTorqueCoefficients": [
+      0.06,
+      -0.018,
+      -0.01
+    ],
+    "wakeFraction": 0.05,
+    "thrustDeduction": 0.05,
+    "wakeDriftC1": 2.0,
+    "wakeDriftC2": 1.3,
+    "estimated": true,
+    "bladeCount": 4
+  },
+  "rudder": {
+    "count": 1,
+    "maxAngleDeg": 45,
+    "rateDegPerSecond": 1.627906976744186,
+    "areaPerRudderM2": 0.5,
+    "spanM": 0.79,
+    "longitudinalPositionM": -10.2,
+    "lateralPositionsM": [
+      0
+    ],
+    "normalForceSlope": 0.0,
+    "stallAngleDeg": 32.0,
+    "postStallNormalCoefficient": 1.1,
+    "steeringResistanceDeduction": 0.2,
+    "hullInteractionFactor": 0.2,
+    "hullInteractionPositionPrime": -0.45,
+    "wakeRatio": 1.0,
+    "slipstreamFactor": 0.5,
+    "flowStraightening": 0.4,
+    "flowStraighteningLeverPrime": -0.8,
+    "estimated": true
+  },
+  "bowThruster": {
+    "fitted": false
+  },
+  "windage": {
+    "airDensityKgM3": 1.225,
+    "frontalAreaM2": 19,
+    "lateralAreaM2": 52,
+    "lateralCentroidLongitudinalM": 1.5,
+    "lateralCentroidHeightM": 1.6,
+    "transverseDragCoefficient": 0.85,
+    "longitudinalDragBow": 0.6,
+    "longitudinalDragStern": 0.5,
+    "crossForceParameter": 0.4,
+    "estimated": true
+  },
+  "restrictedWater": {
+    "shallowWaterCorrections": true,
+    "squatCoefficient": 0.0,
+    "bankSamplingWidthBeams": 4.0,
+    "bankSuctionCoefficient": 0.5,
+    "bankMomentLeverPrime": -0.25,
+    "estimated": true
+  },
+  "controlLimits": {
+    "maxLoadedSpeedMps": 4.138888888888889,
+    "throttleCommandRatePerSecond": 0.3,
+    "rudderCommandRatePerSecond": 0.5
+  },
+  "calibration": {
+    "thrustMultiplier": 1.0,
+    "resistanceMultiplier": 1.0,
+    "rudderMultiplier": 1.0,
+    "trainingValidated": false
+  },
+  "sourceReferences": [
+    "https://www.omtnp.ru/images/flot/p96/p96.pdf",
+    "https://fleetphoto.ru/vessel/3048/",
+    "https://fleetphoto.ru/photo/408315/"
+  ],
+  "steeringNozzle": {
+    "enabled": true,
+    "thrustDeflectionFactor": 0.65,
+    "passiveAreaM2": 0.5,
+    "passiveNormalSlope": 2.5,
+    "estimated": true
+  }
+}

@@ -71,6 +71,27 @@ namespace ShipSimulator.Tests
         }
 
         [UnityTest]
+        public IEnumerator VesselPage_ShowsSixVesselsWithoutOverlappingBack()
+        {
+            menu.ShowVessels();
+            yield return null;
+            Transform page = menu.transform.Find("Maritime Menu/Bridge layout/Menu page");
+            Button[] buttons = page.GetComponentsInChildren<Button>();
+            Assert.That(buttons.Length, Is.EqualTo(7));
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                var a = buttons[i].GetComponent<RectTransform>();
+                for (int j = i + 1; j < buttons.Length; j++)
+                {
+                    var b = buttons[j].GetComponent<RectTransform>();
+                    Assert.That(Mathf.Abs(a.anchoredPosition.y - b.anchoredPosition.y),
+                        Is.GreaterThanOrEqualTo((a.rect.height + b.rect.height) * .5f));
+                }
+            }
+            yield return Capture("menu-six-vessels.png");
+        }
+
+        [UnityTest]
         public IEnumerator Menu_PausesStartsAndResumesPreviousSimulationSpeed()
         {
             Assert.That(VoyageMenu.IsOpen, Is.True);

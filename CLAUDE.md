@@ -30,9 +30,9 @@ navigation values as training-validated data. Label estimated parameters as esti
 ## Orientation
 
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator designed for several ship
-models, which the player chooses in the start menu. Five vessels are playable: the cargo ships
+models, which the player chooses in the start menu. Six vessels are playable: the cargo ships
 Volgo-Don 507B, Volgo-Balt 2-95A/R and Volgoneft 1577, and the fast passenger craft Meteor 342U
-(hydrofoil) and Luch 14352 (skeg air cushion). Treat each as one catalogue entry, not as the
+(hydrofoil) and Luch 14352 (skeg air cushion), plus the Serpukhov R-96 tug-pusher. Treat each as one catalogue entry, not as the
 project's identity.
 
 Read these before changing the project, in the order they are usually needed:
@@ -44,7 +44,7 @@ Read these before changing the project, in the order they are usually needed:
   - `OperatorGuide.md`: controls and how the scenario is meant to be flown.
   - `ShipSimulator_Physics.md`: the force model and its assumptions.
   - `VolgoDon507B_Sources.md`, `VolgoBalt295AR_Sources.md`, `Volgoneft1577_Sources.md`,
-    `Meteor342U_Sources.md`, `Luch14352_Sources.md`: where each vessel's parameters came from, and
+    `Meteor342U_Sources.md`, `Luch14352_Sources.md`, `SerpukhovR96_Sources.md`: where each vessel's parameters came from, and
     how confident they are. Every vessel needs its own file.
   - `SerpukhovZatonScenario_Sources.md`: where the Serpukhov zaton scenario's geography and
     navigation data came from, and which of its values are estimated.
@@ -77,7 +77,7 @@ missing you are on a different machine and should write your own.
 - `Assets/ShipSimulator/Prefabs/`: vessel, navigation and environment prefabs.
 - `Assets/ShipSimulator/Scenes/`: `GorodetsTrainingScene.unity` (default startup and build entry point),
   `RiverTrainingScene.unity` (river familiarisation) and `SerpukhovZatonScene.unity` (Nara mouth and
-  the Serpukhov lay-up basin, restricted to the fast craft).
+  the Serpukhov lay-up basin, admitting the fast craft and shallow-draft Serpukhov tug).
 - `Assets/ShipSimulator/Data/Scenarios/`: surveyed and traced scenario geography (shorelines, relief,
   land cover, buildings, moored craft, fairway) that a builder reads instead of hard-coding.
 - `Tools/`: outside `Assets/`, so Unity ignores it. `serpukhov_zaton_geometry.py` regenerates that
@@ -216,6 +216,7 @@ One thing about results that has already cost time here:
 | `Integrate Detailed Vessel Model` | Re-imports and re-axises the Volgo-Don model into the scene |
 | `Integrate Luch 14352 Blender Model` | Re-imports the authored Luch model into its prefab |
 | `Integrate Meteor 342U Blender Model` | Re-imports the authored Meteor model into its prefab |
+| `Integrate Serpukhov R-96 Blender Model` | Imports the authored R-96 model, materials, prefab and catalogue entry |
 | `Inspect Detailed Vessel Model` | Prints model bounds and hierarchy for diagnosis |
 | `Render Detailed Vessel Preview` | Renders a still of the vessel |
 | `Apply Visual Upgrade` | Applies the URP materials, lighting and visual rig |
@@ -291,7 +292,7 @@ Environment inputs:
 
 Vessel behavior comes from a JSON specification per ship in `Assets/ShipSimulator/Data/Vessels/`:
 `VolgoDon507B.json`, `VolgoBalt295AR.json`, `Volgoneft1577.json`, `Meteor342U.json` and
-`Luch14352.json` for the playable vessels and `KVLCC2_MMG_Benchmark.json` for model checks. The
+`Luch14352.json` and `Serpukhov_R96.json` for the playable vessels and `KVLCC2_MMG_Benchmark.json` for model checks. The
 optional `support` section turns a vessel into a fast craft: `SupportModel` then unloads the hull
 with speed, which changes draft, resistance, hull forces, squat and reported under-keel clearance. `VesselDataValidator` validates every required section
 before physics runs; invalid data disables `ShipPhysicsController` and logs a specific error. When

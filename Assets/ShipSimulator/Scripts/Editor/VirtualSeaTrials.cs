@@ -70,6 +70,9 @@ namespace ShipSimulator.Editor
             Row(report, "Meteor 342U hydrofoil, Gorodets reach", VesselParameters.Create(meteor, 1f), 4.6f, false);
             Row(report, "Luch 14352 air cushion, deep water", VesselParameters.Create(luch, 1f), float.PositiveInfinity, false);
             Row(report, "Luch 14352 air cushion, Gorodets reach", VesselParameters.Create(luch, 1f), 4.6f, false);
+            VesselData serpukhov = Load("Serpukhov_R96.json");
+            Row(report, "Serpukhov R-96 waterjet estimate, deep water", VesselParameters.Create(serpukhov), float.PositiveInfinity, false);
+            Row(report, "Serpukhov R-96 waterjet estimate, shallow water", VesselParameters.Create(serpukhov), 1.6f, false);
             withinEnvelope &= Row(report, "KVLCC2 MMG benchmark, deep water", VesselParameters.Create(kvlcc2, 1f), float.PositiveInfinity, true);
 
             report.AppendLine();

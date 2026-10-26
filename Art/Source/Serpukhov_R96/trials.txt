@@ -1,0 +1,4 @@
+Estimated prototype, not training validated.
+Speed 4.012 m/s
+Turn completed True, tactical diameter 61.01 m
+Stop completed True, reach 47.22 m, time 21.60 s

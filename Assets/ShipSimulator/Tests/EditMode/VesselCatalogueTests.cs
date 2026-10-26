@@ -18,7 +18,7 @@ namespace ShipSimulator.Tests
             VesselCatalogue catalogue = VesselCatalogue.Load();
             Assert.That(catalogue, Is.Not.Null, "Resources/VesselCatalogue is missing.");
             Assert.That(catalogue.Find(VesselCatalogue.DefaultVesselId), Is.Not.Null);
-            Assert.That(catalogue.Entries.Count, Is.EqualTo(5));
+            Assert.That(catalogue.Entries.Count, Is.EqualTo(6));
 
             var ids = new HashSet<string>();
             foreach (VesselCatalogue.Entry entry in catalogue.Entries)
@@ -30,7 +30,7 @@ namespace ShipSimulator.Tests
                 VesselLayout layout = entry.prefab.GetComponent<VesselLayout>();
                 Assert.That(layout, Is.Not.Null, entry.id);
                 Assert.That(layout.VesselId, Is.EqualTo(entry.id));
-                Assert.That(entry.prefab.GetComponentsInChildren<Collider>().Length, Is.EqualTo(entry.id == "volgodon-507b" ? 13 : 3), entry.id);
+                Assert.That(entry.prefab.GetComponentsInChildren<Collider>().Length, Is.EqualTo(entry.id == "volgodon-507b" ? 13 : entry.id == "serpukhov-r96" ? 8 : 3), entry.id);
                 Assert.That(entry.menuName, Is.Not.Empty);
                 Assert.That(entry.vesselClass, Is.Not.Empty);
             }

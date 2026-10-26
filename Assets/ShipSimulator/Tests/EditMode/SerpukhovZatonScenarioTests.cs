@@ -138,7 +138,7 @@ namespace ShipSimulator.Tests
                 else Assert.That(zaton.Restriction(data), Is.Not.Empty, entry.id);
             }
 
-            Assert.That(admitted, Is.EquivalentTo(new[] { "luch-14352" }));
+            Assert.That(admitted, Is.EquivalentTo(new[] { "luch-14352", "serpukhov-r96" }));
         }
 
         [Test]

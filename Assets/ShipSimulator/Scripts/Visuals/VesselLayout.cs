@@ -17,6 +17,7 @@ namespace ShipSimulator.Visuals
         [SerializeField] private Vector3 forwardMastheadLight = new Vector3(0f, 14f, 42f);
         [SerializeField] private float forwardMastheadSupportBaseY = 6.8f;
         [SerializeField] private Vector3 aftMastheadLight = new Vector3(0f, 18f, -46f);
+        [SerializeField] private bool singleMasthead;
         [SerializeField] private float aftMastheadSupportBaseY = 12.4f;
         [SerializeField] private Vector3 sternLight = new Vector3(0f, 8.5f, -67f);
         [SerializeField] private float sternLightSupportBaseY = 6.6f;
@@ -35,6 +36,8 @@ namespace ShipSimulator.Visuals
         public Vector3 ForwardMastheadLight => forwardMastheadLight;
         public float ForwardMastheadSupportBaseY => forwardMastheadSupportBaseY;
         public Vector3 AftMastheadLight => aftMastheadLight;
+        public bool SingleMasthead => singleMasthead;
+        public void ConfigureSingleMasthead(bool value) => singleMasthead = value;
         public float AftMastheadSupportBaseY => aftMastheadSupportBaseY;
         public Vector3 SternLight => sternLight;
         public float SternLightSupportBaseY => sternLightSupportBaseY;

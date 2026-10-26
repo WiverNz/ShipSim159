@@ -397,7 +397,7 @@ namespace ShipSimulator.UI
                     UpdateVesselLabels();
                     ShowVoyages();
                 }, id == VesselSelection.SelectedId);
-                y += 94;
+                y += catalogue.Entries.Count > 5 ? 76 : 94;
             }
             ActionButton("Back", "Return to the menu", 462, ShowHome);
             SelectFirst();

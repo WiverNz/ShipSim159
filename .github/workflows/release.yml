@@ -59,10 +59,20 @@ jobs:
         with:
           unityVersion: 6000.6.0f1
           targetPlatform: StandaloneWindows64
+          buildMethod: ShipSimulator.Editor.LocalWindowsBuild.RunRelease
+          manualExit: true
           buildName: ShipSim159
           buildsPath: build
           versioning: None
           chownFilesTo: ${{ steps.owner.outputs.user }}
+
+      - name: Preserve build report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build-report
+          path: Logs/Release/build-report.txt
+          if-no-files-found: warn
 
       - name: Verify and package complete player
         env:

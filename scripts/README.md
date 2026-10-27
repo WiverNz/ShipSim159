@@ -93,6 +93,10 @@ A pushed `v*` tag starts `.github/workflows/release.yml`. It rejects tags outsid
 `vX.Y.Z`, requires the tag version to equal the committed `bundleVersion`, checks
 `ProjectVersion.txt` against `6000.6.0f1`, and builds with that exact
 editor using [GameCI unity-builder](https://game.ci/docs/github/builder/).
+GameCI invokes `ShipSimulator.Editor.LocalWindowsBuild.RunRelease`, which builds
+without development options and fails on any nonzero `BuildReport.summary.totalErrors`,
+even when Unity reports `Succeeded`. `Logs/Release/build-report.txt` is retained
+as the `windows-build-report` workflow artifact, including on a failed build.
 GameCI uses `versioning: None` to preserve the committed Unity version rather than
 derive or overwrite it from a tag.
 
@@ -100,8 +104,9 @@ The Ubuntu runner cross-compiles `StandaloneWindows64` with the project's curren
 Mono backend. All enabled Build Settings scenes are included, with Gorodets first.
 If changing to IL2CPP, update the runner/toolchain and smoke checks together.
 An editor upgrade also requires updating the workflow's version and guard. CI needs
-the matching GameCI editor image and a working Unity license; the first remote run
-must establish that these are available for this project.
+the matching GameCI editor image and a working Unity license. The v0.1.3 run
+proved cross-compilation and packaging, but reported MCP import errors; see the
+[diagnostics review](../Assets/ShipSimulator/Documentation/ReleaseDiagnosticsReview.md).
 
 `release-smoke.sh` and `release-smoke.ps1` reject missing or empty executable, UnityPlayer, Mono runtime,
 player data and project runtime assembly files. The workflow ZIPs the entire build

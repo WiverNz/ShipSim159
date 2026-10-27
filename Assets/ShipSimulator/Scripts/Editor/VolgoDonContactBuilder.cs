@@ -49,6 +49,7 @@ namespace ShipSimulator.Editor
                 Mesh mesh = AssetDatabase.LoadAssetAtPath<Mesh>(path);
                 if (mesh == null) { mesh = new Mesh { name = name }; AssetDatabase.CreateAsset(mesh, path); }
                 mesh.Clear(); mesh.SetVertices(vertices); mesh.SetTriangles(triangles, 0); mesh.RecalculateBounds();
+                mesh.SetPreBakeCollisionMesh(true, true);
                 EditorUtility.SetDirty(mesh);
                 Transform child = parent.Find(name);
                 if (child == null) { child = new GameObject(name).transform; child.SetParent(parent, false); }
@@ -147,7 +148,7 @@ namespace ShipSimulator.Editor
                 try { Install(root); PrefabUtility.SaveAsPrefabAsset(root, VolgoDonMechanismIntegration.PrefabPath); }
                 finally { PrefabUtility.UnloadPrefabContents(root); }
                 var scene = EditorSceneManager.OpenScene("Assets/ShipSimulator/Scenes/GorodetsTrainingScene.unity");
-                foreach (Transform item in Object.FindObjectsByType<Transform>(FindObjectsSortMode.None))
+                foreach (Transform item in Object.FindObjectsByType<Transform>())
                     if ((item.name.StartsWith("Left Bank ") || item.name.StartsWith("Right Bank ") || item.name == "Visible Rocky Shoals") &&
                         item.GetComponent<BathymetryContactSurface>() == null) item.gameObject.AddComponent<BathymetryContactSurface>();
                 EditorSceneManager.SaveScene(scene);

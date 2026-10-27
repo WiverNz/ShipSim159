@@ -11,7 +11,7 @@ namespace ShipSimulator.Physics
 
         private void Refresh(bool active)
         {
-            foreach (GroundingController grounding in FindObjectsByType<GroundingController>(FindObjectsSortMode.None))
+            foreach (GroundingController grounding in FindObjectsByType<GroundingController>())
                 SetPairs(grounding, active && grounding.Bathymetry != null && grounding.isActiveAndEnabled);
         }
 
@@ -26,7 +26,7 @@ namespace ShipSimulator.Physics
         public static void Apply(GroundingController grounding)
         {
             if (grounding == null) return;
-            foreach (BathymetryContactSurface surface in FindObjectsByType<BathymetryContactSurface>(FindObjectsSortMode.None))
+            foreach (BathymetryContactSurface surface in FindObjectsByType<BathymetryContactSurface>())
                 surface.SetPairs(grounding, surface.isActiveAndEnabled && grounding.Bathymetry != null && grounding.isActiveAndEnabled);
         }
     }

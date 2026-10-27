@@ -14,9 +14,18 @@ namespace ShipSimulator.Editor
 
         public static void RunCameraReview() => Build("build/CameraReview/ShipSim159.exe", "Logs/Camera");
 
-        private static void Build(string executable, string reports)
+        public static void RunRelease() => Build("build/StandaloneWindows64/ShipSim159.exe", "Logs/Release", BuildOptions.None);
+
+        public static void ValidateResult(BuildResult result, int errors)
+        {
+            if (result != BuildResult.Succeeded || errors != 0)
+                throw new InvalidOperationException($"Windows build rejected: {result}, {errors} errors.");
+        }
+
+        private static void Build(string executable, string reports, BuildOptions options = BuildOptions.Development)
         {
             bool timing = PlayerSettings.enableFrameTimingStats;
+            int exitCode = 0;
             try
             {
                 string required = File.ReadAllLines("ProjectSettings/ProjectVersion.txt")
@@ -25,26 +34,25 @@ namespace ShipSimulator.Editor
                 string[] scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path).ToArray();
                 if (scenes.Length == 0 || scenes.Any(scene => !File.Exists(scene))) throw new InvalidOperationException("Invalid enabled scene list");
                 Directory.CreateDirectory(Path.GetDirectoryName(executable));
-                PlayerSettings.enableFrameTimingStats = true;
+                PlayerSettings.enableFrameTimingStats = options.HasFlag(BuildOptions.Development) || timing;
                 BuildReport report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
                 {
                     scenes = scenes, locationPathName = executable,
-                    target = BuildTarget.StandaloneWindows64, options = BuildOptions.Development
+                    target = BuildTarget.StandaloneWindows64, options = options
                 });
                 Directory.CreateDirectory(reports);
-                File.WriteAllText(Path.Combine(reports, "build-report.txt"), $"Unity {Application.unityVersion}\nResult {report.summary.result}\nErrors {report.summary.totalErrors}\nWarnings {report.summary.totalWarnings}\nBytes {report.summary.totalSize}\nDuration {report.summary.totalTime}\nDevelopment, no script debugging, frame timing enabled\n" + string.Join("\n", scenes));
-                if (report.summary.result != BuildResult.Succeeded || report.summary.totalErrors != 0)
-                    throw new InvalidOperationException("Local Windows build failed: " + report.summary.result);
+                File.WriteAllText(Path.Combine(reports, "build-report.txt"), $"Unity {Application.unityVersion}\nResult {report.summary.result}\nErrors {report.summary.totalErrors}\nWarnings {report.summary.totalWarnings}\nBytes {report.summary.totalSize}\nDuration {report.summary.totalTime}\nOptions {options}, frame timing {PlayerSettings.enableFrameTimingStats}\n" + string.Join("\n", scenes));
+                ValidateResult(report.summary.result, report.summary.totalErrors);
                 Debug.Log("LOCAL_WINDOWS_BUILD|PASS");
-                if (Application.isBatchMode) EditorApplication.Exit(0);
             }
             catch (Exception error)
             {
                 Debug.LogException(error);
-                if (Application.isBatchMode) EditorApplication.Exit(1);
-                else throw;
+                if (!Application.isBatchMode) throw;
+                exitCode = 1;
             }
             finally { PlayerSettings.enableFrameTimingStats = timing; }
+            if (Application.isBatchMode) EditorApplication.Exit(exitCode);
         }
     }
 }

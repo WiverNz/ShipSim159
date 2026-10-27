@@ -60,7 +60,12 @@ namespace ShipSimulator.Editor
             {
                 Mesh mesh = BankMesh(scene.name + (side < 0 ? "Left" : "Right"), route, side, start, end);
                 GameObject bank = MeshObject(side < 0 ? "Left natural bank" : "Right natural bank", root, mesh, ground);
-                if (!gorodets) bank.AddComponent<MeshCollider>().sharedMesh = mesh;
+                if (!gorodets)
+                {
+                    mesh.SetPreBakeCollisionMesh(false, true);
+                    EditorUtility.SetDirty(mesh);
+                    bank.AddComponent<MeshCollider>().sharedMesh = mesh;
+                }
             }
             Transform water = environment.Find("RiverWater");
             water.localPosition = Vector3.zero;

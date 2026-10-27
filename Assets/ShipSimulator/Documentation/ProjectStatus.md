@@ -1,280 +1,201 @@
 # ShipSim159 Project Status
 
-## Usability Part 3, 2026-10-27
+Updated 2026-10-27. ShipSim159 is a Unity river navigation prototype for Windows,
+with six playable vessels and a seventh selection combining the Serpukhov tug
+with the passive MN-52 barge. This page describes the current implementation,
+not the September prototype. Historical milestone results remain in their reviews.
 
-Camera controls now normalize wheel input, zoom proportionally, halve default
-rotation gain and smooth orbit/tracking using real time. Stable exterior pivots,
-authored bridge/navigator views, pointer ownership and legacy camera-save migration
-are covered by regression tests. Existing independent saved sensitivities are reused.
-See [the review](UsabilityPart3Review.md) for causes, evidence and limits.
+The simulator is **not validated for maritime training or real navigation**.
+Hydrodynamics, underwater geometry, depths, currents and equipment parameters
+include documented estimates. Passing automated tests does not validate those
+estimates against a real vessel.
 
-EditMode **304/304**, PlayMode **187/187**, seven-command/nine-view shakedown and
-menu/save-load smoke passed. A development Windows player was built at
-`build/CameraReview/ShipSim159.exe`. Native synthetic input measured 20% zoom per
-tick instead of 0.2%, and 6 degrees per 100 pixels instead of 12. All 63 view
-captures were reviewed. Physical mouse/trackpad comfort assessment remains open;
-Parts 4-9 are not implemented by this change.
+## Current capabilities
 
-## Usability Part 2, 2026-10-27
-
-Live English/Russian/German/Spanish selection is available under Settings > Language,
-with persistent preferences, 440 shared translation keys, translated messages and
-responsive command rows. See [the review](UsabilityPart2Review.md) and
-[localization guide](Localization.md). Final EditMode 289/289 and PlayMode 176/176
-passed; seven-command shakedown and menu/save-load smoke passed. The four-language,
-five-resolution, three-scale UI matrix produced 960 captures with no text clipping.
-At that checkpoint Parts 1-2 were complete; the Part 3 entry above supersedes its camera status.
-
-## Usability Part 1, 2026-10-27
-
-Scalable UI (80-150%), responsive scrollable menu/HUD groups, independent camera
-preferences and UI input ownership are implemented. See [the review](UsabilityPart1Review.md)
-for the five-resolution/three-scale matrix, screenshots and limitations. Full tests:
-EditMode 282/282, PlayMode 175/175; final UI regression 7/7; seven-command shakedown
-and menu/save-load smoke PASS. Subsequent usability parts were still planned at
-that checkpoint; the Part 2 result above supersedes its localization status. The standalone executable has not been rebuilt in this stage.
-
-
-Updated 2026-09-13. ShipSim159 is an engineering and gameplay prototype of a river navigation
-simulator built for several ship models, chosen in the start menu before a passage. Five vessels are
-playable: the cargo ships Volgo-Don 507B, Volgo-Balt 2-95A/R and Volgoneft 1577, and the fast
-passenger craft Meteor 342U (hydrofoil) and Luch 14352 (skeg air cushion).
-
-The simulator is **not** validated for maritime training or real navigation: most hydrodynamic
-coefficients, depths, currents and navigation-light timings are estimates.
-
-This page summarises what exists, what has been verified, what the project looks like and what is
-left to do. Detailed references: `ShipSimulator_Physics.md` (model), the sources file for each vessel
-(parameter confidence), `OperatorGuide.md` (controls) and `.codex/PROJECT_CONTEXT.md` (work log).
-
-## At a glance
-
-| Item | State |
+| Area | Implemented state |
 |---|---|
-| Engine | Unity 6000.6.0f1, URP 17.6.0, Input System 1.20.0 |
-| Platform | Windows desktop, keyboard and mouse |
-| Vessels | 5 playable: cargo ships Volgo-Don 507B, Volgo-Balt 2-95A/R, Volgoneft 1577 and fast passenger craft Meteor 342U (hydrofoil), Luch 14352 (air cushion), chosen in the start menu; KVLCC2 benchmark data for model checks |
-| Passages | `GorodetsTrainingScene` (2.27 km mission, default), `RiverTrainingScene` (familiarisation) and `SerpukhovZatonScene` (2.42 km, fast craft only) |
-| Automated tests | EditMode 197 passed, PlayMode 40 passed (2026-09-20) |
-| Batch runtime checks | Menu smoke (including vessel selection), ship wake, graphics phase one, water weather, buoy graphics, vessel catalogue build, virtual sea trials, 507B ground tackle, 507B ship audio (`ShipAudioRuntimeCheck`, recorded demonstration) |
-| Sound | One shared library and a profile per vessel: all five hear generic diesel texture, hull water (fading on foils or cushion) and wind, four of them propeller wash (not the waterjet Luch); the 507B also its firing rhythm, starting air, blade beat, hatches, anchors and mooring (Part 15) |
+| Engine and platform | Unity 6000.6.0f1, URP 17.6.0, Input System 1.20.0; Windows, keyboard and mouse |
+| Fleet | Volgo-Don 507B, Volgo-Balt 2-95A/R, Volgoneft 1577, Meteor 342U, Luch 14352, Serpukhov R-96, and Serpukhov + MN-52 |
+| Passages | Gorodets reach (default), river familiarisation and Serpukhov zaton; vessel/formation admission limits apply |
+| Vessel motion | Force-driven Rigidbody motion, MMG manoeuvring, engine/shaft response, current, wind, restricted water, buoyancy and grounding |
+| 507B equipment | Compartment cargo/ballast/stores, load-dependent draft/trim, visible nominal bulk, animated shafts/rudders/hatches/windlasses, anchors and mooring |
+| Push unit | Separate passive barge Rigidbody, joint coupling, own buoyancy/resistance/contact and saved formation state |
+| Interface | Scalable 80-150% UI, scrollable control groups, per-engine telegraphs, deck/weather/map/help panels |
+| Languages | Live English, Russian, German and Spanish; translated UI, hints and gameplay messages; persistent selection |
+| Camera | Nine views, independent saved orbit/zoom sensitivities, proportional wheel zoom and unscaled smoothing, navigator model eye, legacy-save migration |
+| Navigation | Heading-up channel map, depth zones, route, buoys, obstacle footprints, track, predicted path and waypoint |
+| Persistence | Start/pause menu, vessel/passage choice, one voyage save with atomic replacement and backup, persistent user settings |
+| Sound and graphics | Shared sound library with vessel profiles; water/wake/propeller wash, weather, day/night, sector lights, TAA and vegetation LODs |
+| Distribution | [v0.1.3](https://github.com/WiverNz/ShipSim159/releases/tag/v0.1.3) was published by the linked Actions run; the CI corrections described below are subsequent working-tree changes |
 
-## How it looks
+## Current screenshots
 
-Serpukhov's moored barges, vessels, small craft, floating dock and piers now have fixed
-collision shapes matching their estimated visual geometry. The head-up radar draws their
-scaled, oriented footprints in pale purple, with a `CRAFT / PIER` legend. Regression checks
-cover all 66 moorings, including 25 m/s side and end impacts; the HUD capture is saved at
-`Logs/Serpukhov/radar-moorings.png`.
+These are actual Unity runtime captures from the 2026-10-27 verification, resized
+for documentation. They show the current HUD and authored models, including the
+tug and push unit. They are not concept art or evidence of physical-device handling.
+Capture sources and export details are listed in the
+[screenshot inventory](../../../docs/screenshots/README.md).
 
-![The Volgo-Don 507B at full ahead in the Gorodets reach, with Kelvin wake, propeller wash and paired lateral buoys](../../../docs/screenshots/gorodets-wake-quarter.jpg)
+![Current Volgo-Don 507B underway with the grouped HUD and channel map](../../../docs/screenshots/status-20261027-volgodon-507b.jpg)
 
-*Gorodets reach at full ahead with the Volgo-Don 507B: Kelvin wake, propeller wash, paired lateral
-buoys and fog on the far reach. Captured by `ShipWakeRuntimeCheck`.*
+*Volgo-Don 507B in the river familiarisation passage. The current model has the
+improved hull/deck, working equipment and fitted contact sections.*
 
-| | |
+| Fleet | Fleet |
 |---|---|
-| ![Generated Volgo-Balt 2-95A/R model](../../../docs/screenshots/volgobalt-295ar.jpg) | ![Generated Volgoneft 1577 model](../../../docs/screenshots/volgoneft-1577.jpg) |
-| Volgo-Balt 2-95A/R, generated from its dimensions: forecastle, four hatch covers, aft house | Volgoneft 1577, generated: walkway, cargo pipelines, manifold and hose cranes |
-| ![Generated Meteor 342U model](../../../docs/screenshots/meteor-342u.jpg) | ![Generated Luch 14352 model](../../../docs/screenshots/luch-14352.jpg) |
-| Meteor 342U hydrofoil: V-section hull, passenger cabin, wheelhouse, bow and stern foils | Luch 14352 air cushion craft: skegs, cushion tunnel, cabin and bow boarding ramp |
-| ![Cargo deck passing a natural bank with reflections](../../../docs/screenshots/deck-and-bank.jpg) | ![Overhead view of the wake in a turn](../../../docs/screenshots/wake-turn-overhead.jpg) |
-| Cargo deck along a vegetated bank, planar reflections and cloud sky | Overhead: propeller wash and wake following the track |
-| ![Lateral buoy with lantern tower](../../../docs/screenshots/buoy-lantern.jpg) | ![Rain on the fairway](../../../docs/screenshots/rain-fairway.jpg) |
-| Buoy with float, braced tower and flashing lantern | Rain with surface impacts, fog and wind ripples |
-| ![Night with moon reflection and running lights](../../../docs/screenshots/night-running-lights.jpg) | ![Start menu](../../../docs/screenshots/start-menu.jpg) |
-| Night: moon glitter, stars, sector running lights | Start menu: new voyage, continue, settings |
+| ![Volgo-Balt 2-95A/R underway](../../../docs/screenshots/status-20261027-volgobalt-295ar.jpg) | ![Volgoneft 1577 underway](../../../docs/screenshots/status-20261027-volgoneft-1577.jpg) |
+| Volgo-Balt: procedural dry-cargo model | Volgoneft: procedural tanker model |
+| ![Authored Meteor 342U hydrofoil underway](../../../docs/screenshots/status-20261027-meteor-342u.jpg) | ![Authored Luch 14352 air-cushion craft underway](../../../docs/screenshots/status-20261027-luch-14352.jpg) |
+| Meteor: authored Blender model with foils and three LODs | Luch: authored Blender model with skegs and three LODs |
+| ![Serpukhov R-96 tug underway](../../../docs/screenshots/status-20261027-serpukhov-r96.jpg) | ![Serpukhov pushing the separate MN-52 barge](../../../docs/screenshots/status-20261027-serpukhov-mn52.jpg) |
+| Serpukhov: solo tug with estimated waterjet handling | Serpukhov + MN-52: independently simulated tug and passive barge |
 
-## What is implemented
-
-### Simulation core (any vessel)
-
-The ship dynamics follow `ShipDynamicsRealismApproach.md`, phases 1 to 6. Nothing in the model is
-specific to one ship: every vessel is a JSON specification checked by `VesselDataValidator`.
-
-- Three-degree-of-freedom MMG manoeuvring model with the full added-mass matrix, applied to the
-  Rigidbody as accelerations; Clarke hull derivatives, low-speed cross-flow drag, current shear.
-- ITTC-1957 resistance with form factor and a residual coefficient calibrated per vessel to its
-  published speed, together with the rated propeller speed.
-- Any number of engines and propellers, each with governor, torque and power limits, shaft inertia
-  and astern reversal; ahead and astern propeller curves.
-- Any number of MMG rudders in the propeller slipstream with stall; optional tunnel bow thruster.
-- Blendermann wind loads with gusts; ambient current, trigger current zones and blended regions.
-- Restricted water: depth-dependent hydrodynamics, Lackenby speed loss, ICORELS squat with blockage,
-  estimated bank suction.
-- Station buoyancy with draft, trim and heel; heel from turning and wind; loading from lightship to
-  fully loaded.
-- Grounding: keel contact springs by bottom type, bottom friction, damage points.
-- Virtual sea trials for every vessel: speed steps, turning circles, zig-zags, crash stop.
-
-### Vessels
-
-| Vessel | Model | Published particulars | Notes |
-|---|---|---|---|
-| Volgo-Don 507B | Imported CRYENGINE mesh, re-axised | 138.3 m, 6750 t, 2 x 662 kW, 10 kn | Bow thruster (reported by the owner, size estimated) |
-| Volgo-Balt 2-95A/R | Generated by `ProceduralVesselBuilder` | 113.87 m, 4761 t, 2 x 515 kW, 10 kn | Largest Volgo-Balt series, 79 built 1973 to 1984 |
-| Volgoneft 1577 | Generated by `ProceduralVesselBuilder` | 132.6 m, 6477 t, 2 x 736 kW, 20 km/h | With its twin 550A, the largest Volgoneft group, about 135 built |
-| Meteor 342U | Generated by `ProceduralVesselBuilder` | 34.6 m, 53.4 t, 114 passengers, 2 x 736 kW, 65 km/h | Hydrofoil; over 400 of the family built. Foils carry the hull above about 30 km/h |
-| Luch 14352 | Generated by `ProceduralVesselBuilder` | 23.7 m, 57 passengers, 1 x 382 kW, 40 km/h | Skeg air cushion; over 80 of the type built. Draft falls from 0.66 m to 0.45 m on cushion |
-
-- `Resources/VesselCatalogue.asset` lists the vessels. The start menu offers a vessel step before the
-  passage and shows each vessel's particulars from its data.
-- `VesselSwap` replaces the scene's built-in 507B with the chosen prefab before any `Start` runs, then
-  moves the camera, HUD, grounding and mission to it. Saves record the vessel.
-- `VesselLayout` on each prefab holds the navigation light positions, the navigator eye point and the
-  camera scale, so lights, bridge view and orbit cameras fit each ship. The HUD rudder scale uses each
-  vessel's maximum rudder angle.
-- Generated models are built from each ship's dimensions, propeller and rudder data: spoon bow, stern
-  cut up over the propellers, forecastle and poop, aft house with wheelhouse, bridge wings, funnel and
-  masts, railings, and either hatch covers or tanker pipework. `Ship Simulator > Build Vessel
-  Catalogue` regenerates them and renders previews into `Logs/Vessels/`.
-
-### Passages
-
-- **Gorodets reach** (`Ship Simulator > Build Gorodets Scenario`): 2.27 km curved route, asymmetric
-  procedural bathymetry, rocky shoals, paired lateral marks, three lit leading-mark pairs, six current
-  regions, grounding and damage, warnings and scoring. Mission phases: briefing, depart approach,
-  acquire the Gorodets leading line, pass Gorodets shoal, pass Upper Kochergino, pass Lower
-  Kochergino, reach finish.
-- **River familiarisation**: straight reach with buoys, banks and current zones.
-- **Serpukhov zaton** (`Ship Simulator > Build Serpukhov Zaton Scenario`): 2.42 km outbound from the
-  head of the Serpukhov lay-up basin, past the laid-up fleet, the passenger berth and the yacht
-  marina, out through the 55 m gate, down the Nara and into the Oka. Shoreline traced from
-  OpenStreetMap water outlines; published channel dimensions (20 m on the Nara, 30 m on the Oka,
-  100 m bend radius) with estimated navigation-season depths. Unlit marks only, because the reach is
-  a third-category waterway. Restricted in the start menu to vessels within 40 m x 10 m x 1.6 m,
-  which admits the Meteor and the Luch. Sources and estimates in
-  `SerpukhovZatonScenario_Sources.md`; stills from `Ship Simulator > Render Serpukhov Zaton Preview`.
-
-### Bridge, HUD and menus
-
-- Maritime start menu with vessel and passage choice, pause menu, persistent settings and a single
-  saved voyage with atomic replacement and a `.bak` copy.
-- HUD: speed, course, drift, depth, under-keel clearance, current, cargo, rudder angle and command,
-  per-engine telegraph with shaft RPM and load, bow thruster state (hidden for vessels without one),
-  warnings, objective and score.
-- Heading-up river radar with depth zones, fairway route, track, predicted path from the actual rate
-  of turn, buoys and waypoint; minimap.
-- Nine cameras including bridge, docking and navigator views; simulation time 1x, 2x, 4x.
-- Weather panel: wind force and direction, rain, fog; day and night.
-
-### Graphics and environment
-
-- Reflective river water shader: planar reflections, wind ripples and gust patches, Kelvin wake, bow
-  wave, propeller wash, foam, bank-wave flattening, rain rings and splashes, fog. Wake size follows the
-  vessel's dimensions.
-- Cloud sky with cloud shadows, sky-driven ambient light, auto exposure, TAA with motion vectors.
-- Natural banks, trees, bushes and reeds with LODs and wind sway.
-- Night: moon, stars, sector-correct ship running lights, flashing buoy lanterns, lit leading marks.
-
-### Tooling
-
-- `Ship Simulator` editor menu: scene builders, model integration, vessel catalogue build, visual
-  upgrades, previews, virtual sea trials, play and stop.
-- Batch checks that exit with PASS or FAIL and write captures to `Logs/`: `VoyageMenuSmokeCheck`,
-  `ShipWakeRuntimeCheck`, `GraphicsPhaseOneCheck`, `WaterWeatherCheck`, `BuoyGraphicsCheck`,
-  `VesselCatalogueBuilder.Run`, `VirtualSeaTrials`.
-
-## What works (verified)
-
-| Check | Latest result |
+| Interface | Equipment |
 |---|---|
-| Batch compile | Clean, exit 0 |
-| EditMode tests | 169 passed, 0 failed |
-| PlayMode tests | 23 passed, 0 failed |
-| `VesselCatalogueBuilder.Run` | `VESSEL_CATALOGUE|PASS`: prefabs, catalogue and previews rebuilt |
-| `VoyageMenuSmokeCheck` | `MENU_SMOKE|PASS`: river voyage in the 507B, Gorodets in the Volgoneft, load restores the 507B |
-| `VirtualSeaTrials` | `SEA_TRIALS|PASS`: deep-water loaded results inside the IMO MSC.137(76) envelope for the three cargo ships; fast craft reported without that envelope |
-| `ShipWakeRuntimeCheck`, graphics checks | PASS in their last runs |
+| ![Current seven-option vessel selection menu](../../../docs/screenshots/status-20261027-vessels.jpg) | ![Volgo-Don deck controls and open hatch](../../../docs/screenshots/status-20261027-deck.jpg) |
+| All seven catalogue selections | Loading and machinery controls are specific to supported vessels |
+| ![Russian language selection with four live language choices](../../../docs/screenshots/status-20261027-language.jpg) | ![Interface scale and independent camera settings](../../../docs/screenshots/status-20261027-settings.jpg) |
+| Live language selection | Persistent interface scale, orbit sensitivity and zoom sensitivity |
 
-Simulated sea trials, all from estimated coefficients (distances in ship lengths L between
-perpendiculars):
+## Fleet and model provenance
 
-| Vessel and condition | Slow / half / full | Advance | Tactical diameter | 10/10 overshoots | Crash stop | Bow squat at full |
-|---|---|---|---|---|---|---|
-| 507B loaded, deep water | 3.0 / 6.3 / 9.8 kn | 3.22 L | 3.70 L | 3.6 / 4.2 deg | 4.48 L, 263 s | 0 m |
-| 507B loaded, Gorodets 4.6 m | 2.3 / 4.7 / 6.9 kn | 4.34 L | 6.59 L | 1.0 / 1.0 deg | 2.25 L, 186 s | 0.29 m |
-| Volgo-Balt loaded, deep water | 3.1 / 6.4 / 9.9 kn | 3.13 L | 3.52 L | 4.1 / 4.9 deg | 4.54 L, 213 s | 0 m |
-| Volgo-Balt loaded, Gorodets 4.6 m | 2.5 / 5.1 / 7.4 kn | 5.62 L | 8.75 L | 0.8 / 0.8 deg | 2.60 L, 161 s | 0.37 m |
-| Volgoneft loaded, deep water | 3.3 / 6.9 / 10.7 kn | 3.31 L | 3.76 L | 3.9 / 4.5 deg | 4.99 L, 254 s | 0 m |
-| Volgoneft loaded, Gorodets 4.6 m | 2.5 / 5.2 / 7.5 kn | 4.45 L | 6.72 L | 1.1 / 1.1 deg | 2.52 L, 181 s | 0.38 m |
-| Meteor 342U, deep water | 8.9 / 17.6 / 34.4 kn | 3.08 L | 2.93 L | 14.3 / 14.2 deg | 6.14 L, 20 s | 0 m |
-| Meteor 342U, Gorodets 4.6 m | 8.8 / 16.4 / 34.3 kn | 3.11 L | 2.97 L | 13.8 / 13.7 deg | 6.16 L, 20 s | 0 m |
-| Luch 14352, deep water | 5.4 / 13.8 / 21.1 kn | 3.13 L | 2.62 L | 10.7 / 10.4 deg | 5.76 L, 21 s | 0 m |
-| Luch 14352, Gorodets 4.6 m | 5.4 / 13.2 / 21.1 kn | 3.14 L | 2.61 L | 10.5 / 10.4 deg | 5.53 L, 21 s | 0 m |
-| KVLCC2 benchmark, deep water | 4.6 / 9.9 / 15.4 kn | 3.00 L | 3.09 L | 5.7 / 10.3 deg | 5.58 L, 488 s | 0 m |
+| Selection | Current model and behavior | References |
+|---|---|---|
+| Volgo-Don 507B | Improved editable model and three LODs; section-based hydrostatics and fitted convex contact sections; two engines and bow thruster; loading, machinery and ground tackle | [Vessel sources](VolgoDon507B_Sources.md), [integrated review](../../../Art/Source/VolgoDon507B/PART17_REVIEW.md) |
+| Volgo-Balt 2-95A/R | Generated from vessel dimensions by `ProceduralVesselBuilder`; estimated superstructure/livery; two-engine dry-cargo vessel | [Sources](VolgoBalt295AR_Sources.md) |
+| Volgoneft 1577 | Generated tanker with pipeline/walkway arrangement; estimated superstructure/livery; two engines | [Sources](Volgoneft1577_Sources.md) |
+| Meteor 342U | Authored Blender model, materials, interior eye and three LODs; speed-dependent foil support surrogate | [Model](../../../Art/Source/Meteor342U/README.md), [physics sources](Meteor342U_Sources.md) |
+| Luch 14352 | Authored Blender model, materials, interior eye and three LODs; speed-dependent cushion support and waterjet surrogate | [Model](../../../Art/Source/Luch14352/README.md), [physics sources](Luch14352_Sources.md) |
+| Serpukhov R-96 | Authored Blender tug, fitted submerged sections and three LODs; estimated waterjet force surrogate | [Model](../../../Art/Source/Serpukhov_R96/README.md), [sources](SerpukhovR96_Sources.md) |
+| Serpukhov + MN-52 | Tug variant coupled to a separate T-77 barge with zero actuators; 50.65 m formation, own mass/buoyancy/resistance and saved joint state | [Model and coupling](../../../Art/Source/MN52_T77/README.md), [sources](MN52T77_Sources.md) |
 
-The Volgo-Balt's wide turn in the Gorodets reach follows from its 3.86 m draft: 4.6 m of water is only
-1.19 times its draft, where depth effects on the hull are strongest. The two fast craft barely notice
-that depth, because once supported they draw 1.2 m (foils) and 0.45 m (skegs). The IMO envelope is
-written for displacement ships, so their rows are reported without it.
+The barge is not an additional player ship controller. Its forces and contacts act
+through its own Rigidbody. The requested centreline Serpukhov/MN-52 pairing is a
+simulated arrangement, not documented historical rigging. Published particulars
+and reconstruction confidence are recorded in the linked sources rather than
+presented here as a validated set of ship parameters.
 
-## Known issues and limitations
+## Simulation, equipment and passages
 
-- **Not validated.** No trial data, lines plans, propeller, rudder or thruster drawings were available
-  for any vessel; those parameters are estimates listed in each sources file.
-- **Generated models are simple.** The Volgo-Balt, Volgoneft, Meteor and Luch meshes are untextured
-  and use estimated superstructure proportions and liveries; they are not built from drawings or
-  photos. The Meteor's streamlined silhouette in particular is only approximated.
-- **Fast craft support is a simple model.** One speed-dependent lift fraction stands in for cushion
-  and foil systems: takeoff speeds, supported drag factors and the hump are estimates, and foil lift
-  distribution, banked turns, cushion pitch stability and lift-fan dynamics are not modelled. Hull
-  contact for grounding still uses the hull keel, while the reported clearance uses the foils or
-  skegs.
-- **Environment is not real geography.** Bathymetry, route geometry and currents of the Gorodets
-  reach are procedural estimates, not surveyed data or charts. The Serpukhov zaton scene traces its
-  shoreline from OpenStreetMap and uses the published channel width, bend radius and mark category,
-  but its depths, currents, shoals and mark positions are estimates: no public survey or buoy scheme
-  of that reach exists. Its relief comes from a ~30 m elevation source, its buildings are massing
-  boxes, and its moored craft are traced by eye from one satellite image: approximate positions and
-  sizes, no vessel identified, and laid-up craft move between seasons.
-- **Frame cost of the Serpukhov scene is unmeasured.** It carries about 4600 vegetation instances
-  plus the town and the moored craft, more than either older scene.
-- **The Serpukhov scene is outside the graphics passes.** `Upgrade Water And Landscape`,
-  `Apply Realistic Water And Sky` and `Apply Graphics Phase One` still cover only the two original
-  scenes, and its shore structures are placeholder boxes.
-- **Model simplifications.** Quadratic propeller curves rather than four-quadrant data; estimated bank
-  suction; wall-sided station hydrostatics; no wave loads; Unity collider contacts bypass the
-  added-mass solve.
-- **Missing features.** No other traffic or ship-ship interaction, locks, tugs, autopilot, AIS or
-  ECDIS. Anchors and mooring lines exist for the 507B only, as an estimated quasi-static prototype
-  (`Art/Source/VolgoDon507B/PART14_REVIEW.md`). Ship sound uses analogue CC0 recordings and
-  synthesis, not recordings of any vessel, not yet judged by a listener; firing, reversal and
-  blade-rate layers are off for the four vessels whose engine facts are not established; the menu
-  pause cuts sound at once (`Art/Source/VolgoDon507B/PART15_REVIEW.md`). Gorodets scenario phase 3 (discharge presets, hold point, meeting
-  traffic, fog variant, debrief) is not built.
-- **Input and UI.** Keyboard is polled directly: no rebinding, no gamepad. The HUD uses legacy
-  `UnityEngine.UI.Text` and its telegraph controls support at most two engines.
-- **Runtime log noise.** `RiverLighting.CaptureSky` throws a `MissingReferenceException` during scene
-  switches (seen in the menu smoke log); the checks still pass.
-- **Graphics.** Roadmap phase 1 and phase 2 Steps 0 and 1 are implemented: baseline captures,
-  timing logs, water refraction, depth absorption, filtered reflections and specular antialiasing.
-  RTX 3060 / 1080p GPU acceptance remains open; timings collected on RTX 4090 do not establish
-  that budget. The rain-toward-sun temporal crop increased variance by 10.2%, although eight of
-  ten crops improved. Height fog and current-driven flow remain in `GraphicsPhaseTwoPlan.md`.
+The shared manoeuvring model includes added-mass acceleration, hull derivatives,
+low-speed cross-flow drag, calibrated resistance, engine governors and shaft inertia,
+ahead/astern propeller response, slipstream rudders, optional bow thrusters, wind
+and current, estimated bank effects and shallow-water squat. Rigidbody motion is
+force-driven. See [the physics model](ShipSimulator_Physics.md) and
+[the dynamics approach](ShipDynamicsRealismApproach.md).
 
-## What needs to be done
+The 507B extends that model with compartment loading budgets and mass/centre-of-gravity
+updates, section hydrostatics, under-hull contact and finite grounding resistance.
+Open holds display nominal bulk according to actual loaded mass; empty compartments
+show no heap. Hatch interlocks, animated machinery, anchor deployment/drag/heaving
+and quasi-static mooring lines use existing control and save services. Shared audio
+responds to vessel state; the 507B adds machinery and equipment layers. These are
+estimated gameplay mechanisms, not recordings or calibrated copies of a named ship.
+Commodity identity and sulphur/channel-section/grain visuals are still planned.
 
-In priority order:
+The three passages are:
 
-1. **Obtain vessel documentation and calibrate.** For each vessel: manoeuvring booklet or trial
-   reports, lines plan, propeller, rudder and thruster data; recalibrate with `VirtualSeaTrials` and
-   agree tolerances with maritime specialists.
-2. **Real river data for the Gorodets reach.** Surveyed bathymetry, water levels and current
-   measurements; real DEM and bank geometry.
-3. **Finish the Gorodets scenario.** Discharge presets and briefing choice, hold point, meeting
-   traffic with clearance rules, fog cancellation variant, debrief timeline.
-4. **Traffic and interaction.** AI vessels that reuse catalogue ships, ship-ship interaction forces,
-   locks, and anchors and mooring lines for the other vessels (dynamics roadmap phase 7).
-5. **Better vessel models.** Textures, weathering, names and draft marks, superstructure details from
-   photographs or drawings, or imported meshes to replace the generated ones; a preview in the vessel
-   menu; loading conditions selectable per voyage.
-6. **Model fidelity.** Four-quadrant propeller data, a published bank-effect formulation, hull-lines
-   hydrostatics, collisions through the added-mass solve.
-7. **Controls and UI.** Input Actions with rebinding and gamepad support; telegraphs for any engine
-   count; move the HUD to TextMesh Pro or UI Toolkit.
-8. **Graphics phase 2.** Validate the implemented water optics on RTX 3060 at 1080p and review
-   rainy-water temporal variance. Then height fog with sun in-scattering and current-driven flow
-   maps. Steps, acceptance criteria and checks are in `GraphicsPhaseTwoPlan.md`.
-9. **Engineering hygiene.** Fix the `RiverLighting.CaptureSky` exception; add loader parse-error and
-   missing-component tests; record a frame-time budget.
+- **Gorodets reach:** default startup, 2.27 km curved mission route, current regions,
+  leading marks, shoals, estimated bathymetry, grounding/damage warnings and scoring;
+  a demonstration berth supports the 507B mooring checks.
+- **River familiarisation:** straight marked reach, banks and current zones, used for
+  fleet shakedown and camera captures.
+- **Serpukhov zaton:** 2.42 km outbound route through the lay-up basin, Nara and Oka,
+  traced shoreline, approximate relief/buildings and moored-craft footprints.
+  The 40 m x 10 m x 1.6 m admission limits allow Meteor, Luch and the solo Serpukhov,
+  but exclude the cargo ships and the 50.65 m push unit. Fixed obstacle contacts
+  cover the authored moorings; this is not a live traffic simulation.
+
+Scenario provenance: [Gorodets plan](GorodetsScenarioTechnicalPlan.md) and
+[Serpukhov sources](SerpukhovZatonScenario_Sources.md). Depths, current, buoy positions
+and much of the terrain remain estimates, not a navigable survey or chart.
+
+## Usability work
+
+[The nine-part plan](UsabilityImprovementPlan.md) is executed one part at a time.
+
+| Part | Current state |
+|---|---|
+| 1: interface/settings | Implemented: scaling, scroll/reflow, readable controls, labelled icons, independent saved preferences and input ownership. [Review](UsabilityPart1Review.md) |
+| 2: localization | Implemented: four languages, 440 shared keys, live refresh and preserved UI/voyage state. [Review](UsabilityPart2Review.md), [catalogue guide](Localization.md) |
+| 3: camera | Implemented and automatically verified: proportional/fractional zoom, lower orbit gain, real-time smoothing, consistent pivots, cursor lifecycle and save migration. Physical mouse/trackpad comfort assessment remains open. [Review](UsabilityPart3Review.md) |
+| 4: map interaction | Planned: expanded map, range/zoom/pan, follow/recenter and orientation preferences |
+| 5: obstacle/buoy physics | Planned: physical buoy response and complete collision/CCD audit; existing shore/quay and hull contacts are not proof that buoys are solid |
+| 6: grounded bow/water | Planned: reproduce and correct the reported 507B bow water gap |
+| 7: recovery | Planned: validated safe-position recovery with explicit progress preservation; current reset is not that feature |
+| 8: cargo identity | Planned: actual commodity inventory and corresponding sulphur, steel-channel and grain visuals |
+| 9: integrated acceptance | Planned: combined scenarios, manual play, performance and final release acceptance |
+
+The camera defaults to 20% closer / 25% farther per wheel tick and 0.06 degrees per
+mouse pixel. Real-time smoothing is independent of 1x/2x/4x simulation speed.
+Native Windows synthetic input verified the gain change; it does not establish
+subjective comfort or physical trackpad behavior.
+
+## Verification and release diagnostics
+
+The latest completed baseline before the CI correction was EditMode **304/304**,
+PlayMode **187/187**, seven-vessel/nine-view shakedown and menu/save-load smoke on
+2026-10-27. Paths and native input measurements are in the Part 3 review.
+The current CI-correction verification is recorded in
+[the release diagnostics review](ReleaseDiagnosticsReview.md).
+
+The linked [v0.1.3 Actions run](https://github.com/WiverNz/ShipSim159/actions/runs/40547214885)
+completed and published its package, but Unity's build summary contained **3 errors
+and 46 warnings**. All asset-import error annotations identified the same missing
+MCP test `.meta`. A green workflow was therefore insufficient evidence of an
+error-free build. The correction pins the upstream metadata fix, removes deprecated
+project API calls, enables the appropriate collision pre-baking in generated assets
+and their builders, and rejects builds with nonzero reported errors before packaging.
+The workflow retains its build report as an artifact. It does not publish a new
+release until a human commits and pushes a new release tag.
+
+Useful checks and their scope:
+
+| Check | What it establishes |
+|---|---|
+| EditMode / PlayMode | Data/configuration invariants, camera/UI ownership, save restoration, vessel motion and component regressions |
+| Fleet shakedown | All seven selections get underway; nine camera captures each, support/clearance/contact checks |
+| Menu smoke | Start, pause/resume, save, scenario/vessel change, load and supported equipment/loading controls |
+| Localization/layout matrix | Four languages, five resolutions, three UI scales; 960 captures and clipping checks |
+| Windows build and package smoke | Editor build result/error count and complete executable/data/Mono layout; file checks alone do not prove gameplay |
+| Virtual sea trials | Numerical results for the estimated model; compare dated review conditions, not a historical table labelled as current |
+| Native input probe | Real Windows backend units and response to synthetic mouse events; physical-device handling still needs a player |
+
+Raw logs, test XML and full-resolution captures are local generated evidence under
+`Logs/` and `TestResults/`; they are not committed. The screenshot subset above is
+included in the repository for GitHub readers. Reproduction commands are in
+[Tools](../../../Tools/README.md) and [release scripts](../../../scripts/README.md).
+
+## Known limits and next work
+
+- **Physical fidelity:** many coefficients, below-water offsets, mass distributions
+  and equipment properties are estimates. Fast-craft support remains a surrogate;
+  foil/cushion dynamics and waterjet transients are not resolved. PhysX contact/joint
+  impulses are not a fully coupled added-mass solution. No claim of training validation.
+- **507B loading/equipment:** hydrostatic table and stability limits, unresolved hold
+  volume/partial-load CG assumptions, no free-surface/slosh/flooding or structural
+  model; estimated machinery timings, soil and rope properties. Detailed limitations
+  remain in the [integrated model review](../../../Art/Source/VolgoDon507B/PART17_REVIEW.md).
+- **Models and visibility:** Volgo-Balt and Volgoneft remain procedural approximations.
+  Other models have documented inferred fittings/paint/hidden geometry. The push-unit
+  navigator's forward view is obstructed by the barge cabin; exterior views frame the
+  combination. No general deck walking or player-facing barge detach controls.
+- **Gameplay:** no AI traffic, lock operation, autopilot, AIS/ECDIS or rescue tug
+  service. A playable tug and coupled passive barge exist; tug-assisted recovery does
+  not. Safe-position recovery, physical buoys, map interaction and cargo identity
+  remain separate tasks in the usability plan.
+- **Environment and graphics:** approximate scenario geography, depths and moorings;
+  Serpukhov is outside some older shared graphics upgrade commands. Water optics
+  Steps 0-1 are implemented; height fog/current-driven flow and RTX 3060 acceptance
+  remain in [the graphics plan](GraphicsPhaseTwoPlan.md).
+- **Performance and manual acceptance:** the available RTX 4090 measurements do not
+  establish an RTX 3060 budget. Cold-transition frame-time tails and human handling,
+  terminology and sound assessment remain open. A successful release build is not
+  equivalent to completed Part 9 acceptance.
+- **Input:** keyboard/mouse polling, no rebinding or gamepad, legacy Unity UI and
+  telegraph layout for at most two engines.
+
+Next implementation work is usability Part 4 when requested. Source acquisition,
+calibration, real river data, scenario completion and performance validation remain
+longer-term work. Use the linked reviews to distinguish completed features from
+estimated behavior and outstanding acceptance.

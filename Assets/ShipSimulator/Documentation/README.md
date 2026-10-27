@@ -13,6 +13,7 @@ It is not a validated maritime training product.
 - [Usability Part 3 review](UsabilityPart3Review.md): proportional zoom, smoothed orbit, input ownership and save migration.
 - [Usability Part 2 review](UsabilityPart2Review.md): language selection and layout verification.
 
+- [Release diagnostics review](ReleaseDiagnosticsReview.md): v0.1.3 CI errors, pinned MCP metadata, collision pre-baking and strict build acceptance.
 - [ProjectStatus.md](ProjectStatus.md): what is implemented, what is verified,
   screenshots, known limits and prioritised next work. Start here.
 - [GraphicsPhaseTwoPlan.md](GraphicsPhaseTwoPlan.md): step-by-step plan for the
@@ -34,7 +35,8 @@ It is not a validated maritime training product.
 
 ## Current Prototype Status
 
-Three passage scenes support five vessels subject to passage restrictions. Runtime
+Three passage scenes support six playable vessels and a seventh push-unit selection,
+subject to vessel and formation restrictions. Runtime
 systems include nine camera views, HUD/radar, save/load, weather and sound. The
 Volgo-Don also has loading, hold visuals, animated machinery, anchors and mooring.
 

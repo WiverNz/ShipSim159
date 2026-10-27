@@ -182,7 +182,7 @@ steady ship running lights from four directions, writes `Logs/WaterWeather/` and
 `BuoyGraphicsCheck.Run` captures detailed buoys by day and night, including near and distant
 flash on/off states, to `Logs/Buoys/` and ends with `BUOY_GRAPHICS|PASS`.
 `VesselShakedownCheck.Run` sails every catalogue vessel down the river reach at full ahead,
-steering to hold the channel, captures each one from six views with the HUD composited over
+steering to hold the channel, captures each one from nine views with the HUD composited over
 the world, writes `Logs/Shakedown/shakedown.md` and ends with `VESSEL_SHAKEDOWN|PASS`. It is
 an automated complement to manual handling checks. Run it after changing a vessel, the HUD,
 the cameras or the wake; it does not establish subjective handling feel. The check uses a fixed
@@ -411,7 +411,9 @@ builder script, not in the scene.
   sites. `com.unity.ai.assistant` (pinned to the stale pre-release `2.12.0-pre.2`) failed the
   same upgrade differently, on Unity's own analyzer: `error UAC0020`, because
   `System.Reflection.Assembly.Load(byte[])` loads into a non-Unity `AssemblyLoadContext`. Both
-  were removed from `Packages/manifest.json` on 2026-09-05. Before hunting through your own
+  were removed from `Packages/manifest.json` on 2026-09-05. MCP was subsequently
+  restored; on 2026-10-27 it was pinned to commit `c69c3c61a2de6492f4d247f94bb3452f3ad82d73`,
+  which supplies the missing immutable-package test metadata. Before hunting through your own
   code, check whether the failing paths are under `Library/PackageCache/`.
 - **Not every blocking error is a `CS` error.** Unity 6.6 ships Roslyn analyzers that report as
   errors with their own prefixes (`UAC`, `UNT`). A grep for `error CS` alone will miss them and

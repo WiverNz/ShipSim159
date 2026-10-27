@@ -119,7 +119,7 @@ namespace ShipSimulator.Diagnostics
                 {
                     var save = menu.CaptureSave(); save.position = new Vector3(39.5f, save.position.y, 0); save.rotation = Quaternion.identity;
                     menu.ApplySave(save); yield return null;
-                    MooringPoint[] shore = FindObjectsByType<MooringPoint>(FindObjectsSortMode.None).Where(p => p.Kind == MooringPointKind.Shore).ToArray();
+                    MooringPoint[] shore = FindObjectsByType<MooringPoint>().Where(p => p.Kind == MooringPointKind.Shore).ToArray();
                     for (int i = 0; i < ship.GroundTackle.StationCount; i++)
                     {
                         var station = ship.GroundTackle.Station(i);
@@ -226,9 +226,9 @@ namespace ShipSimulator.Diagnostics
                 night = FindAnyObjectByType<DayNightController>()?.IsNight ?? false,
                 windMps = weather != null ? weather.WindSpeedMps : 0, rain = weather != null ? weather.RainIntensity : 0,
                 fog = weather != null ? weather.FogIntensity : 0,
-                sources = FindObjectsByType<AudioSource>(FindObjectsSortMode.None).Length,
-                listeners = FindObjectsByType<AudioListener>(FindObjectsSortMode.None).Length,
-                soundscapes = FindObjectsByType<VesselSoundscape>(FindObjectsSortMode.None).Length,
+                sources = FindObjectsByType<AudioSource>().Length,
+                listeners = FindObjectsByType<AudioListener>().Length,
+                soundscapes = FindObjectsByType<VesselSoundscape>().Length,
                 lines = ship.GroundTackle != null ? ship.GroundTackle.LineCount : 0, voices = sound != null ? sound.ActiveVoices : 0,
                 counterAvailable = counters.Select(c => c.Valid).ToArray()
             };

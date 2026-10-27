@@ -79755,14 +79755,15 @@ MonoBehaviour:
   - {x: 0, y: 9, z: 58}
   - {x: 0, y: 10, z: -68}
   - {x: -22, y: 7, z: -28}
-  smoothTime: 0.45
+  trackingTime: 0.12
+  orbitResponseTime: 0.085
   baseFieldOfView: 52
   speedFieldOfViewGain: 1.2
   lookOffset: {x: 0, y: 3.5, z: 10}
-  orbitSensitivity: 0.12
-  minPitch: 6
-  maxPitch: 78
-  zoomSensitivity: 0.002
+  orbitSensitivity: 0.06
+  minPitch: 0
+  maxPitch: 90
+  zoomPerTick: 0.22314355
   minDistance: 10
   maxDistance: 140
   navigatorPosition: {x: -1.8, y: 14.2, z: -20}

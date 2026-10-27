@@ -352,8 +352,17 @@ screens, or switches between Map and Helm on narrow screens. F1 toggles Help.
 Only left-click activates HUD commands. Wheel and right-button gestures that begin over
 UI belong to UI; camera orbit started in the world retains its gesture until release.
 Editing sliders blocks vessel keyboard commands. Opening the pause menu, changing
-camera view or losing focus releases an orbit cursor. Camera smoothing itself remains
-scheduled for usability Part 3.
+camera view or losing focus releases an orbit cursor. A held button after resume must
+be released and pressed again before orbit starts.
+
+Default wheel input changes distance by 20% closer / 25% farther per tick, with
+fractional wheel motion retained. Default rotation is 0.06 degrees per pixel.
+Rotation and zoom converge smoothly using real time, independent of simulation
+speed. The exterior camera follows vessel heading with a stable horizon; navigator
+follows the model eye. Numbered presets cut immediately, clearing previous motion.
+Old origin-based orbit saves migrate to the new look-pivot coordinates, subject to
+current vessel limits. See [the Part 3 review](UsabilityPart3Review.md) for tests
+and the remaining physical-device/subjective handling assessment.
 
 
 ## Interface language

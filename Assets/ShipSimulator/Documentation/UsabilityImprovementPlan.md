@@ -90,24 +90,29 @@ no restart, no lost voyage state. Later parts must add all four translations whe
 
 Dependencies: Parts 1-2.
 
-- [ ] Capture wheel and mouse delta units in the actual Windows player, including
+- [x] Capture wheel and mouse delta units in the actual Windows player, including
   high-resolution wheel/trackpad where available. Check serialized camera values in
   scenes and builders; changing a C# default alone does not update existing assets.
-- [ ] Normalize wheel input at one boundary. Use proportional target distance; initial
+- [x] Normalize wheel input at one boundary. Use proportional target distance; initial
   tuning target is roughly 15-25% per conventional detent at default sensitivity.
   Expose bounded zoom sensitivity independently of rotation sensitivity.
-- [ ] Reduce default rotation gain after recording the baseline; smooth target yaw,
+- [x] Reduce default rotation gain after recording the baseline; smooth target yaw,
   pitch and distance with frame-independent unscaled timing. Do not multiply pixel
   deltas by deltaTime. Keep input gain stable at 30/60/144 FPS and simulation 1x/2x/4x.
-- [ ] Use a consistent look pivot and pitch limits. Reproduce vertical jumps during
+- [x] Use a consistent look pivot and pitch limits. Reproduce vertical jumps during
   orbit entry, view switches, zoom and vessel pitch/roll; separate deliberate hull motion
   from input or coordinate errors. Preserve the navigator eye's model-relative behavior.
-- [ ] Clear stale smoothing velocities/targets on restore, swap and view change;
+- [x] Clear stale smoothing velocities/targets on restore, swap and view change;
   synchronize saved camera state and validate limits for every vessel size.
-- [ ] Consume RMB/wheel only when camera owns the gesture. Release the cursor on menu,
+- [x] Consume RMB/wheel only when camera owns the gesture. Release the cursor on menu,
   focus loss, disable and switching into navigator view; do not reuse stale deltas.
-- [ ] Regression tests for input gain, pitch bounds, cursor lifecycle, save/restore and
-  camera/map ownership. Run vessel shakedown and manually assess all nine views.
+- [x] Regression tests for input gain, pitch bounds, cursor lifecycle, save/restore and
+  camera/map ownership. Run vessel shakedown and inspect all nine view captures.
+- [ ] Manually assess handling in all nine views with a physical mouse or trackpad.
+
+Implementation and automated evidence: [Part 3 review](UsabilityPart3Review.md).
+The final checkbox remains open for human handling assessment; synthetic Windows
+input and all-view captures are recorded separately.
 
 Acceptance: useful near-to-far zoom in a short wheel gesture, controllable rotation,
 no unexplained rise/jump or stuck cursor, independent saved sensitivities. Numerical
@@ -290,8 +295,8 @@ compile success. Keep all changes in the working tree; no commit or push.
 | Part | Status | Verification |
 |---|---|---|
 | 1 | Complete | [Review and evidence](UsabilityPart1Review.md) |
-| 2 | Not started | Pending |
-| 3 | Not started | Pending |
+| 2 | Complete | [Review and evidence](UsabilityPart2Review.md) |
+| 3 | Implemented; human handling assessment pending | [Review and evidence](UsabilityPart3Review.md) |
 | 4 | Not started | Pending |
 | 5 | Not started | Pending |
 | 6 | Not started | Pending |

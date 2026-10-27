@@ -10,6 +10,7 @@ It is not a validated maritime training product.
 - [UsabilityImprovementPlan.md](UsabilityImprovementPlan.md): source audit and nine
   executable parts for interface, languages, camera, map, collisions, recovery and cargo.
 - [Localization](Localization.md): four-language catalogues, live labels and display culture.
+- [Usability Part 3 review](UsabilityPart3Review.md): proportional zoom, smoothed orbit, input ownership and save migration.
 - [Usability Part 2 review](UsabilityPart2Review.md): language selection and layout verification.
 
 - [ProjectStatus.md](ProjectStatus.md): what is implemented, what is verified,
@@ -45,3 +46,8 @@ Usability Part 2 verification, 2026-10-27: EditMode `289/289`, PlayMode `176/176
 seven-command shakedown and menu/save-load smoke PASS. The four-language UI matrix
 has 960 captures at five resolutions and three scales. See
 [UsabilityPart2Review.md](UsabilityPart2Review.md) for exact logs and scope.
+
+Usability Part 3 verification, 2026-10-27: EditMode `304/304`, PlayMode `187/187`,
+seven-command/nine-view shakedown and menu/save-load smoke PASS. Development
+Windows build and before/after native input traces completed. See its review for
+all 63 view captures and the remaining physical-device handling assessment.

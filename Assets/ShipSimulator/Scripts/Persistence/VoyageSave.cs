@@ -84,6 +84,7 @@ namespace ShipSimulator.Persistence
             Check(windDirection, 0f, 360f); Check(windSpeed, 0f, 100f);
             Check(rain, 0f, 1f); Check(fog, 0f, 1f);
             Check(waterLevel, -100f, 100f); Check(discharge, 0f, 1.5f);
+            Check(camera.orbitVersion, 0f, 1f);
             Check(camera.view, 0f, 8f); Check(camera.yaw, -1000000f, 1000000f);
             Check(camera.pitch, 0f, 90f); Check(camera.distance, 1f, 1000f);
             Check(mission.phase, 0f, 8f); Check(mission.score, 0f, 100f);
@@ -103,6 +104,7 @@ namespace ShipSimulator.Persistence
     [Serializable]
     public sealed class CameraSave
     {
+        public int orbitVersion;
         public int view;
         public float yaw;
         public float pitch = 30f;

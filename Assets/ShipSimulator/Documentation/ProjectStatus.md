@@ -1,5 +1,20 @@
 # ShipSim159 Project Status
 
+## Usability Part 3, 2026-10-27
+
+Camera controls now normalize wheel input, zoom proportionally, halve default
+rotation gain and smooth orbit/tracking using real time. Stable exterior pivots,
+authored bridge/navigator views, pointer ownership and legacy camera-save migration
+are covered by regression tests. Existing independent saved sensitivities are reused.
+See [the review](UsabilityPart3Review.md) for causes, evidence and limits.
+
+EditMode **304/304**, PlayMode **187/187**, seven-command/nine-view shakedown and
+menu/save-load smoke passed. A development Windows player was built at
+`build/CameraReview/ShipSim159.exe`. Native synthetic input measured 20% zoom per
+tick instead of 0.2%, and 6 degrees per 100 pixels instead of 12. All 63 view
+captures were reviewed. Physical mouse/trackpad comfort assessment remains open;
+Parts 4-9 are not implemented by this change.
+
 ## Usability Part 2, 2026-10-27
 
 Live English/Russian/German/Spanish selection is available under Settings > Language,
@@ -8,7 +23,7 @@ responsive command rows. See [the review](UsabilityPart2Review.md) and
 [localization guide](Localization.md). Final EditMode 289/289 and PlayMode 176/176
 passed; seven-command shakedown and menu/save-load smoke passed. The four-language,
 five-resolution, three-scale UI matrix produced 960 captures with no text clipping.
-Parts 1-2 are complete; Parts 3-9 and the standalone release remain separate work.
+At that checkpoint Parts 1-2 were complete; the Part 3 entry above supersedes its camera status.
 
 ## Usability Part 1, 2026-10-27
 

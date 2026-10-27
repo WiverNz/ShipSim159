@@ -10,9 +10,10 @@
 The [usability improvement plan](Assets/ShipSimulator/Documentation/UsabilityImprovementPlan.md)
 defines nine separately executable parts for UI, languages, camera, map, collisions,
 grounded-bow water rendering, recovery and cargo. Part 1 adds scalable, scrollable UI and settings. Part 2 adds live language selection
-for English, Russian, German and Spanish under **Settings > Language**. Parts 3-9 remain planned.
+for English, Russian, German and Spanish under **Settings > Language**. Part 3 adds proportional zoom, smoother orbit and stable camera tracking. Parts 4-9 remain planned.
 See the [Part 1 review](Assets/ShipSimulator/Documentation/UsabilityPart1Review.md) and
-[Part 2 review](Assets/ShipSimulator/Documentation/UsabilityPart2Review.md) for changes and verification.
+[Part 2 review](Assets/ShipSimulator/Documentation/UsabilityPart2Review.md), plus the
+[Part 3 review](Assets/ShipSimulator/Documentation/UsabilityPart3Review.md), for changes and verification.
 
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator. It is
 built to carry several ship models, chosen in the start menu before a passage:
@@ -116,7 +117,7 @@ for save contents and storage details.
 
 Serpukhov zaton is also available for compatible fast craft. Cargo vessels are excluded
 by its passage limits. Interface scale (80-150%) and independent rotation/zoom sensitivity are available under
-Settings > Interface & camera. Language selection and last-safe-position recovery remain planned.
+Settings > Interface & camera. Language selection is under Settings > Language. Last-safe-position recovery remains planned.
 The HUD groups helm, deck, camera, weather, map and help controls into labelled icon tabs.
 Overflowing panels scroll, and the map remains beside the controls when space allows.
 
@@ -166,6 +167,13 @@ Settings.
 | `7` | Stern |
 | `8` | Docking |
 | `9` | Navigator / wheelhouse |
+
+RMB orbit uses smoothed, lower-sensitivity motion; the wheel changes distance by
+20% inward / 25% outward per tick at the default setting. Rotation and zoom have
+independent saved sensitivities. Camera smoothing uses real time at 1x/2x/4x
+simulation speed. Numbered views cut to their preset; navigator stays at the
+model's eye. UI owns gestures started over its panels. Menu/focus changes release
+the cursor. Existing voyage camera saves are migrated when loaded.
 
 ## Navigation Display
 

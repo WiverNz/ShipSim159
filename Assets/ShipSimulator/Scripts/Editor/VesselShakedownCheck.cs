@@ -26,9 +26,8 @@ namespace ShipSimulator.Editor
         private const float RunSecondsPerVessel = 800f;
         private const int SettleTicks = 8;
 
-        // Chase, bridge, port beam, bow, stern and the navigator's eye: the views that sit closest to the
-        // model, where a view authored for another vessel would end up inside this one.
-        private static readonly int[] CapturedViews = { 0, 1, 3, 5, 6, 8 };
+        // All nine presets: preserve authored bridge and navigator eyes as well as orbit framing.
+        private static readonly int[] CapturedViews = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
         private static double deadline;
         private static double stageStart;

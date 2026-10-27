@@ -1,9 +1,53 @@
 # ShipSim159 Project Context
 
+## Usability Part 3 implemented, 2026-10-27
+
+Read `Assets/ShipSimulator/Documentation/UsabilityPart3Review.md`. This is the
+usability camera part, not the Volgo-Don modelling Part 3. Parts 1-2 complete;
+Part 3 implementation and automated verification complete, physical mouse/trackpad
+comfort assessment remains open. Do not begin Parts 4-9 without a user request.
+
+Installed Input System 1.20.0 emits uniform wheel ticks, confirmed in the Windows
+player: conventional event +1, fractional events +0.125. Old gain .002 changed
+radius by only .2% per tick. New CameraOrbit integrates normalized ticks once with
+ln(1.25) gain (20% inward/25% outward), .06 deg/pixel rotation instead of .12,
+exponential unscaled yaw/pitch/log-distance smoothing (.085s) and follow (.12s).
+Exterior orbit and look share one heading-only pivot; navigator remains at model
+eye, bridge presets retain forward look. Pitch 0-90 with analytic overhead
+orientation preserves all authored presets. Three serialized scenes updated;
+builders use component defaults. Existing saved rotation/zoom preferences reused.
+
+Cursor lifecycle handles UI-started versus world-started RMB, wheel ownership,
+focus/menu/disable/target/view changes and stale delta rejection. RestoreCount
+resets tracking after ship restore. CameraSave orbitVersion1 records rendered orbit;
+missing version0 migrates origin-based coordinates, within current bounds. Voyage
+version/atomic persistence unchanged; unknown camera coordinate versions rejected.
+No vessel physics, map mechanics, collision, recovery or cargo changes.
+
+Final EditMode304/304: TestResults/check-EditMode-20261027-133102-872.xml.
+Final PlayMode187/187: TestResults/check-PlayMode-20261027-133134-307.xml.
+Shakedown PASS7, all9 views: Logs/check-Shakedown-20261027-133702-112.log.
+Menu/save-load/mechanism/loading smoke PASS: Logs/check-Menu-20261027-133806-675.log.
+63 screenshots Logs/Shakedown; reviewed 7 overview sheets Logs/Camera/Views.
+Known push-unit navigator cabin obstruction preserved, not a new camera regression.
+
+Windows development build PASS zero errors/13 existing warnings:
+build/CameraReview/ShipSim159.exe; Logs/camera-after-build.log and
+Logs/Camera/build-report.txt. Run normal exe for interactive review; opt-in
+Tools/camera-input-probe.ps1 injects OS events only into its own foreground window,
+freezes diagnostic vessel and restores temporary sensitivities, without voyage saves.
+Before/after traces Logs/Camera/{baseline-native,after-native}; native-comparison.json
+shows .998002 -> .800039 distance ratio per positive tick, 12 -> 6 degrees per100px,
+6 -> 3 degrees per50 vertical pixels; horizontal pitch drift0. These are synthetic
+Windows events, not physical-device or subjective handling proof. No Part9 release
+claim. No production code changed after full suites; build-generated render/cloud
+settings restored to their clean pre-task contents. Docs/READMEs/plan updated.
+No agent commit or push. New assets include .meta files; Logs/build are ignored.
+
 ## Usability Part 2 complete, 2026-10-27
 
 Read `Assets/ShipSimulator/Documentation/UsabilityPart2Review.md` and
-`Localization.md`. Parts 1-2 are complete; Parts 3-9 remain unstarted.
+`Localization.md`. At this checkpoint Parts 1-2 were complete; see Part 3 above for subsequent camera work.
 Settings > Language offers English, Русский, Deutsch, Español, persisted in
 VoyageSettings. One Localization service loads four UTF-8 Resources catalogues
 with 440 stable keys and English fallback/development diagnostics. Source is an

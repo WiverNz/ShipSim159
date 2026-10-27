@@ -115,3 +115,14 @@ after sampling. Scene transition cost is recorded separately from warmed frames.
 
 Use `--profile-case lod-transition --profile-repeat 3` to repeat one case with
 identical setup, warmup and sampling, without the complete multi-vessel soak.
+
+## Camera input review
+
+Build the development player with `ShipSimulator.Editor.LocalWindowsBuild.RunCameraReview`
+using the pinned Unity editor, then run `Tools/camera-input-probe.ps1` in Windows
+PowerShell. It uses its own foreground player window, stops input on focus loss,
+and writes a fresh trace under `Logs/Camera/`. Conventional and fractional wheel
+and RMB motion events enter through Windows. This is synthetic OS input, not a
+physical mouse or trackpad handling assessment. Normal launches of
+`build/CameraReview/ShipSim159.exe` run the game interactively. See the
+[Part 3 review](../Assets/ShipSimulator/Documentation/UsabilityPart3Review.md).

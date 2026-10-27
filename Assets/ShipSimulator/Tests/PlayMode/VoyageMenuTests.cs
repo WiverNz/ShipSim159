@@ -155,6 +155,44 @@ namespace ShipSimulator.Tests
         }
 
         [UnityTest]
+        public IEnumerator PauseReleasesCameraGestureAndResumeDiscardsHeldInput()
+        {
+            var mouse = InputSystem.AddDevice<Mouse>();
+            menu.StartVoyage("GorodetsTrainingScene");
+            yield return null;
+            var follow = Object.FindAnyObjectByType<ShipFollowCamera>();
+            follow.SendMessage("OnApplicationFocus", true);
+            // Small batch game views can be fully covered by HUD panels. UI ownership is
+            // tested separately; this case exercises the real pause/resume lifecycle.
+            foreach (var raycaster in Object.FindObjectsByType<GraphicRaycaster>())
+                if (!raycaster.transform.IsChildOf(menu.transform)) raycaster.enabled = false;
+            Assert.That(VoyageMenu.IsOpen, Is.False);
+            Vector2 position = new Vector2(Screen.width * .5f, Screen.height * .7f);
+            InputSystem.QueueStateEvent(mouse, new MouseState { position = position });
+            InputSystem.Update();
+            follow.SendMessage("LateUpdate");
+            Assert.That(GameplayInput.PointerOverUi(), Is.False, "The camera gesture must start outside the HUD.");
+            InputSystem.QueueStateEvent(mouse, new MouseState { position = position }.WithButton(MouseButton.Right));
+            InputSystem.Update();
+            follow.SendMessage("LateUpdate");
+            Assert.That(follow.OwnsOrbitGesture, Is.True);
+            menu.OpenPause();
+            yield return null;
+            yield return null;
+            Assert.That(follow.OwnsOrbitGesture, Is.False);
+            Assert.That(Cursor.lockState, Is.EqualTo(CursorLockMode.None));
+            var cameraState = follow.CaptureState();
+            menu.Resume();
+            InputSystem.QueueStateEvent(mouse, new MouseState { position = position, delta = new Vector2(900, 900) }
+                .WithButton(MouseButton.Right));
+            yield return null;
+            yield return null;
+            Assert.That(follow.OwnsOrbitGesture, Is.False);
+            Assert.That(follow.CaptureState().yaw, Is.EqualTo(cameraState.yaw).Within(.001f));
+            Assert.That(follow.CaptureState().pitch, Is.EqualTo(cameraState.pitch).Within(.001f));
+        }
+
+        [UnityTest]
         public IEnumerator Save_RestoresVesselDynamicsWeatherCameraAndMission()
         {
             menu.StartVoyage("GorodetsTrainingScene");

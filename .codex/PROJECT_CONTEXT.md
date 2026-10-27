@@ -1,9 +1,39 @@
 # ShipSim159 Project Context
 
+## Usability Part 2 complete, 2026-10-27
+
+Read `Assets/ShipSimulator/Documentation/UsabilityPart2Review.md` and
+`Localization.md`. Parts 1-2 are complete; Parts 3-9 remain unstarted.
+Settings > Language offers English, Русский, Deutsch, Español, persisted in
+VoyageSettings. One Localization service loads four UTF-8 Resources catalogues
+with 440 stable keys and English fallback/development diagnostics. Source is an
+exact adapter for canonical authored text, not a substring translator. Existing
+Text bindings refresh live/on enable; no parallel UI, scene reload or save migration.
+Tackle notices retain templates/arguments, loading retains its status code.
+Display culture is explicit; physics branches, data IDs and serialization stay stable.
+HudPanelFlow fits loading, machinery and tackle controls to translated captions,
+including Canvas-scale/font-atlas invalidation. Menu reflow preserves focused sliders.
+
+Final EditMode 289/289: check-EditMode-20261027-090608-215.xml.
+Full PlayMode 176/176: check-PlayMode-20261027-085844-868.xml.
+Live tests preserve pose, cargo, controls, mission, camera, tabs and a pending notice;
+they also activate the real language selector. All-language layout matrix:
+4 languages x 5 resolutions x 3 scales, 960 captures under Logs/Localization;
+layout-failures.txt is empty. Font glyph, key/placeholder/rich-text parity, preference,
+fallback and display-culture tests pass. Initial clipping failures are documented.
+Shakedown PASS 7 commands: check-Shakedown-20261027-090407-978.log.
+Menu/save-load smoke plus mechanism/loading checks PASS:
+check-Menu-20261027-090511-655.log. Final launchers exit 0, no compiler errors.
+
+Plan, English/Russian READMEs, operator guide and status/index updated.
+No external graphics/fonts/models required. No standalone player rebuilt, Part 9
+retains that acceptance. No agent commit/push: the user committed implementation as
+c5d6823 while this task was running; completion documentation follows in the working tree.
+
 ## Usability Part 1 complete, 2026-10-27
 
 Read `Assets/ShipSimulator/Documentation/UsabilityPart1Review.md`. Part 1 of the
-usability plan is complete; Parts 2-9 remain unstarted. Shared 80-150% UI scale,
+usability plan was completed at this checkpoint; see Part 2 above for subsequent work. Shared 80-150% UI scale,
 scrollable responsive menu, labelled icon HUD tabs, independent persisted rotation
 and zoom multipliers, legacy sensitivity migration and control-default reset added.
 HUD commands accept only left-click. Gameplay keyboard input is blocked by visible

@@ -1,13 +1,23 @@
 # ShipSim159 Project Status
 
+## Usability Part 2, 2026-10-27
+
+Live English/Russian/German/Spanish selection is available under Settings > Language,
+with persistent preferences, 440 shared translation keys, translated messages and
+responsive command rows. See [the review](UsabilityPart2Review.md) and
+[localization guide](Localization.md). Final EditMode 289/289 and PlayMode 176/176
+passed; seven-command shakedown and menu/save-load smoke passed. The four-language,
+five-resolution, three-scale UI matrix produced 960 captures with no text clipping.
+Parts 1-2 are complete; Parts 3-9 and the standalone release remain separate work.
+
 ## Usability Part 1, 2026-10-27
 
 Scalable UI (80-150%), responsive scrollable menu/HUD groups, independent camera
 preferences and UI input ownership are implemented. See [the review](UsabilityPart1Review.md)
 for the five-resolution/three-scale matrix, screenshots and limitations. Full tests:
 EditMode 282/282, PlayMode 175/175; final UI regression 7/7; seven-command shakedown
-and menu/save-load smoke PASS. Camera feel, localization and remaining usability
-parts are still planned. The standalone executable has not been rebuilt in this stage.
+and menu/save-load smoke PASS. Subsequent usability parts were still planned at
+that checkpoint; the Part 2 result above supersedes its localization status. The standalone executable has not been rebuilt in this stage.
 
 
 Updated 2026-09-13. ShipSim159 is an engineering and gameplay prototype of a river navigation

@@ -67,6 +67,20 @@ Catalogue tests check key/placeholder/rich-text parity, glyph coverage, persiste
 preferences, invalid language fallback, missing-key diagnostics, English fallback
 and display culture isolation.
 
+Final integration results on the implementation:
+
+- EditMode: **289/289**, `TestResults/check-EditMode-20261027-090608-215.xml`.
+- PlayMode: **176/176**, `TestResults/check-PlayMode-20261027-085844-868.xml`.
+- Fleet shakedown: **PASS, seven vessels/commands**,
+  `Logs/check-Shakedown-20261027-090407-978.log`.
+- Menu/save-load smoke: **PASS**, including the existing mechanism and loading
+  interlock checks, `Logs/check-Menu-20261027-090511-655.log`.
+
+The final EditMode rerun includes a test-isolation adjustment: the missing-translation
+case uses a unique temporary key and restores the table, so it can be rerun in the
+same editor. No production code changed after the full PlayMode run.
+All final launchers exited zero and reported no C# or analyzer errors.
+
 ## Limits and scope
 
 This work does not implement Parts 3-9: camera smoothing, map interactions, buoy

@@ -40,3 +40,8 @@ Volgo-Don also has loading, hold visuals, animated machinery, anchors and moorin
 Usability Part 1 verification, 2026-10-27: full EditMode `282/282`, PlayMode `175/175`,
 final UI regression `7/7`; see its review and ProjectStatus for evidence and limitations.
 
+
+Usability Part 2 verification, 2026-10-27: EditMode `289/289`, PlayMode `176/176`,
+seven-command shakedown and menu/save-load smoke PASS. The four-language UI matrix
+has 960 captures at five resolutions and three scales. See
+[UsabilityPart2Review.md](UsabilityPart2Review.md) for exact logs and scope.

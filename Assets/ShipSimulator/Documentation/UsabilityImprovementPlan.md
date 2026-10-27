@@ -1,7 +1,8 @@
 # Ship, camera and interface usability plan
 
-Status: Part 1 complete on 2026-10-27; see [its review](UsabilityPart1Review.md).
-Parts 2-9 are not implemented. The source audit below records the 2026-10-25 baseline.
+Status: Parts 1 and 2 complete on 2026-10-27; see the
+[Part 1 review](UsabilityPart1Review.md) and [Part 2 review](UsabilityPart2Review.md).
+Parts 3-9 are not implemented. The source audit below records the 2026-10-25 baseline.
 This plan is independent of the completed Volgo-Don modelling Parts 1-17.
 Commands such as `сделай часть 1` refer to the numbered parts below in this workstream.
 Implement only the requested part, including its tests and documentation. Record its
@@ -67,19 +68,19 @@ camera feel fixed by merely exposing settings; its implementation belongs to Par
 
 Dependencies: Part 1.
 
-- [ ] Add stable translation keys and UTF-8 catalogues for ru/en/de/es, with English
+- [x] Add stable translation keys and UTF-8 catalogues for ru/en/de/es, with English
   fallback and visible development diagnostics for missing keys. Use a single service
   and event to update existing views, not a second UI tree.
-- [ ] Add a clearly visible Language field with native names: Русский, English,
+- [x] Add a clearly visible Language field with native names: Русский, English,
   Deutsch, Español. Persist selection; changing it must not reload the scene or voyage.
-- [ ] Extract all player-facing literals: HUD, menu, settings, hints, confirmations,
+- [x] Extract all player-facing literals: HUD, menu, settings, hints, confirmations,
   loading/tackle controls, mission and grounding messages, passage restrictions,
   save/load failures, camera names, weather and map legend. Keep data ids stable.
-- [ ] Store status codes and format arguments rather than cached English sentences;
+- [x] Store status codes and format arguments rather than cached English sentences;
   translate dynamic messages and refresh open panels without dropping slider focus/state.
-- [ ] Verify Cyrillic, German umlauts/ß, Spanish accents/ñ and symbol coverage in the
+- [x] Verify Cyrillic, German umlauts/ß, Spanish accents/ñ and symbol coverage in the
   shipped font. Keep serialization culture-independent; format display values deliberately.
-- [ ] Test key/placeholder parity, fallback, persistence and live switching during a
+- [x] Test key/placeholder parity, fallback, persistence and live switching during a
   voyage and pause. Repeat Part 1 layouts in all four languages, including long strings.
 
 Acceptance: complete player-facing coverage in all four languages, no missing glyphs,

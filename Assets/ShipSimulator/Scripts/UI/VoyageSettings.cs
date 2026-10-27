@@ -8,6 +8,24 @@ namespace ShipSimulator.UI
     {
         private const string Prefix = "ShipSim159.Settings.";
         public static event Action Changed;
+        public static string Language
+        {
+            get
+            {
+                string language = PlayerPrefs.GetString(Prefix + "Language", "en");
+                return Array.IndexOf(Localization.Languages, language) >= 0 ? language : "en";
+            }
+        }
+        public static void SetLanguage(string language)
+        {
+            if (Array.IndexOf(Localization.Languages, language) < 0) language = "en";
+            bool changed = Language != language;
+            PlayerPrefs.SetString(Prefix + "Language", language);
+            Save();
+            if (!changed) return;
+            Localization.NotifyChanged();
+            Changed?.Invoke();
+        }
         public static float UiScale => Read("UiScale", 1f, .8f, 1.5f);
         public static float CameraSensitivity => Read("RotationSensitivity",
             Read("Sensitivity", 1f, .25f, 2f), .25f, 2f);

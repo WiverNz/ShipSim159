@@ -1,3 +1,4 @@
+using ShipSimulator.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,9 +22,9 @@ namespace ShipSimulator.Physics
             public string displayName;
             public Vector3 formationSizeM;
 
-            public string DisplayName => string.IsNullOrEmpty(displayName) ? LoadData()?.identity.displayName ?? id : displayName;
+            public string DisplayName => Localization.Source(string.IsNullOrEmpty(displayName) ? LoadData()?.identity.displayName ?? id : displayName);
             public string Description => formationSizeM.z > 0
-                ? $"{formationSizeM.z:0.0} m push unit  /  Loaded MN-52  /  Tug controls"
+                ? Localization.Get("text.0.0.0.m.push.unit.loaded.mn.52.tug.controls.214b8460", formationSizeM.z)
                 : Describe(LoadData());
 
             public VesselData LoadData()
@@ -35,8 +36,9 @@ namespace ShipSimulator.Physics
             public static string Describe(VesselData data)
             {
                 if (data == null) return string.Empty;
-                return $"{data.dimensions.lengthOverallM:0.0} m  /  {data.massProperties.deadweightKg / 1000f:0} t dwt  /  " +
-                    $"{data.engine.engineCount} x {data.engine.powerPerEngineW / 1000f:0} kW";
+                return string.Format(Localization.Culture, "{0:0.0} m  /  {1:0} t dwt  /  {2} x {3:0} kW",
+                    data.dimensions.lengthOverallM, data.massProperties.deadweightKg / 1000f,
+                    data.engine.engineCount, data.engine.powerPerEngineW / 1000f);
             }
         }
 

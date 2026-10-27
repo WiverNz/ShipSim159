@@ -139,9 +139,15 @@ namespace ShipSimulator.UI
             CreateHorn();
         }
 
-        private void Update()
+        private void Update() => RefreshTelemetry(false);
+
+        private void RefreshLanguage() => RefreshTelemetry(true);
+        private void OnEnable() => Localization.Changed += RefreshLanguage;
+        private void OnDisable() => Localization.Changed -= RefreshLanguage;
+
+        private void RefreshTelemetry(bool languageChange)
         {
-            if (VoyageMenu.IsOpen) return;
+            if (VoyageMenu.IsOpen && !languageChange) return;
             if (ship == null || ship.Body == null) return;
             if (speedText == null || headingTapeText == null || objectiveText == null)
             {
@@ -158,38 +164,24 @@ namespace ShipSimulator.UI
                 BuildInterface();
                 return;
             }
-            if (!GameplayInput.KeyboardBlocked) UpdateKeyboardShortcuts();
+            if (!languageChange && !GameplayInput.KeyboardBlocked) UpdateKeyboardShortcuts();
             if (loadingText != null && ship.HasLoading)
             {
                 var c = ship.Data.loading.compartments[selectedLoadCompartment];
-                loadingText.text = $"{c.id.ToUpperInvariant()}\n{ship.CompartmentMassKg(selectedLoadCompartment) / 1000:F1} / {c.capacityKg / 1000:F0} t" +
-                    $"   TOTAL {ship.CurrentMassKg / 1000:F0} t\nDRAFT {ship.EstimatedDraftM:F2} m  TRIM {ship.EstimatedTrimM:+0.00;-0.00} m\n{ship.LoadingStatus}" +
-                    (ship.HydrostaticRange == HydrostaticRange.Supported ? "" : " | OUTSIDE TABLES");
-                var loadingPanel = (RectTransform)loadingText.transform.parent;
-                float height = Mathf.Max(168, loadingText.preferredHeight + 84);
-                if (Mathf.Abs(loadingPanel.sizeDelta.y - height) > 1)
-                {
-                    loadingPanel.sizeDelta = new Vector2(loadingPanel.sizeDelta.x, height);
-                    GetComponent<HudLayout>()?.Invalidate();
-                }
+                loadingText.text = string.Format(Localization.Culture, "{0}\n{1:F1} / {2:F0} t", Localization.Source(c.id).ToUpper(Localization.Culture), ship.CompartmentMassKg(selectedLoadCompartment) / 1000, c.capacityKg / 1000) +
+                    Localization.Get("text.total.0.f0.t.draft.1.f2.m.trim.2.0.00.0.00.m.3.ddb53b5d", ship.CurrentMassKg / 1000, ship.EstimatedDraftM, ship.EstimatedTrimM, Localization.Source(ship.LoadingStatus)) +
+                    (ship.HydrostaticRange == HydrostaticRange.Supported ? "" : Localization.Get("text.outside.tables.00bd8182"));
             }
             if (machineryText != null && ship.Mechanisms != null)
             {
                 var machinery = ship.Mechanisms;
                 float left = machinery.HatchSecondsRemaining;
-                machineryText.text = "DECK MACHINERY\nHATCHES " + machinery.Target + " | " +
-                    (machinery.HatchesMoving ? $"{machinery.Phase} {Mathf.FloorToInt(left / 60f)}:{Mathf.FloorToInt(left % 60f):00}" : "READY");
+                machineryText.text = Localization.Get("text.deck.machinery.hatches.aa3bd14f") + Localization.Source(machinery.Target.ToString()) + " | " +
+                    (machinery.HatchesMoving ? string.Format(Localization.Culture, "{0} {1}:{2:00}", Localization.Source(machinery.Phase.ToString()), Mathf.FloorToInt(left / 60f), Mathf.FloorToInt(left % 60f)) : Localization.Get("text.ready.c2e3ac47"));
             }
             if (tackleText != null && ship.GroundTackle != null)
             {
                 tackleText.text = FormatGroundTackle(ship.GroundTackle);
-                var panel = (RectTransform)tackleText.transform.parent;
-                float height = Mathf.Max(384, tackleText.preferredHeight + 132);
-                if (Mathf.Abs(panel.sizeDelta.y - height) > 1)
-                {
-                    panel.sizeDelta = new Vector2(panel.sizeDelta.x, height);
-                    GetComponent<HudLayout>()?.Invalidate();
-                }
             }
 
             float speedMps = ship.Body.linearVelocity.magnitude;
@@ -206,28 +198,28 @@ namespace ShipSimulator.UI
             string support = FormatSupportStatus(ship.Data != null ? ship.Data.support : null,
                 Vector3.Dot(ship.RelativeWaterVelocity, ship.transform.forward));
             speedText.text =
-                $"<size=14><color=#8AA0AD>SPEED</color></size>\n" +
-                $"<size=30><b>{speedMps * 1.943844f:F1}</b></size><size=15> kn</size>\n" +
-                $"<size=14><color=#8AA0AD>{speedMps * 3.6f:F1} km/h</color>{support}</size>";
+                Localization.Get("text.speed.578a37de") +
+                string.Format(Localization.Culture, "<size=30><b>{0:F1}</b></size><size=15> kn</size>\n", speedMps * 1.943844f) +
+                string.Format(Localization.Culture, "<size=14><color=#8AA0AD>{0:F1} km/h</color>{1}</size>", speedMps * 3.6f, support);
             headingText.text =
-                $"<size=14><color=#8AA0AD>COURSE</color></size>\n" +
-                $"<size=30><b>{heading:000}°</b></size>\n" +
-                $"<size=14><color=#8AA0AD>drift {driftAngle:+0.0;-0.0;0.0}°</color></size>";
+                Localization.Get("text.course.7e96dd8f") +
+                string.Format(Localization.Culture, "<size=30><b>{0:000}°</b></size>\n", heading) +
+                Localization.Get("text.drift.0.0.0.0.0.0.0.41af5bbc", driftAngle);
             depthText.text =
-                $"<size=14><color=#8AA0AD>DEPTH</color></size>\n" +
-                $"<size=30><b>{channelDepth:F1}</b></size><size=15> m</size>\n" +
-                $"<size=14><color=#8AA0AD>under keel {underKeel:F1} m</color></size>";
+                Localization.Get("text.depth.d967b71b") +
+                string.Format(Localization.Culture, "<size=30><b>{0:F1}</b></size><size=15> m</size>\n", channelDepth) +
+                Localization.Get("text.under.keel.0.f1.m.1ead3d0a", underKeel);
             rudderText.text =
-                $"RUDDER  <size=23><b>{ship.RudderAngleDeg:+0.0;-0.0;0.0} deg</b></size>\n" +
-                $"<size=14>COMMAND {ship.RudderCommand * MaxRudderDeg:+0;-0;0} deg" +
-                $"{FormatBowThrusterStatus(ship.HasBowThruster, ship.BowThrusterOutput)}</size>";
+                Localization.Get("text.rudder.0.0.0.0.0.0.0.deg.987e7920", ship.RudderAngleDeg) +
+                Localization.Get("text.command.0.0.0.0.deg.58ec31a7", ship.RudderCommand * MaxRudderDeg) +
+                string.Format(Localization.Culture, "{0}</size>", FormatBowThrusterStatus(ship.HasBowThruster, ship.BowThrusterOutput));
             engineText.text = FormatEngineStatus();
             currentText.text =
-                $"<size=14><color=#8AA0AD>CURRENT</color></size>\n" +
-                $"<size=28><b>{current.magnitude:F1}</b></size><size=15> m/s {CurrentArrow(current)}</size>\n" +
-                $"<size=14><color=#8AA0AD>{(ship.HasLoading ? "deadweight" : "cargo")} {ship.LoadFraction * 100f:F0}%</color></size>";
+                Localization.Get("text.current.53d2ded5") +
+                string.Format(Localization.Culture, "<size=28><b>{0:F1}</b></size><size=15> m/s {1}</size>\n", current.magnitude, CurrentArrow(current)) +
+                string.Format(Localization.Culture, "<size=14><color=#8AA0AD>{0} {1:F0}%</color></size>", (ship.HasLoading ? Localization.Get("text.deadweight.86491b04") : Localization.Get("text.cargo.3322532d")), ship.LoadFraction * 100f);
             cameraText.text = followCamera == null
-                ? "CAMERA"
+                ? Localization.Get("text.camera.582ff0d0")
                 : FormatCameraStatus(
                     followCamera.ViewName,
                     followCamera.ViewIndex,
@@ -237,11 +229,11 @@ namespace ShipSimulator.UI
                 new Vector3(ship.transform.position.x, 0f, ship.transform.position.z),
                 objectivePosition);
             objectiveText.text = scenario != null
-                ? $"<size=14><color=#56C7E6>OBJECTIVE</color></size>\n" +
-                  $"<size=23><b>{scenario.PhaseLabel}</b></size>\n" +
-                  $"<size=15>{scenario.Instruction}</size>\n\n" +
-                  $"<color=#8AA0AD>Score</color> <b>{scenario.Score:F0}/100</b>     " +
-                  $"<color=#8AA0AD>Limit</color> <b>{scenario.LocalSpeedLimitMps * 3.6f:F0} km/h</b>"
+                ? Localization.Get("text.objective.51082de9") +
+                  string.Format(Localization.Culture, "<size=23><b>{0}</b></size>\n", scenario.PhaseLabel) +
+                  string.Format(Localization.Culture, "<size=15>{0}</size>\n\n", scenario.Instruction) +
+                  Localization.Get("text.score.0.f0.100.3b296d0f", scenario.Score) +
+                  Localization.Get("text.limit.0.f0.km.h.216c3448", scenario.LocalSpeedLimitMps * 3.6f)
                 : FormatObjectiveStatus(distance,
                     ship.Data != null ? ship.Data.controlLimits.maxLoadedSpeedMps : 0f);
             depthText.color = underKeel < 0.8f
@@ -259,6 +251,7 @@ namespace ShipSimulator.UI
             UpdateDepthRadar(channelDepth);
             UpdateWarnings(speedMps, underKeel, current.magnitude);
             UpdateTimeScaleText();
+            if (timeOfDayText != null && dayNight != null) timeOfDayText.text = dayNight.TimeLabel;
             if (weatherText != null && weather != null)
                 weatherText.text = weather.StatusText;
         }
@@ -309,6 +302,9 @@ namespace ShipSimulator.UI
             BuildMachineryControls();
             BuildGroundTackleControls();
             BuildLoadingControls();
+            HudPanelFlow.Configure(loadingText, 1, 3);
+            HudPanelFlow.Configure(machineryText, 2, 2);
+            HudPanelFlow.Configure(tackleText, 4, 3, 4);
 
             warningPanel = Panel("Warnings",
                 new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
@@ -328,10 +324,9 @@ namespace ShipSimulator.UI
             BuildMiniMap();
             helpText = Label(transform, string.Empty, 18, TextAnchor.MiddleCenter,
                 new Vector2(320f, 12f), new Vector2(-320f, -1016f));
-            helpText.text =
-                FormatEngineControls(ship.EngineCount) + "   SPACE  STOP   1-9  CAMERAS\n" +
-                "J/L  BOW THRUSTER   K  OFF   H HORN   M MAP   N DAY/NIGHT   T TIME   F2-F5 WEATHER   RMB ORBIT" +
-                (ship.GroundTackle != null ? "\nG ANCHOR  B LET GO/VEER  Y HOLD  U HEAVE   O STATION  P BOLLARD  I PASS LINE  , HAUL  / HOLD  . SLACK  F CAST OFF" : "");
+            LocalizedLabel.Bind(helpText, () => (FormatEngineControls(ship.EngineCount) + Localization.Get("text.space.stop.1.9.cameras.2cb2e691") +
+                Localization.Get("text.j.l.bow.thruster.k.off.h.horn.m.map.n.day.night.t.time.f.d83a23c0") +
+                (ship.GroundTackle != null ? Localization.Get("text.g.anchor.b.let.go.veer.y.hold.u.heave.o.station.p.bollar.38b7d802") : "")).Replace("   ", "\n"));
             helpText.gameObject.SetActive(false);
             Text helpPrompt = Label(transform, "F1  CONTROLS", 16, TextAnchor.LowerCenter,
                 new Vector2(820f, 16f), new Vector2(-820f, -1034f));
@@ -340,6 +335,10 @@ namespace ShipSimulator.UI
             var layout = GetComponent<HudLayout>();
             if (layout == null) layout = gameObject.AddComponent<HudLayout>();
             layout.Build(helpText);
+            foreach (Text dynamicLabel in new[] { speedText, headingText, depthText, rudderText,
+                engineText, currentText, warningText, cameraText, headingTapeText, objectiveText,
+                depthRadarText, timeOfDayText, timeScaleText, weatherText, machineryText, tackleText, loadingText })
+                LocalizedLabel.Clear(dynamicLabel);
             if (readout != null) readout.gameObject.SetActive(false);
         }
 
@@ -360,7 +359,7 @@ namespace ShipSimulator.UI
             for (int t = -3; t <= 3; t++)
             {
                 bool centre = t == 0;
-                RectTransform tick = ImageRect(dial, $"Tick{t}",
+                RectTransform tick = ImageRect(dial, string.Format(Localization.Culture, "Tick{0}", t),
                     centre ? HudTheme.AccentSoft : new Color(0.4f, 0.6f, 0.72f, 0.5f),
                     new Vector2(t * 48f, 0f), new Vector2(centre ? 2.4f : 1.6f, centre ? 26f : 16f));
                 tick.GetComponent<Image>().raycastTarget = false;
@@ -402,8 +401,8 @@ namespace ShipSimulator.UI
             for (int i = 0; i < labels.Length; i++)
             {
                 int command = i;
-                HudButton button = Button(block, labels[i], new Vector2(-270f + i * 90f, -37f),
-                    new Vector2(84f, 48f), () => SetTelegraph(command));
+                HudButton button = Button(block, labels[i], new Vector2(-282f + i * 94f, -37f),
+                    new Vector2(92f, 48f), () => SetTelegraph(command));
                 telegraphButtons.Add(button);
             }
         }
@@ -474,7 +473,7 @@ namespace ShipSimulator.UI
             selectedAnchor = Mathf.Clamp(selectedAnchor, 0, Mathf.Max(0, tackle.AnchorCount - 1));
             selectedStation = Mathf.Clamp(selectedStation, 0, Mathf.Max(0, tackle.StationCount - 1));
             RectTransform block = AnchoredPanel("GroundTackleBlock", new Vector2(1f, 0f), new Vector2(1f, 0f),
-                new Vector2(1f, 0f), new Vector2(-22f, 240f), new Vector2(400f, 384f));
+                new Vector2(1f, 0f), new Vector2(-22f, 240f), new Vector2(440f, 384f));
             // Keys: G B Y U for the selected anchor; O P I , / . F for the selected mooring station (F1 lists them).
             tackleText = Label(block, "ANCHORS", 16, TextAnchor.UpperLeft, new Vector2(14, 118), new Vector2(-10, -8));
             tackleText.supportRichText = true;
@@ -539,27 +538,27 @@ namespace ShipSimulator.UI
         // Anchors with their state and chain out, then the selected mooring station and every line made fast.
         public string FormatGroundTackle(GroundTackle tackle)
         {
-            var text = new System.Text.StringBuilder("<color=#8AA0AD>ANCHORS</color>\n");
+            var text = new System.Text.StringBuilder(Localization.Get("text.anchors.91d9258b"));
             for (int i = 0; i < tackle.AnchorCount; i++)
             {
                 string mark = i == selectedAnchor ? "<color=#F2C14E>>" : " ";
                 string status = tackle.AnchorStatus(i);
                 string colour = status == "DRAGGING" || status == "CHAIN PARTED" || status == "WINDLASS STALLED" ? "#FF6B5B" :
                     status == "HOLDING" ? "#7BD88F" : "#D8E2E8";
-                text.Append($"{mark} {tackle.AnchorLabel(i),-6}{(i == selectedAnchor ? "</color>" : "")} <color={colour}>{status}</color>" +
-                    $"  {tackle.ChainOutM(i):0} m\n");
+                text.Append(string.Format(Localization.Culture, "{0} {1,-6}{2} <color={3}>{4}</color>", mark, Localization.Source(tackle.AnchorLabel(i)), (i == selectedAnchor ? "</color>" : ""), colour, Localization.Source(status)) +
+                    string.Format(Localization.Culture, "  {0:0} m\n", tackle.ChainOutM(i)));
             }
-            text.Append("<color=#8AA0AD>MOORING</color>\n");
+            text.Append(Localization.Get("text.mooring.2759d016"));
             if (tackle.StationCount > 0)
             {
                 MooringPoint station = tackle.Station(selectedStation);
-                text.Append($"STATION <color=#F2C14E>{station.Label}</color>");
+                text.Append(Localization.Get("text.station.0.09f17174", station.Label));
                 if (selectedShore != null)
                 {
                     Vector3 gap = selectedShore.LeadWorld - station.LeadWorld;
                     float reach = new Vector2(gap.x, gap.z).magnitude;
-                    text.Append($"  TO <color=#F2C14E>{selectedShore.Label}</color> {reach:0} m" +
-                        (reach > tackle.Spec.passReachM ? " <color=#FF6B5B>OUT OF REACH</color>" : ""));
+                    text.Append(Localization.Get("text.to.0.1.0.m.24278e3a", selectedShore.Label, reach) +
+                        (reach > tackle.Spec.passReachM ? Localization.Get("text.out.of.reach.830e5952") : ""));
                 }
                 text.Append('\n');
             }
@@ -569,10 +568,10 @@ namespace ShipSimulator.UI
                 string colour = state == LineState.Overloaded ? "#FF6B5B" : state == LineState.Taut ? "#7BD88F" : "#D8E2E8";
                 float load = tackle.LineTensionN(k) / tackle.LineBreakingLoadN;
                 LineCommand command = tackle.LineCommandAt(k);
-                text.Append($"{tackle.LineShip(k).Label} > {tackle.LineShore(k).Label} <color={colour}>{state.ToString().ToUpperInvariant()}</color>" +
-                    $" {load * 100:0}%{(command == LineCommand.Hold ? "" : " " + (command == LineCommand.Haul ? "HAULING" : "SLACKING"))}\n");
+                text.Append(string.Format(Localization.Culture, "{0} > {1} <color={2}>{3}</color>", tackle.LineShip(k).Label, tackle.LineShore(k).Label, colour, Localization.Get("line.state." + state.ToString().ToLowerInvariant())) +
+                    string.Format(Localization.Culture, " {0:0}%{1}\n", load * 100, (command == LineCommand.Hold ? "" : " " + (command == LineCommand.Haul ? Localization.Get("text.hauling.d89d72c5") : Localization.Get("text.slacking.9f19976f")))));
             }
-            if (Time.unscaledTime - tackle.NoticeTime < 8f) text.Append($"<color=#F2C14E>{tackle.Notice}</color>");
+            if (Time.unscaledTime - tackle.NoticeTime < 8f) text.Append(string.Format(Localization.Culture, "<color=#F2C14E>{0}</color>", tackle.Notice));
             return text.ToString();
         }
 
@@ -665,11 +664,11 @@ namespace ShipSimulator.UI
                 Vector3 routeStart = FairwayPoint(startZ, 0f);
                 Vector3 routeEnd = FairwayPoint(endZ, 0f);
                 if (i % 2 == 0)
-                    AddMapLine($"FairwayRoute{i}", new Color(0.85f, 0.68f, 0.32f, 0.55f),
+                    AddMapLine(string.Format(Localization.Culture, "FairwayRoute{0}", i), new Color(0.85f, 0.68f, 0.32f, 0.55f),
                         routeStart, routeEnd, 2.4f);
-                AddMapLine($"PortEdge{i}", new Color(0.84f, 0.28f, 0.22f, 0.75f),
+                AddMapLine(string.Format(Localization.Culture, "PortEdge{0}", i), new Color(0.84f, 0.28f, 0.22f, 0.75f),
                     FairwayPoint(startZ, -1f), FairwayPoint(endZ, -1f), 3f);
-                AddMapLine($"StarboardEdge{i}", new Color(0.26f, 0.70f, 0.36f, 0.75f),
+                AddMapLine(string.Format(Localization.Culture, "StarboardEdge{0}", i), new Color(0.26f, 0.70f, 0.36f, 0.75f),
                     FairwayPoint(startZ, 1f), FairwayPoint(endZ, 1f), 3f);
             }
             float[] stations = { -55f, 45f, 145f, 240f, 330f, 415f, 495f, 570f, 640f, 705f };
@@ -681,9 +680,9 @@ namespace ShipSimulator.UI
                 Vector2 tangent = new Vector2(nextX - centerX, 4f).normalized;
                 Vector2 normal = new Vector2(-tangent.y, tangent.x);
                 float width = FairwayModel.MarkedHalfWidth(z);
-                AddBuoy($"LeftGreenBuoy{i}", new Color(0.32f, 0.82f, 0.45f),
+                AddBuoy(string.Format(Localization.Culture, "LeftGreenBuoy{0}", i), new Color(0.32f, 0.82f, 0.45f),
                     new Vector3(centerX + normal.x * width, 0f, z + normal.y * width));
-                AddBuoy($"RightRedBuoy{i}", new Color(0.92f, 0.30f, 0.24f),
+                AddBuoy(string.Format(Localization.Culture, "RightRedBuoy{0}", i), new Color(0.92f, 0.30f, 0.24f),
                     new Vector3(centerX - normal.x * width, 0f, z - normal.y * width));
             }
             foreach (RadarObstacle obstacle in FindObjectsByType<RadarObstacle>())
@@ -832,7 +831,7 @@ namespace ShipSimulator.UI
         private void UpdateWarnings(float speedMps, float underKeel, float currentSpeed)
         {
             string warning = string.Empty;
-            if (underKeel < 0.8f) warning += "SHALLOW WATER\n";
+            if (underKeel < 0.8f) warning += Localization.Get("text.shallow.water.fcde8e1d");
             bool outsideFairway;
             if (scenarioRoute != null)
             {
@@ -848,12 +847,12 @@ namespace ShipSimulator.UI
                     ship.transform.position.x, ship.transform.position.z)) >
                     FairwayModel.MarkedHalfWidth(ship.transform.position.z);
             }
-            if (outsideFairway) warning += "OUTSIDE FAIRWAY\n";
+            if (outsideFairway) warning += Localization.Get("text.outside.fairway.0955a9f6");
             float speedLimit = scenario != null
                 ? scenario.LocalSpeedLimitMps
                 : ship.Data != null ? ship.Data.controlLimits.maxLoadedSpeedMps : float.MaxValue;
             if (speedMps > speedLimit * 1.05f)
-                warning += "OVERSPEED\n";
+                warning += Localization.Get("text.overspeed.0665e89e");
             if (ship.Grounding != null &&
                 (ship.Grounding.State == GroundingState.Touching ||
                  ship.Grounding.State == GroundingState.HardGrounding))
@@ -861,17 +860,17 @@ namespace ShipSimulator.UI
                 // The holding force is what astern thrust has to beat to work her off, so it belongs
                 // on the warning line rather than only in the physics.
                 warning += (ship.Grounding.State == GroundingState.Touching
-                    ? "BOTTOM CONTACT" : "HARD GROUNDING") +
-                    $" ({ship.Grounding.HoldingForceN / 1000f:F0} kN HOLDING)\n";
+                    ? Localization.Get("text.bottom.contact.17e952a7") : Localization.Get("text.hard.grounding.4a457f8d")) +
+                    Localization.Get("text.0.f0.kn.holding.7b83d5ff", ship.Grounding.HoldingForceN / 1000f);
             }
-            if (currentSpeed > 1.2f) warning += "STRONG CURRENT\n";
+            if (currentSpeed > 1.2f) warning += Localization.Get("text.strong.current.6ace2f40");
             if (currentSpeed > 0.65f)
             {
                 float sideCurrent = ship.transform.InverseTransformDirection(
                     ship.EffectiveCurrentMps).x;
                 if (Mathf.Abs(sideCurrent) > 0.35f)
                     warning += sideCurrent > 0f
-                        ? "CURRENT FROM PORT SIDE\n" : "CURRENT FROM STARBOARD SIDE\n";
+                        ? Localization.Get("text.current.from.port.side.227441c8") : Localization.Get("text.current.from.starboard.side.3da4bf7d");
             }
             bool hasWarning = !string.IsNullOrEmpty(warning);
             bool danger = underKeel < 0.8f || outsideFairway ||
@@ -880,7 +879,7 @@ namespace ShipSimulator.UI
                   ship.Grounding.State == GroundingState.HardGrounding));
             if (warningPanel != null) warningPanel.gameObject.SetActive(hasWarning);
             warningText.text = hasWarning
-                ? "WARNING    " + warning.TrimEnd().Replace("\n", "    ·    ")
+                ? Localization.Get("text.warning.39485faa") + warning.TrimEnd().Replace("\n", "    ·    ")
                 : string.Empty;
             warningText.color = danger ? HudTheme.Danger : HudTheme.Warning;
 
@@ -971,7 +970,7 @@ namespace ShipSimulator.UI
             var segments = new RectTransform[count];
             for (int i = 0; i < count; i++)
             {
-                segments[i] = ImageRect(parent, $"{prefix}{i}", color,
+                segments[i] = ImageRect(parent, string.Format(Localization.Culture, "{0}{1}", prefix, i), color,
                     Vector2.zero, new Vector2(width, 1f));
                 Image image = segments[i].GetComponent<Image>();
                 image.sprite = HudTheme.Soft(6);
@@ -1149,18 +1148,18 @@ namespace ShipSimulator.UI
         // A fast craft handles differently once the foils or the cushion carry it, and the lift is not
         // visible from the bridge, so the speed block says which state the vessel is in.
         public static string FormatEngineControls(int engineCount) => engineCount == 1
-            ? "A/D  RUDDER   W/S  ENGINE   Q/Z or E/X  TELEGRAPH"
-            : "A/D  RUDDER   W/S  ENGINES   Q/Z  PORT   E/X  STBD";
+            ? Localization.Get("text.a.d.rudder.w.s.engine.q.z.or.e.x.telegraph.003759e7")
+            : Localization.Get("text.a.d.rudder.w.s.engines.q.z.port.e.x.stbd.946ac490");
 
         public static string FormatSupportStatus(VesselSupport support, float speedThroughWaterMps)
         {
             if (!SupportModel.Lifts(support)) return string.Empty;
             float progress = SupportModel.Fraction(support, speedThroughWaterMps) /
                 support.supportedWeightFraction;
-            if (progress < 0.02f) return "   <color=#8AA0AD>HULLBORNE</color>";
-            string mode = support.mode == "hydrofoil" ? "FOILBORNE" : "CUSHIONBORNE";
+            if (progress < 0.02f) return Localization.Get("text.hullborne.5a951f70");
+            string mode = support.mode == "hydrofoil" ? Localization.Get("text.foilborne.635f50bc") : Localization.Get("text.cushionborne.83fb35a6");
             string color = progress > 0.98f ? "#4DC76B" : "#E8B24D";
-            return $"   <color={color}>{mode} {progress * 100f:F0}%</color>";
+            return string.Format(Localization.Culture, "   <color={0}>{1} {2:F0}%</color>", color, mode, progress * 100f);
         }
 
         // The predicted path is drawn at the fixed map scale, so a fixed time horizon leaves the radar as
@@ -1177,22 +1176,22 @@ namespace ShipSimulator.UI
         public static string FormatBowThrusterStatus(bool fitted, float output)
         {
             if (!fitted) return string.Empty;
-            if (Mathf.Abs(output) < 0.01f) return "   BOW THRUSTER OFF";
-            return $"   BOW THRUSTER {(output < 0f ? "PORT" : "STBD")} {Mathf.Abs(output) * 100f:F0}%";
+            if (Mathf.Abs(output) < 0.01f) return Localization.Get("text.bow.thruster.off.68916baa");
+            return Localization.Get("text.bow.thruster.0.1.f0.eaea03d2", (output < 0f ? Localization.Get("text.port.6acc99af") : Localization.Get("text.stbd.96228e9d")), Mathf.Abs(output) * 100f);
         }
 
         private string FormatEngineStatus()
         {
             string order = telegraphIndices[0] == telegraphIndices[1]
-                ? TelegraphNames[telegraphIndices[0]]
-                : $"P {TelegraphNames[telegraphIndices[0]]}  S {TelegraphNames[telegraphIndices[1]]}";
+                ? Localization.Source(TelegraphNames[telegraphIndices[0]])
+                : string.Format(Localization.Culture, "P {0}  S {1}", Localization.Source(TelegraphNames[telegraphIndices[0]]), Localization.Source(TelegraphNames[telegraphIndices[1]]));
             var shafts = new System.Text.StringBuilder();
             for (int i = 0; i < ship.EngineCount; i++)
             {
                 string side = ship.EngineCount < 2 ? string.Empty : i == 0 ? "P " : "S ";
-                shafts.Append($"{side}RPM {ship.ShaftRpm(i):+0;-0;0} LOAD {ship.EngineLoadFraction(i) * 100f:F0}%   ");
+                shafts.Append(Localization.Get("text.0.rpm.1.0.0.0.load.2.f0.f5097c97", side, ship.ShaftRpm(i), ship.EngineLoadFraction(i) * 100f));
             }
-            return $"TELEGRAPH  <size=23><b>{order}</b></size>\n<size=15>{shafts.ToString().TrimEnd()}</size>";
+            return Localization.Get("text.telegraph.0.1.ce01c452", order, shafts.ToString().TrimEnd());
         }
 
         private void SetCamera(int index)
@@ -1227,7 +1226,7 @@ namespace ShipSimulator.UI
         private void UpdateTimeScaleText()
         {
             if (timeScaleText != null && simulationTime != null)
-                timeScaleText.text = $"TIME {simulationTime.DisplayText}";
+                timeScaleText.text = Localization.Get("text.time.0.feff9f63", simulationTime.DisplayText);
         }
 
         private void ChangeWindDirection(float degrees)
@@ -1267,31 +1266,31 @@ namespace ShipSimulator.UI
                 ? Mathf.Min(currentDepth, radarMinAheadM)
                 : currentDepth;
             depthRadarText.text =
-                $"DEPTH <size=24><b>{currentDepth:F1} m</b></size>    " +
-                $"<color=#8AA0AD>MIN AHEAD</color> <b>{minimumAhead:F1} m</b>    " +
-                $"<color=#8AA0AD>DRAFT</color> {ship.EffectiveDraftM:F1} m\n" +
-                "<size=13><b><color=#46A6BC>SAFE</color>   " +
-                "<color=#D29B45>SHALLOW</color>   <color=#E04539>DANGER</color>   " +
-                "<color=#E8B24D>ROUTE</color>   <color=#E0C2F2>CRAFT / PIER</color></b></size>\n" +
-                "<size=12><color=#56C7E6>heading / predicted path</color>    " +
-                "<color=#E86054>red mark</color>   " +
-                "<color=#4DC76B>green mark</color></size>";
+                Localization.Get("text.depth.0.f1.m.4e8da492", currentDepth) +
+                Localization.Get("text.min.ahead.0.f1.m.f8aa9980", minimumAhead) +
+                Localization.Get("text.draft.0.f1.m.a8291744", ship.EffectiveDraftM) +
+                Localization.Get("text.safe.47ac5706") +
+                Localization.Get("text.shallow.danger.92e5726f") +
+                Localization.Get("text.route.craft.pier.d179a9fd") +
+                Localization.Get("text.heading.predicted.path.d0f1dc35") +
+                Localization.Get("text.red.mark.bf83aac7") +
+                Localization.Get("text.green.mark.8df5d50f");
         }
 
         public static string FormatCameraStatus(string viewName, int viewIndex, int viewCount)
         {
-            return $"CAMERA: <size=20><b>{viewName}</b></size>  " +
-                $"<size=14>{viewIndex + 1}/{viewCount}</size>";
+            return Localization.Get("text.camera.0.2ef9a5eb", viewName) +
+                string.Format(Localization.Culture, "<size=14>{0}/{1}</size>", viewIndex + 1, viewCount);
         }
 
         // Outside a scenario the only limit is the vessel's own service speed, which differs by a factor
         // of eight across the catalogue.
         public static string FormatObjectiveStatus(float distanceMeters, float speedLimitMps)
         {
-            return "<size=14><color=#56C7E6>OBJECTIVE</color></size>\n" +
-                "<size=23><b>Proceed to waypoint</b></size>\n\n" +
-                $"<color=#8AA0AD>Distance</color>  <b>{distanceMeters:F0} m</b>\n" +
-                $"<color=#8AA0AD>Service speed</color>  <b>{speedLimitMps * 3.6f:F0} km/h</b>";
+            return Localization.Get("text.objective.51082de9") +
+                Localization.Get("text.proceed.to.waypoint.e02bc46d") +
+                Localization.Get("text.distance.0.f0.m.981e8dab", distanceMeters) +
+                Localization.Get("text.service.speed.0.f0.km.h.959ae7bd", speedLimitMps * 3.6f);
         }
 
         // Calm nautical depth shading: muted, low-alpha zones that blend over the
@@ -1367,7 +1366,7 @@ namespace ShipSimulator.UI
             float start = -485f;
             float x = start;
             for (int i = 0; i < index; i++) x += widths[i];
-            RectTransform panel = SubPanel(parent, $"Instrument{index}",
+            RectTransform panel = SubPanel(parent, string.Format(Localization.Culture, "Instrument{0}", index),
                 new Vector2(x + width * 0.5f, 0f), new Vector2(width - 6f, 86f));
             Icon(panel, icon, new Vector2(-width * 0.5f + 26f, 20f), 22f, HudTheme.AccentSoft);
             Text text = Label(panel, string.Empty, 16, TextAnchor.MiddleCenter,
@@ -1376,7 +1375,7 @@ namespace ShipSimulator.UI
             text.lineSpacing = 0.92f;
             if (index < 3)
             {
-                RectTransform divider = ImageRect(parent, $"Divider{index}",
+                RectTransform divider = ImageRect(parent, string.Format(Localization.Culture, "Divider{0}", index),
                     new Color(0.40f, 0.60f, 0.72f, 0.16f),
                     new Vector2(x + width, 0f), new Vector2(1.5f, 56f));
                 divider.GetComponent<Image>().raycastTarget = false;
@@ -1515,7 +1514,7 @@ namespace ShipSimulator.UI
         private Image Icon(Transform parent, HudIcon icon, Vector2 position,
             float size, Color color)
         {
-            RectTransform rect = ImageRect(parent, $"Icon_{icon}", color, position,
+            RectTransform rect = ImageRect(parent, string.Format(Localization.Culture, "Icon_{0}", icon), color, position,
                 new Vector2(size, size));
             Image image = rect.GetComponent<Image>();
             image.sprite = HudTheme.Icon(icon);
@@ -1538,7 +1537,7 @@ namespace ShipSimulator.UI
             label.fontSize = Mathf.Max(16, size);
             label.color = HudTheme.TextPrimary;
             label.alignment = alignment;
-            label.text = value;
+            LocalizedLabel.BindSource(label, value);
             label.supportRichText = true;
             label.raycastTarget = false;
             Shadow shadow = labelObject.AddComponent<Shadow>();

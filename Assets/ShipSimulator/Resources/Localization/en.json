@@ -1,0 +1,1764 @@
+{
+  "entries": [
+    {
+      "key": "text.w.s.engines.a.d.rudder.v.camera.right.mouse.look.around..71346a1c",
+      "value": "\n\nW / S  Engines     A / D  Rudder\nV  Camera     Right mouse  Look around\nESC  Pause, settings & save"
+    },
+    {
+      "key": "text.g.anchor.b.let.go.veer.y.hold.u.heave.o.station.p.bollar.38b7d802",
+      "value": "\nG ANCHOR  B LET GO/VEER  Y HOLD  U HEAVE   O STATION  P BOLLARD  I PASS LINE  , HAUL  / HOLD  . SLACK  F CAST OFF"
+    },
+    {
+      "key": "text.hullborne.5a951f70",
+      "value": "   <color=#8AA0AD>HULLBORNE</color>"
+    },
+    {
+      "key": "text.bow.thruster.off.68916baa",
+      "value": "   BOW THRUSTER OFF"
+    },
+    {
+      "key": "text.bow.thruster.0.1.f0.eaea03d2",
+      "value": "   BOW THRUSTER {0} {1:F0}%"
+    },
+    {
+      "key": "text.space.stop.1.9.cameras.2cb2e691",
+      "value": "   SPACE  STOP   1-9  CAMERAS\n"
+    },
+    {
+      "key": "text.total.0.f0.t.draft.1.f2.m.trim.2.0.00.0.00.m.3.ddb53b5d",
+      "value": "   TOTAL {0:F0} t\nDRAFT {1:F2} m  TRIM {2:+0.00;-0.00} m\n{3}"
+    },
+    {
+      "key": "text.to.0.1.0.m.24278e3a",
+      "value": "  TO <color=#F2C14E>{0}</color> {1:0} m"
+    },
+    {
+      "key": "text.0.f0.kn.holding.7b83d5ff",
+      "value": " ({0:F0} kN HOLDING)\n"
+    },
+    {
+      "key": "text.out.of.reach.830e5952",
+      "value": " <color=#FF6B5B>OUT OF REACH</color>"
+    },
+    {
+      "key": "text.outside.tables.00bd8182",
+      "value": " | OUTSIDE TABLES"
+    },
+    {
+      "key": "text.2.27.km.shoals.currents.leading.marks.769ec61a",
+      "value": "2.27 km  /  Shoals, currents & leading marks"
+    },
+    {
+      "key": "text.2.42.km.oka.entry.20.m.channel.basin.berthing.17586824",
+      "value": "2.42 km  /  Oka entry, 20 m channel, basin berthing"
+    },
+    {
+      "key": "text.20.m.of.marked.water.and.unlit.buoys.hold.the.axis.and.w.60aebbc5",
+      "value": "20 m of marked water and unlit buoys: hold the axis and watch the bends"
+    },
+    {
+      "key": "text.port.a.701efc62",
+      "value": "< PORT  [A]"
+    },
+    {
+      "key": "text.green.mark.8df5d50f",
+      "value": "<color=#4DC76B>green mark</color></size>"
+    },
+    {
+      "key": "text.anchors.91d9258b",
+      "value": "<color=#8AA0AD>ANCHORS</color>\n"
+    },
+    {
+      "key": "text.draft.0.f1.m.a8291744",
+      "value": "<color=#8AA0AD>DRAFT</color> {0:F1} m\n"
+    },
+    {
+      "key": "text.distance.0.f0.m.981e8dab",
+      "value": "<color=#8AA0AD>Distance</color>  <b>{0:F0} m</b>\n"
+    },
+    {
+      "key": "text.limit.0.f0.km.h.216c3448",
+      "value": "<color=#8AA0AD>Limit</color> <b>{0:F0} km/h</b>"
+    },
+    {
+      "key": "text.min.ahead.0.f1.m.f8aa9980",
+      "value": "<color=#8AA0AD>MIN AHEAD</color> <b>{0:F1} m</b>    "
+    },
+    {
+      "key": "text.mooring.2759d016",
+      "value": "<color=#8AA0AD>MOORING</color>\n"
+    },
+    {
+      "key": "text.score.0.f0.100.3b296d0f",
+      "value": "<color=#8AA0AD>Score</color> <b>{0:F0}/100</b>     "
+    },
+    {
+      "key": "text.service.speed.0.f0.km.h.959ae7bd",
+      "value": "<color=#8AA0AD>Service speed</color>  <b>{0:F0} km/h</b>"
+    },
+    {
+      "key": "text.shallow.danger.92e5726f",
+      "value": "<color=#D29B45>SHALLOW</color>   <color=#E04539>DANGER</color>   "
+    },
+    {
+      "key": "text.red.mark.bf83aac7",
+      "value": "<color=#E86054>red mark</color>   "
+    },
+    {
+      "key": "text.route.craft.pier.d179a9fd",
+      "value": "<color=#E8B24D>ROUTE</color>   <color=#E0C2F2>CRAFT / PIER</color></b></size>\n"
+    },
+    {
+      "key": "text.heading.predicted.path.d0f1dc35",
+      "value": "<size=12><color=#56C7E6>heading / predicted path</color>    "
+    },
+    {
+      "key": "text.safe.47ac5706",
+      "value": "<size=13><b><color=#46A6BC>SAFE</color>   "
+    },
+    {
+      "key": "text.objective.51082de9",
+      "value": "<size=14><color=#56C7E6>OBJECTIVE</color></size>\n"
+    },
+    {
+      "key": "text.course.7e96dd8f",
+      "value": "<size=14><color=#8AA0AD>COURSE</color></size>\n"
+    },
+    {
+      "key": "text.current.53d2ded5",
+      "value": "<size=14><color=#8AA0AD>CURRENT</color></size>\n"
+    },
+    {
+      "key": "text.depth.d967b71b",
+      "value": "<size=14><color=#8AA0AD>DEPTH</color></size>\n"
+    },
+    {
+      "key": "text.speed.578a37de",
+      "value": "<size=14><color=#8AA0AD>SPEED</color></size>\n"
+    },
+    {
+      "key": "text.drift.0.0.0.0.0.0.0.41af5bbc",
+      "value": "<size=14><color=#8AA0AD>drift {0:+0.0;-0.0;0.0}°</color></size>"
+    },
+    {
+      "key": "text.under.keel.0.f1.m.1ead3d0a",
+      "value": "<size=14><color=#8AA0AD>under keel {0:F1} m</color></size>"
+    },
+    {
+      "key": "text.command.0.0.0.0.deg.58ec31a7",
+      "value": "<size=14>COMMAND {0:+0;-0;0} deg"
+    },
+    {
+      "key": "text.proceed.to.waypoint.e02bc46d",
+      "value": "<size=23><b>Proceed to waypoint</b></size>\n\n"
+    },
+    {
+      "key": "text.a.d.rudder.w.s.engine.q.z.or.e.x.telegraph.003759e7",
+      "value": "A/D  RUDDER   W/S  ENGINE   Q/Z or E/X  TELEGRAPH"
+    },
+    {
+      "key": "text.a.d.rudder.w.s.engines.q.z.port.e.x.stbd.946ac490",
+      "value": "A/D  RUDDER   W/S  ENGINES   Q/Z  PORT   E/X  STBD"
+    },
+    {
+      "key": "text.aft.open.ec851829",
+      "value": "AFT OPEN"
+    },
+    {
+      "key": "text.already.has.a.line.ae7c4007",
+      "value": "ALREADY HAS A LINE"
+    },
+    {
+      "key": "text.anchor.3c80eef3",
+      "value": "ANCHOR"
+    },
+    {
+      "key": "text.anchors.d2d87757",
+      "value": "ANCHORS"
+    },
+    {
+      "key": "text.acquire.the.gorodets.leading.line.cc5bbf0b",
+      "value": "Acquire the Gorodets leading line"
+    },
+    {
+      "key": "text.acquiregorodetsleadingline.61c2cbff",
+      "value": "AcquireGorodetsLeadingLine"
+    },
+    {
+      "key": "text.aft.ballast.group.ae1a1168",
+      "value": "Aft ballast group"
+    },
+    {
+      "key": "text.aft.hold.1bb1ea35",
+      "value": "Aft hold"
+    },
+    {
+      "key": "text.aftopen.c090a749",
+      "value": "AftOpen"
+    },
+    {
+      "key": "text.anticipate.the.reversing.lateral.current.959e862a",
+      "value": "Anticipate the reversing lateral current"
+    },
+    {
+      "key": "text.at.anchor.102658f1",
+      "value": "At anchor"
+    },
+    {
+      "key": "text.available.in.the.standalone.player.4e6f661c",
+      "value": "Available in the standalone player"
+    },
+    {
+      "key": "text.before.you.continue.1b400986",
+      "value": "BEFORE YOU CONTINUE"
+    },
+    {
+      "key": "text.bollard.517e8471",
+      "value": "BOLLARD"
+    },
+    {
+      "key": "text.bottom.contact.17e952a7",
+      "value": "BOTTOM CONTACT"
+    },
+    {
+      "key": "text.bow.01a43f67",
+      "value": "BOW"
+    },
+    {
+      "key": "text.bow.thruster.a4755e74",
+      "value": "BOW THRUSTER"
+    },
+    {
+      "key": "text.bow.thruster.off.4a5a8a9f",
+      "value": "BOW THRUSTER OFF"
+    },
+    {
+      "key": "text.bridge.ef304fbe",
+      "value": "BRIDGE"
+    },
+    {
+      "key": "text.back.76900f1b",
+      "value": "Back"
+    },
+    {
+      "key": "text.basin.325884d0",
+      "value": "Basin"
+    },
+    {
+      "key": "text.basin.entrance.68b40fca",
+      "value": "Basin Entrance"
+    },
+    {
+      "key": "text.bridge.settings.30b168a2",
+      "value": "Bridge settings"
+    },
+    {
+      "key": "text.briefing.532fdae2",
+      "value": "Briefing"
+    },
+    {
+      "key": "text.camera.582ff0d0",
+      "value": "CAMERA"
+    },
+    {
+      "key": "text.camera.0.2ef9a5eb",
+      "value": "CAMERA: <size=20><b>{0}</b></size>  "
+    },
+    {
+      "key": "text.cast.off.3236ca67",
+      "value": "CAST OFF"
+    },
+    {
+      "key": "text.chain.parted.899eaefd",
+      "value": "CHAIN PARTED"
+    },
+    {
+      "key": "text.chart.your.course.d0367933",
+      "value": "CHART YOUR COURSE"
+    },
+    {
+      "key": "text.chase.123531ac",
+      "value": "CHASE"
+    },
+    {
+      "key": "text.choose.your.command.9b3a2feb",
+      "value": "CHOOSE YOUR COMMAND"
+    },
+    {
+      "key": "text.close.f13a1ed0",
+      "value": "CLOSE"
+    },
+    {
+      "key": "text.command.395c9840",
+      "value": "COMMAND"
+    },
+    {
+      "key": "text.course.4d980d99",
+      "value": "COURSE"
+    },
+    {
+      "key": "text.craft.pier.d13cd99b",
+      "value": "CRAFT / PIER"
+    },
+    {
+      "key": "text.current.e3cc57e1",
+      "value": "CURRENT"
+    },
+    {
+      "key": "text.current.from.port.side.246046b6",
+      "value": "CURRENT FROM PORT SIDE"
+    },
+    {
+      "key": "text.current.from.port.side.227441c8",
+      "value": "CURRENT FROM PORT SIDE\n"
+    },
+    {
+      "key": "text.current.from.starboard.side.be616be4",
+      "value": "CURRENT FROM STARBOARD SIDE"
+    },
+    {
+      "key": "text.current.from.starboard.side.3da4bf7d",
+      "value": "CURRENT FROM STARBOARD SIDE\n"
+    },
+    {
+      "key": "text.cushionborne.83fb35a6",
+      "value": "CUSHIONBORNE"
+    },
+    {
+      "key": "text.camera.03494b0d",
+      "value": "Camera"
+    },
+    {
+      "key": "text.camera.rotation.9e751efc",
+      "value": "Camera rotation"
+    },
+    {
+      "key": "text.camera.zoom.a3a35b57",
+      "value": "Camera zoom"
+    },
+    {
+      "key": "text.check.the.save.file.and.available.disk.space.details.are.1b00a3d0",
+      "value": "Check the save file and available disk space. Details are in the log."
+    },
+    {
+      "key": "text.choose.a.different.vessel.or.passage.157b4ddb",
+      "value": "Choose a different vessel or passage"
+    },
+    {
+      "key": "text.choose.a.vessel.and.a.river.passage.08ffd998",
+      "value": "Choose a vessel and a river passage"
+    },
+    {
+      "key": "text.choose.another.vessel.534f5bf4",
+      "value": "Choose another vessel"
+    },
+    {
+      "key": "text.choose.the.interface.language.308df4b9",
+      "value": "Choose the interface language"
+    },
+    {
+      "key": "text.clear.the.lower.shoal.and.cross.the.finish.gate.cf65c295",
+      "value": "Clear the lower shoal and cross the finish gate"
+    },
+    {
+      "key": "text.closed.c21ead06",
+      "value": "Closed"
+    },
+    {
+      "key": "text.comfort.settings.64fb1f59",
+      "value": "Comfort settings"
+    },
+    {
+      "key": "text.completed.22a970d2",
+      "value": "Completed"
+    },
+    {
+      "key": "text.confirm.eebdd24a",
+      "value": "Confirm"
+    },
+    {
+      "key": "text.continue.voyage.48aee9d2",
+      "value": "Continue voyage"
+    },
+    {
+      "key": "text.continue.with.this.action.eb067faf",
+      "value": "Continue with this action"
+    },
+    {
+      "key": "text.could.not.load.voyage.d50f2fd8",
+      "value": "Could not load voyage."
+    },
+    {
+      "key": "text.could.not.open.scenario.cc4d9c35",
+      "value": "Could not open scenario."
+    },
+    {
+      "key": "text.could.not.restore.voyage.7acc8748",
+      "value": "Could not restore voyage."
+    },
+    {
+      "key": "text.could.not.save.voyage.3bdb89b8",
+      "value": "Could not save voyage."
+    },
+    {
+      "key": "text.danger.0bd7272b",
+      "value": "DANGER"
+    },
+    {
+      "key": "text.day.c45bc4a7",
+      "value": "DAY"
+    },
+    {
+      "key": "text.day.n.8dba15f9",
+      "value": "DAY [N]"
+    },
+    {
+      "key": "text.deck.machinery.95df167d",
+      "value": "DECK MACHINERY"
+    },
+    {
+      "key": "text.deck.machinery.hatches.aa3bd14f",
+      "value": "DECK MACHINERY\nHATCHES "
+    },
+    {
+      "key": "text.depth.1f1260fb",
+      "value": "DEPTH"
+    },
+    {
+      "key": "text.depth.0.f1.m.4e8da492",
+      "value": "DEPTH <size=24><b>{0:F1} m</b></size>    "
+    },
+    {
+      "key": "text.dir.0b4d0828",
+      "value": "DIR +"
+    },
+    {
+      "key": "text.dir.65abe2b0",
+      "value": "DIR -"
+    },
+    {
+      "key": "text.display.27cd4277",
+      "value": "DISPLAY"
+    },
+    {
+      "key": "text.dock.8.dcbe50bb",
+      "value": "DOCK  [8]"
+    },
+    {
+      "key": "text.docking.cb5757d7",
+      "value": "DOCKING"
+    },
+    {
+      "key": "text.draft.53dd5f4b",
+      "value": "DRAFT"
+    },
+    {
+      "key": "text.dragging.bc9213be",
+      "value": "DRAGGING"
+    },
+    {
+      "key": "text.dead.slow.down.the.basin.moored.craft.both.sides.7e6ff32c",
+      "value": "Dead slow down the basin: moored craft both sides"
+    },
+    {
+      "key": "text.deck.889eacd6",
+      "value": "Deck"
+    },
+    {
+      "key": "text.deck.machinery.d88c1765",
+      "value": "Deck machinery"
+    },
+    {
+      "key": "text.departapproach.f914a247",
+      "value": "DepartApproach"
+    },
+    {
+      "key": "text.display.34e108c0",
+      "value": "Display"
+    },
+    {
+      "key": "text.display.7c98c273",
+      "value": "Display  /  "
+    },
+    {
+      "key": "text.display.0.4a5c3dbd",
+      "value": "Display  /  {0}"
+    },
+    {
+      "key": "text.display.audio.camera.fa10d3bb",
+      "value": "Display, audio & camera"
+    },
+    {
+      "key": "text.distance.b7bdf7a2",
+      "value": "Distance"
+    },
+    {
+      "key": "text.done.11a6767d",
+      "value": "Done"
+    },
+    {
+      "key": "text.empty.cc1d2f83",
+      "value": "EMPTY"
+    },
+    {
+      "key": "text.engineering.gameplay.prototype.estimated.navigation.data.75bf40c2",
+      "value": "Engineering & gameplay prototype. Estimated navigation data."
+    },
+    {
+      "key": "text.engines.and.propellers.489e3a72",
+      "value": "Engines and propellers"
+    },
+    {
+      "key": "text.exit.play.mode.0e2d2aed",
+      "value": "Exit Play Mode"
+    },
+    {
+      "key": "text.f1.controls.6027c318",
+      "value": "F1  CONTROLS"
+    },
+    {
+      "key": "text.fill.391edbf2",
+      "value": "FILL"
+    },
+    {
+      "key": "text.fog.1424ee09",
+      "value": "FOG"
+    },
+    {
+      "key": "text.fog.f5.9bcae3a3",
+      "value": "FOG [F5]"
+    },
+    {
+      "key": "text.foilborne.635f50bc",
+      "value": "FOILBORNE"
+    },
+    {
+      "key": "text.fore.open.12533b90",
+      "value": "FORE OPEN"
+    },
+    {
+      "key": "text.full.ahead.09376fac",
+      "value": "FULL\nAHEAD"
+    },
+    {
+      "key": "text.full.astern.f948a6b2",
+      "value": "FULL\nASTERN"
+    },
+    {
+      "key": "text.full.ahead.f2c24b58",
+      "value": "FULL AHEAD"
+    },
+    {
+      "key": "text.full.astern.2a0a116b",
+      "value": "FULL ASTERN"
+    },
+    {
+      "key": "text.failed.031a8f0f",
+      "value": "Failed"
+    },
+    {
+      "key": "text.forward.ballast.group.7a2f2100",
+      "value": "Forward ballast group"
+    },
+    {
+      "key": "text.forward.hold.64b9c16a",
+      "value": "Forward hold"
+    },
+    {
+      "key": "text.forwardopen.edf8167c",
+      "value": "ForwardOpen"
+    },
+    {
+      "key": "text.fuel.and.stores.budget.d903cb17",
+      "value": "Fuel and stores budget"
+    },
+    {
+      "key": "text.fullscreen.c461dbb2",
+      "value": "Fullscreen"
+    },
+    {
+      "key": "text.go.back.6aadac2f",
+      "value": "Go back"
+    },
+    {
+      "key": "text.gorodets.passage.d24d7c84",
+      "value": "Gorodets passage"
+    },
+    {
+      "key": "text.graphics.0.381c6bbe",
+      "value": "Graphics  /  {0}"
+    },
+    {
+      "key": "text.graphics.settings.2ffe1ce1",
+      "value": "Graphics settings"
+    },
+    {
+      "key": "text.half.ahead.85a04827",
+      "value": "HALF\nAHEAD"
+    },
+    {
+      "key": "text.half.astern.c6d8072c",
+      "value": "HALF\nASTERN"
+    },
+    {
+      "key": "text.half.ahead.bc5e74f7",
+      "value": "HALF AHEAD"
+    },
+    {
+      "key": "text.half.astern.cefeef1f",
+      "value": "HALF ASTERN"
+    },
+    {
+      "key": "text.half.open.37020726",
+      "value": "HALF OPEN"
+    },
+    {
+      "key": "text.hanging.ff9579a7",
+      "value": "HANGING"
+    },
+    {
+      "key": "text.hard.grounding.4a457f8d",
+      "value": "HARD GROUNDING"
+    },
+    {
+      "key": "text.hatches.b05b54d7",
+      "value": "HATCHES"
+    },
+    {
+      "key": "text.haul.f298a1c2",
+      "value": "HAUL"
+    },
+    {
+      "key": "text.hauling.d89d72c5",
+      "value": "HAULING"
+    },
+    {
+      "key": "text.heave.52ad95e0",
+      "value": "HEAVE"
+    },
+    {
+      "key": "text.heaving.cd3abe64",
+      "value": "HEAVING"
+    },
+    {
+      "key": "text.heaving.aweigh.d31a2ef5",
+      "value": "HEAVING, AWEIGH"
+    },
+    {
+      "key": "text.hold.aacf94b7",
+      "value": "HOLD"
+    },
+    {
+      "key": "text.holding.4958797a",
+      "value": "HOLDING"
+    },
+    {
+      "key": "text.hullborne.8c88388f",
+      "value": "HULLBORNE"
+    },
+    {
+      "key": "text.halfopen.9893b948",
+      "value": "HalfOpen"
+    },
+    {
+      "key": "text.helm.7e94675f",
+      "value": "Helm"
+    },
+    {
+      "key": "text.help.b79cac92",
+      "value": "Help"
+    },
+    {
+      "key": "text.hold.the.leading.line.and.remain.inside.the.marked.fairw.61b855ce",
+      "value": "Hold the leading line and remain inside the marked fairway"
+    },
+    {
+      "key": "text.holdopen.c818d28b",
+      "value": "HoldOpen"
+    },
+    {
+      "key": "text.inland.passages.7c79c7aa",
+      "value": "INLAND\nPASSAGES"
+    },
+    {
+      "key": "text.interface.camera.92418a56",
+      "value": "INTERFACE & CAMERA"
+    },
+    {
+      "key": "text.is.full.52a165d6",
+      "value": "IS FULL"
+    },
+    {
+      "key": "text.interface.camera.11779717",
+      "value": "Interface & camera"
+    },
+    {
+      "key": "text.interface.scale.6ba5218d",
+      "value": "Interface scale"
+    },
+    {
+      "key": "text.interface.scale.and.camera.sensitivities.only.69c924e4",
+      "value": "Interface scale and camera sensitivities only"
+    },
+    {
+      "key": "text.j.l.bow.thruster.k.off.h.horn.m.map.n.day.night.t.time.f.d83a23c0",
+      "value": "J/L  BOW THRUSTER   K  OFF   H HORN   M MAP   N DAY/NIGHT   T TIME   F2-F5 WEATHER   RMB ORBIT"
+    },
+    {
+      "key": "text.keep.this.passage.e04fbbb1",
+      "value": "Keep this passage"
+    },
+    {
+      "key": "text.let.go.fa49324e",
+      "value": "LET GO"
+    },
+    {
+      "key": "text.letting.go.a671e41e",
+      "value": "LETTING GO"
+    },
+    {
+      "key": "text.limit.reached.open.hatches.halfway.62cb8813",
+      "value": "LIMIT REACHED / OPEN HATCHES HALFWAY"
+    },
+    {
+      "key": "text.load.d438686e",
+      "value": "LOAD"
+    },
+    {
+      "key": "text.loading.ba0eebf3",
+      "value": "LOADING"
+    },
+    {
+      "key": "text.language.a4fe6526",
+      "value": "Language"
+    },
+    {
+      "key": "text.leave.the.bridge.179f1caa",
+      "value": "Leave the bridge"
+    },
+    {
+      "key": "text.leave.the.bridge.1100c79f",
+      "value": "Leave the bridge?"
+    },
+    {
+      "key": "text.leave.the.lock.approach.and.prepare.for.lateral.set.a4635afe",
+      "value": "Leave the lock approach and prepare for lateral set"
+    },
+    {
+      "key": "text.leave.this.passage.b0cb492b",
+      "value": "Leave this passage?"
+    },
+    {
+      "key": "text.leaving.the.lay.up.berth.2c551dc4",
+      "value": "Leaving the Lay-up Berth"
+    },
+    {
+      "key": "text.let.go.and.come.clear.of.the.laid.up.barges.134f6695",
+      "value": "Let go and come clear of the laid-up barges"
+    },
+    {
+      "key": "text.liftinginner.8b0a617a",
+      "value": "LiftingInner"
+    },
+    {
+      "key": "text.liftingouter.12244d66",
+      "value": "LiftingOuter"
+    },
+    {
+      "key": "text.limit.674b0ed5",
+      "value": "Limit"
+    },
+    {
+      "key": "text.line.passed.0.to.1.fc359ebf",
+      "value": "Line passed {0} to {1}"
+    },
+    {
+      "key": "text.load.saved.voyage.0029ef85",
+      "value": "Load saved voyage"
+    },
+    {
+      "key": "text.load.saved.voyage.dc768bab",
+      "value": "Load saved voyage?"
+    },
+    {
+      "key": "text.loading.vessel.and.river.conditions.823a52f4",
+      "value": "Loading vessel and river conditions..."
+    },
+    {
+      "key": "text.loweringouter.cb24197e",
+      "value": "LoweringOuter"
+    },
+    {
+      "key": "text.make.yourself.at.home.9a5c2a5b",
+      "value": "MAKE YOURSELF AT HOME"
+    },
+    {
+      "key": "text.midships.c.80729499",
+      "value": "MIDSHIPS [C]"
+    },
+    {
+      "key": "text.min.ahead.6423db07",
+      "value": "MIN AHEAD"
+    },
+    {
+      "key": "text.mooring.0053bcc0",
+      "value": "MOORING"
+    },
+    {
+      "key": "text.map.be176b00",
+      "value": "Map"
+    },
+    {
+      "key": "text.master.volume.b041a7d4",
+      "value": "Master volume"
+    },
+    {
+      "key": "text.master.volume.mix.and.mute.bbc24fc6",
+      "value": "Master volume, mix and mute"
+    },
+    {
+      "key": "text.mission.complete.score.0.f0.100.e1531559",
+      "value": "Mission complete. Score {0:F0}/100"
+    },
+    {
+      "key": "text.mission.failed.score.0.f0.100.e7c6b77d",
+      "value": "Mission failed. Score {0:F0}/100"
+    },
+    {
+      "key": "text.mooring.point.0.is.not.in.this.scenario.that.line.was.no.fb2b5972",
+      "value": "Mooring point {0} is not in this scenario; that line was not restored"
+    },
+    {
+      "key": "text.mute.0.b91012a8",
+      "value": "Mute  /  {0}"
+    },
+    {
+      "key": "text.nav.9.88b42e42",
+      "value": "NAV  [9]"
+    },
+    {
+      "key": "text.navigator.c5be6dc6",
+      "value": "NAVIGATOR"
+    },
+    {
+      "key": "text.next.v.a0e6963b",
+      "value": "NEXT  [V]"
+    },
+    {
+      "key": "text.night.79162683",
+      "value": "NIGHT"
+    },
+    {
+      "key": "text.no.bottom.data.82d1d152",
+      "value": "NO BOTTOM DATA"
+    },
+    {
+      "key": "text.no.mooring.station.caae732f",
+      "value": "NO MOORING STATION"
+    },
+    {
+      "key": "text.no.shore.bollard.selected.b397e3e6",
+      "value": "NO SHORE BOLLARD SELECTED"
+    },
+    {
+      "key": "text.nara.reach.fb1145e2",
+      "value": "Nara Reach"
+    },
+    {
+      "key": "text.new.voyage.dd976ea6",
+      "value": "New voyage"
+    },
+    {
+      "key": "text.no.saved.voyage.yet.b0211ec1",
+      "value": "No saved voyage yet"
+    },
+    {
+      "key": "text.objective.77a8599f",
+      "value": "OBJECTIVE"
+    },
+    {
+      "key": "text.on.bottom.slack.b10fe547",
+      "value": "ON BOTTOM, SLACK"
+    },
+    {
+      "key": "text.out.of.reach.f666d6fd",
+      "value": "OUT OF REACH"
+    },
+    {
+      "key": "text.outside.fairway.97b803a6",
+      "value": "OUTSIDE FAIRWAY"
+    },
+    {
+      "key": "text.outside.fairway.0955a9f6",
+      "value": "OUTSIDE FAIRWAY\n"
+    },
+    {
+      "key": "text.outside.tables.36efbdad",
+      "value": "OUTSIDE TABLES"
+    },
+    {
+      "key": "text.overloaded.ec709fd6",
+      "value": "OVERLOADED"
+    },
+    {
+      "key": "text.overspeed.536535f0",
+      "value": "OVERSPEED"
+    },
+    {
+      "key": "text.overspeed.0665e89e",
+      "value": "OVERSPEED\n"
+    },
+    {
+      "key": "text.off.ca7981b4",
+      "value": "Off"
+    },
+    {
+      "key": "text.oka.mouth.e587a927",
+      "value": "Oka Mouth"
+    },
+    {
+      "key": "text.on.13001175",
+      "value": "On"
+    },
+    {
+      "key": "text.open.river.learn.the.vessel.and.controls.b91a90f2",
+      "value": "Open river  /  Learn the vessel and controls"
+    },
+    {
+      "key": "text.parted.7ca4f91c",
+      "value": "PARTED"
+    },
+    {
+      "key": "text.pass.line.afa4218f",
+      "value": "PASS LINE"
+    },
+    {
+      "key": "text.passage.paused.your.vessel.is.holding.position.96f59fc0",
+      "value": "PASSAGE PAUSED  /  Your vessel is holding position."
+    },
+    {
+      "key": "text.port.6acc99af",
+      "value": "PORT"
+    },
+    {
+      "key": "text.prev.39a40026",
+      "value": "PREV"
+    },
+    {
+      "key": "text.project.0.river.navigation.simulator.822c1ddb",
+      "value": "PROJECT {0}  /  RIVER NAVIGATION SIMULATOR"
+    },
+    {
+      "key": "text.push.unit.petroleum.barge.1d517986",
+      "value": "PUSH UNIT\nPETROLEUM BARGE"
+    },
+    {
+      "key": "text.passgorodetsshoal.490bf58b",
+      "value": "PassGorodetsShoal"
+    },
+    {
+      "key": "text.passlowerkochergino.7f2ba38b",
+      "value": "PassLowerKochergino"
+    },
+    {
+      "key": "text.passupperkochergino.b287e15b",
+      "value": "PassUpperKochergino"
+    },
+    {
+      "key": "text.passage.complete.0140adeb",
+      "value": "Passage complete."
+    },
+    {
+      "key": "text.passage.failed.6f2d527d",
+      "value": "Passage failed."
+    },
+    {
+      "key": "text.past.the.passenger.berth.and.the.yacht.harbour.mind.your.e0de973b",
+      "value": "Past the passenger berth and the yacht harbour, mind your wash"
+    },
+    {
+      "key": "text.port.and.marina.6dfe204a",
+      "value": "Port and Marina"
+    },
+    {
+      "key": "text.prepare.vessel.c3dcea26",
+      "value": "Prepare vessel"
+    },
+    {
+      "key": "text.proceed.to.waypoint.26e63262",
+      "value": "Proceed to waypoint"
+    },
+    {
+      "key": "text.push.unit.too.deep.for.this.passage.79e9603a",
+      "value": "Push unit too deep for this passage"
+    },
+    {
+      "key": "text.push.unit.too.long.0.0.0.m.limit.1.0.m.c91f9391",
+      "value": "Push unit too long  /  {0:0.0} m, limit {1:0} m"
+    },
+    {
+      "key": "text.push.unit.too.wide.for.this.passage.074f823c",
+      "value": "Push unit too wide for this passage"
+    },
+    {
+      "key": "text.quality.synchronisation.and.fullscreen.b5d63c15",
+      "value": "Quality, synchronisation and fullscreen"
+    },
+    {
+      "key": "text.quit.to.desktop.c4f9502f",
+      "value": "Quit to desktop"
+    },
+    {
+      "key": "text.rain.959a3064",
+      "value": "RAIN"
+    },
+    {
+      "key": "text.rain.f4.e03f136e",
+      "value": "RAIN [F4]"
+    },
+    {
+      "key": "text.rain.0.0.fog.1.0.365e0e52",
+      "value": "RAIN {0:0}%   FOG {1:0}%"
+    },
+    {
+      "key": "text.ready.c2e3ac47",
+      "value": "READY"
+    },
+    {
+      "key": "text.river.class.cargo.vessel.71c36296",
+      "value": "RIVER CLASS\nCARGO VESSEL"
+    },
+    {
+      "key": "text.river.passenger.air.cushion.14f59c26",
+      "value": "RIVER PASSENGER\nAIR CUSHION"
+    },
+    {
+      "key": "text.river.passenger.hydrofoil.6a48a0a6",
+      "value": "RIVER PASSENGER\nHYDROFOIL"
+    },
+    {
+      "key": "text.river.radar.head.up.200.m.eb58d855",
+      "value": "RIVER RADAR  ·  HEAD-UP  ·  200 m"
+    },
+    {
+      "key": "text.river.tug.pusher.single.waterjet.c55b23d0",
+      "value": "RIVER TUG-PUSHER\nSINGLE WATERJET"
+    },
+    {
+      "key": "text.river.sea.cargo.vessel.ff1b38b5",
+      "value": "RIVER-SEA\nCARGO VESSEL"
+    },
+    {
+      "key": "text.river.sea.oil.tanker.27ab6b68",
+      "value": "RIVER-SEA\nOIL TANKER"
+    },
+    {
+      "key": "text.route.7cc8ad34",
+      "value": "ROUTE"
+    },
+    {
+      "key": "text.rudder.df253ce3",
+      "value": "RUDDER"
+    },
+    {
+      "key": "text.rudder.0.0.deg.463a1246",
+      "value": "RUDDER  0.0 deg"
+    },
+    {
+      "key": "text.rudder.0.0.0.0.0.0.0.deg.987e7920",
+      "value": "RUDDER  <size=23><b>{0:+0.0;-0.0;0.0} deg</b></size>\n"
+    },
+    {
+      "key": "text.reachfinish.572a3976",
+      "value": "ReachFinish"
+    },
+    {
+      "key": "text.record.your.current.passage.dd412560",
+      "value": "Record your current passage"
+    },
+    {
+      "key": "text.replace.saved.voyage.37de4df3",
+      "value": "Replace saved voyage?"
+    },
+    {
+      "key": "text.restore.defaults.602f8e63",
+      "value": "Restore defaults"
+    },
+    {
+      "key": "text.resume.voyage.d02c220d",
+      "value": "Resume voyage"
+    },
+    {
+      "key": "text.return.to.settings.cab0aa32",
+      "value": "Return to settings"
+    },
+    {
+      "key": "text.return.to.the.bridge.esc.58823e3a",
+      "value": "Return to the bridge  /  ESC"
+    },
+    {
+      "key": "text.return.to.the.menu.5d8ae338",
+      "value": "Return to the menu"
+    },
+    {
+      "key": "text.river.familiarisation.0b8c8a00",
+      "value": "River familiarisation"
+    },
+    {
+      "key": "text.rocky.bottom.maintain.clearance.and.small.rudder.angles.1c79e8f8",
+      "value": "Rocky bottom: maintain clearance and small rudder angles"
+    },
+    {
+      "key": "text.safe.10a87133",
+      "value": "SAFE"
+    },
+    {
+      "key": "text.select.compartment.41388674",
+      "value": "SELECT COMPARTMENT"
+    },
+    {
+      "key": "text.setting.4fe70949",
+      "value": "SETTING"
+    },
+    {
+      "key": "text.shallow.39d9d711",
+      "value": "SHALLOW"
+    },
+    {
+      "key": "text.shallow.water.44b85352",
+      "value": "SHALLOW WATER"
+    },
+    {
+      "key": "text.shallow.water.fcde8e1d",
+      "value": "SHALLOW WATER\n"
+    },
+    {
+      "key": "text.slack.2cfe0127",
+      "value": "SLACK"
+    },
+    {
+      "key": "text.slacking.9f19976f",
+      "value": "SLACKING"
+    },
+    {
+      "key": "text.slow.ahead.95226e4b",
+      "value": "SLOW\nAHEAD"
+    },
+    {
+      "key": "text.slow.astern.f538b82e",
+      "value": "SLOW\nASTERN"
+    },
+    {
+      "key": "text.slow.ahead.7b21cb5f",
+      "value": "SLOW AHEAD"
+    },
+    {
+      "key": "text.slow.astern.b77f78ff",
+      "value": "SLOW ASTERN"
+    },
+    {
+      "key": "text.speed.6129de1e",
+      "value": "SPEED"
+    },
+    {
+      "key": "text.starboard.62592344",
+      "value": "STARBOARD"
+    },
+    {
+      "key": "text.station.81770823",
+      "value": "STATION"
+    },
+    {
+      "key": "text.station.0.09f17174",
+      "value": "STATION <color=#F2C14E>{0}</color>"
+    },
+    {
+      "key": "text.stbd.96228e9d",
+      "value": "STBD"
+    },
+    {
+      "key": "text.stbd.d.37ab262c",
+      "value": "STBD [D] >"
+    },
+    {
+      "key": "text.stern.deb17fb6",
+      "value": "STERN"
+    },
+    {
+      "key": "text.stop.04dedf8a",
+      "value": "STOP"
+    },
+    {
+      "key": "text.stop.all.831df458",
+      "value": "STOP ALL"
+    },
+    {
+      "key": "text.stop.engines.to.transfer.54be81b0",
+      "value": "STOP ENGINES TO TRANSFER"
+    },
+    {
+      "key": "text.stopped.133c4945",
+      "value": "STOPPED"
+    },
+    {
+      "key": "text.stowed.083415db",
+      "value": "STOWED"
+    },
+    {
+      "key": "text.strong.current.15d27220",
+      "value": "STRONG CURRENT"
+    },
+    {
+      "key": "text.strong.current.6ace2f40",
+      "value": "STRONG CURRENT\n"
+    },
+    {
+      "key": "text.save.and.return.to.settings.60ce0426",
+      "value": "Save and return to settings"
+    },
+    {
+      "key": "text.save.first.if.you.want.to.keep.your.current.progress.f9145685",
+      "value": "Save first if you want to keep your current progress."
+    },
+    {
+      "key": "text.save.unavailable.start.a.new.voyage.to.continue.78a6d521",
+      "value": "Save unavailable. Start a new voyage to continue."
+    },
+    {
+      "key": "text.save.voyage.e5ad21dd",
+      "value": "Save voyage"
+    },
+    {
+      "key": "text.scale.and.independent.camera.sensitivities.8c1beaa5",
+      "value": "Scale and independent camera sensitivities"
+    },
+    {
+      "key": "text.score.38e5a46c",
+      "value": "Score"
+    },
+    {
+      "key": "text.select.a.passage.f9fd87ef",
+      "value": "Select a passage"
+    },
+    {
+      "key": "text.select.a.vessel.8ae0d9b0",
+      "value": "Select a vessel"
+    },
+    {
+      "key": "text.select.the.next.quality.preset.4b770c73",
+      "value": "Select the next quality preset"
+    },
+    {
+      "key": "text.serpukhov.zaton.b27d73dc",
+      "value": "Serpukhov zaton"
+    },
+    {
+      "key": "text.service.speed.da0bb3ea",
+      "value": "Service speed"
+    },
+    {
+      "key": "text.settings.74a883a0",
+      "value": "Settings"
+    },
+    {
+      "key": "text.settings.are.saved.automatically.b74fa394",
+      "value": "Settings are saved automatically"
+    },
+    {
+      "key": "text.silence.all.sound.the.mix.is.kept.169d5b41",
+      "value": "Silence all sound; the mix is kept"
+    },
+    {
+      "key": "text.slidinginner.f4c4d070",
+      "value": "SlidingInner"
+    },
+    {
+      "key": "text.sound.46124e02",
+      "value": "Sound"
+    },
+    {
+      "key": "text.stacked.c2fed746",
+      "value": "Stacked"
+    },
+    {
+      "key": "text.synchronise.frames.with.your.display.9863953c",
+      "value": "Synchronise frames with your display"
+    },
+    {
+      "key": "text.taut.7ffd8712",
+      "value": "TAUT"
+    },
+    {
+      "key": "text.telegraph.80b30369",
+      "value": "TELEGRAPH"
+    },
+    {
+      "key": "text.telegraph.0.1.ce01c452",
+      "value": "TELEGRAPH  <size=23><b>{0}</b></size>\n<size=15>{1}</size>"
+    },
+    {
+      "key": "text.telegraph.stop.95b402ae",
+      "value": "TELEGRAPH  STOP"
+    },
+    {
+      "key": "text.time.5888675d",
+      "value": "TIME"
+    },
+    {
+      "key": "text.time.1x.ee719375",
+      "value": "TIME 1x"
+    },
+    {
+      "key": "text.time.0.feff9f63",
+      "value": "TIME {0}"
+    },
+    {
+      "key": "text.to.c3bd7d9e",
+      "value": "TO"
+    },
+    {
+      "key": "text.too.much.way.on.to.pass.a.line.7f0c5da9",
+      "value": "TOO MUCH WAY ON TO PASS A LINE"
+    },
+    {
+      "key": "text.top.07b4ed8e",
+      "value": "TOP"
+    },
+    {
+      "key": "text.total.ab2882c8",
+      "value": "TOTAL"
+    },
+    {
+      "key": "text.transfer.paused.vessel.moving.14414927",
+      "value": "TRANSFER PAUSED: VESSEL MOVING"
+    },
+    {
+      "key": "text.transferring.2568a744",
+      "value": "TRANSFERRING"
+    },
+    {
+      "key": "text.trim.d639e5f5",
+      "value": "TRIM"
+    },
+    {
+      "key": "text.take.the.helm.read.the.river.d95df952",
+      "value": "Take the helm. Read the river."
+    },
+    {
+      "key": "text.the.gate.is.about.55.m.wide.line.her.up.early.58147c91",
+      "value": "The gate is about 55 m wide: line her up early"
+    },
+    {
+      "key": "text.toggle.fullscreen.display.66a70eb9",
+      "value": "Toggle fullscreen display"
+    },
+    {
+      "key": "text.too.deep.for.this.passage.0.0.00.m.limit.1.0.00.m.dc1f11fd",
+      "value": "Too deep for this passage  /  {0:0.00} m, limit {1:0.00} m"
+    },
+    {
+      "key": "text.too.long.for.this.passage.0.0.0.m.limit.1.0.m.5d3c0df4",
+      "value": "Too long for this passage  /  {0:0.0} m, limit {1:0} m"
+    },
+    {
+      "key": "text.too.wide.for.this.passage.0.0.0.m.limit.1.0.0.m.76a223bd",
+      "value": "Too wide for this passage  /  {0:0.0} m, limit {1:0.0} m"
+    },
+    {
+      "key": "text.traversing.002f2c31",
+      "value": "Traversing"
+    },
+    {
+      "key": "text.turn.to.port.out.of.the.nara.and.stem.the.oka.current.1ffc8660",
+      "value": "Turn to port out of the Nara and stem the Oka current"
+    },
+    {
+      "key": "text.unsaved.progress.in.this.passage.will.be.lost.d4548bfc",
+      "value": "Unsaved progress in this passage will be lost."
+    },
+    {
+      "key": "text.unsaved.progress.will.be.lost.you.can.go.back.and.save.1c7ecfdd",
+      "value": "Unsaved progress will be lost. You can go back and save."
+    },
+    {
+      "key": "text.veering.2408b1df",
+      "value": "VEERING"
+    },
+    {
+      "key": "text.vessel.on.standby.ccd0e1f6",
+      "value": "VESSEL ON STANDBY"
+    },
+    {
+      "key": "text.vsync.0.8a9fda47",
+      "value": "VSync  /  {0}"
+    },
+    {
+      "key": "text.voyage.saved.safe.to.leave.the.bridge.d2d64945",
+      "value": "Voyage saved. Safe to leave the bridge."
+    },
+    {
+      "key": "text.warning.86f56fe8",
+      "value": "WARNING"
+    },
+    {
+      "key": "text.warning.39485faa",
+      "value": "WARNING    "
+    },
+    {
+      "key": "text.weather.0a244108",
+      "value": "WEATHER"
+    },
+    {
+      "key": "text.welcome.aboard.67c46e29",
+      "value": "WELCOME ABOARD"
+    },
+    {
+      "key": "text.wind.f144dd58",
+      "value": "WIND"
+    },
+    {
+      "key": "text.wind.f2.5e38d869",
+      "value": "WIND [F2]"
+    },
+    {
+      "key": "text.wind.0.000.deg.1.0.m.s.bffb1486",
+      "value": "WIND {0:000} deg  {1:0} m/s   "
+    },
+    {
+      "key": "text.windlass.stalled.7cde3adc",
+      "value": "WINDLASS STALLED"
+    },
+    {
+      "key": "text.water.7ca7dea9",
+      "value": "Water"
+    },
+    {
+      "key": "text.weather.a0bba638",
+      "value": "Weather"
+    },
+    {
+      "key": "text.wind.d151346f",
+      "value": "Wind"
+    },
+    {
+      "key": "text.windowed.3f26603a",
+      "value": "Windowed"
+    },
+    {
+      "key": "text.your.bridge.your.passage.1b66623e",
+      "value": "YOUR BRIDGE.\nYOUR PASSAGE."
+    },
+    {
+      "key": "text.your.vessel.0.w.s.engines.a.d.rudder.v.camera.right.mous.49facf55",
+      "value": "YOUR VESSEL\n\n{0}\n\nW / S  Engines     A / D  Rudder\nV  Camera     Right mouse  Look around\nESC  Pause, settings & save"
+    },
+    {
+      "key": "text.your.next.passage.67e0939e",
+      "value": "Your next passage"
+    },
+    {
+      "key": "text.your.previous.saved.passage.will.be.replaced.9350fe60",
+      "value": "Your previous saved passage will be replaced."
+    },
+    {
+      "key": "text.your.saved.voyage.will.be.kept.for.your.return.43da82f7",
+      "value": "Your saved voyage will be kept for your return."
+    },
+    {
+      "key": "text.anchor.aweigh.22414e17",
+      "value": "anchor aweigh"
+    },
+    {
+      "key": "text.anchor.dragging.7ab94781",
+      "value": "anchor dragging"
+    },
+    {
+      "key": "text.anchor.let.go.c94313a9",
+      "value": "anchor let go"
+    },
+    {
+      "key": "text.anchor.on.the.bottom.3385b789",
+      "value": "anchor on the bottom"
+    },
+    {
+      "key": "text.anchor.stowed.9f2254ae",
+      "value": "anchor stowed"
+    },
+    {
+      "key": "text.cargo.3322532d",
+      "value": "cargo"
+    },
+    {
+      "key": "text.chain.parted.b1620f8f",
+      "value": "chain parted"
+    },
+    {
+      "key": "text.deadweight.86491b04",
+      "value": "deadweight"
+    },
+    {
+      "key": "text.drift.0b7a461f",
+      "value": "drift"
+    },
+    {
+      "key": "text.green.mark.765b536e",
+      "value": "green mark"
+    },
+    {
+      "key": "text.heading.predicted.path.384afa00",
+      "value": "heading / predicted path"
+    },
+    {
+      "key": "text.line.cast.off.9872336d",
+      "value": "line cast off"
+    },
+    {
+      "key": "text.line.parted.586434d6",
+      "value": "line parted"
+    },
+    {
+      "key": "text.red.mark.7329773a",
+      "value": "red mark"
+    },
+    {
+      "key": "text.text.cargo.3322532d.f9f956ad",
+      "value": "text.cargo.3322532d"
+    },
+    {
+      "key": "text.text.deadweight.86491b04.8a0f8f3b",
+      "value": "text.deadweight.86491b04"
+    },
+    {
+      "key": "text.text.drift.0.0.0.0.0.0.0.41af5bbc.ae2ed0f4",
+      "value": "text.drift.0.0.0.0.0.0.0.41af5bbc"
+    },
+    {
+      "key": "text.under.keel.a1fde95c",
+      "value": "under keel"
+    },
+    {
+      "key": "text.windlass.stalled.7c38c444",
+      "value": "windlass stalled"
+    },
+    {
+      "key": "text.0.0.0.m.push.unit.loaded.mn.52.tug.controls.214b8460",
+      "value": "{0:0.0} m push unit  /  Loaded MN-52  /  Tug controls"
+    },
+    {
+      "key": "text.0.score.1.f0.100.aabc81fd",
+      "value": "{0} Score {1:F0}/100"
+    },
+    {
+      "key": "text.0.m.length.overall.8c7c6b48",
+      "value": "{0} m\nLENGTH OVERALL"
+    },
+    {
+      "key": "text.0.rpm.1.0.0.0.load.2.f0.f5097c97",
+      "value": "{0}RPM {1:+0;-0;0} LOAD {2:F0}%   "
+    },
+    {
+      "key": "text.0.chain.parted.375cff9a",
+      "value": "{0} chain parted"
+    },
+    {
+      "key": "text.0.anchor.let.go.d40c6453",
+      "value": "{0} anchor let go"
+    },
+    {
+      "key": "text.0.anchor.on.the.bottom.ff3cfc71",
+      "value": "{0} anchor on the bottom"
+    },
+    {
+      "key": "text.0.anchor.aweigh.2a2d808f",
+      "value": "{0} anchor aweigh"
+    },
+    {
+      "key": "text.0.anchor.dragging.699fb58f",
+      "value": "{0} anchor dragging"
+    },
+    {
+      "key": "text.0.windlass.stalled.956a2fec",
+      "value": "{0} windlass stalled"
+    },
+    {
+      "key": "text.0.anchor.stowed.913d0289",
+      "value": "{0} anchor stowed"
+    },
+    {
+      "key": "text.0.line.parted.a7aabbc7",
+      "value": "{0} line parted"
+    },
+    {
+      "key": "text.0.line.cast.off.c94c0436",
+      "value": "{0} line cast off"
+    },
+    {
+      "key": "text.0.chain.parted.41bfd576",
+      "value": "{0}: chain parted"
+    },
+    {
+      "key": "text.0.already.has.a.line.b963b1e0",
+      "value": "{0} ALREADY HAS A LINE"
+    },
+    {
+      "key": "text.0.is.full.475cc13b",
+      "value": "{0} IS FULL"
+    },
+    {
+      "key": "text.0.out.of.reach.1.0.m.max.2.0.m.a3b16bcb",
+      "value": "{0} OUT OF REACH ({1:0} m, max {2:0} m)"
+    },
+    {
+      "key": "text.volgo.don.project.507b.84a79e0c",
+      "value": "Volgo-Don Project 507B"
+    },
+    {
+      "key": "text.volgo.balt.project.2.95a.r.c7af5e76",
+      "value": "Volgo-Balt Project 2-95A/R"
+    },
+    {
+      "key": "text.volgoneft.project.1577.792b82a6",
+      "value": "Volgoneft Project 1577"
+    },
+    {
+      "key": "text.meteor.project.342u.a1d7e65f",
+      "value": "Meteor Project 342U"
+    },
+    {
+      "key": "text.luch.project.14352.ee4bb9c3",
+      "value": "Luch Project 14352"
+    },
+    {
+      "key": "text.96.1973.5123094f",
+      "value": "Серпухов, Р-96 (1973)"
+    },
+    {
+      "key": "text.52.e48e51d2",
+      "value": "Серпухов + МН-52"
+    },
+    {
+      "key": "text.low.f793de20",
+      "value": "Low"
+    },
+    {
+      "key": "text.medium.8e588cd1",
+      "value": "Medium"
+    },
+    {
+      "key": "text.high.c4ebc6d4",
+      "value": "High"
+    },
+    {
+      "key": "text.ultra.ac364e1a",
+      "value": "Ultra"
+    },
+    {
+      "key": "text.bow.head.p.9d00bf9f",
+      "value": "Bow head P"
+    },
+    {
+      "key": "text.bow.head.s.e29e3975",
+      "value": "Bow head S"
+    },
+    {
+      "key": "text.bow.breast.p.f45a2555",
+      "value": "Bow breast P"
+    },
+    {
+      "key": "text.bow.breast.s.656f69cb",
+      "value": "Bow breast S"
+    },
+    {
+      "key": "text.fwd.spring.p.3c959ee6",
+      "value": "Fwd spring P"
+    },
+    {
+      "key": "text.fwd.spring.s.e0396e15",
+      "value": "Fwd spring S"
+    },
+    {
+      "key": "text.aft.spring.p.ca5be674",
+      "value": "Aft spring P"
+    },
+    {
+      "key": "text.aft.spring.s.8d9da5ac",
+      "value": "Aft spring S"
+    },
+    {
+      "key": "text.stern.p.be6808f9",
+      "value": "Stern P"
+    },
+    {
+      "key": "text.stern.s.4b145142",
+      "value": "Stern S"
+    },
+    {
+      "key": "station.bow.head.p",
+      "value": "BOW HEAD P"
+    },
+    {
+      "key": "station.bow.head.s",
+      "value": "BOW HEAD S"
+    },
+    {
+      "key": "station.bow.breast.p",
+      "value": "BOW BREAST P"
+    },
+    {
+      "key": "station.bow.breast.s",
+      "value": "BOW BREAST S"
+    },
+    {
+      "key": "station.fwd.spring.p",
+      "value": "FWD SPRING P"
+    },
+    {
+      "key": "station.fwd.spring.s",
+      "value": "FWD SPRING S"
+    },
+    {
+      "key": "station.aft.spring.p",
+      "value": "AFT SPRING P"
+    },
+    {
+      "key": "station.aft.spring.s",
+      "value": "AFT SPRING S"
+    },
+    {
+      "key": "station.stern.p",
+      "value": "STERN P"
+    },
+    {
+      "key": "station.stern.s",
+      "value": "STERN S"
+    },
+    {
+      "key": "language.selected",
+      "value": "Selected"
+    },
+    {
+      "key": "line.state.slack",
+      "value": "SLACK"
+    },
+    {
+      "key": "line.state.taut",
+      "value": "TAUT"
+    },
+    {
+      "key": "line.state.overloaded",
+      "value": "OVERLOADED"
+    },
+    {
+      "key": "line.state.parted",
+      "value": "PARTED"
+    },
+    {
+      "key": "quality.mobile",
+      "value": "Mobile"
+    },
+    {
+      "key": "quality.pc",
+      "value": "PC"
+    }
+  ]
+}

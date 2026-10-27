@@ -47,15 +47,15 @@ namespace ShipSimulator.UI
             for (int i = 0; i < names.Length; i++)
             {
                 int index = i;
-                var rect = UiLayout.Rect(toolbar, names[i], i * 114, 0, 108, 44);
+                var rect = UiLayout.Rect(toolbar, names[i], i * 126, 0, 120, 44);
                 var image = rect.gameObject.AddComponent<Image>();
                 image.sprite = HudTheme.Rounded(8); image.type = Image.Type.Sliced;
                 var button = rect.gameObject.AddComponent<Button>();
                 button.targetGraphic = image;
                 var icon = UiLayout.Rect(rect, "Icon", 8, 13, 18, 18).gameObject.AddComponent<Image>();
                 icon.sprite = HudTheme.Icon(icons[i]); icon.raycastTarget = false;
-                var text = UiLayout.Rect(rect, "Caption", 30, 4, 76, 36).gameObject.AddComponent<Text>();
-                text.font = help.font; text.fontSize = 16; text.text = names[i];
+                var text = UiLayout.Rect(rect, "Caption", 30, 4, 88, 36).gameObject.AddComponent<Text>();
+                text.font = help.font; text.fontSize = 16; LocalizedLabel.BindSource(text, names[i]);
                 text.alignment = TextAnchor.MiddleLeft; text.raycastTarget = false;
                 button.onClick.AddListener(() =>
                 {
@@ -101,6 +101,8 @@ namespace ShipSimulator.UI
         }
 
         public void ToggleHelp() => Select(selected == 5 ? 0 : 5);
+        private void OnEnable() => Localization.Changed += Invalidate;
+        private void OnDisable() => Localization.Changed -= Invalidate;
         private void LateUpdate() => Refresh();
 
         private void Refresh()

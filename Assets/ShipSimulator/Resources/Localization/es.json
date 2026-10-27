@@ -1,0 +1,1764 @@
+{
+  "entries": [
+    {
+      "key": "text.w.s.engines.a.d.rudder.v.camera.right.mouse.look.around..71346a1c",
+      "value": "\n\nW / S  Engines     A / D  Rudder\nV  Cámara     Right mouse  Look around\nESC  Pause, settings & save"
+    },
+    {
+      "key": "text.g.anchor.b.let.go.veer.y.hold.u.heave.o.station.p.bollar.38b7d802",
+      "value": "\nG ANCLA  B FONDEAR/FILAR  Y RETENER  U VIRAR   O PUESTO  P BOLARDO  I DAR CABO  , COBRAR  / RETENER  . LARGAR  F LARGAR AMARRAS"
+    },
+    {
+      "key": "text.hullborne.5a951f70",
+      "value": "   <color=#8AA0AD>DESPLAZAMIENTO</color>"
+    },
+    {
+      "key": "text.bow.thruster.off.68916baa",
+      "value": "   PROPULSOR PROA APAGADO"
+    },
+    {
+      "key": "text.bow.thruster.0.1.f0.eaea03d2",
+      "value": "   PROPULSOR PROA {0} {1:F0}%"
+    },
+    {
+      "key": "text.space.stop.1.9.cameras.2cb2e691",
+      "value": "   SPACE PARAR   1-9 CÁMARAS\n"
+    },
+    {
+      "key": "text.total.0.f0.t.draft.1.f2.m.trim.2.0.00.0.00.m.3.ddb53b5d",
+      "value": "   TOTAL {0:F0} t\nCALADO {1:F2} m  ASIENTO {2:+0.00;-0.00} m\n{3}"
+    },
+    {
+      "key": "text.to.0.1.0.m.24278e3a",
+      "value": "  A <color=#F2C14E>{0}</color> {1:0} m"
+    },
+    {
+      "key": "text.0.f0.kn.holding.7b83d5ff",
+      "value": " ({0:F0} kN FIRME)\n"
+    },
+    {
+      "key": "text.out.of.reach.830e5952",
+      "value": " <color=#FF6B5B>FUERA DE ALCANCE</color>"
+    },
+    {
+      "key": "text.outside.tables.00bd8182",
+      "value": " | FUERA DE TABLAS"
+    },
+    {
+      "key": "text.2.27.km.shoals.currents.leading.marks.769ec61a",
+      "value": "2,27 km  /  Bajíos, corrientes y enfilaciones"
+    },
+    {
+      "key": "text.2.42.km.oka.entry.20.m.channel.basin.berthing.17586824",
+      "value": "2,42 km  /  Entrada del Oká, canal de 20 m y atraque"
+    },
+    {
+      "key": "text.20.m.of.marked.water.and.unlit.buoys.hold.the.axis.and.w.60aebbc5",
+      "value": "Canal de 20 m con boyas sin luz: mantén el eje y vigila las curvas"
+    },
+    {
+      "key": "text.port.a.701efc62",
+      "value": "< BAB [A]"
+    },
+    {
+      "key": "text.green.mark.8df5d50f",
+      "value": "<color=#4DC76B>boya verde</color></size>"
+    },
+    {
+      "key": "text.anchors.91d9258b",
+      "value": "<color=#8AA0AD>ANCLAS</color>\n"
+    },
+    {
+      "key": "text.draft.0.f1.m.a8291744",
+      "value": "<color=#8AA0AD>CALADO</color> {0:F1} m\n"
+    },
+    {
+      "key": "text.distance.0.f0.m.981e8dab",
+      "value": "<color=#8AA0AD>Distancia</color>  <b>{0:F0} m</b>\n"
+    },
+    {
+      "key": "text.limit.0.f0.km.h.216c3448",
+      "value": "<color=#8AA0AD>Límite</color> <b>{0:F0} km/h</b>"
+    },
+    {
+      "key": "text.min.ahead.0.f1.m.f8aa9980",
+      "value": "<color=#8AA0AD>MÍN. ADELANTE</color> <b>{0:F1} m</b>    "
+    },
+    {
+      "key": "text.mooring.2759d016",
+      "value": "<color=#8AA0AD>AMARRE</color>\n"
+    },
+    {
+      "key": "text.score.0.f0.100.3b296d0f",
+      "value": "<color=#8AA0AD>Puntos</color> <b>{0:F0}/100</b>     "
+    },
+    {
+      "key": "text.service.speed.0.f0.km.h.959ae7bd",
+      "value": "<color=#8AA0AD>Velocidad de servicio</color>  <b>{0:F0} km/h</b>"
+    },
+    {
+      "key": "text.shallow.danger.92e5726f",
+      "value": "<color=#D29B45>SOMERO</color>   <color=#E04539>PELIGRO</color>   "
+    },
+    {
+      "key": "text.red.mark.bf83aac7",
+      "value": "<color=#E86054>boya roja</color>   "
+    },
+    {
+      "key": "text.route.craft.pier.d179a9fd",
+      "value": "<color=#E8B24D>RUTA</color>   <color=#E0C2F2>BARCO / MUELLE</color></b></size>\n"
+    },
+    {
+      "key": "text.heading.predicted.path.d0f1dc35",
+      "value": "<size=12><color=#56C7E6>rumbo / trayectoria prevista</color>    "
+    },
+    {
+      "key": "text.safe.47ac5706",
+      "value": "<size=13><b><color=#46A6BC>SEGURO</color>   "
+    },
+    {
+      "key": "text.objective.51082de9",
+      "value": "<size=14><color=#56C7E6>OBJETIVO</color></size>\n"
+    },
+    {
+      "key": "text.course.7e96dd8f",
+      "value": "<size=14><color=#8AA0AD>RUMBO</color></size>\n"
+    },
+    {
+      "key": "text.current.53d2ded5",
+      "value": "<size=14><color=#8AA0AD>CORRIENTE</color></size>\n"
+    },
+    {
+      "key": "text.depth.d967b71b",
+      "value": "<size=14><color=#8AA0AD>PROFUNDIDAD</color></size>\n"
+    },
+    {
+      "key": "text.speed.578a37de",
+      "value": "<size=14><color=#8AA0AD>VELOCIDAD</color></size>\n"
+    },
+    {
+      "key": "text.drift.0.0.0.0.0.0.0.41af5bbc",
+      "value": "<size=14><color=#8AA0AD>deriva {0:+0.0;-0.0;0.0}°</color></size>"
+    },
+    {
+      "key": "text.under.keel.0.f1.m.1ead3d0a",
+      "value": "<size=14><color=#8AA0AD>bajo quilla {0:F1} m</color></size>"
+    },
+    {
+      "key": "text.command.0.0.0.0.deg.58ec31a7",
+      "value": "<size=14>ORDEN {0:+0;-0;0} deg"
+    },
+    {
+      "key": "text.proceed.to.waypoint.e02bc46d",
+      "value": "<size=23><b>Dirígete al punto de ruta</b></size>\n\n"
+    },
+    {
+      "key": "text.a.d.rudder.w.s.engine.q.z.or.e.x.telegraph.003759e7",
+      "value": "A/D TIMÓN   W/S MOTOR   Q/Z o E/X TELÉGRAFO"
+    },
+    {
+      "key": "text.a.d.rudder.w.s.engines.q.z.port.e.x.stbd.946ac490",
+      "value": "A/D TIMÓN   W/S MOTORES   Q/Z BAB   E/X EST"
+    },
+    {
+      "key": "text.aft.open.ec851829",
+      "value": "ABRIR POPA"
+    },
+    {
+      "key": "text.already.has.a.line.ae7c4007",
+      "value": "YA TIENE CABO"
+    },
+    {
+      "key": "text.anchor.3c80eef3",
+      "value": "ANCLA"
+    },
+    {
+      "key": "text.anchors.d2d87757",
+      "value": "ANCLAS"
+    },
+    {
+      "key": "text.acquire.the.gorodets.leading.line.cc5bbf0b",
+      "value": "Toma la enfilación de Gorodets"
+    },
+    {
+      "key": "text.acquiregorodetsleadingline.61c2cbff",
+      "value": "Tomar enfilación"
+    },
+    {
+      "key": "text.aft.ballast.group.ae1a1168",
+      "value": "Lastre de popa"
+    },
+    {
+      "key": "text.aft.hold.1bb1ea35",
+      "value": "Bodega de popa"
+    },
+    {
+      "key": "text.aftopen.c090a749",
+      "value": "Popa abierta"
+    },
+    {
+      "key": "text.anticipate.the.reversing.lateral.current.959e862a",
+      "value": "Prevé el cambio de corriente lateral"
+    },
+    {
+      "key": "text.at.anchor.102658f1",
+      "value": "En espera"
+    },
+    {
+      "key": "text.available.in.the.standalone.player.4e6f661c",
+      "value": "Disponible en la versión independiente"
+    },
+    {
+      "key": "text.before.you.continue.1b400986",
+      "value": "ANTES DE CONTINUAR"
+    },
+    {
+      "key": "text.bollard.517e8471",
+      "value": "BOLARDO"
+    },
+    {
+      "key": "text.bottom.contact.17e952a7",
+      "value": "CONTACTO CON EL FONDO"
+    },
+    {
+      "key": "text.bow.01a43f67",
+      "value": "PROA"
+    },
+    {
+      "key": "text.bow.thruster.a4755e74",
+      "value": "PROPULSOR PROA"
+    },
+    {
+      "key": "text.bow.thruster.off.4a5a8a9f",
+      "value": "PROPULSOR PROA APAGADO"
+    },
+    {
+      "key": "text.bridge.ef304fbe",
+      "value": "PUENTE"
+    },
+    {
+      "key": "text.back.76900f1b",
+      "value": "Atrás"
+    },
+    {
+      "key": "text.basin.325884d0",
+      "value": "Dársena"
+    },
+    {
+      "key": "text.basin.entrance.68b40fca",
+      "value": "Entrada a la dársena"
+    },
+    {
+      "key": "text.bridge.settings.30b168a2",
+      "value": "Ajustes del puente"
+    },
+    {
+      "key": "text.briefing.532fdae2",
+      "value": "Instrucciones"
+    },
+    {
+      "key": "text.camera.582ff0d0",
+      "value": "CÁMARA"
+    },
+    {
+      "key": "text.camera.0.2ef9a5eb",
+      "value": "CÁMARA: <size=20><b>{0}</b></size>  "
+    },
+    {
+      "key": "text.cast.off.3236ca67",
+      "value": "LARGAR CABO"
+    },
+    {
+      "key": "text.chain.parted.899eaefd",
+      "value": "CADENA ROTA"
+    },
+    {
+      "key": "text.chart.your.course.d0367933",
+      "value": "TRAZA TU RUMBO"
+    },
+    {
+      "key": "text.chase.123531ac",
+      "value": "SEGUIMIENTO"
+    },
+    {
+      "key": "text.choose.your.command.9b3a2feb",
+      "value": "ELIGE TU BARCO"
+    },
+    {
+      "key": "text.close.f13a1ed0",
+      "value": "CERRAR"
+    },
+    {
+      "key": "text.command.395c9840",
+      "value": "ORDEN"
+    },
+    {
+      "key": "text.course.4d980d99",
+      "value": "RUMBO"
+    },
+    {
+      "key": "text.craft.pier.d13cd99b",
+      "value": "BARCO / MUELLE"
+    },
+    {
+      "key": "text.current.e3cc57e1",
+      "value": "CORRIENTE"
+    },
+    {
+      "key": "text.current.from.port.side.246046b6",
+      "value": "CORRIENTE POR BABOR"
+    },
+    {
+      "key": "text.current.from.port.side.227441c8",
+      "value": "CORRIENTE POR BABOR\n"
+    },
+    {
+      "key": "text.current.from.starboard.side.be616be4",
+      "value": "CORRIENTE POR ESTRIBOR"
+    },
+    {
+      "key": "text.current.from.starboard.side.3da4bf7d",
+      "value": "CORRIENTE POR ESTRIBOR\n"
+    },
+    {
+      "key": "text.cushionborne.83fb35a6",
+      "value": "SOBRE COLCHÓN"
+    },
+    {
+      "key": "text.camera.03494b0d",
+      "value": "Cámara"
+    },
+    {
+      "key": "text.camera.rotation.9e751efc",
+      "value": "Giro de cámara"
+    },
+    {
+      "key": "text.camera.zoom.a3a35b57",
+      "value": "Zoom de cámara"
+    },
+    {
+      "key": "text.check.the.save.file.and.available.disk.space.details.are.1b00a3d0",
+      "value": "Comprueba la partida y el espacio libre. Consulta el registro para más detalles."
+    },
+    {
+      "key": "text.choose.a.different.vessel.or.passage.157b4ddb",
+      "value": "Elegir otro barco o ruta"
+    },
+    {
+      "key": "text.choose.a.vessel.and.a.river.passage.08ffd998",
+      "value": "Elegir barco y ruta fluvial"
+    },
+    {
+      "key": "text.choose.another.vessel.534f5bf4",
+      "value": "Elegir otro barco"
+    },
+    {
+      "key": "text.choose.the.interface.language.308df4b9",
+      "value": "Elige el idioma de la interfaz"
+    },
+    {
+      "key": "text.clear.the.lower.shoal.and.cross.the.finish.gate.cf65c295",
+      "value": "Supera el bajío inferior y cruza la meta"
+    },
+    {
+      "key": "text.closed.c21ead06",
+      "value": "Cerrado"
+    },
+    {
+      "key": "text.comfort.settings.64fb1f59",
+      "value": "Comodidad de manejo"
+    },
+    {
+      "key": "text.completed.22a970d2",
+      "value": "Completado"
+    },
+    {
+      "key": "text.confirm.eebdd24a",
+      "value": "Confirmar"
+    },
+    {
+      "key": "text.continue.voyage.48aee9d2",
+      "value": "Continuar viaje"
+    },
+    {
+      "key": "text.continue.with.this.action.eb067faf",
+      "value": "Realizar esta acción"
+    },
+    {
+      "key": "text.could.not.load.voyage.d50f2fd8",
+      "value": "No se pudo cargar el viaje."
+    },
+    {
+      "key": "text.could.not.open.scenario.cc4d9c35",
+      "value": "No se pudo abrir el escenario."
+    },
+    {
+      "key": "text.could.not.restore.voyage.7acc8748",
+      "value": "No se pudo restaurar el viaje."
+    },
+    {
+      "key": "text.could.not.save.voyage.3bdb89b8",
+      "value": "No se pudo guardar el viaje."
+    },
+    {
+      "key": "text.danger.0bd7272b",
+      "value": "PELIGRO"
+    },
+    {
+      "key": "text.day.c45bc4a7",
+      "value": "DÍA"
+    },
+    {
+      "key": "text.day.n.8dba15f9",
+      "value": "DÍA [N]"
+    },
+    {
+      "key": "text.deck.machinery.95df167d",
+      "value": "MAQUINARIA DE CUBIERTA"
+    },
+    {
+      "key": "text.deck.machinery.hatches.aa3bd14f",
+      "value": "MAQUINARIA DE CUBIERTA\nESCOTILLAS "
+    },
+    {
+      "key": "text.depth.1f1260fb",
+      "value": "PROFUNDIDAD"
+    },
+    {
+      "key": "text.depth.0.f1.m.4e8da492",
+      "value": "PROFUNDIDAD <size=24><b>{0:F1} m</b></size>    "
+    },
+    {
+      "key": "text.dir.0b4d0828",
+      "value": "DIR. +"
+    },
+    {
+      "key": "text.dir.65abe2b0",
+      "value": "DIR. -"
+    },
+    {
+      "key": "text.display.27cd4277",
+      "value": "PANTALLA"
+    },
+    {
+      "key": "text.dock.8.dcbe50bb",
+      "value": "MUELLE [8]"
+    },
+    {
+      "key": "text.docking.cb5757d7",
+      "value": "ATRAQUE"
+    },
+    {
+      "key": "text.draft.53dd5f4b",
+      "value": "CALADO"
+    },
+    {
+      "key": "text.dragging.bc9213be",
+      "value": "GARREANDO"
+    },
+    {
+      "key": "text.dead.slow.down.the.basin.moored.craft.both.sides.7e6ff32c",
+      "value": "Avanza muy despacio: hay barcos amarrados a ambos lados"
+    },
+    {
+      "key": "text.deck.889eacd6",
+      "value": "Cubierta"
+    },
+    {
+      "key": "text.deck.machinery.d88c1765",
+      "value": "Maquinaria de cubierta"
+    },
+    {
+      "key": "text.departapproach.f914a247",
+      "value": "Salida"
+    },
+    {
+      "key": "text.display.34e108c0",
+      "value": "Pantalla"
+    },
+    {
+      "key": "text.display.7c98c273",
+      "value": "Pantalla  /  "
+    },
+    {
+      "key": "text.display.0.4a5c3dbd",
+      "value": "Pantalla / {0}"
+    },
+    {
+      "key": "text.display.audio.camera.fa10d3bb",
+      "value": "Pantalla, sonido y cámara"
+    },
+    {
+      "key": "text.distance.b7bdf7a2",
+      "value": "Distancia"
+    },
+    {
+      "key": "text.done.11a6767d",
+      "value": "Listo"
+    },
+    {
+      "key": "text.empty.cc1d2f83",
+      "value": "DESCARGAR"
+    },
+    {
+      "key": "text.engineering.gameplay.prototype.estimated.navigation.data.75bf40c2",
+      "value": "Prototipo técnico de juego. Datos de navegación estimados."
+    },
+    {
+      "key": "text.engines.and.propellers.489e3a72",
+      "value": "Motores y hélices"
+    },
+    {
+      "key": "text.exit.play.mode.0e2d2aed",
+      "value": "Salir del modo de juego"
+    },
+    {
+      "key": "text.f1.controls.6027c318",
+      "value": "F1 CONTROLES"
+    },
+    {
+      "key": "text.fill.391edbf2",
+      "value": "CARGAR"
+    },
+    {
+      "key": "text.fog.1424ee09",
+      "value": "NIEBLA"
+    },
+    {
+      "key": "text.fog.f5.9bcae3a3",
+      "value": "NIEBLA [F5]"
+    },
+    {
+      "key": "text.foilborne.635f50bc",
+      "value": "SOBRE ALAS"
+    },
+    {
+      "key": "text.fore.open.12533b90",
+      "value": "ABRIR PROA"
+    },
+    {
+      "key": "text.full.ahead.09376fac",
+      "value": "AVANTE\nTODA"
+    },
+    {
+      "key": "text.full.astern.f948a6b2",
+      "value": "ATRÁS\nTODA"
+    },
+    {
+      "key": "text.full.ahead.f2c24b58",
+      "value": "AVANTE TODA"
+    },
+    {
+      "key": "text.full.astern.2a0a116b",
+      "value": "ATRÁS TODA"
+    },
+    {
+      "key": "text.failed.031a8f0f",
+      "value": "Fallido"
+    },
+    {
+      "key": "text.forward.ballast.group.7a2f2100",
+      "value": "Lastre de proa"
+    },
+    {
+      "key": "text.forward.hold.64b9c16a",
+      "value": "Bodega de proa"
+    },
+    {
+      "key": "text.forwardopen.edf8167c",
+      "value": "Proa abierta"
+    },
+    {
+      "key": "text.fuel.and.stores.budget.d903cb17",
+      "value": "Combustible y provisiones"
+    },
+    {
+      "key": "text.fullscreen.c461dbb2",
+      "value": "Pantalla completa"
+    },
+    {
+      "key": "text.go.back.6aadac2f",
+      "value": "Volver"
+    },
+    {
+      "key": "text.gorodets.passage.d24d7c84",
+      "value": "Travesía de Gorodets"
+    },
+    {
+      "key": "text.graphics.0.381c6bbe",
+      "value": "Gráficos / {0}"
+    },
+    {
+      "key": "text.graphics.settings.2ffe1ce1",
+      "value": "Ajustes gráficos"
+    },
+    {
+      "key": "text.half.ahead.85a04827",
+      "value": "AVANTE\nMEDIA"
+    },
+    {
+      "key": "text.half.astern.c6d8072c",
+      "value": "ATRÁS\nMEDIA"
+    },
+    {
+      "key": "text.half.ahead.bc5e74f7",
+      "value": "AVANTE MEDIA"
+    },
+    {
+      "key": "text.half.astern.cefeef1f",
+      "value": "ATRÁS MEDIA"
+    },
+    {
+      "key": "text.half.open.37020726",
+      "value": "ABRIR MITAD"
+    },
+    {
+      "key": "text.hanging.ff9579a7",
+      "value": "SUSPENDIDA"
+    },
+    {
+      "key": "text.hard.grounding.4a457f8d",
+      "value": "ENCALLADO"
+    },
+    {
+      "key": "text.hatches.b05b54d7",
+      "value": "ESCOTILLAS"
+    },
+    {
+      "key": "text.haul.f298a1c2",
+      "value": "COBRAR"
+    },
+    {
+      "key": "text.hauling.d89d72c5",
+      "value": "COBRANDO"
+    },
+    {
+      "key": "text.heave.52ad95e0",
+      "value": "VIRAR"
+    },
+    {
+      "key": "text.heaving.cd3abe64",
+      "value": "VIRANDO"
+    },
+    {
+      "key": "text.heaving.aweigh.d31a2ef5",
+      "value": "VIRANDO, LIBRE"
+    },
+    {
+      "key": "text.hold.aacf94b7",
+      "value": "RETENER"
+    },
+    {
+      "key": "text.holding.4958797a",
+      "value": "FIRME"
+    },
+    {
+      "key": "text.hullborne.8c88388f",
+      "value": "DESPLAZAMIENTO"
+    },
+    {
+      "key": "text.halfopen.9893b948",
+      "value": "Medio abierto"
+    },
+    {
+      "key": "text.helm.7e94675f",
+      "value": "Timón"
+    },
+    {
+      "key": "text.help.b79cac92",
+      "value": "Ayuda"
+    },
+    {
+      "key": "text.hold.the.leading.line.and.remain.inside.the.marked.fairw.61b855ce",
+      "value": "Mantén la enfilación dentro del canal balizado"
+    },
+    {
+      "key": "text.holdopen.c818d28b",
+      "value": "Abierto"
+    },
+    {
+      "key": "text.inland.passages.7c79c7aa",
+      "value": "RUTAS\nFLUVIALES"
+    },
+    {
+      "key": "text.interface.camera.92418a56",
+      "value": "INTERFAZ Y CÁMARA"
+    },
+    {
+      "key": "text.is.full.52a165d6",
+      "value": "ESTÁ LLENO"
+    },
+    {
+      "key": "text.interface.camera.11779717",
+      "value": "Interfaz y cámara"
+    },
+    {
+      "key": "text.interface.scale.6ba5218d",
+      "value": "Escala de interfaz"
+    },
+    {
+      "key": "text.interface.scale.and.camera.sensitivities.only.69c924e4",
+      "value": "Solo escala y sensibilidad de cámara"
+    },
+    {
+      "key": "text.j.l.bow.thruster.k.off.h.horn.m.map.n.day.night.t.time.f.d83a23c0",
+      "value": "J/L PROPULSOR PROA   K APAGAR   H BOCINA   M MAPA   N DÍA/NOCHE   T TIEMPO   F2-F5 TIEMPO METEO   BOTÓN DERECHO GIRAR"
+    },
+    {
+      "key": "text.keep.this.passage.e04fbbb1",
+      "value": "Conservar este viaje"
+    },
+    {
+      "key": "text.let.go.fa49324e",
+      "value": "FONDEAR"
+    },
+    {
+      "key": "text.letting.go.a671e41e",
+      "value": "FONDEANDO"
+    },
+    {
+      "key": "text.limit.reached.open.hatches.halfway.62cb8813",
+      "value": "LÍMITE ALCANZADO / ABRIR ESCOTILLAS A LA MITAD"
+    },
+    {
+      "key": "text.load.d438686e",
+      "value": "CARGA"
+    },
+    {
+      "key": "text.loading.ba0eebf3",
+      "value": "CARGA"
+    },
+    {
+      "key": "text.language.a4fe6526",
+      "value": "Idioma"
+    },
+    {
+      "key": "text.leave.the.bridge.179f1caa",
+      "value": "Salir del puente"
+    },
+    {
+      "key": "text.leave.the.bridge.1100c79f",
+      "value": "¿Salir del puente?"
+    },
+    {
+      "key": "text.leave.the.lock.approach.and.prepare.for.lateral.set.a4635afe",
+      "value": "Sal de la aproximación a la esclusa y prevé la deriva lateral"
+    },
+    {
+      "key": "text.leave.this.passage.b0cb492b",
+      "value": "¿Abandonar este viaje?"
+    },
+    {
+      "key": "text.leaving.the.lay.up.berth.2c551dc4",
+      "value": "Salida del amarradero"
+    },
+    {
+      "key": "text.let.go.and.come.clear.of.the.laid.up.barges.134f6695",
+      "value": "Larga amarras y aléjate de las barcazas amarradas"
+    },
+    {
+      "key": "text.liftinginner.8b0a617a",
+      "value": "Elevando interiores"
+    },
+    {
+      "key": "text.liftingouter.12244d66",
+      "value": "Elevando exteriores"
+    },
+    {
+      "key": "text.limit.674b0ed5",
+      "value": "Límite"
+    },
+    {
+      "key": "text.line.passed.0.to.1.fc359ebf",
+      "value": "Cabo pasado de {0} a {1}"
+    },
+    {
+      "key": "text.load.saved.voyage.0029ef85",
+      "value": "Cargar viaje"
+    },
+    {
+      "key": "text.load.saved.voyage.dc768bab",
+      "value": "¿Cargar el viaje guardado?"
+    },
+    {
+      "key": "text.loading.vessel.and.river.conditions.823a52f4",
+      "value": "Cargando barco y condiciones del río..."
+    },
+    {
+      "key": "text.loweringouter.cb24197e",
+      "value": "Bajando exteriores"
+    },
+    {
+      "key": "text.make.yourself.at.home.9a5c2a5b",
+      "value": "A TU GUSTO"
+    },
+    {
+      "key": "text.midships.c.80729499",
+      "value": "CENTRO [C]"
+    },
+    {
+      "key": "text.min.ahead.6423db07",
+      "value": "MÍN. ADELANTE"
+    },
+    {
+      "key": "text.mooring.0053bcc0",
+      "value": "AMARRE"
+    },
+    {
+      "key": "text.map.be176b00",
+      "value": "Mapa"
+    },
+    {
+      "key": "text.master.volume.b041a7d4",
+      "value": "Volumen general"
+    },
+    {
+      "key": "text.master.volume.mix.and.mute.bbc24fc6",
+      "value": "Volumen, mezcla y silencio"
+    },
+    {
+      "key": "text.mission.complete.score.0.f0.100.e1531559",
+      "value": "Viaje completado. Puntos {0:F0}/100"
+    },
+    {
+      "key": "text.mission.failed.score.0.f0.100.e7c6b77d",
+      "value": "Viaje fallido. Puntos {0:F0}/100"
+    },
+    {
+      "key": "text.mooring.point.0.is.not.in.this.scenario.that.line.was.no.fb2b5972",
+      "value": "El punto {0} no existe en este escenario; no se restauró el cabo"
+    },
+    {
+      "key": "text.mute.0.b91012a8",
+      "value": "Silencio / {0}"
+    },
+    {
+      "key": "text.nav.9.88b42e42",
+      "value": "PUENTE [9]"
+    },
+    {
+      "key": "text.navigator.c5be6dc6",
+      "value": "NAVEGANTE"
+    },
+    {
+      "key": "text.next.v.a0e6963b",
+      "value": "SIG. [V]"
+    },
+    {
+      "key": "text.night.79162683",
+      "value": "NOCHE"
+    },
+    {
+      "key": "text.no.bottom.data.82d1d152",
+      "value": "SIN DATOS DEL FONDO"
+    },
+    {
+      "key": "text.no.mooring.station.caae732f",
+      "value": "SIN PUESTO DE AMARRE"
+    },
+    {
+      "key": "text.no.shore.bollard.selected.b397e3e6",
+      "value": "NO SE HA ELEGIDO BOLARDO"
+    },
+    {
+      "key": "text.nara.reach.fb1145e2",
+      "value": "Tramo del Nara"
+    },
+    {
+      "key": "text.new.voyage.dd976ea6",
+      "value": "Nuevo viaje"
+    },
+    {
+      "key": "text.no.saved.voyage.yet.b0211ec1",
+      "value": "Aún no hay viajes guardados"
+    },
+    {
+      "key": "text.objective.77a8599f",
+      "value": "OBJETIVO"
+    },
+    {
+      "key": "text.on.bottom.slack.b10fe547",
+      "value": "EN EL FONDO, FLOJA"
+    },
+    {
+      "key": "text.out.of.reach.f666d6fd",
+      "value": "FUERA DE ALCANCE"
+    },
+    {
+      "key": "text.outside.fairway.97b803a6",
+      "value": "FUERA DEL CANAL"
+    },
+    {
+      "key": "text.outside.fairway.0955a9f6",
+      "value": "FUERA DEL CANAL\n"
+    },
+    {
+      "key": "text.outside.tables.36efbdad",
+      "value": "FUERA DE TABLAS"
+    },
+    {
+      "key": "text.overloaded.ec709fd6",
+      "value": "SOBRECARGADO"
+    },
+    {
+      "key": "text.overspeed.536535f0",
+      "value": "EXCESO DE VELOCIDAD"
+    },
+    {
+      "key": "text.overspeed.0665e89e",
+      "value": "EXCESO DE VELOCIDAD\n"
+    },
+    {
+      "key": "text.off.ca7981b4",
+      "value": "No"
+    },
+    {
+      "key": "text.oka.mouth.e587a927",
+      "value": "Desembocadura al Oká"
+    },
+    {
+      "key": "text.on.13001175",
+      "value": "Sí"
+    },
+    {
+      "key": "text.open.river.learn.the.vessel.and.controls.b91a90f2",
+      "value": "Río abierto  /  Conoce el barco y los controles"
+    },
+    {
+      "key": "text.parted.7ca4f91c",
+      "value": "ROTO"
+    },
+    {
+      "key": "text.pass.line.afa4218f",
+      "value": "DAR CABO"
+    },
+    {
+      "key": "text.passage.paused.your.vessel.is.holding.position.96f59fc0",
+      "value": "VIAJE EN PAUSA  /  El barco mantiene su posición."
+    },
+    {
+      "key": "text.port.6acc99af",
+      "value": "BABOR"
+    },
+    {
+      "key": "text.prev.39a40026",
+      "value": "ANTERIOR"
+    },
+    {
+      "key": "text.project.0.river.navigation.simulator.822c1ddb",
+      "value": "PROYECTO {0} / SIMULADOR DE NAVEGACIÓN FLUVIAL"
+    },
+    {
+      "key": "text.push.unit.petroleum.barge.1d517986",
+      "value": "CONVOY\nBARCAZA PETROLERA"
+    },
+    {
+      "key": "text.passgorodetsshoal.490bf58b",
+      "value": "Bajío de Gorodets"
+    },
+    {
+      "key": "text.passlowerkochergino.7f2ba38b",
+      "value": "Kochergino inferior"
+    },
+    {
+      "key": "text.passupperkochergino.b287e15b",
+      "value": "Kochergino superior"
+    },
+    {
+      "key": "text.passage.complete.0140adeb",
+      "value": "Viaje completado."
+    },
+    {
+      "key": "text.passage.failed.6f2d527d",
+      "value": "Viaje fallido."
+    },
+    {
+      "key": "text.past.the.passenger.berth.and.the.yacht.harbour.mind.your.e0de973b",
+      "value": "Pasa el muelle de pasajeros y la marina sin provocar oleaje"
+    },
+    {
+      "key": "text.port.and.marina.6dfe204a",
+      "value": "Puerto y marina"
+    },
+    {
+      "key": "text.prepare.vessel.c3dcea26",
+      "value": "Prepara el barco"
+    },
+    {
+      "key": "text.proceed.to.waypoint.26e63262",
+      "value": "Dirígete al punto de ruta"
+    },
+    {
+      "key": "text.push.unit.too.deep.for.this.passage.79e9603a",
+      "value": "Calado del convoy excesivo para esta ruta"
+    },
+    {
+      "key": "text.push.unit.too.long.0.0.0.m.limit.1.0.m.c91f9391",
+      "value": "Convoy demasiado largo / {0:0.0} m, límite {1:0} m"
+    },
+    {
+      "key": "text.push.unit.too.wide.for.this.passage.074f823c",
+      "value": "Convoy demasiado ancho para esta ruta"
+    },
+    {
+      "key": "text.quality.synchronisation.and.fullscreen.b5d63c15",
+      "value": "Calidad, sincronización y pantalla completa"
+    },
+    {
+      "key": "text.quit.to.desktop.c4f9502f",
+      "value": "Salir al escritorio"
+    },
+    {
+      "key": "text.rain.959a3064",
+      "value": "LLUVIA"
+    },
+    {
+      "key": "text.rain.f4.e03f136e",
+      "value": "LLUVIA [F4]"
+    },
+    {
+      "key": "text.rain.0.0.fog.1.0.365e0e52",
+      "value": "LLUVIA {0:0}%   NIEBLA {1:0}%"
+    },
+    {
+      "key": "text.ready.c2e3ac47",
+      "value": "LISTO"
+    },
+    {
+      "key": "text.river.class.cargo.vessel.71c36296",
+      "value": "CARGUERO\nFLUVIAL"
+    },
+    {
+      "key": "text.river.passenger.air.cushion.14f59c26",
+      "value": "PASAJEROS\nCOLCHÓN DE AIRE"
+    },
+    {
+      "key": "text.river.passenger.hydrofoil.6a48a0a6",
+      "value": "PASAJEROS\nHIDROALA"
+    },
+    {
+      "key": "text.river.radar.head.up.200.m.eb58d855",
+      "value": "RADAR FLUVIAL · RUMBO ARRIBA · 200 m"
+    },
+    {
+      "key": "text.river.tug.pusher.single.waterjet.c55b23d0",
+      "value": "REMOLCADOR\nUN HIDROJET"
+    },
+    {
+      "key": "text.river.sea.cargo.vessel.ff1b38b5",
+      "value": "CARGUERO\nFLUVIAL-MARÍTIMO"
+    },
+    {
+      "key": "text.river.sea.oil.tanker.27ab6b68",
+      "value": "PETROLERO\nFLUVIAL-MARÍTIMO"
+    },
+    {
+      "key": "text.route.7cc8ad34",
+      "value": "RUTA"
+    },
+    {
+      "key": "text.rudder.df253ce3",
+      "value": "TIMÓN"
+    },
+    {
+      "key": "text.rudder.0.0.deg.463a1246",
+      "value": "TIMÓN  0.0 deg"
+    },
+    {
+      "key": "text.rudder.0.0.0.0.0.0.0.deg.987e7920",
+      "value": "TIMÓN  <size=23><b>{0:+0.0;-0.0;0.0} deg</b></size>\n"
+    },
+    {
+      "key": "text.reachfinish.572a3976",
+      "value": "Hacia la meta"
+    },
+    {
+      "key": "text.record.your.current.passage.dd412560",
+      "value": "Guardar el estado del viaje"
+    },
+    {
+      "key": "text.replace.saved.voyage.37de4df3",
+      "value": "¿Reemplazar el viaje guardado?"
+    },
+    {
+      "key": "text.restore.defaults.602f8e63",
+      "value": "Restablecer valores"
+    },
+    {
+      "key": "text.resume.voyage.d02c220d",
+      "value": "Continuar viaje"
+    },
+    {
+      "key": "text.return.to.settings.cab0aa32",
+      "value": "Volver a ajustes"
+    },
+    {
+      "key": "text.return.to.the.bridge.esc.58823e3a",
+      "value": "Volver al puente  /  ESC"
+    },
+    {
+      "key": "text.return.to.the.menu.5d8ae338",
+      "value": "Volver al menú"
+    },
+    {
+      "key": "text.river.familiarisation.0b8c8a00",
+      "value": "Exploración fluvial"
+    },
+    {
+      "key": "text.rocky.bottom.maintain.clearance.and.small.rudder.angles.1c79e8f8",
+      "value": "Fondo rocoso: mantén margen bajo la quilla y ángulos de timón pequeños"
+    },
+    {
+      "key": "text.safe.10a87133",
+      "value": "SEGURO"
+    },
+    {
+      "key": "text.select.compartment.41388674",
+      "value": "ELEGIR COMPARTIMENTO"
+    },
+    {
+      "key": "text.setting.4fe70949",
+      "value": "AGARRANDO"
+    },
+    {
+      "key": "text.shallow.39d9d711",
+      "value": "SOMERO"
+    },
+    {
+      "key": "text.shallow.water.44b85352",
+      "value": "AGUAS SOMERAS"
+    },
+    {
+      "key": "text.shallow.water.fcde8e1d",
+      "value": "AGUAS SOMERAS\n"
+    },
+    {
+      "key": "text.slack.2cfe0127",
+      "value": "LARGAR"
+    },
+    {
+      "key": "text.slacking.9f19976f",
+      "value": "LARGANDO"
+    },
+    {
+      "key": "text.slow.ahead.95226e4b",
+      "value": "AVANTE\nPOCA"
+    },
+    {
+      "key": "text.slow.astern.f538b82e",
+      "value": "ATRÁS\nPOCA"
+    },
+    {
+      "key": "text.slow.ahead.7b21cb5f",
+      "value": "AVANTE POCA"
+    },
+    {
+      "key": "text.slow.astern.b77f78ff",
+      "value": "ATRÁS POCA"
+    },
+    {
+      "key": "text.speed.6129de1e",
+      "value": "VELOCIDAD"
+    },
+    {
+      "key": "text.starboard.62592344",
+      "value": "ESTRIBOR"
+    },
+    {
+      "key": "text.station.81770823",
+      "value": "PUESTO"
+    },
+    {
+      "key": "text.station.0.09f17174",
+      "value": "PUESTO <color=#F2C14E>{0}</color>"
+    },
+    {
+      "key": "text.stbd.96228e9d",
+      "value": "ESTRIBOR"
+    },
+    {
+      "key": "text.stbd.d.37ab262c",
+      "value": "EST [D] >"
+    },
+    {
+      "key": "text.stern.deb17fb6",
+      "value": "POPA"
+    },
+    {
+      "key": "text.stop.04dedf8a",
+      "value": "PARAR"
+    },
+    {
+      "key": "text.stop.all.831df458",
+      "value": "PARAR TODO"
+    },
+    {
+      "key": "text.stop.engines.to.transfer.54be81b0",
+      "value": "PARA TRANSFERIR, PARA LOS MOTORES"
+    },
+    {
+      "key": "text.stopped.133c4945",
+      "value": "DETENIDO"
+    },
+    {
+      "key": "text.stowed.083415db",
+      "value": "ESTIBADA"
+    },
+    {
+      "key": "text.strong.current.15d27220",
+      "value": "CORRIENTE FUERTE"
+    },
+    {
+      "key": "text.strong.current.6ace2f40",
+      "value": "CORRIENTE FUERTE\n"
+    },
+    {
+      "key": "text.save.and.return.to.settings.60ce0426",
+      "value": "Guardar y volver a ajustes"
+    },
+    {
+      "key": "text.save.first.if.you.want.to.keep.your.current.progress.f9145685",
+      "value": "Guarda primero para conservar el progreso."
+    },
+    {
+      "key": "text.save.unavailable.start.a.new.voyage.to.continue.78a6d521",
+      "value": "Partida no disponible. Inicia un nuevo viaje."
+    },
+    {
+      "key": "text.save.voyage.e5ad21dd",
+      "value": "Guardar viaje"
+    },
+    {
+      "key": "text.scale.and.independent.camera.sensitivities.8c1beaa5",
+      "value": "Escala y sensibilidad de giro y zoom"
+    },
+    {
+      "key": "text.score.38e5a46c",
+      "value": "Puntos"
+    },
+    {
+      "key": "text.select.a.passage.f9fd87ef",
+      "value": "Elegir ruta"
+    },
+    {
+      "key": "text.select.a.vessel.8ae0d9b0",
+      "value": "Elegir barco"
+    },
+    {
+      "key": "text.select.the.next.quality.preset.4b770c73",
+      "value": "Elegir el siguiente nivel de calidad"
+    },
+    {
+      "key": "text.serpukhov.zaton.b27d73dc",
+      "value": "Dársena de Sérpujov"
+    },
+    {
+      "key": "text.service.speed.da0bb3ea",
+      "value": "Velocidad de servicio"
+    },
+    {
+      "key": "text.settings.74a883a0",
+      "value": "Ajustes"
+    },
+    {
+      "key": "text.settings.are.saved.automatically.b74fa394",
+      "value": "Los ajustes se guardan automáticamente"
+    },
+    {
+      "key": "text.silence.all.sound.the.mix.is.kept.169d5b41",
+      "value": "Silenciar todo conservando la mezcla"
+    },
+    {
+      "key": "text.slidinginner.f4c4d070",
+      "value": "Deslizando interiores"
+    },
+    {
+      "key": "text.sound.46124e02",
+      "value": "Sonido"
+    },
+    {
+      "key": "text.stacked.c2fed746",
+      "value": "Apilado"
+    },
+    {
+      "key": "text.synchronise.frames.with.your.display.9863953c",
+      "value": "Sincronizar fotogramas con la pantalla"
+    },
+    {
+      "key": "text.taut.7ffd8712",
+      "value": "TENSO"
+    },
+    {
+      "key": "text.telegraph.80b30369",
+      "value": "TELÉGRAFO"
+    },
+    {
+      "key": "text.telegraph.0.1.ce01c452",
+      "value": "TELÉGRAFO  <size=23><b>{0}</b></size>\n<size=15>{1}</size>"
+    },
+    {
+      "key": "text.telegraph.stop.95b402ae",
+      "value": "TELÉGRAFO  PARAR"
+    },
+    {
+      "key": "text.time.5888675d",
+      "value": "TIEMPO"
+    },
+    {
+      "key": "text.time.1x.ee719375",
+      "value": "TIEMPO 1x"
+    },
+    {
+      "key": "text.time.0.feff9f63",
+      "value": "TIEMPO {0}"
+    },
+    {
+      "key": "text.to.c3bd7d9e",
+      "value": "A"
+    },
+    {
+      "key": "text.too.much.way.on.to.pass.a.line.7f0c5da9",
+      "value": "DEMASIADA VELOCIDAD PARA DAR CABO"
+    },
+    {
+      "key": "text.top.07b4ed8e",
+      "value": "CENITAL"
+    },
+    {
+      "key": "text.total.ab2882c8",
+      "value": "TOTAL"
+    },
+    {
+      "key": "text.transfer.paused.vessel.moving.14414927",
+      "value": "TRANSFERENCIA EN PAUSA: BARCO EN MOVIMIENTO"
+    },
+    {
+      "key": "text.transferring.2568a744",
+      "value": "TRANSFIRIENDO"
+    },
+    {
+      "key": "text.trim.d639e5f5",
+      "value": "ASIENTO"
+    },
+    {
+      "key": "text.take.the.helm.read.the.river.d95df952",
+      "value": "Toma el timón. Conoce el río."
+    },
+    {
+      "key": "text.the.gate.is.about.55.m.wide.line.her.up.early.58147c91",
+      "value": "La entrada mide unos 55 m: alinéate con antelación"
+    },
+    {
+      "key": "text.toggle.fullscreen.display.66a70eb9",
+      "value": "Alternar pantalla completa"
+    },
+    {
+      "key": "text.too.deep.for.this.passage.0.0.00.m.limit.1.0.00.m.dc1f11fd",
+      "value": "Calado excesivo / {0:0.00} m, límite {1:0.00} m"
+    },
+    {
+      "key": "text.too.long.for.this.passage.0.0.0.m.limit.1.0.m.5d3c0df4",
+      "value": "Barco demasiado largo / {0:0.0} m, límite {1:0} m"
+    },
+    {
+      "key": "text.too.wide.for.this.passage.0.0.0.m.limit.1.0.0.m.76a223bd",
+      "value": "Barco demasiado ancho / {0:0.0} m, límite {1:0.0} m"
+    },
+    {
+      "key": "text.traversing.002f2c31",
+      "value": "Desplazando"
+    },
+    {
+      "key": "text.turn.to.port.out.of.the.nara.and.stem.the.oka.current.1ffc8660",
+      "value": "Gira a babor al salir del Nara y remonta la corriente del Oká"
+    },
+    {
+      "key": "text.unsaved.progress.in.this.passage.will.be.lost.d4548bfc",
+      "value": "Se perderá el progreso sin guardar."
+    },
+    {
+      "key": "text.unsaved.progress.will.be.lost.you.can.go.back.and.save.1c7ecfdd",
+      "value": "Se perderá el progreso sin guardar. Puedes volver y guardar."
+    },
+    {
+      "key": "text.veering.2408b1df",
+      "value": "FILANDO CADENA"
+    },
+    {
+      "key": "text.vessel.on.standby.ccd0e1f6",
+      "value": "BARCO EN ESPERA"
+    },
+    {
+      "key": "text.vsync.0.8a9fda47",
+      "value": "Sincronización vertical / {0}"
+    },
+    {
+      "key": "text.voyage.saved.safe.to.leave.the.bridge.d2d64945",
+      "value": "Viaje guardado. Puedes salir del puente."
+    },
+    {
+      "key": "text.warning.86f56fe8",
+      "value": "AVISO"
+    },
+    {
+      "key": "text.warning.39485faa",
+      "value": "AVISO    "
+    },
+    {
+      "key": "text.weather.0a244108",
+      "value": "TIEMPO"
+    },
+    {
+      "key": "text.welcome.aboard.67c46e29",
+      "value": "BIENVENIDO A BORDO"
+    },
+    {
+      "key": "text.wind.f144dd58",
+      "value": "VIENTO"
+    },
+    {
+      "key": "text.wind.f2.5e38d869",
+      "value": "VIENTO [F2]"
+    },
+    {
+      "key": "text.wind.0.000.deg.1.0.m.s.bffb1486",
+      "value": "VIENTO {0:000} deg  {1:0} m/s   "
+    },
+    {
+      "key": "text.windlass.stalled.7cde3adc",
+      "value": "MOLINETE BLOQUEADO"
+    },
+    {
+      "key": "text.water.7ca7dea9",
+      "value": "Agua"
+    },
+    {
+      "key": "text.weather.a0bba638",
+      "value": "Tiempo"
+    },
+    {
+      "key": "text.wind.d151346f",
+      "value": "Viento"
+    },
+    {
+      "key": "text.windowed.3f26603a",
+      "value": "Ventana"
+    },
+    {
+      "key": "text.your.bridge.your.passage.1b66623e",
+      "value": "TU PUENTE.\nTU VIAJE."
+    },
+    {
+      "key": "text.your.vessel.0.w.s.engines.a.d.rudder.v.camera.right.mous.49facf55",
+      "value": "TU BARCO\n\n{0}\n\nW / S Motores     A / D Timón\nV Cámara     Botón derecho Mirar\nESC Pausa, ajustes y guardar"
+    },
+    {
+      "key": "text.your.next.passage.67e0939e",
+      "value": "Tu próximo viaje"
+    },
+    {
+      "key": "text.your.previous.saved.passage.will.be.replaced.9350fe60",
+      "value": "Se reemplazará el viaje guardado anterior."
+    },
+    {
+      "key": "text.your.saved.voyage.will.be.kept.for.your.return.43da82f7",
+      "value": "Tu viaje guardado se conservará."
+    },
+    {
+      "key": "text.anchor.aweigh.22414e17",
+      "value": "ancla libre"
+    },
+    {
+      "key": "text.anchor.dragging.7ab94781",
+      "value": "ancla garreando"
+    },
+    {
+      "key": "text.anchor.let.go.c94313a9",
+      "value": "ancla fondeada"
+    },
+    {
+      "key": "text.anchor.on.the.bottom.3385b789",
+      "value": "ancla en el fondo"
+    },
+    {
+      "key": "text.anchor.stowed.9f2254ae",
+      "value": "ancla estibada"
+    },
+    {
+      "key": "text.cargo.3322532d",
+      "value": "carga"
+    },
+    {
+      "key": "text.chain.parted.b1620f8f",
+      "value": "cadena rota"
+    },
+    {
+      "key": "text.deadweight.86491b04",
+      "value": "peso muerto"
+    },
+    {
+      "key": "text.drift.0b7a461f",
+      "value": "deriva"
+    },
+    {
+      "key": "text.green.mark.765b536e",
+      "value": "boya verde"
+    },
+    {
+      "key": "text.heading.predicted.path.384afa00",
+      "value": "rumbo / trayectoria prevista"
+    },
+    {
+      "key": "text.line.cast.off.9872336d",
+      "value": "cabo largado"
+    },
+    {
+      "key": "text.line.parted.586434d6",
+      "value": "cabo roto"
+    },
+    {
+      "key": "text.red.mark.7329773a",
+      "value": "boya roja"
+    },
+    {
+      "key": "text.text.cargo.3322532d.f9f956ad",
+      "value": "text.carga.3322532d"
+    },
+    {
+      "key": "text.text.deadweight.86491b04.8a0f8f3b",
+      "value": "text.peso muerto.86491b04"
+    },
+    {
+      "key": "text.text.drift.0.0.0.0.0.0.0.41af5bbc.ae2ed0f4",
+      "value": "text.deriva.0.0.0.0.0.0.0.41af5bbc"
+    },
+    {
+      "key": "text.under.keel.a1fde95c",
+      "value": "bajo quilla"
+    },
+    {
+      "key": "text.windlass.stalled.7c38c444",
+      "value": "molinete bloqueado"
+    },
+    {
+      "key": "text.0.0.0.m.push.unit.loaded.mn.52.tug.controls.214b8460",
+      "value": "Convoy de {0:0.0} m / MN-52 cargada / Mandos del remolcador"
+    },
+    {
+      "key": "text.0.score.1.f0.100.aabc81fd",
+      "value": "{0} Puntos {1:F0}/100"
+    },
+    {
+      "key": "text.0.m.length.overall.8c7c6b48",
+      "value": "{0} m\nESLORA TOTAL"
+    },
+    {
+      "key": "text.0.rpm.1.0.0.0.load.2.f0.f5097c97",
+      "value": "{0}RPM {1:+0;-0;0} CARGA {2:F0}%   "
+    },
+    {
+      "key": "text.0.chain.parted.375cff9a",
+      "value": "{0} cadena rota"
+    },
+    {
+      "key": "text.0.anchor.let.go.d40c6453",
+      "value": "{0} ancla fondeada"
+    },
+    {
+      "key": "text.0.anchor.on.the.bottom.ff3cfc71",
+      "value": "{0} ancla en el fondo"
+    },
+    {
+      "key": "text.0.anchor.aweigh.2a2d808f",
+      "value": "{0} ancla libre"
+    },
+    {
+      "key": "text.0.anchor.dragging.699fb58f",
+      "value": "{0} ancla garreando"
+    },
+    {
+      "key": "text.0.windlass.stalled.956a2fec",
+      "value": "{0} molinete bloqueado"
+    },
+    {
+      "key": "text.0.anchor.stowed.913d0289",
+      "value": "{0} ancla estibada"
+    },
+    {
+      "key": "text.0.line.parted.a7aabbc7",
+      "value": "{0} cabo roto"
+    },
+    {
+      "key": "text.0.line.cast.off.c94c0436",
+      "value": "{0} cabo largado"
+    },
+    {
+      "key": "text.0.chain.parted.41bfd576",
+      "value": "{0}: cadena rota"
+    },
+    {
+      "key": "text.0.already.has.a.line.b963b1e0",
+      "value": "{0}: ya tiene cabo"
+    },
+    {
+      "key": "text.0.is.full.475cc13b",
+      "value": "{0}: lleno"
+    },
+    {
+      "key": "text.0.out.of.reach.1.0.m.max.2.0.m.a3b16bcb",
+      "value": "{0}: fuera de alcance ({1:0} m, máx. {2:0} m)"
+    },
+    {
+      "key": "text.volgo.don.project.507b.84a79e0c",
+      "value": "Volgo-Don proyecto 507B"
+    },
+    {
+      "key": "text.volgo.balt.project.2.95a.r.c7af5e76",
+      "value": "Volgo-Balt proyecto 2-95A/R"
+    },
+    {
+      "key": "text.volgoneft.project.1577.792b82a6",
+      "value": "Volgoneft proyecto 1577"
+    },
+    {
+      "key": "text.meteor.project.342u.a1d7e65f",
+      "value": "Meteor proyecto 342U"
+    },
+    {
+      "key": "text.luch.project.14352.ee4bb9c3",
+      "value": "Luch proyecto 14352"
+    },
+    {
+      "key": "text.96.1973.5123094f",
+      "value": "Sérpujov, R-96 (1973)"
+    },
+    {
+      "key": "text.52.e48e51d2",
+      "value": "Sérpujov + MN-52"
+    },
+    {
+      "key": "text.low.f793de20",
+      "value": "Baja"
+    },
+    {
+      "key": "text.medium.8e588cd1",
+      "value": "Media"
+    },
+    {
+      "key": "text.high.c4ebc6d4",
+      "value": "Alta"
+    },
+    {
+      "key": "text.ultra.ac364e1a",
+      "value": "Ultra"
+    },
+    {
+      "key": "text.bow.head.p.9d00bf9f",
+      "value": "Largo proa BAB"
+    },
+    {
+      "key": "text.bow.head.s.e29e3975",
+      "value": "Largo proa EST"
+    },
+    {
+      "key": "text.bow.breast.p.f45a2555",
+      "value": "Través proa BAB"
+    },
+    {
+      "key": "text.bow.breast.s.656f69cb",
+      "value": "Través proa EST"
+    },
+    {
+      "key": "text.fwd.spring.p.3c959ee6",
+      "value": "Esprín proa BAB"
+    },
+    {
+      "key": "text.fwd.spring.s.e0396e15",
+      "value": "Esprín proa EST"
+    },
+    {
+      "key": "text.aft.spring.p.ca5be674",
+      "value": "Esprín popa BAB"
+    },
+    {
+      "key": "text.aft.spring.s.8d9da5ac",
+      "value": "Esprín popa EST"
+    },
+    {
+      "key": "text.stern.p.be6808f9",
+      "value": "Popa BAB"
+    },
+    {
+      "key": "text.stern.s.4b145142",
+      "value": "Popa EST"
+    },
+    {
+      "key": "station.bow.head.p",
+      "value": "Largo proa BAB"
+    },
+    {
+      "key": "station.bow.head.s",
+      "value": "Largo proa EST"
+    },
+    {
+      "key": "station.bow.breast.p",
+      "value": "Través proa BAB"
+    },
+    {
+      "key": "station.bow.breast.s",
+      "value": "Través proa EST"
+    },
+    {
+      "key": "station.fwd.spring.p",
+      "value": "Esprín proa BAB"
+    },
+    {
+      "key": "station.fwd.spring.s",
+      "value": "Esprín proa EST"
+    },
+    {
+      "key": "station.aft.spring.p",
+      "value": "Esprín popa BAB"
+    },
+    {
+      "key": "station.aft.spring.s",
+      "value": "Esprín popa EST"
+    },
+    {
+      "key": "station.stern.p",
+      "value": "Popa BAB"
+    },
+    {
+      "key": "station.stern.s",
+      "value": "Popa EST"
+    },
+    {
+      "key": "language.selected",
+      "value": "Seleccionado"
+    },
+    {
+      "key": "line.state.slack",
+      "value": "FLOJO"
+    },
+    {
+      "key": "line.state.taut",
+      "value": "TENSO"
+    },
+    {
+      "key": "line.state.overloaded",
+      "value": "SOBRECARGADO"
+    },
+    {
+      "key": "line.state.parted",
+      "value": "ROTO"
+    },
+    {
+      "key": "quality.mobile",
+      "value": "Móvil"
+    },
+    {
+      "key": "quality.pc",
+      "value": "PC"
+    }
+  ]
+}

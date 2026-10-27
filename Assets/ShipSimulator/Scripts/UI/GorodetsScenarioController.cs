@@ -44,7 +44,7 @@ namespace ShipSimulator.UI
         public float RouteDistanceM { get; private set; }
         public float CrossTrackErrorM { get; private set; }
         public float LeadingLineErrorDeg { get; private set; }
-        public string PhaseLabel => Entry(phaseLabels) ?? Phase.ToString();
+        public string PhaseLabel => Localization.Source(Entry(phaseLabels) ?? Phase.ToString());
         public string Instruction => BuildInstruction();
         public float LocalSpeedLimitMps { get; private set; } = 3.333f;
         public ShipPhysicsController Ship => ship;
@@ -212,27 +212,27 @@ namespace ShipSimulator.UI
             string custom = Entry(phaseInstructions);
             if (custom != null)
                 return Phase == GorodetsMissionPhase.Completed || Phase == GorodetsMissionPhase.Failed
-                    ? $"{custom} Score {Score:F0}/100"
-                    : custom;
+                    ? Localization.Get("text.0.score.1.f0.100.aabc81fd", Localization.Source(custom), Score)
+                    : Localization.Source(custom);
             return Phase switch
             {
                 GorodetsMissionPhase.DepartApproach =>
-                    "Leave the lock approach and prepare for lateral set",
+                    Localization.Get("text.leave.the.lock.approach.and.prepare.for.lateral.set.a4635afe"),
                 GorodetsMissionPhase.AcquireGorodetsLeadingLine =>
-                    "Acquire the Gorodets leading line",
+                    Localization.Get("text.acquire.the.gorodets.leading.line.cc5bbf0b"),
                 GorodetsMissionPhase.PassGorodetsShoal =>
-                    "Hold the leading line and remain inside the marked fairway",
+                    Localization.Get("text.hold.the.leading.line.and.remain.inside.the.marked.fairw.61b855ce"),
                 GorodetsMissionPhase.PassUpperKochergino =>
-                    "Anticipate the reversing lateral current",
+                    Localization.Get("text.anticipate.the.reversing.lateral.current.959e862a"),
                 GorodetsMissionPhase.PassLowerKochergino =>
-                    "Rocky bottom: maintain clearance and small rudder angles",
+                    Localization.Get("text.rocky.bottom.maintain.clearance.and.small.rudder.angles.1c79e8f8"),
                 GorodetsMissionPhase.ReachFinish =>
-                    "Clear the lower shoal and cross the finish gate",
+                    Localization.Get("text.clear.the.lower.shoal.and.cross.the.finish.gate.cf65c295"),
                 GorodetsMissionPhase.Completed =>
-                    $"Mission complete. Score {Score:F0}/100",
+                    Localization.Get("text.mission.complete.score.0.f0.100.e1531559", Score),
                 GorodetsMissionPhase.Failed =>
-                    $"Mission failed. Score {Score:F0}/100",
-                _ => "Prepare vessel"
+                    Localization.Get("text.mission.failed.score.0.f0.100.e7c6b77d", Score),
+                _ => Localization.Get("text.prepare.vessel.c3dcea26")
             };
         }
     }

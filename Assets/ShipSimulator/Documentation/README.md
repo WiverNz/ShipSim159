@@ -1,6 +1,7 @@
 # ShipSim159 Documentation
 
-ShipSim159 is a Unity 6 URP river navigation prototype with five selectable vessels.
+ShipSim159 is a Unity 6 URP river navigation prototype with six playable vessels
+and a seventh catalogue command for the Serpukhov + MN-52 push unit.
 It is not a validated maritime training product.
 
 ## Documents
@@ -8,6 +9,8 @@ It is not a validated maritime training product.
 - [UsabilityPart1Review.md](UsabilityPart1Review.md): scalable interface, settings and verification.
 - [UsabilityImprovementPlan.md](UsabilityImprovementPlan.md): source audit and nine
   executable parts for interface, languages, camera, map, collisions, recovery and cargo.
+- [Localization](Localization.md): four-language catalogues, live labels and display culture.
+- [Usability Part 2 review](UsabilityPart2Review.md): language selection and layout verification.
 
 - [ProjectStatus.md](ProjectStatus.md): what is implemented, what is verified,
   screenshots, known limits and prioritised next work. Start here.

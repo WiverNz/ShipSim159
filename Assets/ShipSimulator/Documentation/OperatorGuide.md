@@ -354,3 +354,13 @@ UI belong to UI; camera orbit started in the world retains its gesture until rel
 Editing sliders blocks vessel keyboard commands. Opening the pause menu, changing
 camera view or losing focus releases an orbit cursor. Camera smoothing itself remains
 scheduled for usability Part 3.
+
+
+## Interface language
+
+Open Settings > Language from the start menu or with Escape during a voyage.
+Choose English, Русский, Deutsch or Español. The existing menu and HUD update
+without reloading the scene, resetting controls or changing the save. The selection
+is retained on the next launch. In Russian the path is Настройки > Язык.
+Long menu rows wrap and scroll; language changes preserve open control panels.
+See [Localization](Localization.md) for catalogue maintenance and display culture.

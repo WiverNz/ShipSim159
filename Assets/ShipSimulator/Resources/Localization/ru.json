@@ -1,0 +1,1764 @@
+{
+  "entries": [
+    {
+      "key": "text.w.s.engines.a.d.rudder.v.camera.right.mouse.look.around..71346a1c",
+      "value": "\n\nW / S  Engines     A / D  Rudder\nV  Камера     Right mouse  Look around\nESC  Pause, settings & save"
+    },
+    {
+      "key": "text.g.anchor.b.let.go.veer.y.hold.u.heave.o.station.p.bollar.38b7d802",
+      "value": "\nG ЯКОРЬ  B ОТДАТЬ/ТРАВИТЬ  Y ДЕРЖАТЬ  U ВЫБРАТЬ   O ПОСТ  P ТУМБА  I ПОДАТЬ КОНЕЦ  , ВЫБРАТЬ  / ДЕРЖАТЬ  . ТРАВИТЬ  F ОТДАТЬ КОНЕЦ"
+    },
+    {
+      "key": "text.hullborne.5a951f70",
+      "value": "   <color=#8AA0AD>ВОДОИЗМЕЩЕНИЕ</color>"
+    },
+    {
+      "key": "text.bow.thruster.off.68916baa",
+      "value": "   ПОДРУЛИВАНИЕ ВЫКЛ."
+    },
+    {
+      "key": "text.bow.thruster.0.1.f0.eaea03d2",
+      "value": "   ПОДРУЛИВАНИЕ {0} {1:F0}%"
+    },
+    {
+      "key": "text.space.stop.1.9.cameras.2cb2e691",
+      "value": "   SPACE СТОП   1-9 КАМЕРЫ\n"
+    },
+    {
+      "key": "text.total.0.f0.t.draft.1.f2.m.trim.2.0.00.0.00.m.3.ddb53b5d",
+      "value": "   ВСЕГО {0:F0} t\nОСАДКА {1:F2} m  ДИФФЕРЕНТ {2:+0.00;-0.00} m\n{3}"
+    },
+    {
+      "key": "text.to.0.1.0.m.24278e3a",
+      "value": "  К <color=#F2C14E>{0}</color> {1:0} m"
+    },
+    {
+      "key": "text.0.f0.kn.holding.7b83d5ff",
+      "value": " ({0:F0} kN ДЕРЖИТ)\n"
+    },
+    {
+      "key": "text.out.of.reach.830e5952",
+      "value": " <color=#FF6B5B>ВНЕ ДОСЯГАЕМОСТИ</color>"
+    },
+    {
+      "key": "text.outside.tables.00bd8182",
+      "value": " | ВНЕ ТАБЛИЦ"
+    },
+    {
+      "key": "text.2.27.km.shoals.currents.leading.marks.769ec61a",
+      "value": "2,27 км  /  Мели, течения и створы"
+    },
+    {
+      "key": "text.2.42.km.oka.entry.20.m.channel.basin.berthing.17586824",
+      "value": "2,42 км  /  Вход с Оки, канал 20 м, швартовка в затоне"
+    },
+    {
+      "key": "text.20.m.of.marked.water.and.unlit.buoys.hold.the.axis.and.w.60aebbc5",
+      "value": "Судовой ход 20 м, буи без огней: держитесь оси и следите за изгибами"
+    },
+    {
+      "key": "text.port.a.701efc62",
+      "value": "< ЛБ [A]"
+    },
+    {
+      "key": "text.green.mark.8df5d50f",
+      "value": "<color=#4DC76B>зелёный буй</color></size>"
+    },
+    {
+      "key": "text.anchors.91d9258b",
+      "value": "<color=#8AA0AD>ЯКОРЯ</color>\n"
+    },
+    {
+      "key": "text.draft.0.f1.m.a8291744",
+      "value": "<color=#8AA0AD>ОСАДКА</color> {0:F1} m\n"
+    },
+    {
+      "key": "text.distance.0.f0.m.981e8dab",
+      "value": "<color=#8AA0AD>Расстояние</color>  <b>{0:F0} m</b>\n"
+    },
+    {
+      "key": "text.limit.0.f0.km.h.216c3448",
+      "value": "<color=#8AA0AD>Предел</color> <b>{0:F0} km/h</b>"
+    },
+    {
+      "key": "text.min.ahead.0.f1.m.f8aa9980",
+      "value": "<color=#8AA0AD>МИН. ВПЕРЕДИ</color> <b>{0:F1} m</b>    "
+    },
+    {
+      "key": "text.mooring.2759d016",
+      "value": "<color=#8AA0AD>ШВАРТОВКА</color>\n"
+    },
+    {
+      "key": "text.score.0.f0.100.3b296d0f",
+      "value": "<color=#8AA0AD>Баллы</color> <b>{0:F0}/100</b>     "
+    },
+    {
+      "key": "text.service.speed.0.f0.km.h.959ae7bd",
+      "value": "<color=#8AA0AD>Экспл. скорость</color>  <b>{0:F0} km/h</b>"
+    },
+    {
+      "key": "text.shallow.danger.92e5726f",
+      "value": "<color=#D29B45>МЕЛКО</color>   <color=#E04539>ОПАСНО</color>   "
+    },
+    {
+      "key": "text.red.mark.bf83aac7",
+      "value": "<color=#E86054>красный буй</color>   "
+    },
+    {
+      "key": "text.route.craft.pier.d179a9fd",
+      "value": "<color=#E8B24D>МАРШРУТ</color>   <color=#E0C2F2>СУДА / ПРИЧАЛ</color></b></size>\n"
+    },
+    {
+      "key": "text.heading.predicted.path.d0f1dc35",
+      "value": "<size=12><color=#56C7E6>курс / прогноз пути</color>    "
+    },
+    {
+      "key": "text.safe.47ac5706",
+      "value": "<size=13><b><color=#46A6BC>БЕЗОПАСНО</color>   "
+    },
+    {
+      "key": "text.objective.51082de9",
+      "value": "<size=14><color=#56C7E6>ЗАДАЧА</color></size>\n"
+    },
+    {
+      "key": "text.course.7e96dd8f",
+      "value": "<size=14><color=#8AA0AD>КУРС</color></size>\n"
+    },
+    {
+      "key": "text.current.53d2ded5",
+      "value": "<size=14><color=#8AA0AD>ТЕЧЕНИЕ</color></size>\n"
+    },
+    {
+      "key": "text.depth.d967b71b",
+      "value": "<size=14><color=#8AA0AD>ГЛУБИНА</color></size>\n"
+    },
+    {
+      "key": "text.speed.578a37de",
+      "value": "<size=14><color=#8AA0AD>СКОРОСТЬ</color></size>\n"
+    },
+    {
+      "key": "text.drift.0.0.0.0.0.0.0.41af5bbc",
+      "value": "<size=14><color=#8AA0AD>снос {0:+0.0;-0.0;0.0}°</color></size>"
+    },
+    {
+      "key": "text.under.keel.0.f1.m.1ead3d0a",
+      "value": "<size=14><color=#8AA0AD>под килем {0:F1} m</color></size>"
+    },
+    {
+      "key": "text.command.0.0.0.0.deg.58ec31a7",
+      "value": "<size=14>ЗАДАНО {0:+0;-0;0} deg"
+    },
+    {
+      "key": "text.proceed.to.waypoint.e02bc46d",
+      "value": "<size=23><b>Следуйте к путевой точке</b></size>\n\n"
+    },
+    {
+      "key": "text.a.d.rudder.w.s.engine.q.z.or.e.x.telegraph.003759e7",
+      "value": "A/D РУЛЬ   W/S ДВИГАТЕЛЬ   Q/Z или E/X ТЕЛЕГРАФ"
+    },
+    {
+      "key": "text.a.d.rudder.w.s.engines.q.z.port.e.x.stbd.946ac490",
+      "value": "A/D РУЛЬ   W/S ДВИГАТЕЛИ   Q/Z ЛБ   E/X ПБ"
+    },
+    {
+      "key": "text.aft.open.ec851829",
+      "value": "КОРМА ОТКР."
+    },
+    {
+      "key": "text.already.has.a.line.ae7c4007",
+      "value": "УЖЕ СО ШВАРТОВОМ"
+    },
+    {
+      "key": "text.anchor.3c80eef3",
+      "value": "ЯКОРЬ"
+    },
+    {
+      "key": "text.anchors.d2d87757",
+      "value": "ЯКОРЯ"
+    },
+    {
+      "key": "text.acquire.the.gorodets.leading.line.cc5bbf0b",
+      "value": "Выйдите на Городецкий створ"
+    },
+    {
+      "key": "text.acquiregorodetsleadingline.61c2cbff",
+      "value": "Выход на створ"
+    },
+    {
+      "key": "text.aft.ballast.group.ae1a1168",
+      "value": "Кормовой балласт"
+    },
+    {
+      "key": "text.aft.hold.1bb1ea35",
+      "value": "Кормовой трюм"
+    },
+    {
+      "key": "text.aftopen.c090a749",
+      "value": "Корма открыта"
+    },
+    {
+      "key": "text.anticipate.the.reversing.lateral.current.959e862a",
+      "value": "Учитывайте смену направления бокового течения"
+    },
+    {
+      "key": "text.at.anchor.102658f1",
+      "value": "На стоянке"
+    },
+    {
+      "key": "text.available.in.the.standalone.player.4e6f661c",
+      "value": "Доступно в отдельной сборке игры"
+    },
+    {
+      "key": "text.before.you.continue.1b400986",
+      "value": "ПОДТВЕРЖДЕНИЕ"
+    },
+    {
+      "key": "text.bollard.517e8471",
+      "value": "ТУМБА"
+    },
+    {
+      "key": "text.bottom.contact.17e952a7",
+      "value": "КАСАНИЕ ДНА"
+    },
+    {
+      "key": "text.bow.01a43f67",
+      "value": "НОС"
+    },
+    {
+      "key": "text.bow.thruster.a4755e74",
+      "value": "ПОДРУЛИВАНИЕ"
+    },
+    {
+      "key": "text.bow.thruster.off.4a5a8a9f",
+      "value": "ПОДРУЛИВАНИЕ ВЫКЛ."
+    },
+    {
+      "key": "text.bridge.ef304fbe",
+      "value": "МОСТИК"
+    },
+    {
+      "key": "text.back.76900f1b",
+      "value": "Назад"
+    },
+    {
+      "key": "text.basin.325884d0",
+      "value": "Затон"
+    },
+    {
+      "key": "text.basin.entrance.68b40fca",
+      "value": "Вход в затон"
+    },
+    {
+      "key": "text.bridge.settings.30b168a2",
+      "value": "Настройки игры"
+    },
+    {
+      "key": "text.briefing.532fdae2",
+      "value": "Инструктаж"
+    },
+    {
+      "key": "text.camera.582ff0d0",
+      "value": "КАМЕРА"
+    },
+    {
+      "key": "text.camera.0.2ef9a5eb",
+      "value": "КАМЕРА: <size=20><b>{0}</b></size>  "
+    },
+    {
+      "key": "text.cast.off.3236ca67",
+      "value": "ОТДАТЬ КОНЕЦ"
+    },
+    {
+      "key": "text.chain.parted.899eaefd",
+      "value": "ОБРЫВ ЦЕПИ"
+    },
+    {
+      "key": "text.chart.your.course.d0367933",
+      "value": "ПРОЛОЖИТЕ КУРС"
+    },
+    {
+      "key": "text.chase.123531ac",
+      "value": "СЛЕДОВАНИЕ"
+    },
+    {
+      "key": "text.choose.your.command.9b3a2feb",
+      "value": "ВЫБОР СУДНА"
+    },
+    {
+      "key": "text.close.f13a1ed0",
+      "value": "ЗАКРЫТЬ"
+    },
+    {
+      "key": "text.command.395c9840",
+      "value": "ЗАДАНО"
+    },
+    {
+      "key": "text.course.4d980d99",
+      "value": "КУРС"
+    },
+    {
+      "key": "text.craft.pier.d13cd99b",
+      "value": "СУДА / ПРИЧАЛ"
+    },
+    {
+      "key": "text.current.e3cc57e1",
+      "value": "ТЕЧЕНИЕ"
+    },
+    {
+      "key": "text.current.from.port.side.246046b6",
+      "value": "ТЕЧЕНИЕ С ЛЕВОГО БОРТА"
+    },
+    {
+      "key": "text.current.from.port.side.227441c8",
+      "value": "ТЕЧЕНИЕ С ЛЕВОГО БОРТА\n"
+    },
+    {
+      "key": "text.current.from.starboard.side.be616be4",
+      "value": "ТЕЧЕНИЕ С ПРАВОГО БОРТА"
+    },
+    {
+      "key": "text.current.from.starboard.side.3da4bf7d",
+      "value": "ТЕЧЕНИЕ С ПРАВОГО БОРТА\n"
+    },
+    {
+      "key": "text.cushionborne.83fb35a6",
+      "value": "НА ПОДУШКЕ"
+    },
+    {
+      "key": "text.camera.03494b0d",
+      "value": "Камера"
+    },
+    {
+      "key": "text.camera.rotation.9e751efc",
+      "value": "Вращение камеры"
+    },
+    {
+      "key": "text.camera.zoom.a3a35b57",
+      "value": "Приближение камеры"
+    },
+    {
+      "key": "text.check.the.save.file.and.available.disk.space.details.are.1b00a3d0",
+      "value": "Проверьте файл сохранения и свободное место. Подробности в журнале."
+    },
+    {
+      "key": "text.choose.a.different.vessel.or.passage.157b4ddb",
+      "value": "Выбрать другое судно или маршрут"
+    },
+    {
+      "key": "text.choose.a.vessel.and.a.river.passage.08ffd998",
+      "value": "Выбрать судно и речной маршрут"
+    },
+    {
+      "key": "text.choose.another.vessel.534f5bf4",
+      "value": "Выбрать другое судно"
+    },
+    {
+      "key": "text.choose.the.interface.language.308df4b9",
+      "value": "Выберите язык интерфейса"
+    },
+    {
+      "key": "text.clear.the.lower.shoal.and.cross.the.finish.gate.cf65c295",
+      "value": "Пройдите нижний перекат и финишный створ"
+    },
+    {
+      "key": "text.closed.c21ead06",
+      "value": "Закрыто"
+    },
+    {
+      "key": "text.comfort.settings.64fb1f59",
+      "value": "Удобство управления"
+    },
+    {
+      "key": "text.completed.22a970d2",
+      "value": "Завершено"
+    },
+    {
+      "key": "text.confirm.eebdd24a",
+      "value": "Подтвердить"
+    },
+    {
+      "key": "text.continue.voyage.48aee9d2",
+      "value": "Продолжить рейс"
+    },
+    {
+      "key": "text.continue.with.this.action.eb067faf",
+      "value": "Выполнить выбранное действие"
+    },
+    {
+      "key": "text.could.not.load.voyage.d50f2fd8",
+      "value": "Не удалось загрузить рейс."
+    },
+    {
+      "key": "text.could.not.open.scenario.cc4d9c35",
+      "value": "Не удалось открыть сценарий."
+    },
+    {
+      "key": "text.could.not.restore.voyage.7acc8748",
+      "value": "Не удалось восстановить рейс."
+    },
+    {
+      "key": "text.could.not.save.voyage.3bdb89b8",
+      "value": "Не удалось сохранить рейс."
+    },
+    {
+      "key": "text.danger.0bd7272b",
+      "value": "ОПАСНО"
+    },
+    {
+      "key": "text.day.c45bc4a7",
+      "value": "ДЕНЬ"
+    },
+    {
+      "key": "text.day.n.8dba15f9",
+      "value": "ДЕНЬ [N]"
+    },
+    {
+      "key": "text.deck.machinery.95df167d",
+      "value": "ПАЛУБНЫЕ МЕХАНИЗМЫ"
+    },
+    {
+      "key": "text.deck.machinery.hatches.aa3bd14f",
+      "value": "ПАЛУБНЫЕ МЕХАНИЗМЫ\nЛЮКИ "
+    },
+    {
+      "key": "text.depth.1f1260fb",
+      "value": "ГЛУБИНА"
+    },
+    {
+      "key": "text.depth.0.f1.m.4e8da492",
+      "value": "ГЛУБИНА <size=24><b>{0:F1} m</b></size>    "
+    },
+    {
+      "key": "text.dir.0b4d0828",
+      "value": "КУРС +"
+    },
+    {
+      "key": "text.dir.65abe2b0",
+      "value": "КУРС -"
+    },
+    {
+      "key": "text.display.27cd4277",
+      "value": "ЭКРАН"
+    },
+    {
+      "key": "text.dock.8.dcbe50bb",
+      "value": "ПРИЧАЛ [8]"
+    },
+    {
+      "key": "text.docking.cb5757d7",
+      "value": "ШВАРТОВКА"
+    },
+    {
+      "key": "text.draft.53dd5f4b",
+      "value": "ОСАДКА"
+    },
+    {
+      "key": "text.dragging.bc9213be",
+      "value": "ДРЕЙФ ЯКОРЯ"
+    },
+    {
+      "key": "text.dead.slow.down.the.basin.moored.craft.both.sides.7e6ff32c",
+      "value": "Идите самым малым ходом: по обоим берегам стоят суда"
+    },
+    {
+      "key": "text.deck.889eacd6",
+      "value": "Палуба"
+    },
+    {
+      "key": "text.deck.machinery.d88c1765",
+      "value": "Палубные механизмы"
+    },
+    {
+      "key": "text.departapproach.f914a247",
+      "value": "Выход с подхода"
+    },
+    {
+      "key": "text.display.34e108c0",
+      "value": "Экран"
+    },
+    {
+      "key": "text.display.7c98c273",
+      "value": "Экран  /  "
+    },
+    {
+      "key": "text.display.0.4a5c3dbd",
+      "value": "Экран / {0}"
+    },
+    {
+      "key": "text.display.audio.camera.fa10d3bb",
+      "value": "Экран, звук и камера"
+    },
+    {
+      "key": "text.distance.b7bdf7a2",
+      "value": "Расстояние"
+    },
+    {
+      "key": "text.done.11a6767d",
+      "value": "Готово"
+    },
+    {
+      "key": "text.empty.cc1d2f83",
+      "value": "ВЫГРУЗ."
+    },
+    {
+      "key": "text.engineering.gameplay.prototype.estimated.navigation.data.75bf40c2",
+      "value": "Игровой инженерный прототип. Навигационные данные оценочные."
+    },
+    {
+      "key": "text.engines.and.propellers.489e3a72",
+      "value": "Двигатели и винты"
+    },
+    {
+      "key": "text.exit.play.mode.0e2d2aed",
+      "value": "Завершить игровой режим"
+    },
+    {
+      "key": "text.f1.controls.6027c318",
+      "value": "F1 УПРАВЛЕНИЕ"
+    },
+    {
+      "key": "text.fill.391edbf2",
+      "value": "ГРУЗИТЬ"
+    },
+    {
+      "key": "text.fog.1424ee09",
+      "value": "ТУМАН"
+    },
+    {
+      "key": "text.fog.f5.9bcae3a3",
+      "value": "ТУМАН [F5]"
+    },
+    {
+      "key": "text.foilborne.635f50bc",
+      "value": "НА КРЫЛЬЯХ"
+    },
+    {
+      "key": "text.fore.open.12533b90",
+      "value": "НОС ОТКР."
+    },
+    {
+      "key": "text.full.ahead.09376fac",
+      "value": "ПОЛНЫЙ\nВПЕРЁД"
+    },
+    {
+      "key": "text.full.astern.f948a6b2",
+      "value": "ПОЛНЫЙ\nНАЗАД"
+    },
+    {
+      "key": "text.full.ahead.f2c24b58",
+      "value": "ПОЛНЫЙ ВПЕРЁД"
+    },
+    {
+      "key": "text.full.astern.2a0a116b",
+      "value": "ПОЛНЫЙ НАЗАД"
+    },
+    {
+      "key": "text.failed.031a8f0f",
+      "value": "Неудача"
+    },
+    {
+      "key": "text.forward.ballast.group.7a2f2100",
+      "value": "Носовой балласт"
+    },
+    {
+      "key": "text.forward.hold.64b9c16a",
+      "value": "Носовой трюм"
+    },
+    {
+      "key": "text.forwardopen.edf8167c",
+      "value": "Нос открыт"
+    },
+    {
+      "key": "text.fuel.and.stores.budget.d903cb17",
+      "value": "Топливо и запасы"
+    },
+    {
+      "key": "text.fullscreen.c461dbb2",
+      "value": "Полный экран"
+    },
+    {
+      "key": "text.go.back.6aadac2f",
+      "value": "Вернуться"
+    },
+    {
+      "key": "text.gorodets.passage.d24d7c84",
+      "value": "Городецкий участок"
+    },
+    {
+      "key": "text.graphics.0.381c6bbe",
+      "value": "Графика / {0}"
+    },
+    {
+      "key": "text.graphics.settings.2ffe1ce1",
+      "value": "Настройки графики"
+    },
+    {
+      "key": "text.half.ahead.85a04827",
+      "value": "СРЕДНИЙ\nВПЕРЁД"
+    },
+    {
+      "key": "text.half.astern.c6d8072c",
+      "value": "СРЕДНИЙ\nНАЗАД"
+    },
+    {
+      "key": "text.half.ahead.bc5e74f7",
+      "value": "СРЕДНИЙ ВПЕРЁД"
+    },
+    {
+      "key": "text.half.astern.cefeef1f",
+      "value": "СРЕДНИЙ НАЗАД"
+    },
+    {
+      "key": "text.half.open.37020726",
+      "value": "ПОЛУОТКР."
+    },
+    {
+      "key": "text.hanging.ff9579a7",
+      "value": "НА ВЕСУ"
+    },
+    {
+      "key": "text.hard.grounding.4a457f8d",
+      "value": "ПОСАДКА НА МЕЛЬ"
+    },
+    {
+      "key": "text.hatches.b05b54d7",
+      "value": "ЛЮКИ"
+    },
+    {
+      "key": "text.haul.f298a1c2",
+      "value": "ТЯНУТЬ"
+    },
+    {
+      "key": "text.hauling.d89d72c5",
+      "value": "ВЫБИРАНИЕ"
+    },
+    {
+      "key": "text.heave.52ad95e0",
+      "value": "ВЫБРАТЬ"
+    },
+    {
+      "key": "text.heaving.cd3abe64",
+      "value": "ПОДЪЁМ"
+    },
+    {
+      "key": "text.heaving.aweigh.d31a2ef5",
+      "value": "ПОДЪЁМ, ОТОРВАН"
+    },
+    {
+      "key": "text.hold.aacf94b7",
+      "value": "ДЕРЖ."
+    },
+    {
+      "key": "text.holding.4958797a",
+      "value": "ДЕРЖИТ"
+    },
+    {
+      "key": "text.hullborne.8c88388f",
+      "value": "ВОДОИЗМЕЩЕНИЕ"
+    },
+    {
+      "key": "text.halfopen.9893b948",
+      "value": "Приоткрыто"
+    },
+    {
+      "key": "text.helm.7e94675f",
+      "value": "Штурвал"
+    },
+    {
+      "key": "text.help.b79cac92",
+      "value": "Помощь"
+    },
+    {
+      "key": "text.hold.the.leading.line.and.remain.inside.the.marked.fairw.61b855ce",
+      "value": "Держитесь створа и обозначенного судового хода"
+    },
+    {
+      "key": "text.holdopen.c818d28b",
+      "value": "Открыто"
+    },
+    {
+      "key": "text.inland.passages.7c79c7aa",
+      "value": "РЕЧНЫЕ\nМАРШРУТЫ"
+    },
+    {
+      "key": "text.interface.camera.92418a56",
+      "value": "ИНТЕРФЕЙС И КАМЕРА"
+    },
+    {
+      "key": "text.is.full.52a165d6",
+      "value": "ЗАНЯТА"
+    },
+    {
+      "key": "text.interface.camera.11779717",
+      "value": "Интерфейс и камера"
+    },
+    {
+      "key": "text.interface.scale.6ba5218d",
+      "value": "Масштаб интерфейса"
+    },
+    {
+      "key": "text.interface.scale.and.camera.sensitivities.only.69c924e4",
+      "value": "Только масштаб интерфейса и чувствительность камеры"
+    },
+    {
+      "key": "text.j.l.bow.thruster.k.off.h.horn.m.map.n.day.night.t.time.f.d83a23c0",
+      "value": "J/L ПОДРУЛИВАНИЕ   K ВЫКЛ.   H ГУДОК   M КАРТА   N ДЕНЬ/НОЧЬ   T ВРЕМЯ   F2-F5 ПОГОДА   ПКМ ОБЗОР"
+    },
+    {
+      "key": "text.keep.this.passage.e04fbbb1",
+      "value": "Остаться в текущем рейсе"
+    },
+    {
+      "key": "text.let.go.fa49324e",
+      "value": "ОТДАТЬ"
+    },
+    {
+      "key": "text.letting.go.a671e41e",
+      "value": "ОТДАЧА"
+    },
+    {
+      "key": "text.limit.reached.open.hatches.halfway.62cb8813",
+      "value": "ДОСТИГНУТ ПРЕДЕЛ / ПРИОТКРОЙТЕ ЛЮКИ"
+    },
+    {
+      "key": "text.load.d438686e",
+      "value": "НАГРУЗКА"
+    },
+    {
+      "key": "text.loading.ba0eebf3",
+      "value": "ПОГРУЗКА"
+    },
+    {
+      "key": "text.language.a4fe6526",
+      "value": "Язык"
+    },
+    {
+      "key": "text.leave.the.bridge.179f1caa",
+      "value": "Выйти из игры"
+    },
+    {
+      "key": "text.leave.the.bridge.1100c79f",
+      "value": "Выйти из игры?"
+    },
+    {
+      "key": "text.leave.the.lock.approach.and.prepare.for.lateral.set.a4635afe",
+      "value": "Выйдите с подхода к шлюзу; учитывайте боковой снос"
+    },
+    {
+      "key": "text.leave.this.passage.b0cb492b",
+      "value": "Покинуть текущий рейс?"
+    },
+    {
+      "key": "text.leaving.the.lay.up.berth.2c551dc4",
+      "value": "Выход со стоянки"
+    },
+    {
+      "key": "text.let.go.and.come.clear.of.the.laid.up.barges.134f6695",
+      "value": "Отдайте швартовы и отойдите от стоящих барж"
+    },
+    {
+      "key": "text.liftinginner.8b0a617a",
+      "value": "Подъём внутренних"
+    },
+    {
+      "key": "text.liftingouter.12244d66",
+      "value": "Подъём внешних"
+    },
+    {
+      "key": "text.limit.674b0ed5",
+      "value": "Предел"
+    },
+    {
+      "key": "text.line.passed.0.to.1.fc359ebf",
+      "value": "Подан швартов: {0} к {1}"
+    },
+    {
+      "key": "text.load.saved.voyage.0029ef85",
+      "value": "Загрузить рейс"
+    },
+    {
+      "key": "text.load.saved.voyage.dc768bab",
+      "value": "Загрузить сохранённый рейс?"
+    },
+    {
+      "key": "text.loading.vessel.and.river.conditions.823a52f4",
+      "value": "Загрузка судна и условий на реке..."
+    },
+    {
+      "key": "text.loweringouter.cb24197e",
+      "value": "Опускание внешних"
+    },
+    {
+      "key": "text.make.yourself.at.home.9a5c2a5b",
+      "value": "НАСТРОЙТЕ ПОД СЕБЯ"
+    },
+    {
+      "key": "text.midships.c.80729499",
+      "value": "ПРЯМО [C]"
+    },
+    {
+      "key": "text.min.ahead.6423db07",
+      "value": "МИН. ВПЕРЕДИ"
+    },
+    {
+      "key": "text.mooring.0053bcc0",
+      "value": "ШВАРТОВКА"
+    },
+    {
+      "key": "text.map.be176b00",
+      "value": "Карта"
+    },
+    {
+      "key": "text.master.volume.b041a7d4",
+      "value": "Общая громкость"
+    },
+    {
+      "key": "text.master.volume.mix.and.mute.bbc24fc6",
+      "value": "Громкость, микшер и отключение звука"
+    },
+    {
+      "key": "text.mission.complete.score.0.f0.100.e1531559",
+      "value": "Рейс завершён. Баллы {0:F0}/100"
+    },
+    {
+      "key": "text.mission.failed.score.0.f0.100.e7c6b77d",
+      "value": "Рейс не выполнен. Баллы {0:F0}/100"
+    },
+    {
+      "key": "text.mooring.point.0.is.not.in.this.scenario.that.line.was.no.fb2b5972",
+      "value": "Точка {0} отсутствует в сценарии; швартов не восстановлен"
+    },
+    {
+      "key": "text.mute.0.b91012a8",
+      "value": "Без звука / {0}"
+    },
+    {
+      "key": "text.nav.9.88b42e42",
+      "value": "МОСТИК [9]"
+    },
+    {
+      "key": "text.navigator.c5be6dc6",
+      "value": "СУДОВОДИТЕЛЬ"
+    },
+    {
+      "key": "text.next.v.a0e6963b",
+      "value": "ДАЛЕЕ [V]"
+    },
+    {
+      "key": "text.night.79162683",
+      "value": "НОЧЬ"
+    },
+    {
+      "key": "text.no.bottom.data.82d1d152",
+      "value": "НЕТ ДАННЫХ О ДНЕ"
+    },
+    {
+      "key": "text.no.mooring.station.caae732f",
+      "value": "НЕТ ШВАРТОВНОГО ПОСТА"
+    },
+    {
+      "key": "text.no.shore.bollard.selected.b397e3e6",
+      "value": "БЕРЕГОВАЯ ТУМБА НЕ ВЫБРАНА"
+    },
+    {
+      "key": "text.nara.reach.fb1145e2",
+      "value": "Участок Нары"
+    },
+    {
+      "key": "text.new.voyage.dd976ea6",
+      "value": "Новый рейс"
+    },
+    {
+      "key": "text.no.saved.voyage.yet.b0211ec1",
+      "value": "Сохранений пока нет"
+    },
+    {
+      "key": "text.objective.77a8599f",
+      "value": "ЗАДАЧА"
+    },
+    {
+      "key": "text.on.bottom.slack.b10fe547",
+      "value": "НА ДНЕ, СЛАБИНА"
+    },
+    {
+      "key": "text.out.of.reach.f666d6fd",
+      "value": "ВНЕ ДОСЯГАЕМОСТИ"
+    },
+    {
+      "key": "text.outside.fairway.97b803a6",
+      "value": "ВНЕ СУДОВОГО ХОДА"
+    },
+    {
+      "key": "text.outside.fairway.0955a9f6",
+      "value": "ВНЕ СУДОВОГО ХОДА\n"
+    },
+    {
+      "key": "text.outside.tables.36efbdad",
+      "value": "ВНЕ ТАБЛИЦ"
+    },
+    {
+      "key": "text.overloaded.ec709fd6",
+      "value": "ПЕРЕГРУЗКА"
+    },
+    {
+      "key": "text.overspeed.536535f0",
+      "value": "ПРЕВЫШЕНИЕ СКОРОСТИ"
+    },
+    {
+      "key": "text.overspeed.0665e89e",
+      "value": "ПРЕВЫШЕНИЕ СКОРОСТИ\n"
+    },
+    {
+      "key": "text.off.ca7981b4",
+      "value": "Выкл."
+    },
+    {
+      "key": "text.oka.mouth.e587a927",
+      "value": "Устье у Оки"
+    },
+    {
+      "key": "text.on.13001175",
+      "value": "Вкл."
+    },
+    {
+      "key": "text.open.river.learn.the.vessel.and.controls.b91a90f2",
+      "value": "Открытая река  /  Знакомство с судном и управлением"
+    },
+    {
+      "key": "text.parted.7ca4f91c",
+      "value": "ОБОРВАН"
+    },
+    {
+      "key": "text.pass.line.afa4218f",
+      "value": "ПОДАТЬ"
+    },
+    {
+      "key": "text.passage.paused.your.vessel.is.holding.position.96f59fc0",
+      "value": "РЕЙС ПРИОСТАНОВЛЕН  /  Судно неподвижно."
+    },
+    {
+      "key": "text.port.6acc99af",
+      "value": "ЛБ"
+    },
+    {
+      "key": "text.prev.39a40026",
+      "value": "НАЗАД"
+    },
+    {
+      "key": "text.project.0.river.navigation.simulator.822c1ddb",
+      "value": "ПРОЕКТ {0} / СИМУЛЯТОР РЕЧНОГО СУДОВОЖДЕНИЯ"
+    },
+    {
+      "key": "text.push.unit.petroleum.barge.1d517986",
+      "value": "ТОЛКАЕМЫЙ СОСТАВ\nНЕФТЕНАЛИВНАЯ БАРЖА"
+    },
+    {
+      "key": "text.passgorodetsshoal.490bf58b",
+      "value": "Городецкий перекат"
+    },
+    {
+      "key": "text.passlowerkochergino.7f2ba38b",
+      "value": "Нижнее Кочергино"
+    },
+    {
+      "key": "text.passupperkochergino.b287e15b",
+      "value": "Верхнее Кочергино"
+    },
+    {
+      "key": "text.passage.complete.0140adeb",
+      "value": "Рейс завершён."
+    },
+    {
+      "key": "text.passage.failed.6f2d527d",
+      "value": "Рейс не выполнен."
+    },
+    {
+      "key": "text.past.the.passenger.berth.and.the.yacht.harbour.mind.your.e0de973b",
+      "value": "Пройдите пассажирский причал и яхт-клуб, избегая сильной волны"
+    },
+    {
+      "key": "text.port.and.marina.6dfe204a",
+      "value": "Порт и яхт-клуб"
+    },
+    {
+      "key": "text.prepare.vessel.c3dcea26",
+      "value": "Подготовьте судно"
+    },
+    {
+      "key": "text.proceed.to.waypoint.26e63262",
+      "value": "Следуйте к путевой точке"
+    },
+    {
+      "key": "text.push.unit.too.deep.for.this.passage.79e9603a",
+      "value": "Осадка состава слишком велика для этого маршрута"
+    },
+    {
+      "key": "text.push.unit.too.long.0.0.0.m.limit.1.0.m.c91f9391",
+      "value": "Состав слишком длинный / {0:0.0} м, предел {1:0} м"
+    },
+    {
+      "key": "text.push.unit.too.wide.for.this.passage.074f823c",
+      "value": "Состав слишком широк для этого маршрута"
+    },
+    {
+      "key": "text.quality.synchronisation.and.fullscreen.b5d63c15",
+      "value": "Качество, синхронизация и полноэкранный режим"
+    },
+    {
+      "key": "text.quit.to.desktop.c4f9502f",
+      "value": "Выйти на рабочий стол"
+    },
+    {
+      "key": "text.rain.959a3064",
+      "value": "ДОЖДЬ"
+    },
+    {
+      "key": "text.rain.f4.e03f136e",
+      "value": "ДОЖДЬ [F4]"
+    },
+    {
+      "key": "text.rain.0.0.fog.1.0.365e0e52",
+      "value": "ДОЖДЬ {0:0}%   ТУМАН {1:0}%"
+    },
+    {
+      "key": "text.ready.c2e3ac47",
+      "value": "ГОТОВО"
+    },
+    {
+      "key": "text.river.class.cargo.vessel.71c36296",
+      "value": "РЕЧНОЕ\nГРУЗОВОЕ СУДНО"
+    },
+    {
+      "key": "text.river.passenger.air.cushion.14f59c26",
+      "value": "ПАССАЖИРСКОЕ\nНА ПОДУШКЕ"
+    },
+    {
+      "key": "text.river.passenger.hydrofoil.6a48a0a6",
+      "value": "ПАССАЖИРСКОЕ\nНА КРЫЛЬЯХ"
+    },
+    {
+      "key": "text.river.radar.head.up.200.m.eb58d855",
+      "value": "РЕЧНАЯ КАРТА · ПО КУРСУ · 200 м"
+    },
+    {
+      "key": "text.river.tug.pusher.single.waterjet.c55b23d0",
+      "value": "БУКСИР-ТОЛКАЧ\nОДИН ВОДОМЁТ"
+    },
+    {
+      "key": "text.river.sea.cargo.vessel.ff1b38b5",
+      "value": "РЕКА-МОРЕ\nГРУЗОВОЕ СУДНО"
+    },
+    {
+      "key": "text.river.sea.oil.tanker.27ab6b68",
+      "value": "РЕКА-МОРЕ\nНЕФТЕНАЛИВНОЕ"
+    },
+    {
+      "key": "text.route.7cc8ad34",
+      "value": "МАРШРУТ"
+    },
+    {
+      "key": "text.rudder.df253ce3",
+      "value": "РУЛЬ"
+    },
+    {
+      "key": "text.rudder.0.0.deg.463a1246",
+      "value": "РУЛЬ  0.0 deg"
+    },
+    {
+      "key": "text.rudder.0.0.0.0.0.0.0.deg.987e7920",
+      "value": "РУЛЬ  <size=23><b>{0:+0.0;-0.0;0.0} deg</b></size>\n"
+    },
+    {
+      "key": "text.reachfinish.572a3976",
+      "value": "К финишу"
+    },
+    {
+      "key": "text.record.your.current.passage.dd412560",
+      "value": "Сохранить текущее состояние рейса"
+    },
+    {
+      "key": "text.replace.saved.voyage.37de4df3",
+      "value": "Заменить сохранённый рейс?"
+    },
+    {
+      "key": "text.restore.defaults.602f8e63",
+      "value": "Сбросить настройки"
+    },
+    {
+      "key": "text.resume.voyage.d02c220d",
+      "value": "Продолжить рейс"
+    },
+    {
+      "key": "text.return.to.settings.cab0aa32",
+      "value": "Вернуться в настройки"
+    },
+    {
+      "key": "text.return.to.the.bridge.esc.58823e3a",
+      "value": "Вернуться на мостик  /  ESC"
+    },
+    {
+      "key": "text.return.to.the.menu.5d8ae338",
+      "value": "Вернуться в меню"
+    },
+    {
+      "key": "text.river.familiarisation.0b8c8a00",
+      "value": "Знакомство с рекой"
+    },
+    {
+      "key": "text.rocky.bottom.maintain.clearance.and.small.rudder.angles.1c79e8f8",
+      "value": "Каменистое дно: следите за запасом под килем, перекладывайте руль плавно"
+    },
+    {
+      "key": "text.safe.10a87133",
+      "value": "БЕЗОПАСНО"
+    },
+    {
+      "key": "text.select.compartment.41388674",
+      "value": "ВЫБРАТЬ ОТСЕК"
+    },
+    {
+      "key": "text.setting.4fe70949",
+      "value": "ЗАБИРАЕТ ГРУНТ"
+    },
+    {
+      "key": "text.shallow.39d9d711",
+      "value": "МЕЛКО"
+    },
+    {
+      "key": "text.shallow.water.44b85352",
+      "value": "МЕЛКОВОДЬЕ"
+    },
+    {
+      "key": "text.shallow.water.fcde8e1d",
+      "value": "МЕЛКОВОДЬЕ\n"
+    },
+    {
+      "key": "text.slack.2cfe0127",
+      "value": "ТРАВ."
+    },
+    {
+      "key": "text.slacking.9f19976f",
+      "value": "ТРАВЛЕНИЕ"
+    },
+    {
+      "key": "text.slow.ahead.95226e4b",
+      "value": "МАЛЫЙ\nВПЕРЁД"
+    },
+    {
+      "key": "text.slow.astern.f538b82e",
+      "value": "МАЛЫЙ\nНАЗАД"
+    },
+    {
+      "key": "text.slow.ahead.7b21cb5f",
+      "value": "МАЛЫЙ ВПЕРЁД"
+    },
+    {
+      "key": "text.slow.astern.b77f78ff",
+      "value": "МАЛЫЙ НАЗАД"
+    },
+    {
+      "key": "text.speed.6129de1e",
+      "value": "СКОРОСТЬ"
+    },
+    {
+      "key": "text.starboard.62592344",
+      "value": "ПРАВЫЙ БОРТ"
+    },
+    {
+      "key": "text.station.81770823",
+      "value": "ПОСТ"
+    },
+    {
+      "key": "text.station.0.09f17174",
+      "value": "ПОСТ <color=#F2C14E>{0}</color>"
+    },
+    {
+      "key": "text.stbd.96228e9d",
+      "value": "ПБ"
+    },
+    {
+      "key": "text.stbd.d.37ab262c",
+      "value": "ПБ [D] >"
+    },
+    {
+      "key": "text.stern.deb17fb6",
+      "value": "КОРМА"
+    },
+    {
+      "key": "text.stop.04dedf8a",
+      "value": "СТОП"
+    },
+    {
+      "key": "text.stop.all.831df458",
+      "value": "СТОП ВСЁ"
+    },
+    {
+      "key": "text.stop.engines.to.transfer.54be81b0",
+      "value": "ОСТАНОВИТЕ ДВИГАТЕЛИ ДЛЯ ПОГРУЗКИ"
+    },
+    {
+      "key": "text.stopped.133c4945",
+      "value": "ОСТАНОВЛЕНО"
+    },
+    {
+      "key": "text.stowed.083415db",
+      "value": "УБРАН"
+    },
+    {
+      "key": "text.strong.current.15d27220",
+      "value": "СИЛЬНОЕ ТЕЧЕНИЕ"
+    },
+    {
+      "key": "text.strong.current.6ace2f40",
+      "value": "СИЛЬНОЕ ТЕЧЕНИЕ\n"
+    },
+    {
+      "key": "text.save.and.return.to.settings.60ce0426",
+      "value": "Сохранить и вернуться в настройки"
+    },
+    {
+      "key": "text.save.first.if.you.want.to.keep.your.current.progress.f9145685",
+      "value": "Сначала сохраните рейс, чтобы не потерять прогресс."
+    },
+    {
+      "key": "text.save.unavailable.start.a.new.voyage.to.continue.78a6d521",
+      "value": "Сохранение недоступно. Начните новый рейс."
+    },
+    {
+      "key": "text.save.voyage.e5ad21dd",
+      "value": "Сохранить рейс"
+    },
+    {
+      "key": "text.scale.and.independent.camera.sensitivities.8c1beaa5",
+      "value": "Масштаб интерфейса, чувствительность вращения и зума"
+    },
+    {
+      "key": "text.score.38e5a46c",
+      "value": "Баллы"
+    },
+    {
+      "key": "text.select.a.passage.f9fd87ef",
+      "value": "Выберите маршрут"
+    },
+    {
+      "key": "text.select.a.vessel.8ae0d9b0",
+      "value": "Выберите судно"
+    },
+    {
+      "key": "text.select.the.next.quality.preset.4b770c73",
+      "value": "Выбрать следующий уровень качества"
+    },
+    {
+      "key": "text.serpukhov.zaton.b27d73dc",
+      "value": "Серпуховский затон"
+    },
+    {
+      "key": "text.service.speed.da0bb3ea",
+      "value": "Экспл. скорость"
+    },
+    {
+      "key": "text.settings.74a883a0",
+      "value": "Настройки"
+    },
+    {
+      "key": "text.settings.are.saved.automatically.b74fa394",
+      "value": "Настройки сохраняются автоматически"
+    },
+    {
+      "key": "text.silence.all.sound.the.mix.is.kept.169d5b41",
+      "value": "Отключить звук, сохранив уровни громкости"
+    },
+    {
+      "key": "text.slidinginner.f4c4d070",
+      "value": "Сдвиг внутренних"
+    },
+    {
+      "key": "text.sound.46124e02",
+      "value": "Звук"
+    },
+    {
+      "key": "text.stacked.c2fed746",
+      "value": "Сложено"
+    },
+    {
+      "key": "text.synchronise.frames.with.your.display.9863953c",
+      "value": "Синхронизировать кадры с экраном"
+    },
+    {
+      "key": "text.taut.7ffd8712",
+      "value": "НАТЯНУТ"
+    },
+    {
+      "key": "text.telegraph.80b30369",
+      "value": "ТЕЛЕГРАФ"
+    },
+    {
+      "key": "text.telegraph.0.1.ce01c452",
+      "value": "ТЕЛЕГРАФ  <size=23><b>{0}</b></size>\n<size=15>{1}</size>"
+    },
+    {
+      "key": "text.telegraph.stop.95b402ae",
+      "value": "ТЕЛЕГРАФ  СТОП"
+    },
+    {
+      "key": "text.time.5888675d",
+      "value": "ВРЕМЯ"
+    },
+    {
+      "key": "text.time.1x.ee719375",
+      "value": "ВРЕМЯ 1x"
+    },
+    {
+      "key": "text.time.0.feff9f63",
+      "value": "ВРЕМЯ {0}"
+    },
+    {
+      "key": "text.to.c3bd7d9e",
+      "value": "К"
+    },
+    {
+      "key": "text.too.much.way.on.to.pass.a.line.7f0c5da9",
+      "value": "СЛИШКОМ БОЛЬШОЙ ХОД ДЛЯ ПОДАЧИ КОНЦА"
+    },
+    {
+      "key": "text.top.07b4ed8e",
+      "value": "СВЕРХУ"
+    },
+    {
+      "key": "text.total.ab2882c8",
+      "value": "ВСЕГО"
+    },
+    {
+      "key": "text.transfer.paused.vessel.moving.14414927",
+      "value": "ПОГРУЗКА ПРИОСТАНОВЛЕНА: СУДНО ДВИЖЕТСЯ"
+    },
+    {
+      "key": "text.transferring.2568a744",
+      "value": "ПЕРЕГРУЗКА"
+    },
+    {
+      "key": "text.trim.d639e5f5",
+      "value": "ДИФФЕРЕНТ"
+    },
+    {
+      "key": "text.take.the.helm.read.the.river.d95df952",
+      "value": "Встаньте к штурвалу. Изучайте реку."
+    },
+    {
+      "key": "text.the.gate.is.about.55.m.wide.line.her.up.early.58147c91",
+      "value": "Ширина входа около 55 м: заранее выйдите на ось"
+    },
+    {
+      "key": "text.toggle.fullscreen.display.66a70eb9",
+      "value": "Переключить полноэкранный режим"
+    },
+    {
+      "key": "text.too.deep.for.this.passage.0.0.00.m.limit.1.0.00.m.dc1f11fd",
+      "value": "Осадка слишком велика / {0:0.00} м, предел {1:0.00} м"
+    },
+    {
+      "key": "text.too.long.for.this.passage.0.0.0.m.limit.1.0.m.5d3c0df4",
+      "value": "Судно слишком длинное / {0:0.0} м, предел {1:0} м"
+    },
+    {
+      "key": "text.too.wide.for.this.passage.0.0.0.m.limit.1.0.0.m.76a223bd",
+      "value": "Судно слишком широкое / {0:0.0} м, предел {1:0.0} м"
+    },
+    {
+      "key": "text.traversing.002f2c31",
+      "value": "Перемещение"
+    },
+    {
+      "key": "text.turn.to.port.out.of.the.nara.and.stem.the.oka.current.1ffc8660",
+      "value": "Выйдя из Нары, поверните влево против течения Оки"
+    },
+    {
+      "key": "text.unsaved.progress.in.this.passage.will.be.lost.d4548bfc",
+      "value": "Несохранённый прогресс рейса будет потерян."
+    },
+    {
+      "key": "text.unsaved.progress.will.be.lost.you.can.go.back.and.save.1c7ecfdd",
+      "value": "Несохранённый прогресс будет потерян. Можно вернуться и сохранить рейс."
+    },
+    {
+      "key": "text.veering.2408b1df",
+      "value": "ТРАВЛЕНИЕ ЦЕПИ"
+    },
+    {
+      "key": "text.vessel.on.standby.ccd0e1f6",
+      "value": "СУДНО В ОЖИДАНИИ"
+    },
+    {
+      "key": "text.vsync.0.8a9fda47",
+      "value": "Вертикальная синхронизация / {0}"
+    },
+    {
+      "key": "text.voyage.saved.safe.to.leave.the.bridge.d2d64945",
+      "value": "Рейс сохранён. Можно выйти из игры."
+    },
+    {
+      "key": "text.warning.86f56fe8",
+      "value": "ВНИМАНИЕ"
+    },
+    {
+      "key": "text.warning.39485faa",
+      "value": "ВНИМАНИЕ    "
+    },
+    {
+      "key": "text.weather.0a244108",
+      "value": "ПОГОДА"
+    },
+    {
+      "key": "text.welcome.aboard.67c46e29",
+      "value": "ДОБРО ПОЖАЛОВАТЬ НА БОРТ"
+    },
+    {
+      "key": "text.wind.f144dd58",
+      "value": "ВЕТЕР"
+    },
+    {
+      "key": "text.wind.f2.5e38d869",
+      "value": "ВЕТЕР [F2]"
+    },
+    {
+      "key": "text.wind.0.000.deg.1.0.m.s.bffb1486",
+      "value": "ВЕТЕР {0:000} deg  {1:0} m/s   "
+    },
+    {
+      "key": "text.windlass.stalled.7cde3adc",
+      "value": "БРАШПИЛЬ ОСТАНОВЛЕН"
+    },
+    {
+      "key": "text.water.7ca7dea9",
+      "value": "Вода"
+    },
+    {
+      "key": "text.weather.a0bba638",
+      "value": "Погода"
+    },
+    {
+      "key": "text.wind.d151346f",
+      "value": "Ветер"
+    },
+    {
+      "key": "text.windowed.3f26603a",
+      "value": "В окне"
+    },
+    {
+      "key": "text.your.bridge.your.passage.1b66623e",
+      "value": "ВАШ МОСТИК.\nВАШ РЕЙС."
+    },
+    {
+      "key": "text.your.vessel.0.w.s.engines.a.d.rudder.v.camera.right.mous.49facf55",
+      "value": "ВАШЕ СУДНО\n\n{0}\n\nW / S Двигатели     A / D Руль\nV Камера     ПКМ Осмотр\nESC Пауза, настройки и сохранение"
+    },
+    {
+      "key": "text.your.next.passage.67e0939e",
+      "value": "Ваш следующий рейс"
+    },
+    {
+      "key": "text.your.previous.saved.passage.will.be.replaced.9350fe60",
+      "value": "Предыдущее сохранение будет заменено."
+    },
+    {
+      "key": "text.your.saved.voyage.will.be.kept.for.your.return.43da82f7",
+      "value": "Сохранённый рейс останется доступен."
+    },
+    {
+      "key": "text.anchor.aweigh.22414e17",
+      "value": "якорь оторван"
+    },
+    {
+      "key": "text.anchor.dragging.7ab94781",
+      "value": "якорь дрейфует"
+    },
+    {
+      "key": "text.anchor.let.go.c94313a9",
+      "value": "якорь отдан"
+    },
+    {
+      "key": "text.anchor.on.the.bottom.3385b789",
+      "value": "якорь на дне"
+    },
+    {
+      "key": "text.anchor.stowed.9f2254ae",
+      "value": "якорь убран"
+    },
+    {
+      "key": "text.cargo.3322532d",
+      "value": "груз"
+    },
+    {
+      "key": "text.chain.parted.b1620f8f",
+      "value": "обрыв цепи"
+    },
+    {
+      "key": "text.deadweight.86491b04",
+      "value": "дедвейт"
+    },
+    {
+      "key": "text.drift.0b7a461f",
+      "value": "снос"
+    },
+    {
+      "key": "text.green.mark.765b536e",
+      "value": "зелёный буй"
+    },
+    {
+      "key": "text.heading.predicted.path.384afa00",
+      "value": "курс / прогноз пути"
+    },
+    {
+      "key": "text.line.cast.off.9872336d",
+      "value": "швартов отдан"
+    },
+    {
+      "key": "text.line.parted.586434d6",
+      "value": "швартов оборван"
+    },
+    {
+      "key": "text.red.mark.7329773a",
+      "value": "красный буй"
+    },
+    {
+      "key": "text.text.cargo.3322532d.f9f956ad",
+      "value": "text.груз.3322532d"
+    },
+    {
+      "key": "text.text.deadweight.86491b04.8a0f8f3b",
+      "value": "text.дедвейт.86491b04"
+    },
+    {
+      "key": "text.text.drift.0.0.0.0.0.0.0.41af5bbc.ae2ed0f4",
+      "value": "text.снос.0.0.0.0.0.0.0.41af5bbc"
+    },
+    {
+      "key": "text.under.keel.a1fde95c",
+      "value": "под килем"
+    },
+    {
+      "key": "text.windlass.stalled.7c38c444",
+      "value": "брашпиль остановлен"
+    },
+    {
+      "key": "text.0.0.0.m.push.unit.loaded.mn.52.tug.controls.214b8460",
+      "value": "Состав {0:0.0} м / МН-52 с грузом / Управление буксиром"
+    },
+    {
+      "key": "text.0.score.1.f0.100.aabc81fd",
+      "value": "{0} Баллы {1:F0}/100"
+    },
+    {
+      "key": "text.0.m.length.overall.8c7c6b48",
+      "value": "{0} м\nГАБАРИТНАЯ ДЛИНА"
+    },
+    {
+      "key": "text.0.rpm.1.0.0.0.load.2.f0.f5097c97",
+      "value": "{0}RPM {1:+0;-0;0} НАГРУЗКА {2:F0}%   "
+    },
+    {
+      "key": "text.0.chain.parted.375cff9a",
+      "value": "{0} обрыв цепи"
+    },
+    {
+      "key": "text.0.anchor.let.go.d40c6453",
+      "value": "{0} якорь отдан"
+    },
+    {
+      "key": "text.0.anchor.on.the.bottom.ff3cfc71",
+      "value": "{0} якорь на дне"
+    },
+    {
+      "key": "text.0.anchor.aweigh.2a2d808f",
+      "value": "{0} якорь оторван"
+    },
+    {
+      "key": "text.0.anchor.dragging.699fb58f",
+      "value": "{0} якорь дрейфует"
+    },
+    {
+      "key": "text.0.windlass.stalled.956a2fec",
+      "value": "{0} брашпиль остановлен"
+    },
+    {
+      "key": "text.0.anchor.stowed.913d0289",
+      "value": "{0} якорь убран"
+    },
+    {
+      "key": "text.0.line.parted.a7aabbc7",
+      "value": "{0} швартов оборван"
+    },
+    {
+      "key": "text.0.line.cast.off.c94c0436",
+      "value": "{0} швартов отдан"
+    },
+    {
+      "key": "text.0.chain.parted.41bfd576",
+      "value": "{0}: обрыв цепи"
+    },
+    {
+      "key": "text.0.already.has.a.line.b963b1e0",
+      "value": "{0}: швартов уже подан"
+    },
+    {
+      "key": "text.0.is.full.475cc13b",
+      "value": "{0}: занята"
+    },
+    {
+      "key": "text.0.out.of.reach.1.0.m.max.2.0.m.a3b16bcb",
+      "value": "{0}: вне досягаемости ({1:0} м, макс. {2:0} м)"
+    },
+    {
+      "key": "text.volgo.don.project.507b.84a79e0c",
+      "value": "Волго-Дон, проект 507Б"
+    },
+    {
+      "key": "text.volgo.balt.project.2.95a.r.c7af5e76",
+      "value": "Волго-Балт, проект 2-95А/Р"
+    },
+    {
+      "key": "text.volgoneft.project.1577.792b82a6",
+      "value": "Волгонефть, проект 1577"
+    },
+    {
+      "key": "text.meteor.project.342u.a1d7e65f",
+      "value": "Метеор, проект 342У"
+    },
+    {
+      "key": "text.luch.project.14352.ee4bb9c3",
+      "value": "Луч, проект 14352"
+    },
+    {
+      "key": "text.96.1973.5123094f",
+      "value": "Серпухов, Р-96 (1973)"
+    },
+    {
+      "key": "text.52.e48e51d2",
+      "value": "Серпухов + МН-52"
+    },
+    {
+      "key": "text.low.f793de20",
+      "value": "Низкое"
+    },
+    {
+      "key": "text.medium.8e588cd1",
+      "value": "Среднее"
+    },
+    {
+      "key": "text.high.c4ebc6d4",
+      "value": "Высокое"
+    },
+    {
+      "key": "text.ultra.ac364e1a",
+      "value": "Максимальное"
+    },
+    {
+      "key": "text.bow.head.p.9d00bf9f",
+      "value": "Нос. прод. ЛБ"
+    },
+    {
+      "key": "text.bow.head.s.e29e3975",
+      "value": "Нос. прод. ПБ"
+    },
+    {
+      "key": "text.bow.breast.p.f45a2555",
+      "value": "Нос. прижим. ЛБ"
+    },
+    {
+      "key": "text.bow.breast.s.656f69cb",
+      "value": "Нос. прижим. ПБ"
+    },
+    {
+      "key": "text.fwd.spring.p.3c959ee6",
+      "value": "Нос. шпринг ЛБ"
+    },
+    {
+      "key": "text.fwd.spring.s.e0396e15",
+      "value": "Нос. шпринг ПБ"
+    },
+    {
+      "key": "text.aft.spring.p.ca5be674",
+      "value": "Корм. шпринг ЛБ"
+    },
+    {
+      "key": "text.aft.spring.s.8d9da5ac",
+      "value": "Корм. шпринг ПБ"
+    },
+    {
+      "key": "text.stern.p.be6808f9",
+      "value": "Кормовой ЛБ"
+    },
+    {
+      "key": "text.stern.s.4b145142",
+      "value": "Кормовой ПБ"
+    },
+    {
+      "key": "station.bow.head.p",
+      "value": "Нос. прод. ЛБ"
+    },
+    {
+      "key": "station.bow.head.s",
+      "value": "Нос. прод. ПБ"
+    },
+    {
+      "key": "station.bow.breast.p",
+      "value": "Нос. прижим. ЛБ"
+    },
+    {
+      "key": "station.bow.breast.s",
+      "value": "Нос. прижим. ПБ"
+    },
+    {
+      "key": "station.fwd.spring.p",
+      "value": "Нос. шпринг ЛБ"
+    },
+    {
+      "key": "station.fwd.spring.s",
+      "value": "Нос. шпринг ПБ"
+    },
+    {
+      "key": "station.aft.spring.p",
+      "value": "Корм. шпринг ЛБ"
+    },
+    {
+      "key": "station.aft.spring.s",
+      "value": "Корм. шпринг ПБ"
+    },
+    {
+      "key": "station.stern.p",
+      "value": "Кормовой ЛБ"
+    },
+    {
+      "key": "station.stern.s",
+      "value": "Кормовой ПБ"
+    },
+    {
+      "key": "language.selected",
+      "value": "Выбрано"
+    },
+    {
+      "key": "line.state.slack",
+      "value": "СЛАБИНА"
+    },
+    {
+      "key": "line.state.taut",
+      "value": "НАТЯНУТ"
+    },
+    {
+      "key": "line.state.overloaded",
+      "value": "ПЕРЕГРУЗКА"
+    },
+    {
+      "key": "line.state.parted",
+      "value": "ОБОРВАН"
+    },
+    {
+      "key": "quality.mobile",
+      "value": "Мобильный"
+    },
+    {
+      "key": "quality.pc",
+      "value": "ПК"
+    }
+  ]
+}

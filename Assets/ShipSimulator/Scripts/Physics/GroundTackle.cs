@@ -1,3 +1,4 @@
+using ShipSimulator.UI;
 using Unity.Profiling;
 using System;
 using System.Collections.Generic;
@@ -59,7 +60,8 @@ namespace ShipSimulator.Physics
         // Power of the last step's forces at the attachment points' velocities, for energy checks: with the
         // brakes and winches holding, a positive running total would mean the lines created energy.
         public float PowerW { get; private set; }
-        public string Notice { get; private set; } = string.Empty;
+        private LocalizedMessage notice;
+        public string Notice => notice.ToString().ToUpper(Localization.Culture);
         public float NoticeTime { get; private set; } = float.NegativeInfinity;
 
         private sealed class Anchor
@@ -208,13 +210,13 @@ namespace ShipSimulator.Physics
         {
             if (!EnsureReady() || i < 0 || i >= anchors.Length) return false;
             Anchor a = anchors[i];
-            if (a.Phase == AnchorPhase.Lost && command != ChainCommand.Hold) return Refuse(a.Spec.label + ": chain parted");
+            if (a.Phase == AnchorPhase.Lost && command != ChainCommand.Hold) return Refuse(new LocalizedMessage("{0}: chain parted", a.Spec.label));
             if (command == ChainCommand.LetGo && a.Phase == AnchorPhase.Bottom) command = ChainCommand.Veer;
             if (command == ChainCommand.Veer && a.Phase == AnchorPhase.Stowed) command = ChainCommand.LetGo;
             if (command == ChainCommand.Heave && a.Phase == AnchorPhase.Stowed) return false;
             a.Command = command;
             a.Stalled = false;
-            if (command == ChainCommand.LetGo && a.Phase == AnchorPhase.Stowed) Raise(TackleEvent.AnchorLetGo, a.Spec.label + " anchor let go", i);
+            if (command == ChainCommand.LetGo && a.Phase == AnchorPhase.Stowed) Raise(TackleEvent.AnchorLetGo, new LocalizedMessage("{0} anchor let go", a.Spec.label), i);
             return true;
         }
 
@@ -255,25 +257,25 @@ namespace ShipSimulator.Physics
         // within heaving-line reach, from a station without a line, with the vessel nearly stopped.
         public string PassLine(int station, MooringPoint shore)
         {
-            if (!EnsureReady() || station < 0 || station >= stations.Length) return "NO MOORING STATION";
+            if (!EnsureReady() || station < 0 || station >= stations.Length) return Localization.Source("NO MOORING STATION");
             if (shore == null || shore.Kind != MooringPointKind.Shore || shore.gameObject.scene != gameObject.scene)
-                return "NO SHORE BOLLARD SELECTED";
-            if (LineAt(station) >= 0) return stations[station].Label + " ALREADY HAS A LINE";
+                return Localization.Source("NO SHORE BOLLARD SELECTED");
+            if (LineAt(station) >= 0) return Localization.FormatSource("{0} ALREADY HAS A LINE", stations[station].Label);
             int onBollard = 0;
             foreach (Line line in lines) if (line.Shore == shore) onBollard++;
-            if (onBollard >= spec.linesPerBollard) return shore.Label + " IS FULL";
+            if (onBollard >= spec.linesPerBollard) return Localization.FormatSource("{0} IS FULL", shore.Label);
             Vector3 lead = World(stationLeads[station]);
             float reach = Flat(shore.LeadWorld - lead);
-            if (reach > spec.passReachM) return $"{shore.Label} OUT OF REACH ({reach:0} m, max {spec.passReachM:0} m)";
+            if (reach > spec.passReachM) return Localization.FormatSource("{0} OUT OF REACH ({1:0} m, max {2:0} m)", shore.Label, reach, spec.passReachM);
             Vector3 velocity = ship.Body.linearVelocity;
             velocity.y = 0;
-            if (velocity.magnitude > spec.passMaxSpeedMps) return "TOO MUCH WAY ON TO PASS A LINE";
+            if (velocity.magnitude > spec.passMaxSpeedMps) return Localization.Source("TOO MUCH WAY ON TO PASS A LINE");
             float length = Mathf.Clamp(Vector3.Distance(lead, shore.LeadWorld) + 1, spec.lineMinLengthM, spec.lineMaxLengthM);
             lines.Add(new Line
             {
                 Ship = stations[station], Shore = shore, Station = stationSpecs[station], StationIndex = station, Length = length
             });
-            Raise(TackleEvent.LinePassed, $"Line passed {stations[station].Label} to {shore.Label}", station);
+            Raise(TackleEvent.LinePassed, new LocalizedMessage("Line passed {0} to {1}", stations[station].CanonicalLabel, shore.CanonicalLabel), station);
             return null;
         }
 
@@ -289,9 +291,9 @@ namespace ShipSimulator.Physics
         {
             int k = station >= 0 && station < StationCount ? LineAt(station) : -1;
             if (k < 0) return false;
-            string label = lines[k].Ship.Label;
+            string label = lines[k].Ship.CanonicalLabel;
             lines.RemoveAt(k);
-            Raise(TackleEvent.LineCastOff, label + " line cast off", station);
+            Raise(TackleEvent.LineCastOff, new LocalizedMessage("{0} line cast off", label), station);
             return true;
         }
 
@@ -342,7 +344,7 @@ namespace ShipSimulator.Physics
                 a.Embedment = 0;
                 a.SinceSlip = float.PositiveInfinity;
                 if (a.Command == ChainCommand.LetGo) a.Command = ChainCommand.Hold;
-                Raise(TackleEvent.AnchorOnBottom, a.Spec.label + " anchor on the bottom", a.Index);
+                Raise(TackleEvent.AnchorOnBottom, new LocalizedMessage("{0} anchor on the bottom", a.Spec.label), a.Index);
             }
 
             if (Bed(a.Shackle, out float bed, out a.Soil)) a.Shackle.y = bed + a.Drop;
@@ -357,7 +359,7 @@ namespace ShipSimulator.Physics
             {
                 a.Phase = AnchorPhase.Hanging;
                 a.Shape = default;
-                Raise(TackleEvent.AnchorAweigh, a.Spec.label + " anchor aweigh", a.Index);
+                Raise(TackleEvent.AnchorAweigh, new LocalizedMessage("{0} anchor aweigh", a.Spec.label), a.Index);
                 return;
             }
 
@@ -379,7 +381,7 @@ namespace ShipSimulator.Physics
                 a.Embedment = Mathf.Min(1, a.Embedment + high / spec.setDistanceM);
                 a.SinceSlip = 0;
                 shape = Solve(a, a.Chain, span, height);
-                if (wasHolding) Raise(TackleEvent.AnchorDragging, a.Spec.label + " anchor dragging", a.Index);
+                if (wasHolding) Raise(TackleEvent.AnchorDragging, new LocalizedMessage("{0} anchor dragging", a.Spec.label), a.Index);
             }
             else a.SinceSlip += dt;
 
@@ -406,7 +408,7 @@ namespace ShipSimulator.Physics
                     a.Command = ChainCommand.Hold;
                     a.Shape = default;
                     a.TensionN = 0;
-                    Raise(TackleEvent.ChainParted, a.Spec.label + " chain parted", a.Index);
+                    Raise(TackleEvent.ChainParted, new LocalizedMessage("{0} chain parted", a.Spec.label), a.Index);
                     return;
                 }
             }
@@ -436,7 +438,7 @@ namespace ShipSimulator.Physics
                     // Full speed up to the nominal pull, slowing to a stall at the overload pull.
                     float load = Mathf.InverseLerp(a.Spec.stallPullN, a.Spec.nominalPullN, a.TensionN);
                     bool stalled = load <= 0;
-                    if (stalled && !a.Stalled) Raise(TackleEvent.WindlassStalled, a.Spec.label + " windlass stalled", a.Index);
+                    if (stalled && !a.Stalled) Raise(TackleEvent.WindlassStalled, new LocalizedMessage("{0} windlass stalled", a.Spec.label), a.Index);
                     a.Stalled = stalled;
                     a.Chain = Mathf.Max(0, a.Chain - a.Spec.heaveMps * load * dt);
                     if (a.Chain <= 0)
@@ -445,7 +447,7 @@ namespace ShipSimulator.Physics
                         a.Command = ChainCommand.Hold;
                         a.Shape = default;
                         a.TensionN = 0;
-                        Raise(TackleEvent.AnchorStowed, a.Spec.label + " anchor stowed", a.Index);
+                        Raise(TackleEvent.AnchorStowed, new LocalizedMessage("{0} anchor stowed", a.Spec.label), a.Index);
                     }
                     break;
             }
@@ -480,9 +482,9 @@ namespace ShipSimulator.Physics
             line.TensionN = (float)line.Shape.HighTensionN;
             if (line.TensionN > spec.lineBreakingLoadN)
             {
-                string label = line.Ship.Label;
+                string label = line.Ship.CanonicalLabel;
                 lines.RemoveAt(k);
-                Raise(TackleEvent.LineParted, label + " line parted", line.StationIndex);
+                Raise(TackleEvent.LineParted, new LocalizedMessage("{0} line parted", label), line.StationIndex);
                 return;
             }
             line.State = line.TensionN > spec.overloadFraction * spec.lineBreakingLoadN ? LineState.Overloaded :
@@ -564,18 +566,18 @@ namespace ShipSimulator.Physics
 
         private static float Flat(Vector3 value) => new Vector2(value.x, value.z).magnitude;
 
-        private bool Refuse(string message)
+        private bool Refuse(LocalizedMessage message)
         {
-            Notice = message.ToUpperInvariant();
+            notice = message;
             NoticeTime = Time.unscaledTime;
             return false;
         }
 
-        private void Raise(TackleEvent change, string message, int index)
+        private void Raise(TackleEvent change, LocalizedMessage message, int index)
         {
-            Notice = message.ToUpperInvariant();
+            notice = message;
             NoticeTime = Time.unscaledTime;
-            Changed?.Invoke(change, message);
+            Changed?.Invoke(change, message.ToString());
             ChangedAt?.Invoke(change, index);
         }
 
@@ -593,7 +595,7 @@ namespace ShipSimulator.Physics
                 a.SinceSlip = float.PositiveInfinity;
             }
             lines.Clear();
-            Notice = string.Empty;
+            notice = default;
             NoticeTime = float.NegativeInfinity;
         }
 
@@ -669,9 +671,9 @@ namespace ShipSimulator.Physics
                     if (anchors[i].Chain > 0) anchors[i].Phase = AnchorPhase.Hanging;
                 }
             if (missing.Count == 0) return null;
-            string message = "Mooring point " + string.Join(", ", missing) + " is not in this scenario; that line was not restored";
+            var message = new LocalizedMessage("Mooring point {0} is not in this scenario; that line was not restored", string.Join(", ", missing));
             Refuse(message);
-            return message;
+            return message.ToString();
         }
     }
 }

@@ -1,3 +1,4 @@
+using ShipSimulator.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace ShipSimulator.Visuals
         private bool navigationAidsCreated;
 
         public bool IsNight => night;
-        public string TimeLabel => night ? "NIGHT" : "DAY";
+        public string TimeLabel => night ? Localization.Get("text.night.79162683") : Localization.Get("text.day.c45bc4a7");
 
         private void Awake()
         {

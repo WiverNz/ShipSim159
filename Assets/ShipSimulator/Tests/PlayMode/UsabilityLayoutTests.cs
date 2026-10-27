@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using ShipSimulator.UI;
@@ -11,15 +12,18 @@ namespace ShipSimulator.Tests
 {
     public sealed class UsabilityLayoutTests
     {
+        private static readonly List<string> layoutFailures = new();
         private Scene original;
         private Scene scene;
         private string vessel;
         private float originalScale;
+        private string originalLanguage;
         private VoyageMenu menu;
 
         [UnityTearDown]
         public IEnumerator Cleanup()
         {
+            VoyageSettings.SetLanguage(originalLanguage);
             VoyageSettings.SetUiScale(originalScale);
             VoyageSettings.Save();
             if (menu != null) Object.Destroy(menu.gameObject);
@@ -40,8 +44,10 @@ namespace ShipSimulator.Tests
         [UnityTest]
         public IEnumerator CaptureLayouts()
         {
+            layoutFailures.Clear();
             original = SceneManager.GetActiveScene();
             originalScale = VoyageSettings.UiScale;
+            originalLanguage = VoyageSettings.Language;
             vessel = VesselSelection.SelectedId;
             VesselSelection.SelectedId = "volgodon-507b";
             yield return SceneManager.LoadSceneAsync("GorodetsTrainingScene", LoadSceneMode.Additive);
@@ -53,9 +59,11 @@ namespace ShipSimulator.Tests
             yield return null;
             var hud = Object.FindAnyObjectByType<ShipTelemetryUI>();
             int[,] sizes = { {1280,720}, {1920,1080}, {2560,1440}, {3440,1440}, {1280,1024} };
+            foreach (string language in Localization.Languages)
             foreach (float scale in new[] { .8f, 1f, 1.5f })
             for (int i = 0; i < sizes.GetLength(0); i++)
             {
+                VoyageSettings.SetLanguage(language);
                 VoyageSettings.SetUiScale(scale);
                 int w = sizes[i,0], h = sizes[i,1];
                 menu.ShowHome();
@@ -64,6 +72,12 @@ namespace ShipSimulator.Tests
                 yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "vessels");
                 menu.ShowSound();
                 yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "sound");
+                menu.ShowLanguage();
+                yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "language");
+                menu.ShowDisplay();
+                yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "display");
+                menu.ShowVoyages();
+                yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "passages");
                 menu.ShowInterface();
                 yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "settings");
                 if (!menu.HasVoyage) menu.StartVoyage("GorodetsTrainingScene"); else menu.Resume();
@@ -89,12 +103,13 @@ namespace ShipSimulator.Tests
                 hud.GetComponent<HudLayout>().Select(0);
                 menu.OpenPause();
             }
-
+            File.WriteAllLines("Logs/Localization/layout-failures.txt", layoutFailures);
+            Assert.That(layoutFailures, Is.Empty, string.Join("\n", layoutFailures));
         }
 
         private static IEnumerator Capture(Canvas canvas, int width, int height, string name)
         {
-            string folder = Path.GetFullPath("Logs/Usability/after/" + Mathf.RoundToInt(VoyageSettings.UiScale * 100));
+            string folder = Path.GetFullPath("Logs/Localization/" + Localization.Language + "/" + Mathf.RoundToInt(VoyageSettings.UiScale * 100));
             Directory.CreateDirectory(folder);
             var cameraObject = new GameObject("UI capture camera", typeof(Camera));
             var camera = cameraObject.GetComponent<Camera>();
@@ -118,7 +133,7 @@ namespace ShipSimulator.Tests
             Canvas.ForceUpdateCanvases();
             foreach (Text label in canvas.GetComponentsInChildren<Text>())
                 if (label.rectTransform.rect.height > 0 && label.preferredHeight > label.rectTransform.rect.height + 2)
-                    Assert.Fail(name + " " + width + "x" + height + " " + label.transform.parent.name + "/" + label.name + " clipped: " + label.preferredHeight + ">" + label.rectTransform.rect.height + " " + label.text);
+                    layoutFailures.Add(Localization.Language + " " + VoyageSettings.UiScale + " " + name + " " + width + "x" + height + " " + label.transform.parent.name + "/" + label.name + " clipped: " + label.preferredHeight + ">" + label.rectTransform.rect.height + " " + label.text);
             foreach (HudButton button in canvas.GetComponentsInChildren<HudButton>())
             {
                 var rect = (RectTransform)button.transform;

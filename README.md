@@ -9,13 +9,16 @@
 
 The [usability improvement plan](Assets/ShipSimulator/Documentation/UsabilityImprovementPlan.md)
 defines nine separately executable parts for UI, languages, camera, map, collisions,
-grounded-bow water rendering, recovery and cargo. Part 1 adds scalable, scrollable UI and settings; Parts 2-9 remain planned.
-See the [Part 1 review](Assets/ShipSimulator/Documentation/UsabilityPart1Review.md) for changes and verification.
+grounded-bow water rendering, recovery and cargo. Part 1 adds scalable, scrollable UI and settings. Part 2 adds live language selection
+for English, Russian, German and Spanish under **Settings > Language**. Parts 3-9 remain planned.
+See the [Part 1 review](Assets/ShipSimulator/Documentation/UsabilityPart1Review.md) and
+[Part 2 review](Assets/ShipSimulator/Documentation/UsabilityPart2Review.md) for changes and verification.
 
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator. It is
 built to carry several ship models, chosen in the start menu before a passage:
 three cargo vessels (Volgo-Don 507B, Volgo-Balt 2-95A/R, Volgoneft 1577) and two
-fast passenger craft (Meteor 342U hydrofoil, Luch 14352 air cushion).
+fast passenger craft (Meteor 342U hydrofoil, Luch 14352 air cushion), plus the
+Serpukhov R-96 tug. A seventh selection couples that tug to the passive MN-52 barge.
 
 The project explores large-vessel handling in a constrained river fairway,
 including delayed engine and rudder response, current-relative motion,

@@ -1,3 +1,4 @@
+using ShipSimulator.UI;
 using ShipSimulator.Physics;
 using UnityEngine;
 
@@ -42,8 +43,8 @@ namespace ShipSimulator.Visuals
         public Vector3 VisualWindMps => visualWindMps;
         private ShipPhysicsController[] ships;
         public string StatusText =>
-            $"WIND {windDirectionDeg:000} deg  {windSpeedMps:0} m/s   " +
-            $"RAIN {rainIntensity * 100f:0}%   FOG {fogIntensity * 100f:0}%";
+            Localization.Get("text.wind.0.000.deg.1.0.m.s.bffb1486", windDirectionDeg, windSpeedMps) +
+            Localization.Get("text.rain.0.0.fog.1.0.365e0e52", rainIntensity * 100f, fogIntensity * 100f);
 
         private void Awake()
         {

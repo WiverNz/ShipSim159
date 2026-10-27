@@ -212,7 +212,7 @@ namespace ShipSimulator.CameraSystem
                 "CHASE", "BRIDGE", "TOP", "PORT", "STARBOARD", "BOW", "STERN", "DOCKING",
                 "NAVIGATOR"
             };
-            return index >= 0 && index < names.Length ? names[index] : $"VIEW {index + 1}";
+            return index >= 0 && index < names.Length ? ShipSimulator.UI.Localization.Source(names[index]) : $"VIEW {index + 1}";
         }
 
         private Vector3 GetOrbitOffset()

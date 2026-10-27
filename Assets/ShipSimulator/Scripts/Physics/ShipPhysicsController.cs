@@ -49,7 +49,8 @@ namespace ShipSimulator.Physics
         private LoadingState loading;
         public bool HasLoading => loading != null;
         public LoadingState CaptureLoading() => loading?.Copy();
-        public string LoadingStatus { get; private set; } = "STOPPED";
+        private string loadingStatus = "STOPPED";
+        public string LoadingStatus => ShipSimulator.UI.Localization.Source(loadingStatus);
         public float CompartmentMassKg(int index) => loading.massKg[index];
 
         public void SetLoadingCommand(int index, float command)
@@ -420,15 +421,15 @@ namespace ShipSimulator.Physics
             if (loading == null || dt <= 0) return;
             bool active = false;
             foreach (float command in loading.commands) active |= command != 0;
-            if (!active) { LoadingStatus = "STOPPED"; return; }
+            if (!active) { loadingStatus = "STOPPED"; return; }
             foreach (float command in engineCommands)
-                if (Mathf.Abs(command) > .001f) { LoadingStatus = "STOP ENGINES TO TRANSFER"; return; }
+                if (Mathf.Abs(command) > .001f) { loadingStatus = "STOP ENGINES TO TRANSFER"; return; }
             if (body.linearVelocity.magnitude > data.loading.maximumTransferSpeedMps)
-            { LoadingStatus = "TRANSFER PAUSED: VESSEL MOVING"; return; }
+            { loadingStatus = "TRANSFER PAUSED: VESSEL MOVING"; return; }
             bool accessible = Mechanisms == null || (!Mechanisms.HatchesMoving &&
                 Mechanisms.Target == ShipSimulator.Visuals.HatchPosition.HalfOpen);
             bool changed = LoadingModel.Step(data, loading, dt, accessible);
-            LoadingStatus = changed ? "TRANSFERRING" : "LIMIT REACHED / OPEN HATCHES HALFWAY";
+            loadingStatus = changed ? "TRANSFERRING" : "LIMIT REACHED / OPEN HATCHES HALFWAY";
             if (changed) ApplyLoading(VesselParameters.Create(data, loading, parameters));
         }
 

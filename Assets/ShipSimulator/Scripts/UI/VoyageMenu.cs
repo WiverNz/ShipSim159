@@ -44,6 +44,7 @@ namespace ShipSimulator.UI
         private float nextRow;
         private Vector2 shellSize;
         private float shellScale;
+        private bool pageLayoutDirty = true;
         private Text heading;
         private Text eyebrow;
         private Text status;
@@ -103,6 +104,7 @@ namespace ShipSimulator.UI
             DontDestroyOnLoad(gameObject);
             SavePath = VoyageSaveStore.DefaultPath;
             font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            Localization.Changed += InvalidatePageLayout;
             VoyageSettings.Apply();
             catalogue = VesselCatalogue.Load();
             BuildShell();
@@ -159,7 +161,7 @@ namespace ShipSimulator.UI
                     pendingSave = null;
                     hasVoyage = false;
                     ShowHome();
-                    status.text = "Could not restore voyage: " + error.Message;
+                    ShowFailure("Could not restore voyage.", error);
                 }
             }
             else if (launchAfterLoad)
@@ -261,7 +263,7 @@ namespace ShipSimulator.UI
                 launchAfterLoad = false;
                 pendingSave = null;
                 ShowHome();
-                status.text = "Could not open scenario: " + error.Message;
+                ShowFailure("Could not open scenario.", error);
             }
         }
 
@@ -278,7 +280,7 @@ namespace ShipSimulator.UI
             catch (Exception error)
             {
                 pendingSave = null;
-                status.text = "Could not load voyage: " + error.Message;
+                ShowFailure("Could not load voyage.", error);
             }
         }
 
@@ -289,9 +291,9 @@ namespace ShipSimulator.UI
             {
                 VoyageSaveStore.Write(SavePath, CaptureSave());
                 ShowHome();
-                status.text = "Voyage saved. Safe to leave the bridge.";
+                LocalizedLabel.BindSource(status, "Voyage saved. Safe to leave the bridge.");
             }
-            catch (Exception error) { status.text = "Could not save voyage: " + error.Message; }
+            catch (Exception error) { ShowFailure("Could not save voyage.", error); }
         }
 
         public VoyageSave CaptureSave()
@@ -369,20 +371,21 @@ namespace ShipSimulator.UI
                 ActionButton("New voyage", "Choose a vessel and a river passage", y, ShowVessels, true); y += 80;
             }
             bool exists = File.Exists(SavePath);
-            string savedDescription = "No saved voyage yet";
+            Func<string> savedDescription = () => Localization.Source("No saved voyage yet");
             bool valid = false;
             if (exists)
             {
                 try
                 {
                     VoyageSave save = VoyageSaveStore.Read(SavePath);
-                    savedDescription = ScenarioName(save.scene) + "  /  " + DateTime.Parse(save.savedUtc).ToLocalTime().ToString("dd MMM, HH:mm");
+                    savedDescription = () => ScenarioName(save.scene) + "  /  " + DateTime.Parse(save.savedUtc, System.Globalization.CultureInfo.InvariantCulture).ToLocalTime().ToString("dd MMM, HH:mm", Localization.Culture);
                     valid = true;
                 }
-                catch (Exception) { savedDescription = "Save unavailable. Start a new voyage to continue."; }
+                catch (Exception) { savedDescription = () => Localization.Source("Save unavailable. Start a new voyage to continue."); }
             }
-            ActionButton(hasVoyage ? "Load saved voyage" : "Continue voyage", savedDescription, y,
+            Button savedButton = ActionButton(hasVoyage ? "Load saved voyage" : "Continue voyage", savedDescription(), y,
                 () => { if (hasVoyage) Confirm("Load saved voyage?", "Unsaved progress in this passage will be lost.", LoadVoyage); else LoadVoyage(); }, false, valid); y += 80;
+            LocalizedLabel.Bind(savedButton.GetComponentsInChildren<Text>()[1], savedDescription);
             if (hasVoyage) { ActionButton("New voyage", "Choose a different vessel or passage", y, () => Confirm("Leave this passage?", "Save first if you want to keep your current progress.", ShowVessels)); y += 80; }
             ActionButton("Settings", "Display, audio & camera", y, ShowSettings); y += 80;
             ActionButton("Leave the bridge", Application.isEditor ? "Exit Play Mode" : "Quit to desktop", y,
@@ -399,12 +402,14 @@ namespace ShipSimulator.UI
             {
                 VesselData data = entry.LoadData();
                 string id = entry.id;
-                ActionButton(entry.DisplayName, entry.Description, y, () =>
+                Button vesselButton = ActionButton(entry.DisplayName, entry.Description, y, () =>
                 {
                     VesselSelection.SelectedId = id;
                     UpdateVesselLabels();
                     ShowVoyages();
                 }, id == VesselSelection.SelectedId, true, catalogue.Entries.Count > 6 ? 60 : 70);
+                LocalizedLabel.Bind(vesselButton.GetComponentsInChildren<Text>()[0], () => entry.DisplayName);
+                LocalizedLabel.Bind(vesselButton.GetComponentsInChildren<Text>()[1], () => entry.Description);
                 y += catalogue.Entries.Count > 6 ? 64 : catalogue.Entries.Count > 5 ? 76 : 94;
             }
             ActionButton("Back", "Return to the menu", 462, ShowHome);
@@ -422,15 +427,18 @@ namespace ShipSimulator.UI
             {
                 string restriction = passage.FormationRestriction(vessel);
                 string scene = passage.SceneName;
-                ActionButton(passage.Title, restriction ?? passage.Detail, y,
+                Button passageButton = ActionButton(passage.Title, restriction ?? passage.Detail, y,
                     () => StartVoyage(scene), first && restriction == null, restriction == null);
+                LocalizedLabel.Bind(passageButton.GetComponentsInChildren<Text>()[0], () => passage.Title);
+                LocalizedLabel.Bind(passageButton.GetComponentsInChildren<Text>()[1], () => passage.FormationRestriction(vessel) ?? passage.Detail);
                 first &= restriction != null;
                 y += 88;
             }
             string vesselText = data != null
                 ? vessel.DisplayName + "\n" + vessel.Description
                 : "Volgo-Don Project 507B";
-            Label(pageRoot, "YOUR VESSEL\n\n" + vesselText + "\n\nW / S  Engines     A / D  Rudder\nV  Camera     Right mouse  Look around\nESC  Pause, settings & save", 18, Muted, 0, y + 10, 450, 180);
+            Text vesselHelp = Label(pageRoot, "", 18, Muted, 0, y + 10, 450, 180);
+            LocalizedLabel.Bind(vesselHelp, () => Localization.Get("text.your.vessel.0.w.s.engines.a.d.rudder.v.camera.right.mous.49facf55", data != null ? vessel.DisplayName + "\n" + vessel.Description : "Volgo-Don Project 507B"));
             ActionButton("Back", "Choose another vessel", 462, ShowVessels);
             SelectFirst();
         }
@@ -441,22 +449,37 @@ namespace ShipSimulator.UI
         {
             VesselCatalogue.Entry vessel = SelectedVessel();
             VesselData data = vessel?.LoadData();
-            if (vesselNameLabel != null) vesselNameLabel.text = vessel != null ? vessel.menuName : "VOLGO-DON\n507B";
-            if (vesselClassLabel != null) vesselClassLabel.text = vessel != null ? vessel.vesselClass : "RIVER CLASS\nCARGO VESSEL";
+            if (vesselNameLabel != null) LocalizedLabel.Bind(vesselNameLabel, () => Localization.Source(vessel != null ? vessel.menuName : "VOLGO-DON\n507B"));
+            if (vesselClassLabel != null) LocalizedLabel.Bind(vesselClassLabel, () => Localization.Source(vessel != null ? vessel.vesselClass : "RIVER CLASS\nCARGO VESSEL"));
             if (vesselLengthLabel != null)
-                vesselLengthLabel.text = (data != null ? data.dimensions.lengthOverallM.ToString("0.0") : "138.3") + " m\nLENGTH OVERALL";
+                LocalizedLabel.Bind(vesselLengthLabel, () => Localization.Get("text.0.m.length.overall.8c7c6b48", (data != null ? data.dimensions.lengthOverallM : 138.3f).ToString("0.0", Localization.Culture)));
             projectName = data != null ? data.identity.project : "507B";
             if (status != null && !hasVoyage && !loading)
-                status.text = "PROJECT " + projectName + "  /  RIVER NAVIGATION SIMULATOR";
+                LocalizedLabel.Bind(status, () => Localization.Get("text.project.0.river.navigation.simulator.822c1ddb", projectName));
         }
 
         public void ShowSettings()
         {
             ShowPage("settings", "MAKE YOURSELF AT HOME", "Bridge settings");
+            ActionButton("Language", "Choose the interface language", 0, ShowLanguage);
             ActionButton("Interface & camera", "Scale and independent camera sensitivities", 0, ShowInterface);
             ActionButton("Sound", "Master volume, mix and mute", 0, ShowSound);
             ActionButton("Display", "Quality, synchronisation and fullscreen", 0, ShowDisplay);
             ActionButton("Done", "Settings are saved automatically", 0, () => { VoyageSettings.Save(); ShowHome(); }, true);
+            SelectFirst();
+        }
+
+        public void ShowLanguage()
+        {
+            ShowPage("language", "MAKE YOURSELF AT HOME", "Language");
+            for (int i = 0; i < Localization.Languages.Length; i++)
+            {
+                string code = Localization.Languages[i];
+                Button choice = ActionButton(Localization.NativeNames[i], code, 0, () => VoyageSettings.SetLanguage(code));
+                LocalizedLabel.Bind(choice.GetComponentsInChildren<Text>()[1], () =>
+                    code == Localization.Language ? Localization.Get("language.selected") : code);
+            }
+            ActionButton("Back", "Return to settings", 0, ShowSettings);
             SelectFirst();
         }
 
@@ -466,9 +489,9 @@ namespace ShipSimulator.UI
             SettingSlider("Interface scale", VoyageSettings.UiScale, .8f, 1.5f, 0,
                 VoyageSettings.SetUiScale, value => Mathf.RoundToInt(value * 100) + "%");
             SettingSlider("Camera rotation", VoyageSettings.CameraSensitivity, .25f, 2f, 0,
-                VoyageSettings.SetSensitivity, value => value.ToString("0.00") + "x");
+                VoyageSettings.SetSensitivity, value => value.ToString("0.00", Localization.Culture) + "x");
             SettingSlider("Camera zoom", VoyageSettings.ZoomSensitivity, .25f, 3f, 0,
-                VoyageSettings.SetZoomSensitivity, value => value.ToString("0.00") + "x");
+                VoyageSettings.SetZoomSensitivity, value => value.ToString("0.00", Localization.Culture) + "x");
             ActionButton("Restore defaults", "Interface scale and camera sensitivities only", 0,
                 () => { VoyageSettings.RestoreControlDefaults(); ShowInterface(); });
             ActionButton("Back", "Save and return to settings", 0, () => { VoyageSettings.Save(); ShowSettings(); }, true);
@@ -478,9 +501,9 @@ namespace ShipSimulator.UI
         public void ShowDisplay()
         {
             ShowPage("display", "DISPLAY", "Graphics settings");
-            ActionButton("Graphics  /  " + QualitySettings.names[QualitySettings.GetQualityLevel()], "Select the next quality preset", 0, () => { VoyageSettings.CycleQuality(); ShowDisplay(); });
-            ActionButton("VSync  /  " + (QualitySettings.vSyncCount > 0 ? "On" : "Off"), "Synchronise frames with your display", 0, () => { VoyageSettings.ToggleVSync(); ShowDisplay(); });
-            ActionButton("Display  /  " + (Screen.fullScreen ? "Fullscreen" : "Windowed"), Application.isEditor ? "Available in the standalone player" : "Toggle fullscreen display", 0,
+            ActionButton(() => Localization.Get("text.graphics.0.381c6bbe", Localization.Source(QualitySettings.names[QualitySettings.GetQualityLevel()])), "Select the next quality preset", 0, () => { VoyageSettings.CycleQuality(); ShowDisplay(); });
+            ActionButton(() => Localization.Get("text.vsync.0.8a9fda47", Localization.Source((QualitySettings.vSyncCount > 0 ? "On" : "Off"))), "Synchronise frames with your display", 0, () => { VoyageSettings.ToggleVSync(); ShowDisplay(); });
+            ActionButton(() => Localization.Get("text.display.0.4a5c3dbd", Localization.Source((Screen.fullScreen ? "Fullscreen" : "Windowed"))), Application.isEditor ? "Available in the standalone player" : "Toggle fullscreen display", 0,
                 () => { VoyageSettings.ToggleFullscreen(); StartCoroutine(RefreshDisplay()); }, false, !Application.isEditor);
             ActionButton("Back", "Save and return to settings", 0, () => { VoyageSettings.Save(); ShowSettings(); }, true);
             SelectFirst();
@@ -501,7 +524,7 @@ namespace ShipSimulator.UI
                 value => VoyageSettings.SetBusVolume(AudioBus.Wind, value), percent);
             SettingSlider("Deck machinery", VoyageSettings.BusVolume(AudioBus.Machinery), 0f, 1f, 296,
                 value => VoyageSettings.SetBusVolume(AudioBus.Machinery, value), percent);
-            ActionButton("Mute  /  " + (VoyageSettings.Muted ? "On" : "Off"), "Silence all sound; the mix is kept", 382,
+            ActionButton(() => Localization.Get("text.mute.0.b91012a8", Localization.Source((VoyageSettings.Muted ? "On" : "Off"))), "Silence all sound; the mix is kept", 382,
                 () => { VoyageSettings.SetMuted(!VoyageSettings.Muted); ShowSound(); });
             ActionButton("Back", "Return to settings", 462, () => { PlayerPrefs.Save(); ShowSettings(); }, true);
             SelectFirst();
@@ -515,6 +538,13 @@ namespace ShipSimulator.UI
         private void OnApplicationPause(bool paused) { if (paused) VoyageSettings.Save(); }
         private void OnApplicationQuit() => VoyageSettings.Save();
 
+        private void ShowFailure(string summary, Exception error)
+        {
+            Debug.LogException(error);
+            LocalizedLabel.Bind(status, () => Localization.Source(summary) + "\n" +
+                Localization.Source("Check the save file and available disk space. Details are in the log."));
+        }
+
         private void Confirm(string title, string description, Action action)
         {
             ShowPage("confirm", "BEFORE YOU CONTINUE", title);
@@ -527,12 +557,13 @@ namespace ShipSimulator.UI
         private void ShowPage(string name, string kicker, string title)
         {
             page = name;
+            pageLayoutDirty = true;
             nextRow = 0;
             if (pageScroll != null) { pageScroll.StopMovement(); pageScroll.verticalNormalizedPosition = 1; }
             foreach (Transform child in pageRoot) { child.gameObject.SetActive(false); Destroy(child.gameObject); }
-            eyebrow.text = kicker;
-            heading.text = title;
-            status.text = hasVoyage ? "PASSAGE PAUSED  /  Your vessel is holding position." : "PROJECT " + projectName + "  /  RIVER NAVIGATION SIMULATOR";
+            LocalizedLabel.BindSource(eyebrow, kicker);
+            LocalizedLabel.BindSource(heading, title);
+            LocalizedLabel.Bind(status, () => hasVoyage ? Localization.Get("text.passage.paused.your.vessel.is.holding.position.96f59fc0") : Localization.Get("text.project.0.river.navigation.simulator.822c1ddb", projectName));
         }
 
         private void BuildShell()
@@ -581,10 +612,18 @@ namespace ShipSimulator.UI
             RefreshLayout();
         }
 
+        private Button ActionButton(Func<string> title, string detail, float y, Action action,
+            bool primary = false, bool enabled = true, float height = 84)
+        {
+            Button button = ActionButton(title(), detail, y, action, primary, enabled, height);
+            LocalizedLabel.Bind(button.GetComponentsInChildren<Text>()[0], title);
+            return button;
+        }
+
         private Button ActionButton(string title, string detail, float y, Action action, bool primary = false, bool enabled = true, float height = 70)
         {
             height = Mathf.Max(84, height);
-            float detailHeight = Measure(detail, 16, 425);
+            float detailHeight = Measure(Localization.Source(detail), 16, 425);
             height = Mathf.Max(height, 45 + detailHeight + 12);
             y = nextRow;
             nextRow += height + 12;
@@ -627,6 +666,7 @@ namespace ShipSimulator.UI
             slider.handleRect = handle;
             slider.targetGraphic = handleImage;
             slider.value = value;
+            LocalizedLabel.Bind(number, () => format(slider.value));
             slider.onValueChanged.AddListener(next => { setter(next); number.text = format(next); });
         }
 
@@ -651,11 +691,11 @@ namespace ShipSimulator.UI
             if (parent == pageRoot)
             {
                 y = nextRow;
-                height = Mathf.Max(height, Measure(text, size, width));
+                height = Mathf.Max(height, Measure(Localization.Source(text), size, width));
                 nextRow += height + 16;
             }
             Text label = Rect(parent, text, x, y, width, height).gameObject.AddComponent<Text>();
-            label.font = font; label.text = text; label.fontSize = size; label.color = tint;
+            label.font = font; LocalizedLabel.BindSource(label, text); label.fontSize = size; label.color = tint;
             label.fontStyle = style; label.alignment = TextAnchor.UpperLeft;
             label.raycastTarget = false;
             return label;
@@ -670,9 +710,39 @@ namespace ShipSimulator.UI
             return Mathf.Max(size + 6, new TextGenerator().GetPreferredHeight(text, settings) + 6);
         }
 
+        private void InvalidatePageLayout() => pageLayoutDirty = true;
+
+        private void ReflowPage()
+        {
+            if (!pageLayoutDirty) return;
+            pageLayoutDirty = false;
+            float y = 0;
+            foreach (RectTransform row in pageRoot)
+            {
+                if (!row.gameObject.activeSelf) continue;
+                float height = row.sizeDelta.y;
+                var labels = row.GetComponentsInChildren<Text>();
+                if (row.GetComponent<Button>() != null && labels.Length >= 2)
+                {
+                    float titleHeight = Mathf.Max(29, labels[0].preferredHeight + 4);
+                    float detailHeight = Mathf.Max(24, labels[1].preferredHeight + 4);
+                    UiLayout.Place(labels[0].rectTransform, 20, 9, 425, titleHeight);
+                    UiLayout.Place(labels[1].rectTransform, 20, 13 + titleHeight, 425, detailHeight);
+                    height = Mathf.Max(84, 25 + titleHeight + detailHeight);
+                }
+                else if (row.GetComponent<Text>() is Text text)
+                    height = Mathf.Max(height, text.preferredHeight + 8);
+                row.anchoredPosition = new Vector2(row.anchoredPosition.x, -y);
+                row.sizeDelta = new Vector2(row.sizeDelta.x, height);
+                y += height + 12;
+            }
+            nextRow = y;
+        }
+
         private void RefreshLayout()
         {
             if (overlay == null || shell == null || pageRoot == null) return;
+            ReflowPage();
             Vector2 size = UiLayout.Apply(overlay.GetComponent<Canvas>());
             pageRoot.sizeDelta = new Vector2(480, Mathf.Max(nextRow, pageViewport.rect.height));
             if (size == shellSize && shellScale == VoyageSettings.UiScale) return;
@@ -717,6 +787,7 @@ namespace ShipSimulator.UI
 
         private void OnDestroy()
         {
+            Localization.Changed -= InvalidatePageLayout;
             if (instance != this) return;
             instance = null;
             Time.timeScale = 1f;

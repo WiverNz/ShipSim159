@@ -17,7 +17,8 @@ namespace ShipSimulator.Physics
         [SerializeField] private int order;
 
         public string Id => id;
-        public string Label => string.IsNullOrEmpty(label) ? id : label;
+        public string CanonicalLabel => string.IsNullOrEmpty(label) ? id : label;
+        public string Label => ShipSimulator.UI.Localization.Source(CanonicalLabel);
         public MooringPointKind Kind => kind;
         public int Order => order;
         public Vector3 LeadWorld => transform.TransformPoint(leadLocal);

@@ -9,8 +9,10 @@ namespace ShipSimulator.UI
     public sealed class VoyagePassage
     {
         public string SceneName { get; }
-        public string Title { get; }
-        public string Detail { get; }
+        private readonly string title;
+        public string Title => Localization.Source(title);
+        private readonly string detail;
+        public string Detail => Localization.Source(detail);
         // Zero means the passage sets no limit of that kind.
         public float MaxLengthOverallM { get; }
         public float MaxBeamOverallM { get; }
@@ -20,8 +22,8 @@ namespace ShipSimulator.UI
             float maxLength = 0f, float maxBeam = 0f, float maxDraft = 0f)
         {
             SceneName = sceneName;
-            Title = title;
-            Detail = detail;
+            this.title = title;
+            this.detail = detail;
             MaxLengthOverallM = maxLength;
             MaxBeamOverallM = maxBeam;
             MaxDraftM = maxDraft;
@@ -56,11 +58,11 @@ namespace ShipSimulator.UI
         {
             if (entry == null) return null;
             if (MaxLengthOverallM > 0 && entry.formationSizeM.z > MaxLengthOverallM)
-                return $"Push unit too long  /  {entry.formationSizeM.z:0.0} m, limit {MaxLengthOverallM:0} m";
+                return Localization.Get("text.push.unit.too.long.0.0.0.m.limit.1.0.m.c91f9391", entry.formationSizeM.z, MaxLengthOverallM);
             if (MaxBeamOverallM > 0 && entry.formationSizeM.x > MaxBeamOverallM)
-                return "Push unit too wide for this passage";
+                return Localization.Get("text.push.unit.too.wide.for.this.passage.074f823c");
             if (MaxDraftM > 0 && entry.formationSizeM.y > MaxDraftM)
-                return "Push unit too deep for this passage";
+                return Localization.Get("text.push.unit.too.deep.for.this.passage.79e9603a");
             return Restriction(entry.LoadData());
         }
 
@@ -78,12 +80,12 @@ namespace ShipSimulator.UI
             if (data == null) return null;
             VesselDimensions size = data.dimensions;
             if (MaxLengthOverallM > 0f && size.lengthOverallM > MaxLengthOverallM)
-                return $"Too long for this passage  /  {size.lengthOverallM:0.0} m, limit {MaxLengthOverallM:0} m";
+                return Localization.Get("text.too.long.for.this.passage.0.0.0.m.limit.1.0.m.5d3c0df4", size.lengthOverallM, MaxLengthOverallM);
             if (MaxBeamOverallM > 0f && size.beamOverallM > MaxBeamOverallM)
-                return $"Too wide for this passage  /  {size.beamOverallM:0.0} m, limit {MaxBeamOverallM:0.0} m";
+                return Localization.Get("text.too.wide.for.this.passage.0.0.0.m.limit.1.0.0.m.76a223bd", size.beamOverallM, MaxBeamOverallM);
             float draft = DeepestDraftM(data);
             if (MaxDraftM > 0f && draft > MaxDraftM)
-                return $"Too deep for this passage  /  {draft:0.00} m, limit {MaxDraftM:0.00} m";
+                return Localization.Get("text.too.deep.for.this.passage.0.0.00.m.limit.1.0.00.m.dc1f11fd", draft, MaxDraftM);
             return null;
         }
 

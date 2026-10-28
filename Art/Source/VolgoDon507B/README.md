@@ -1,5 +1,8 @@
 # Volgo-Don 507B editable source
 
+The forward mast forecastle step is repaired in the source and all LODs.
+See [BOW_STEP_REVIEW.md](BOW_STEP_REVIEW.md) for before/after captures and checks.
+
 ## Current milestone: Parts 16-17
 
 Contact geometry and final source/integration checks are implemented. Read

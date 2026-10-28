@@ -11,6 +11,15 @@ namespace ShipSimulator.Tests
     {
         private const string PrefabPath = "Assets/ShipSimulator/Prefabs/Vessels/VolgoDon507B.prefab";
 
+        [Test]
+        public void ForecastleWall_FacesAftAndCoversTheStepInEveryLod()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
+            var vessel = Object.Instantiate(prefab);
+            try { VolgoDonBowReview.Validate(vessel); }
+            finally { Object.DestroyImmediate(vessel); }
+        }
+
         // The old keel-level contact layout put the bow pair 1.5 m and the stern pair 2.2 m below the hull.
         [Test]
         public void SectionBottom_RisesAtTheForefootAndCutUpStern()

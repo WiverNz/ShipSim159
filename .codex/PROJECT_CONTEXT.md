@@ -1,5 +1,26 @@
 # ShipSim159 Project Context
 
+## Volgo-Don bow gap beneath the mast, 2026-10-29
+
+User screenshot `/mnt/g/tmp/prosvet.png`. Two forecastle step triangles faced inward;
+back-face culling exposed water from aft. Registered Blender MCP repaired their winding
+and corner normals in the main source and both LOD scenes. Exported all three FBXs;
+saved all five source scenes without the user's unrelated default Blender scene.
+Only six triangle orientations changed, no vertex/UV changes; comparison report and
+before/after images are in Art/Source/VolgoDon507B/BOW_STEP_REVIEW.md.
+part8_export.py invokes idempotent repair_forecastle_step.py before LOD generation.
+No prefab, physics, water-mask or material changes.
+
+VolgoDonBowReview validates imported winding/normals/13.744m2 coverage in all three
+LODs. Six Unity captures inspected; BOW_REVIEW|PASS in Logs/bow-after.log, no exceptions.
+Uses SingleCameraRequest because Camera.Render failed on the first cold-start baseline
+frame. The successful baseline starboard capture is retained, not the black first frame.
+EditMode331/331: check-EditMode-20261029-001706-114.xml.
+PlayMode189/189: check-PlayMode-20261029-001859-746.xml.
+Fleet shakedown passed: check-Shakedown-20261029-002529-578.log.
+No player rebuild; build/HudReview remains the preceding UI build. No commits or push.
+
+
 ## Adaptive essential HUD and standalone display choices, 2026-10-28
 
 User requested map/own-vessel marker and engines always visible in separate regions,

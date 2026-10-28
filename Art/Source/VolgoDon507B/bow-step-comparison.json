@@ -1,0 +1,51 @@
+[
+  {
+    "scene": "VolgoDon507B_Source",
+    "changes": [
+      {
+        "mesh": "VD507B_hull",
+        "reversed_faces": [
+          381,
+          382
+        ]
+      }
+    ],
+    "vertices_and_uvs_unchanged": true
+  },
+  {
+    "scene": "VolgoDon507B_Part9_Hull",
+    "changes": [],
+    "vertices_and_uvs_unchanged": true
+  },
+  {
+    "scene": "VolgoDon507B_LOD2",
+    "changes": [
+      {
+        "mesh": "LOD2__VD507B_hull",
+        "reversed_faces": [
+          112,
+          113
+        ]
+      }
+    ],
+    "vertices_and_uvs_unchanged": true
+  },
+  {
+    "scene": "VolgoDon507B_LOD1",
+    "changes": [
+      {
+        "mesh": "LOD1__VD507B_hull",
+        "reversed_faces": [
+          207,
+          208
+        ]
+      }
+    ],
+    "vertices_and_uvs_unchanged": true
+  },
+  {
+    "scene": "VolgoDon507B_Hydrostatic",
+    "changes": [],
+    "vertices_and_uvs_unchanged": true
+  }
+]

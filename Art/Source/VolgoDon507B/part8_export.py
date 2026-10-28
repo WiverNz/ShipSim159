@@ -11,6 +11,9 @@ scene = bpy.data.scenes['VolgoDon507B_Source']
 stage = 10 if scene.get('part10_hull') else 8
 bpy.context.window.scene = scene
 scene.frame_set(1)
+repair_scope = {}
+exec(compile((SOURCE / 'repair_forecastle_step.py').read_text(), 'repair_forecastle_step.py', 'exec'), repair_scope)
+repair_scope['repair_forecastle_step'](scene)
 originals = [o for o in scene.objects if o.type in {'MESH', 'EMPTY'}]
 protected = {'VD507B_hull', 'VD507B_deck', 'VD507B_hold', 'VD507B_rubka', 'VD507B_rubka_detali'}
 

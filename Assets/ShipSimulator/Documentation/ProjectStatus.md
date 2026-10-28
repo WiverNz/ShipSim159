@@ -1,6 +1,6 @@
 # ShipSim159 Project Status
 
-Updated 2026-10-28. ShipSim159 is a Unity river navigation prototype for Windows,
+Updated 2026-10-29. ShipSim159 is a Unity river navigation prototype for Windows,
 with six playable vessels and a seventh selection combining the Serpukhov tug
 with the passive MN-52 barge. This page describes the current implementation,
 not the September prototype. Historical milestone results remain in their reviews.
@@ -27,6 +27,15 @@ estimates against a real vessel.
 | Persistence | Start/pause menu, vessel/passage choice, one voyage save with atomic replacement and backup, persistent user settings |
 | Sound and graphics | Shared sound library with vessel profiles; water/wake/propeller wash, weather, day/night, sector lights, TAA and vegetation LODs |
 | Distribution | [v0.1.3](https://github.com/WiverNz/ShipSim159/releases/tag/v0.1.3) was published by the linked Actions run; the CI corrections described below follow that published build |
+
+## Volgo-Don forecastle wall, 2026-10-29
+
+Fixed reversed triangles beneath the forward mast in the source model and all three
+LOD exports. The wall now renders from aft instead of exposing water. Vertex positions,
+UVs, materials and physical geometry are preserved. Checks: 331 EditMode tests,
+189 PlayMode tests, six close-up captures and the fleet shakedown passed.
+See [the source review](../../../Art/Source/VolgoDon507B/BOW_STEP_REVIEW.md)
+for before/after images. Existing player binaries require a rebuild for this correction.
 
 ## Adaptive HUD and display settings, 2026-10-28
 

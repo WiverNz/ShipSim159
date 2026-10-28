@@ -1759,6 +1759,54 @@
     {
       "key": "quality.pc",
       "value": "ПК"
+    },
+    {
+      "key": "hud.panels",
+      "value": "Игровые панели"
+    },
+    {
+      "key": "hud.choose",
+      "value": "Выберите видимые и закреплённые панели"
+    },
+    {
+      "key": "hud.size",
+      "value": "Размер панелей"
+    },
+    {
+      "key": "hud.reset",
+      "value": "Сбросить видимость и размер панелей"
+    },
+    {
+      "key": "hud.mode.0",
+      "value": "Скрыта (нажмите для смены)"
+    },
+    {
+      "key": "hud.mode.1",
+      "value": "Во вкладке (нажмите для смены)"
+    },
+    {
+      "key": "hud.mode.2",
+      "value": "Закреплена (нажмите для смены)"
+    },
+    {
+      "key": "hud.engines",
+      "value": "Двигатели"
+    },
+    {
+      "key": "hud.anchors",
+      "value": "Якоря и швартовка"
+    },
+    {
+      "key": "hud.speed",
+      "value": "Скорость игры"
+    },
+    {
+      "key": "hud.objective",
+      "value": "Задача рейса"
+    },
+    {
+      "key": "hud.cargo",
+      "value": "Груз"
     }
   ]
 }

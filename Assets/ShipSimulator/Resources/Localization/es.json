@@ -1759,6 +1759,54 @@
     {
       "key": "quality.pc",
       "value": "PC"
+    },
+    {
+      "key": "hud.panels",
+      "value": "Paneles de juego"
+    },
+    {
+      "key": "hud.choose",
+      "value": "Elige los controles visibles y fijados"
+    },
+    {
+      "key": "hud.size",
+      "value": "Tamaño de paneles"
+    },
+    {
+      "key": "hud.reset",
+      "value": "Restablecer visibilidad y tamaño"
+    },
+    {
+      "key": "hud.mode.0",
+      "value": "Oculto (pulsa para cambiar)"
+    },
+    {
+      "key": "hud.mode.1",
+      "value": "En pestaña (pulsa para cambiar)"
+    },
+    {
+      "key": "hud.mode.2",
+      "value": "Fijado (pulsa para cambiar)"
+    },
+    {
+      "key": "hud.engines",
+      "value": "Motores"
+    },
+    {
+      "key": "hud.anchors",
+      "value": "Anclas y amarre"
+    },
+    {
+      "key": "hud.speed",
+      "value": "Velocidad de simulación"
+    },
+    {
+      "key": "hud.objective",
+      "value": "Objetivo de la travesía"
+    },
+    {
+      "key": "hud.cargo",
+      "value": "Carga"
     }
   ]
 }

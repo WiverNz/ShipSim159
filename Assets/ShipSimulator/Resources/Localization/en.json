@@ -1759,6 +1759,54 @@
     {
       "key": "quality.pc",
       "value": "PC"
+    },
+    {
+      "key": "hud.panels",
+      "value": "HUD panels"
+    },
+    {
+      "key": "hud.choose",
+      "value": "Choose visible and pinned controls"
+    },
+    {
+      "key": "hud.size",
+      "value": "Panel size"
+    },
+    {
+      "key": "hud.reset",
+      "value": "Restore panel visibility and size"
+    },
+    {
+      "key": "hud.mode.0",
+      "value": "Hidden (click to change)"
+    },
+    {
+      "key": "hud.mode.1",
+      "value": "In tab (click to change)"
+    },
+    {
+      "key": "hud.mode.2",
+      "value": "Pinned (click to change)"
+    },
+    {
+      "key": "hud.engines",
+      "value": "Engines"
+    },
+    {
+      "key": "hud.anchors",
+      "value": "Anchors and mooring"
+    },
+    {
+      "key": "hud.speed",
+      "value": "Simulation speed"
+    },
+    {
+      "key": "hud.objective",
+      "value": "Passage objective"
+    },
+    {
+      "key": "hud.cargo",
+      "value": "Cargo"
     }
   ]
 }

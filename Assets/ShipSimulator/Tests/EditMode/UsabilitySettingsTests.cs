@@ -11,7 +11,7 @@ namespace ShipSimulator.Tests
     {
         private const string Prefix = "ShipSim159.Settings.";
         private readonly Dictionary<string, float> previous = new Dictionary<string, float>();
-        private readonly string[] keys = { "UiScale", "Sensitivity", "RotationSensitivity", "ZoomSensitivity" };
+        private readonly string[] keys = { "UiScale", "Sensitivity", "RotationSensitivity", "ZoomSensitivity", "PanelScale" };
 
         [SetUp]
         public void SetUp()
@@ -33,6 +33,35 @@ namespace ShipSimulator.Tests
             }
             previous.Clear();
             VoyageSettings.Save();
+        }
+
+        [Test]
+        public void PanelSettings_PersistClampAndNotifyWithoutChangingControls()
+        {
+            const string key = Prefix + "Panel.WeatherBlock";
+            bool existed = PlayerPrefs.HasKey(key);
+            int before = PlayerPrefs.GetInt(key);
+            float sensitivity = VoyageSettings.CameraSensitivity;
+            int notifications = 0;
+            void Changed() => notifications++;
+            VoyageSettings.Changed += Changed;
+            try
+            {
+                VoyageSettings.SetPanelMode("WeatherBlock", 2);
+                Assert.That(PlayerPrefs.GetInt(key), Is.EqualTo(2));
+                Assert.That(VoyageSettings.PanelMode("WeatherBlock"), Is.EqualTo(2));
+                VoyageSettings.SetPanelMode("WeatherBlock", -10);
+                Assert.That(VoyageSettings.PanelMode("WeatherBlock"), Is.Zero);
+                VoyageSettings.SetPanelScale(float.NaN);
+                Assert.That(VoyageSettings.PanelScale, Is.EqualTo(.85f));
+                Assert.That(notifications, Is.EqualTo(3));
+                Assert.That(VoyageSettings.CameraSensitivity, Is.EqualTo(sensitivity));
+            }
+            finally
+            {
+                VoyageSettings.Changed -= Changed;
+                if (existed) PlayerPrefs.SetInt(key, before); else PlayerPrefs.DeleteKey(key);
+            }
         }
 
         [Test]

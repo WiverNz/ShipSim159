@@ -47,16 +47,15 @@ namespace ShipSimulator.UI
             for (int i = 0; i < names.Length; i++)
             {
                 int index = i;
-                var rect = UiLayout.Rect(toolbar, names[i], i * 126, 0, 120, 44);
+                var rect = UiLayout.Rect(toolbar, names[i], i * 48, 0, 44, 44);
                 var image = rect.gameObject.AddComponent<Image>();
                 image.sprite = HudTheme.Rounded(8); image.type = Image.Type.Sliced;
                 var button = rect.gameObject.AddComponent<Button>();
                 button.targetGraphic = image;
-                var icon = UiLayout.Rect(rect, "Icon", 8, 13, 18, 18).gameObject.AddComponent<Image>();
+                var icon = UiLayout.Rect(rect, "Icon", 11, 11, 22, 22).gameObject.AddComponent<Image>();
                 icon.sprite = HudTheme.Icon(icons[i]); icon.raycastTarget = false;
-                var text = UiLayout.Rect(rect, "Caption", 30, 4, 88, 36).gameObject.AddComponent<Text>();
-                text.font = help.font; text.fontSize = 16; LocalizedLabel.BindSource(text, names[i]);
-                text.alignment = TextAnchor.MiddleLeft; text.raycastTarget = false;
+                var hint = rect.gameObject.AddComponent<HudTooltip>();
+                hint.Initialise(help.font, names[i]);
                 button.onClick.AddListener(() =>
                 {
                     if (index == 6)
@@ -64,6 +63,7 @@ namespace ShipSimulator.UI
                         var menu = FindAnyObjectByType<VoyageMenu>();
                         if (menu != null) { menu.OpenPause(); menu.ShowSettings(); }
                     }
+                    else if (selected == index) { selected = -1; dirty = true; Refresh(); }
                     else Select(index);
                 });
                 tabs.Add(button);
@@ -96,13 +96,13 @@ namespace ShipSimulator.UI
 
         public void ToggleMap()
         {
-            if (previousSize.x < 1600) Select(selected == 4 ? 0 : 4);
+            if (previousSize.x < 1600 || VoyageSettings.PanelMode("MiniMap") != 2) Select(selected == 4 ? 0 : 4);
             else { mapEnabled = !mapEnabled; dirty = true; }
         }
 
         public void ToggleHelp() => Select(selected == 5 ? 0 : 5);
-        private void OnEnable() => Localization.Changed += Invalidate;
-        private void OnDisable() => Localization.Changed -= Invalidate;
+        private void OnEnable() { dirty = true; Localization.Changed += Invalidate; VoyageSettings.Changed += Invalidate; }
+        private void OnDisable() { Localization.Changed -= Invalidate; VoyageSettings.Changed -= Invalidate; }
         private void LateUpdate() => Refresh();
 
         private void Refresh()
@@ -130,47 +130,61 @@ namespace ShipSimulator.UI
             UiLayout.Place(tape, (size.x - 700) * .5f, y, 700, 54);
             UiLayout.Place(warnings, (size.x - 660) * .5f, y + (twoRows ? 0 : 58), 660, 56);
             UiLayout.Place(toolbar, 16, size.y - 56, size.x - 32, 44);
-            bool side = size.x >= 1600 && selected != 4 && mapEnabled;
-            float height = Mathf.Max(100, Mathf.Min(420, size.y - y - (twoRows ? 136 : 194)));
-            UiLayout.Place(viewport, 16, size.y - height - 68, 716, height);
-            UiLayout.Place(sidebar, size.x - 460, y + 60, 444, size.y - y - 128);
-            sidebar.gameObject.SetActive(side);
+            bool side = size.x >= 1600;
+            float scale = VoyageSettings.PanelScale;
+            float height = Mathf.Max(100, Mathf.Min(420 * scale, size.y - y - (twoRows ? 136 : 194)));
             var nav = (RectTransform)sidebar.GetChild(0);
-            float total = 8, navY = 8;
-            for (int g = 0; g < groups.Count; g++)
+            float total = 8, navY = 8, drawerWidth = 0, sideWidth = 0;
+            for (int offset = 0; offset < groups.Count; offset++)
             {
+                // A newly selected tab must be immediately visible in the shared narrow drawer.
+                int g = !side && selected >= 0 ? (selected + offset) % groups.Count : offset;
                 foreach (RectTransform panel in groups[g])
                 {
-                    bool visible = g == selected || (g == 4 && side);
-                    panel.SetParent(g == 4 && side ? nav : content, false);
+                    int mode = g == 5 ? 1 : VoyageSettings.PanelMode(panel.name);
+                    bool pinned = mode == 2 && (panel.name != "MiniMap" || mapEnabled || selected == 4);
+                    bool visible = mode != 0 && (g == selected || pinned);
+                    bool onSide = pinned && side;
+                    panel.SetParent(onSide ? nav : content, false);
                     panel.gameObject.SetActive(visible);
                     if (!visible) continue;
                     float width = panel.sizeDelta.x, panelHeight = panel.sizeDelta.y;
                     if (g == 5)
                     {
-                        width = 664;
+                        width = Mathf.Min(664, (size.x - (side ? sideWidth : 0) - 80) / scale);
                         panel.sizeDelta = new Vector2(width, 1000);
                         panelHeight = Mathf.Max(300, help.preferredHeight + 24);
                     }
-                    if (g == 4 && side)
+                    panel.localScale = Vector3.one * scale;
+                    if (onSide)
                     {
                         UiLayout.Place(panel, 8, navY, width, panelHeight);
-                        navY += panelHeight + 12;
+                        navY += panelHeight * scale + 8;
+                        sideWidth = Mathf.Max(sideWidth, width * scale + 28);
                     }
                     else
                     {
-                        UiLayout.Place(panel, 12, total, width, panelHeight);
-                        total += panelHeight + 12;
+                        UiLayout.Place(panel, 8, total, width, panelHeight);
+                        total += panelHeight * scale + 8;
+                        drawerWidth = Mathf.Max(drawerWidth, width * scale + 28);
                     }
                 }
             }
-            content.sizeDelta = new Vector2(700, total);
-            nav.sizeDelta = new Vector2(444, navY);
-            if (selected == 5)
-                help.rectTransform.sizeDelta = new Vector2(664, Mathf.Max(300, help.preferredHeight + 24));
+            float drawerHeight = Mathf.Min(height, total);
+            UiLayout.Place(viewport, 16, size.y - drawerHeight - 68, drawerWidth, drawerHeight);
+            UiLayout.Place(sidebar, size.x - sideWidth - 16, y + 60, sideWidth,
+                Mathf.Min(navY, size.y - y - 128));
+            viewport.gameObject.SetActive(drawerWidth > 0);
+            sidebar.gameObject.SetActive(sideWidth > 0);
+            content.sizeDelta = new Vector2(drawerWidth, total);
+            nav.sizeDelta = new Vector2(sideWidth, navY);
             for (int i = 0; i < tabs.Count; i++)
             {
-                tabs[i].interactable = i != 1 || groups[1].Length > 0;
+                bool available = i >= groups.Count;
+                if (!available)
+                    foreach (var panel in groups[i])
+                        available |= i == 5 || VoyageSettings.PanelMode(panel.name) != 0;
+                tabs[i].interactable = available;
                 tabs[i].GetComponent<Image>().color = i == selected ? HudTheme.ButtonActive : HudTheme.ButtonIdle;
             }
         }

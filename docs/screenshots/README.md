@@ -31,3 +31,12 @@ Older unprefixed images in this directory are retained because other documents
 reference them. They depict earlier prototypes and are not used as current evidence
 in ProjectStatus. A screenshot establishes appearance at its captured state; it
 does not establish temporal stability, manual handling comfort or target-GPU performance.
+
+## Configurable HUD, 2026-10-28
+
+- `hud-panels-20261028-settings.png`: unmodified capture from
+  `Logs/Localization/ru/100/panels-1920x1080.png`, final focused UI layout suite.
+- `hud-panels-20261028-voyage.png`: unmodified capture from
+  `Logs/Shakedown/volgodon-507b-0-chase.png`, final seven-selection fleet shakedown.
+
+These captures show the configurable compact HUD added after the dated October 27 gallery.

@@ -1,5 +1,29 @@
 # ShipSim159 Project Context
 
+## Configurable compact HUD, 2026-10-28
+
+User requested selectable, smaller weather/time/camera/equipment panels. Root cause:
+HudLayout exposed mutually exclusive groups, buried time with camera and equipment
+with loading, and reserved a 716-unit drawer even for small controls. Extended the
+existing layout, settings and four localization catalogues; no duplicate HUD or physics.
+Settings > HUD panels cycles ten stable panel IDs through hidden/tab/pinned modes,
+saved in PlayerPrefs, with separate bounded 75-115% panel scale (85% default).
+Map and simulation speed default pinned. Drawer sizes follow scaled content; wide
+screens have a pinned sidebar, narrow screens share a scroll drawer with the selected
+tab first. Existing vector icon bar has localized hover/focus captions and toggles
+its active drawer closed. Equipment still appears only on supported vessels.
+M opens tab-only maps and toggles pinned maps without hiding the pinned objective.
+Help wraps to the free width beside pinned controls. Settings reset only panel choices.
+
+Verification: EditMode327/327, TestResults/check-EditMode-20261028-181459-672.xml;
+full PlayMode188/188, check-PlayMode-20261028-181546-412.xml before final refinements;
+final UI suite12/12, TestResults/hud-final-ui.xml. Matrix4 languages x5 resolutions
+x3 paired UI/panel scales; Logs/Localization/layout-failures.txt empty. Added preference,
+visibility, pinning, map-shortcut and translation regressions. Final Shakedown and Menu
+checks PASS; fresh screenshots copied without editing into docs/screenshots/hud-panels-
+20261028-*.png and referenced by ProjectStatus. OperatorGuide updated. No external art
+required, no release/player rebuild or commit/push. Existing collision/cargo work unchanged.
+
 ## Release CI correction and current ProjectStatus, 2026-10-28
 
 User requested analysis/fixes for Actions run40547214885 and refreshed ProjectStatus.

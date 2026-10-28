@@ -1759,6 +1759,54 @@
     {
       "key": "quality.pc",
       "value": "PC"
+    },
+    {
+      "key": "hud.panels",
+      "value": "HUD-Panels"
+    },
+    {
+      "key": "hud.choose",
+      "value": "Sichtbare und angeheftete Panels wählen"
+    },
+    {
+      "key": "hud.size",
+      "value": "Panelgröße"
+    },
+    {
+      "key": "hud.reset",
+      "value": "Sichtbarkeit und Größe zurücksetzen"
+    },
+    {
+      "key": "hud.mode.0",
+      "value": "Verborgen (zum Ändern klicken)"
+    },
+    {
+      "key": "hud.mode.1",
+      "value": "Im Reiter (zum Ändern klicken)"
+    },
+    {
+      "key": "hud.mode.2",
+      "value": "Angeheftet (zum Ändern klicken)"
+    },
+    {
+      "key": "hud.engines",
+      "value": "Motoren"
+    },
+    {
+      "key": "hud.anchors",
+      "value": "Anker und Festmachen"
+    },
+    {
+      "key": "hud.speed",
+      "value": "Simulationsgeschwindigkeit"
+    },
+    {
+      "key": "hud.objective",
+      "value": "Fahrtziel"
+    },
+    {
+      "key": "hud.cargo",
+      "value": "Ladung"
     }
   ]
 }

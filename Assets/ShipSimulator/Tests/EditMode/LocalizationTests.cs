@@ -17,6 +17,20 @@ namespace ShipSimulator.Tests
         [TearDown] public void Cleanup() => VoyageSettings.SetLanguage(original);
 
         [Test]
+        public void PanelSettings_HaveTranslatedCaptionsInEveryLanguage()
+        {
+            var english = Read("en");
+            foreach (string caption in VoyageSettings.HudPanelLabels)
+                Assert.That(english.Values, Does.Contain(caption));
+            foreach (string language in Localization.Languages)
+            {
+                VoyageSettings.SetLanguage(language);
+                foreach (string caption in VoyageSettings.HudPanelLabels)
+                    Assert.That(Localization.Source(caption), Is.Not.Empty);
+            }
+        }
+
+        [Test]
         public void CataloguesHaveMatchingKeysFormatsAndRichText()
         {
             var english = Read("en");

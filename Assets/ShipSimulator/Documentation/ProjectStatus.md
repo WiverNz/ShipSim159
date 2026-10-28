@@ -20,13 +20,33 @@ estimates against a real vessel.
 | Vessel motion | Force-driven Rigidbody motion, MMG manoeuvring, engine/shaft response, current, wind, restricted water, buoyancy and grounding |
 | 507B equipment | Compartment cargo/ballast/stores, load-dependent draft/trim, visible nominal bulk, animated shafts/rudders/hatches/windlasses, anchors and mooring |
 | Push unit | Separate passive barge Rigidbody, joint coupling, own buoyancy/resistance/contact and saved formation state |
-| Interface | Scalable 80-150% UI, scrollable control groups, per-engine telegraphs, deck/weather/map/help panels |
+| Interface | Scalable 80-150% UI, independent 75-115% panel size, hidden/tab/pinned controls, compact icon bar and localized hints |
 | Languages | Live English, Russian, German and Spanish; translated UI, hints and gameplay messages; persistent selection |
 | Camera | Nine views, independent saved orbit/zoom sensitivities, proportional wheel zoom and unscaled smoothing, navigator model eye, legacy-save migration |
 | Navigation | Heading-up channel map, depth zones, route, buoys, obstacle footprints, track, predicted path and waypoint |
 | Persistence | Start/pause menu, vessel/passage choice, one voyage save with atomic replacement and backup, persistent user settings |
 | Sound and graphics | Shared sound library with vessel profiles; water/wake/propeller wash, weather, day/night, sector lights, TAA and vegetation LODs |
 | Distribution | [v0.1.3](https://github.com/WiverNz/ShipSim159/releases/tag/v0.1.3) was published by the linked Actions run; the CI corrections described below follow that published build |
+
+## Configurable compact HUD, 2026-10-28
+
+Settings now includes **HUD panels** with independent hidden/tab/pinned modes for ten
+control panels. Panel scale is separate from the global interface scale. The bottom bar
+uses existing vector icons with localized hover/focus captions; clicking the active icon
+collapses the drawer. Pinned map and simulation speed are enabled by default. Narrow
+screens use a shared scroll area, and unavailable vessel equipment is not invented.
+See [OperatorGuide.md](OperatorGuide.md#choosing-hud-panels) for operation.
+
+Verified: 327/327 EditMode and 188/188 full PlayMode before the final layout/shortcut
+refinements; the final focused UI suite passes all 12 tests. The layout matrix covers
+four languages, five screen sizes and three paired global/panel scales (80/75%,
+100/85%, 150/115%), including pinned engines beside Help, with no clipped labels.
+The fleet shakedown and menu/save/load/equipment smoke checks pass on the final code.
+These are automated checks, not a claim about subjective handling comfort.
+
+![Configurable panels in the Russian settings page](../../../docs/screenshots/hud-panels-20261028-settings.png)
+
+![Compact HUD in the final fleet shakedown](../../../docs/screenshots/hud-panels-20261028-voyage.png)
 
 ## Current screenshots
 

@@ -26,6 +26,30 @@ namespace ShipSimulator.UI
             Localization.NotifyChanged();
             Changed?.Invoke();
         }
+        // Stable panel names also identify the runtime controls and their saved preferences.
+        public static readonly string[] HudPanels = { "TelegraphBlock", "RudderBlock", "LoadingBlock",
+            "MachineryBlock", "GroundTackleBlock", "CameraBlock", "TimeScaleBlock", "WeatherBlock",
+            "Objective", "MiniMap" };
+        public static readonly string[] HudPanelLabels = { "Engines", "Helm", "Cargo", "Deck machinery",
+            "Anchors and mooring", "Camera", "Simulation speed", "Weather", "Passage objective", "Map" };
+        // 0: hidden, 1: in its tab, 2: pinned beside the active tab.
+        public static int PanelMode(string panel) => Mathf.Clamp(PlayerPrefs.GetInt(Prefix + "Panel." + panel,
+            panel == "MiniMap" || panel == "TimeScaleBlock" ? 2 : 1), 0, 2);
+        public static void SetPanelMode(string panel, int mode)
+        {
+            if (Array.IndexOf(HudPanels, panel) < 0) return;
+            PlayerPrefs.SetInt(Prefix + "Panel." + panel, Mathf.Clamp(mode, 0, 2));
+            Save();
+            Changed?.Invoke();
+        }
+        public static float PanelScale => Read("PanelScale", .85f, .75f, 1.15f);
+        public static void SetPanelScale(float value) => Write("PanelScale", value, .85f, .75f, 1.15f);
+        public static void RestorePanelDefaults()
+        {
+            foreach (string panel in HudPanels) PlayerPrefs.DeleteKey(Prefix + "Panel." + panel);
+            SetPanelScale(.85f);
+            Save();
+        }
         public static float UiScale => Read("UiScale", 1f, .8f, 1.5f);
         public static float CameraSensitivity => Read("RotationSensitivity",
             Read("Sensitivity", 1f, .25f, 2f), .25f, 2f);

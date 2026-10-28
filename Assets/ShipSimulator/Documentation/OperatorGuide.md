@@ -9,6 +9,25 @@ standalone player. Choose **New voyage**, pick a vessel, then River familiarisat
 Gorodets passage; or choose **Continue voyage** to restore the saved passage with the
 vessel it was sailed in.
 
+## Choosing HUD panels
+
+Open **Settings > HUD panels** from Escape or the gear icon. Each row cycles through
+**Hidden**, **In tab** and **Pinned**. Engines, helm, cargo, deck machinery, anchors/mooring,
+camera, simulation speed, weather, passage objective and map have independent choices.
+Preferences apply immediately and persist between launches and vessel changes. Equipment
+controls appear only when the selected vessel implements that equipment.
+
+The bottom icon bar opens helm, deck, camera, weather, map and help; hover or focus an icon
+for its caption. Clicking the active icon collapses its drawer. Pinned controls remain
+available across tabs. By default the map and simulation speed are pinned. Wide screens
+put pinned controls on the right; narrow screens share a scrolling drawer with the selected
+tab. Scroll to reach panels below the visible area. Hiding a panel never cancels its active
+commands or removes keyboard controls. Warnings remain visible independently of panel choices.
+
+**Panel size** controls the panel scale from 75% to 115%, with an 85% default. The separate
+**Interface & camera > Interface scale** setting still scales the whole interface.
+**Restore defaults** on the panels page resets only panel visibility and size.
+
 ## Volgo-Don cargo and ballast
 
 The loading panel above the deck-machinery controls provides **SELECT COMPARTMENT**,
@@ -44,7 +63,7 @@ Anchors and mooring lines have their own panel, below.
 
 ## Volgo-Don anchors and mooring lines
 
-The ANCHORS & MOORING panel on the right, under the radar, lists each anchor with its state and
+The ANCHORS & MOORING panel, available through Deck or independently pinned, lists each anchor with its state and
 chain out, the selected mooring station, and every line made fast with its state and its load as a
 percentage of the line's breaking load. Keys (also under F1):
 

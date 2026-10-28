@@ -16,7 +16,7 @@ namespace ShipSimulator.Tests
         private Scene original;
         private Scene scene;
         private string vessel;
-        private float originalScale;
+        private float originalScale, originalPanelScale;
         private string originalLanguage;
         private VoyageMenu menu;
 
@@ -25,6 +25,7 @@ namespace ShipSimulator.Tests
         {
             VoyageSettings.SetLanguage(originalLanguage);
             VoyageSettings.SetUiScale(originalScale);
+            VoyageSettings.SetPanelScale(originalPanelScale);
             VoyageSettings.Save();
             if (menu != null) Object.Destroy(menu.gameObject);
             foreach (Camera camera in Object.FindObjectsByType<Camera>())
@@ -47,6 +48,7 @@ namespace ShipSimulator.Tests
             layoutFailures.Clear();
             original = SceneManager.GetActiveScene();
             originalScale = VoyageSettings.UiScale;
+            originalPanelScale = VoyageSettings.PanelScale;
             originalLanguage = VoyageSettings.Language;
             vessel = VesselSelection.SelectedId;
             VesselSelection.SelectedId = "volgodon-507b";
@@ -65,6 +67,7 @@ namespace ShipSimulator.Tests
             {
                 VoyageSettings.SetLanguage(language);
                 VoyageSettings.SetUiScale(scale);
+                VoyageSettings.SetPanelScale(scale == .8f ? .75f : scale == 1f ? .85f : 1.15f);
                 int w = sizes[i,0], h = sizes[i,1];
                 menu.ShowHome();
                 yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "menu");
@@ -78,14 +81,22 @@ namespace ShipSimulator.Tests
                 yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "display");
                 menu.ShowVoyages();
                 yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "passages");
+                menu.ShowPanels();
+                yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "panels");
                 menu.ShowInterface();
                 yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "settings");
                 if (!menu.HasVoyage) menu.StartVoyage("GorodetsTrainingScene"); else menu.Resume();
                 Time.timeScale = 0;
                 yield return null;
                 yield return Capture(hud.GetComponent<Canvas>(), w, h, "hud");
-                hud.GetComponent<HudLayout>().Select(5);
-                yield return Capture(hud.GetComponent<Canvas>(), w, h, "help");
+                int engineMode = VoyageSettings.PanelMode("TelegraphBlock");
+                try
+                {
+                    VoyageSettings.SetPanelMode("TelegraphBlock", 2);
+                    hud.GetComponent<HudLayout>().Select(5);
+                    yield return Capture(hud.GetComponent<Canvas>(), w, h, "help");
+                }
+                finally { VoyageSettings.SetPanelMode("TelegraphBlock", engineMode); }
                 hud.GetComponent<HudLayout>().Select(1);
                 yield return Capture(hud.GetComponent<Canvas>(), w, h, "deck");
                 hud.Ship.ConfigureLoading(0);

@@ -463,6 +463,7 @@ namespace ShipSimulator.UI
             ShowPage("settings", "MAKE YOURSELF AT HOME", "Bridge settings");
             ActionButton("Language", "Choose the interface language", 0, ShowLanguage);
             ActionButton("Interface & camera", "Scale and independent camera sensitivities", 0, ShowInterface);
+            ActionButton("HUD panels", "Choose visible and pinned controls", 0, ShowPanels);
             ActionButton("Sound", "Master volume, mix and mute", 0, ShowSound);
             ActionButton("Display", "Quality, synchronisation and fullscreen", 0, ShowDisplay);
             ActionButton("Done", "Settings are saved automatically", 0, () => { VoyageSettings.Save(); ShowHome(); }, true);
@@ -494,6 +495,30 @@ namespace ShipSimulator.UI
                 VoyageSettings.SetZoomSensitivity, value => value.ToString("0.00", Localization.Culture) + "x");
             ActionButton("Restore defaults", "Interface scale and camera sensitivities only", 0,
                 () => { VoyageSettings.RestoreControlDefaults(); ShowInterface(); });
+            ActionButton("Back", "Save and return to settings", 0, () => { VoyageSettings.Save(); ShowSettings(); }, true);
+            SelectFirst();
+        }
+
+        public void ShowPanels()
+        {
+            ShowPage("panels", "HUD panels", "Choose visible and pinned controls");
+            SettingSlider("Panel size", VoyageSettings.PanelScale, .75f, 1.15f, 0,
+                VoyageSettings.SetPanelScale, value => Mathf.RoundToInt(value * 100) + "%");
+            for (int i = 0; i < VoyageSettings.HudPanels.Length; i++)
+            {
+                string panel = VoyageSettings.HudPanels[i];
+                string label = VoyageSettings.HudPanelLabels[i];
+                Button button = ActionButton(label, "", 0,
+                    () => VoyageSettings.SetPanelMode(panel, (VoyageSettings.PanelMode(panel) + 1) % 3));
+                LocalizedLabel.Bind(button.GetComponentsInChildren<Text>()[1], () =>
+                    Localization.Get("hud.mode." + VoyageSettings.PanelMode(panel)));
+                VoyageSettings.Changed += RefreshMode;
+                void RefreshMode() { if (button != null) button.GetComponentsInChildren<Text>()[1].text =
+                    Localization.Get("hud.mode." + VoyageSettings.PanelMode(panel)); }
+                button.gameObject.AddComponent<HudSettingBinding>().OnDisposed = () => VoyageSettings.Changed -= RefreshMode;
+            }
+            ActionButton("Restore defaults", "Restore panel visibility and size", 0,
+                () => { VoyageSettings.RestorePanelDefaults(); ShowPanels(); });
             ActionButton("Back", "Save and return to settings", 0, () => { VoyageSettings.Save(); ShowSettings(); }, true);
             SelectFirst();
         }

@@ -33,11 +33,12 @@ namespace ShipSimulator.UI
         public static readonly string[] HudPanelLabels = { "Engines", "Helm", "Cargo", "Deck machinery",
             "Anchors and mooring", "Camera", "Simulation speed", "Weather", "Passage objective", "Map" };
         // 0: hidden, 1: in its tab, 2: pinned beside the active tab.
-        public static int PanelMode(string panel) => Mathf.Clamp(PlayerPrefs.GetInt(Prefix + "Panel." + panel,
+        public static bool EssentialPanel(string panel) => panel == "TelegraphBlock" || panel == "MiniMap";
+        public static int PanelMode(string panel) => EssentialPanel(panel) ? 2 : Mathf.Clamp(PlayerPrefs.GetInt(Prefix + "Panel." + panel,
             panel == "MiniMap" || panel == "TimeScaleBlock" ? 2 : 1), 0, 2);
         public static void SetPanelMode(string panel, int mode)
         {
-            if (Array.IndexOf(HudPanels, panel) < 0) return;
+            if (Array.IndexOf(HudPanels, panel) < 0 || EssentialPanel(panel)) return;
             PlayerPrefs.SetInt(Prefix + "Panel." + panel, Mathf.Clamp(mode, 0, 2));
             Save();
             Changed?.Invoke();
@@ -95,8 +96,7 @@ namespace ShipSimulator.UI
             if (PlayerPrefs.HasKey(Prefix + "Quality"))
                 QualitySettings.SetQualityLevel(Mathf.Clamp(PlayerPrefs.GetInt(Prefix + "Quality"), 0, QualitySettings.names.Length - 1));
             QualitySettings.vSyncCount = PlayerPrefs.GetInt(Prefix + "VSync", 1);
-            if (!Application.isEditor && PlayerPrefs.HasKey(Prefix + "Fullscreen"))
-                Screen.fullScreen = PlayerPrefs.GetInt(Prefix + "Fullscreen") == 1;
+            if (!Application.isEditor && !HasDisplayArguments(Environment.GetCommandLineArgs())) ApplyDisplay();
         }
 
         public static void SetVolume(float value)
@@ -152,12 +152,50 @@ namespace ShipSimulator.UI
             PlayerPrefs.SetInt(Prefix + "VSync", QualitySettings.vSyncCount);
         }
 
+        public static readonly Vector2Int[] WindowSizes = { new(800, 600), new(960, 540), new(1024, 768),
+            new(1280, 720), new(1366, 768), new(1600, 900), new(1920, 1080), new(2560, 1440), new(3440, 1440) };
+        public static bool Fullscreen => PlayerPrefs.GetInt(Prefix + "Fullscreen", 1) != 0;
+        public static Vector2Int WindowSize => new(
+            Mathf.Clamp(PlayerPrefs.GetInt(Prefix + "WindowWidth", 1280), 640, 7680),
+            Mathf.Clamp(PlayerPrefs.GetInt(Prefix + "WindowHeight", 720), 480, 4320));
+
+        public static bool HasDisplayArguments(string[] arguments) => Array.Exists(arguments,
+            value => value == "-screen-width" || value == "-screen-height" ||
+                value == "-screen-fullscreen" || value == "-window-mode");
+
+        public static Vector2Int FitWindow(Vector2Int requested, Vector2Int workArea) => new(
+            Mathf.Clamp(requested.x, 640, Mathf.Max(640, workArea.x - 32)),
+            Mathf.Clamp(requested.y, 480, Mathf.Max(480, workArea.y - 64)));
+
+        public static void SetWindowSize(int width, int height)
+        {
+            PlayerPrefs.SetInt(Prefix + "WindowWidth", Mathf.Clamp(width, 640, 7680));
+            PlayerPrefs.SetInt(Prefix + "WindowHeight", Mathf.Clamp(height, 480, 4320));
+            PlayerPrefs.SetInt(Prefix + "Fullscreen", 0);
+            Save();
+            ApplyDisplay();
+        }
+
         public static void ToggleFullscreen()
         {
-            if (Application.isEditor) return;
-            bool fullscreen = !Screen.fullScreen;
-            Screen.fullScreen = fullscreen;
+            bool fullscreen = Application.isEditor ? !Fullscreen : !Screen.fullScreen;
             PlayerPrefs.SetInt(Prefix + "Fullscreen", fullscreen ? 1 : 0);
+            Save();
+            ApplyDisplay();
+        }
+
+        public static void ApplyDisplay()
+        {
+            if (Application.isEditor) return;
+            var monitor = Screen.mainWindowDisplayInfo;
+            if (Fullscreen)
+                Screen.SetResolution(monitor.width, monitor.height, FullScreenMode.FullScreenWindow);
+            else
+            {
+                var size = FitWindow(WindowSize, new Vector2Int(monitor.workArea.width, monitor.workArea.height));
+                Screen.SetResolution(size.x, size.y, FullScreenMode.Windowed);
+            }
+            Changed?.Invoke();
         }
     }
 }

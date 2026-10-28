@@ -296,6 +296,9 @@ namespace ShipSimulator.UI
 
             BuildRudderControls(transform as RectTransform);
             BuildTelegraph(transform as RectTransform);
+            HudPanelFlow.Configure(engineText, 4, 3);
+            foreach (Transform child in engineText.transform.parent)
+                if (child.name.StartsWith("Icon_")) child.gameObject.SetActive(false);
             BuildCameraControls(transform as RectTransform);
             BuildTimeControls();
             BuildWeatherControls();

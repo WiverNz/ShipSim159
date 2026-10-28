@@ -10,14 +10,14 @@ namespace ShipSimulator.UI
         private readonly List<RectTransform[]> groups = new List<RectTransform[]>();
         private readonly List<Button> tabs = new List<Button>();
         private Canvas canvas;
-        private RectTransform toolbar, viewport, content, sidebar;
+        private RectTransform toolbar, viewport, content;
         private RectTransform instruments, tape, warnings;
         private Text help;
         private ScrollRect scroll;
         private int selected;
         private Vector2 previousSize;
         private bool dirty = true;
-        private bool mapEnabled = true;
+        private RectTransform engines, map;
         public int SelectedGroup => selected;
 
         public void Build(Text helpText)
@@ -34,13 +34,12 @@ namespace ShipSimulator.UI
             instruments = transform.Find("TopStatusBar") as RectTransform;
             tape = transform.Find("HeadingTape") as RectTransform;
             warnings = transform.Find("Warnings") as RectTransform;
+            engines = transform.Find("TelegraphBlock") as RectTransform;
+            map = transform.Find("MiniMap") as RectTransform;
             toolbar = UiLayout.Rect(transform, "Control tabs", 16, 140, 800, 44);
             viewport = UiLayout.Rect(transform, "Control drawer", 16, 200, 704, 380);
             content = UiLayout.Rect(viewport, "Controls", 0, 0, 700, 380);
             scroll = UiLayout.Scroll(viewport, content);
-            sidebar = UiLayout.Rect(transform, "Navigation sidebar", 0, 0, 444, 620);
-            var sideContent = UiLayout.Rect(sidebar, "Navigation", 0, 0, 444, 620);
-            UiLayout.Scroll(sidebar, sideContent);
             string[] names = { "Helm", "Deck", "Camera", "Weather", "Map", "Help", "Settings" };
             HudIcon[] icons = { HudIcon.Rudder, HudIcon.Cargo, HudIcon.Camera, HudIcon.Wind,
                 HudIcon.Map, HudIcon.Help, HudIcon.Settings };
@@ -94,11 +93,7 @@ namespace ShipSimulator.UI
         public void Invalidate() => dirty = true;
         public void RefreshLayout() => Refresh();
 
-        public void ToggleMap()
-        {
-            if (previousSize.x < 1600 || VoyageSettings.PanelMode("MiniMap") != 2) Select(selected == 4 ? 0 : 4);
-            else { mapEnabled = !mapEnabled; dirty = true; }
-        }
+        public void ToggleMap() => Select(selected == 4 ? 0 : 4);
 
         public void ToggleHelp() => Select(selected == 5 ? 0 : 5);
         private void OnEnable() { dirty = true; Localization.Changed += Invalidate; VoyageSettings.Changed += Invalidate; }
@@ -108,16 +103,15 @@ namespace ShipSimulator.UI
         private void Refresh()
         {
             if (canvas == null || viewport == null) return;
-            Vector2 size = UiLayout.Apply(canvas);
+            Vector2 size = UiLayout.Apply(canvas, reserveHudSpace: true);
             if (size == previousSize && !dirty) return;
             dirty = false; previousSize = size;
-            bool twoRows = size.x < 1100;
-            float headerHeight = twoRows ? 180 : 90;
+            const float headerHeight = 90;
             UiLayout.Place(instruments, 16, 12, size.x - 32, headerHeight);
             for (int i = 0; i < 4; i++)
             {
                 var tile = instruments.Find("Instrument" + i) as RectTransform;
-                int columns = twoRows ? 2 : 4;
+                const int columns = 4;
                 float width = (size.x - 40) / columns;
                 UiLayout.Place(tile, (i % columns) * width, (i / columns) * 88, width - 4, 86);
                 foreach (Transform child in tile)
@@ -126,58 +120,55 @@ namespace ShipSimulator.UI
             foreach (Transform child in instruments)
                 if (child.name.StartsWith("Divider")) child.gameObject.SetActive(false);
             float y = headerHeight + 20;
-            tape.gameObject.SetActive(!twoRows);
+            tape.gameObject.SetActive(true);
             UiLayout.Place(tape, (size.x - 700) * .5f, y, 700, 54);
-            UiLayout.Place(warnings, (size.x - 660) * .5f, y + (twoRows ? 0 : 58), 660, 56);
+            UiLayout.Place(warnings, (size.x - 660) * .5f, y + 58, 660, 56);
             UiLayout.Place(toolbar, 16, size.y - 56, size.x - 32, 44);
-            bool side = size.x >= 1600;
             float scale = VoyageSettings.PanelScale;
-            float height = Mathf.Max(100, Mathf.Min(420 * scale, size.y - y - (twoRows ? 136 : 194)));
-            var nav = (RectTransform)sidebar.GetChild(0);
-            float total = 8, navY = 8, drawerWidth = 0, sideWidth = 0;
+            float leftWidth = Mathf.Min(680 * scale, size.x * .5f - 24);
+            float mapScale = Mathf.Min(scale, (size.x * .34f - 24) / 420f, (size.y * .48f) / 464f);
+            engines.SetParent(transform, false);
+            engines.gameObject.SetActive(true);
+            engines.localScale = Vector3.one * scale;
+            float engineY = size.y - 68 - engines.sizeDelta.y * scale;
+            UiLayout.Place(engines, 16, engineY, leftWidth / scale, engines.sizeDelta.y);
+            map.SetParent(transform, false);
+            map.gameObject.SetActive(true);
+            map.localScale = Vector3.one * mapScale;
+            UiLayout.Place(map, size.x - 16 - 420 * mapScale, size.y - 68 - 464 * mapScale, 420, 464);
+
+            // Optional tools occupy the left rail above the permanent engine controls.
+            float top = y + 120;
+            float total = 8, drawerWidth = 0;
             for (int offset = 0; offset < groups.Count; offset++)
             {
-                // A newly selected tab must be immediately visible in the shared narrow drawer.
-                int g = !side && selected >= 0 ? (selected + offset) % groups.Count : offset;
+                int g = selected >= 0 ? (selected + offset) % groups.Count : offset;
                 foreach (RectTransform panel in groups[g])
                 {
+                    if (panel == engines || panel == map) continue;
                     int mode = g == 5 ? 1 : VoyageSettings.PanelMode(panel.name);
-                    bool pinned = mode == 2 && (panel.name != "MiniMap" || mapEnabled || selected == 4);
-                    bool visible = mode != 0 && (g == selected || pinned);
-                    bool onSide = pinned && side;
-                    panel.SetParent(onSide ? nav : content, false);
+                    bool visible = mode != 0 && (g == selected || mode == 2);
+                    panel.SetParent(content, false);
                     panel.gameObject.SetActive(visible);
                     if (!visible) continue;
                     float width = panel.sizeDelta.x, panelHeight = panel.sizeDelta.y;
                     if (g == 5)
                     {
-                        width = Mathf.Min(664, (size.x - (side ? sideWidth : 0) - 80) / scale);
+                        width = (leftWidth - 28) / scale;
                         panel.sizeDelta = new Vector2(width, 1000);
                         panelHeight = Mathf.Max(300, help.preferredHeight + 24);
                     }
-                    panel.localScale = Vector3.one * scale;
-                    if (onSide)
-                    {
-                        UiLayout.Place(panel, 8, navY, width, panelHeight);
-                        navY += panelHeight * scale + 8;
-                        sideWidth = Mathf.Max(sideWidth, width * scale + 28);
-                    }
-                    else
-                    {
-                        UiLayout.Place(panel, 8, total, width, panelHeight);
-                        total += panelHeight * scale + 8;
-                        drawerWidth = Mathf.Max(drawerWidth, width * scale + 28);
-                    }
+                    float toolScale = Mathf.Min(scale, (leftWidth - 28) / width);
+                    panel.localScale = Vector3.one * toolScale;
+                    UiLayout.Place(panel, 8, total, width, panelHeight);
+                    total += panelHeight * toolScale + 8;
+                    drawerWidth = Mathf.Max(drawerWidth, width * toolScale + 28);
                 }
             }
-            float drawerHeight = Mathf.Min(height, total);
-            UiLayout.Place(viewport, 16, size.y - drawerHeight - 68, drawerWidth, drawerHeight);
-            UiLayout.Place(sidebar, size.x - sideWidth - 16, y + 60, sideWidth,
-                Mathf.Min(navY, size.y - y - 128));
+            float drawerHeight = Mathf.Min(total, Mathf.Max(64, engineY - top - 12));
+            UiLayout.Place(viewport, 16, top, drawerWidth, drawerHeight);
             viewport.gameObject.SetActive(drawerWidth > 0);
-            sidebar.gameObject.SetActive(sideWidth > 0);
             content.sizeDelta = new Vector2(drawerWidth, total);
-            nav.sizeDelta = new Vector2(sideWidth, navY);
             for (int i = 0; i < tabs.Count; i++)
             {
                 bool available = i >= groups.Count;

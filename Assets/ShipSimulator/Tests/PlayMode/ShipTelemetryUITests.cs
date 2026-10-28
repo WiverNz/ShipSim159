@@ -110,7 +110,7 @@ namespace ShipSimulator.Tests
         }
 
         [UnityTest]
-        public IEnumerator MapShortcut_OpensTabOnlyMapAndDoesNotHidePinnedObjective()
+        public IEnumerator MapShortcut_LeavesEssentialsVisibleAndOpensNavigation()
         {
             const string key = "ShipSim159.Settings.Panel.MiniMap";
             const string objectiveKey = "ShipSim159.Settings.Panel.Objective";
@@ -131,6 +131,16 @@ namespace ShipSimulator.Tests
                 Assert.That(layout.SelectedGroup, Is.EqualTo(4));
                 layout.ToggleMap();
                 Assert.That(layout.SelectedGroup, Is.EqualTo(0));
+                foreach (string name in new[] { "MiniMap", "TelegraphBlock" })
+                {
+                    VoyageSettings.SetPanelMode(name, 0);
+                    for (int group = 0; group < 6; group++)
+                    {
+                        layout.Select(group);
+                        Assert.That(hud.transform.Find(name).gameObject.activeInHierarchy, Is.True);
+                    }
+                }
+
                 VoyageSettings.SetPanelMode("Objective", 2);
                 VoyageSettings.SetPanelMode("MiniMap", 2);
                 layout.ToggleMap();

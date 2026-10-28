@@ -60,7 +60,7 @@ namespace ShipSimulator.Tests
             yield return null;
             yield return null;
             var hud = Object.FindAnyObjectByType<ShipTelemetryUI>();
-            int[,] sizes = { {1280,720}, {1920,1080}, {2560,1440}, {3440,1440}, {1280,1024} };
+            int[,] sizes = { {800,600}, {960,540}, {1024,768}, {1280,720}, {1920,1080}, {2560,1440}, {3440,1440}, {1280,1024} };
             foreach (string language in Localization.Languages)
             foreach (float scale in new[] { .8f, 1f, 1.5f })
             for (int i = 0; i < sizes.GetLength(0); i++)
@@ -79,6 +79,8 @@ namespace ShipSimulator.Tests
                 yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "language");
                 menu.ShowDisplay();
                 yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "display");
+                menu.ShowWindowSizes();
+                yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "window-sizes");
                 menu.ShowVoyages();
                 yield return Capture(menu.GetComponentInChildren<Canvas>(), w, h, "passages");
                 menu.ShowPanels();
@@ -116,6 +118,56 @@ namespace ShipSimulator.Tests
             }
             File.WriteAllLines("Logs/Localization/layout-failures.txt", layoutFailures);
             Assert.That(layoutFailures, Is.Empty, string.Join("\n", layoutFailures));
+        }
+
+        private static Rect BoundsIn(Canvas canvas, RectTransform rect)
+        {
+            var corners = new Vector3[4];
+            rect.GetWorldCorners(corners);
+            Vector3 min = canvas.transform.InverseTransformPoint(corners[0]);
+            Vector3 max = min;
+            foreach (var corner in corners)
+            {
+                var point = canvas.transform.InverseTransformPoint(corner);
+                min = Vector3.Min(min, point); max = Vector3.Max(max, point);
+            }
+            return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
+        }
+
+        private static void AssertPermanentControls(Canvas canvas)
+        {
+            var root = (RectTransform)canvas.transform;
+            var engine = root.Find("TelegraphBlock") as RectTransform;
+            var map = root.Find("MiniMap") as RectTransform;
+            Assert.That(engine, Is.Not.Null, "Engines must be outside every tab and scroll viewport.");
+            Assert.That(map, Is.Not.Null, "Map must be outside every tab and scroll viewport.");
+            foreach (var panel in new[] { engine, map })
+            {
+                Assert.That(panel.gameObject.activeInHierarchy, Is.True);
+                var bounds = BoundsIn(canvas, panel);
+                Assert.That(bounds.xMin, Is.GreaterThanOrEqualTo(root.rect.xMin - 1));
+                Assert.That(bounds.xMax, Is.LessThanOrEqualTo(root.rect.xMax + 1));
+                Assert.That(bounds.yMin, Is.GreaterThanOrEqualTo(root.rect.yMin - 1));
+                Assert.That(bounds.yMax, Is.LessThanOrEqualTo(root.rect.yMax + 1));
+                Assert.That(panel.GetComponentInParent<ScrollRect>(), Is.Null);
+            }
+            var engineBounds = BoundsIn(canvas, engine);
+            var mapBounds = BoundsIn(canvas, map);
+            Assert.That(engineBounds.Overlaps(mapBounds), Is.False);
+            var drawer = root.Find("Control drawer") as RectTransform;
+            if (drawer.gameObject.activeInHierarchy)
+            {
+                var bounds = BoundsIn(canvas, drawer);
+                Assert.That(bounds.Overlaps(engineBounds), Is.False, "Tools overlap engine controls.");
+                Assert.That(bounds.Overlaps(mapBounds), Is.False, "Tools overlap map.");
+                Assert.That(bounds.Contains(root.rect.center), Is.False, "Keep the centre of the view clear.");
+            }
+            var marker = map.Find("Viewport/Vessel/Hull") as RectTransform;
+            Assert.That(marker.gameObject.activeInHierarchy, Is.True);
+            var markerBounds = BoundsIn(canvas, marker);
+            var chart = BoundsIn(canvas, map.Find("Viewport") as RectTransform);
+            Assert.That(chart.Contains(markerBounds.min) && chart.Contains(markerBounds.max), Is.True);
+            Assert.That(engine.GetComponentsInChildren<HudButton>().Length, Is.EqualTo(7));
         }
 
         private static IEnumerator Capture(Canvas canvas, int width, int height, string name)
@@ -158,6 +210,7 @@ namespace ShipSimulator.Tests
                 Assert.That(bounds.min.y, Is.GreaterThanOrEqualTo(parent.rect.yMin - 1), button.name);
                 Assert.That(bounds.max.y, Is.LessThanOrEqualTo(parent.rect.yMax + 1), button.name);
             }
+            if (canvas.GetComponent<HudLayout>() != null) AssertPermanentControls(canvas);
             camera.Render();
             RenderTexture previous = RenderTexture.active;
             RenderTexture.active = target;

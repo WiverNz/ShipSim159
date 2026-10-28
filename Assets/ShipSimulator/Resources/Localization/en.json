@@ -1807,6 +1807,22 @@
     {
       "key": "hud.cargo",
       "value": "Cargo"
+    },
+    {
+      "key": "hud.essential",
+      "value": "Always visible"
+    },
+    {
+      "key": "display.window.size",
+      "value": "Window size: {0} × {1}"
+    },
+    {
+      "key": "display.choose.size",
+      "value": "Choose a window size"
+    },
+    {
+      "key": "display.use.window",
+      "value": "Use windowed mode"
     }
   ]
 }

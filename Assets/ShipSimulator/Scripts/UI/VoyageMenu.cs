@@ -509,12 +509,13 @@ namespace ShipSimulator.UI
                 string panel = VoyageSettings.HudPanels[i];
                 string label = VoyageSettings.HudPanelLabels[i];
                 Button button = ActionButton(label, "", 0,
-                    () => VoyageSettings.SetPanelMode(panel, (VoyageSettings.PanelMode(panel) + 1) % 3));
+                    () => VoyageSettings.SetPanelMode(panel, (VoyageSettings.PanelMode(panel) + 1) % 3),
+                    false, !VoyageSettings.EssentialPanel(panel));
                 LocalizedLabel.Bind(button.GetComponentsInChildren<Text>()[1], () =>
-                    Localization.Get("hud.mode." + VoyageSettings.PanelMode(panel)));
+                    Localization.Get(VoyageSettings.EssentialPanel(panel) ? "hud.essential" : "hud.mode." + VoyageSettings.PanelMode(panel)));
                 VoyageSettings.Changed += RefreshMode;
                 void RefreshMode() { if (button != null) button.GetComponentsInChildren<Text>()[1].text =
-                    Localization.Get("hud.mode." + VoyageSettings.PanelMode(panel)); }
+                    Localization.Get(VoyageSettings.EssentialPanel(panel) ? "hud.essential" : "hud.mode." + VoyageSettings.PanelMode(panel)); }
                 button.gameObject.AddComponent<HudSettingBinding>().OnDisposed = () => VoyageSettings.Changed -= RefreshMode;
             }
             ActionButton("Restore defaults", "Restore panel visibility and size", 0,
@@ -528,9 +529,25 @@ namespace ShipSimulator.UI
             ShowPage("display", "DISPLAY", "Graphics settings");
             ActionButton(() => Localization.Get("text.graphics.0.381c6bbe", Localization.Source(QualitySettings.names[QualitySettings.GetQualityLevel()])), "Select the next quality preset", 0, () => { VoyageSettings.CycleQuality(); ShowDisplay(); });
             ActionButton(() => Localization.Get("text.vsync.0.8a9fda47", Localization.Source((QualitySettings.vSyncCount > 0 ? "On" : "Off"))), "Synchronise frames with your display", 0, () => { VoyageSettings.ToggleVSync(); ShowDisplay(); });
-            ActionButton(() => Localization.Get("text.display.0.4a5c3dbd", Localization.Source((Screen.fullScreen ? "Fullscreen" : "Windowed"))), Application.isEditor ? "Available in the standalone player" : "Toggle fullscreen display", 0,
+            ActionButton(() => Localization.Get("text.display.0.4a5c3dbd", Localization.Source(((Application.isEditor ? VoyageSettings.Fullscreen : Screen.fullScreen) ? "Fullscreen" : "Windowed"))), Application.isEditor ? "Available in the standalone player" : "Toggle fullscreen display", 0,
                 () => { VoyageSettings.ToggleFullscreen(); StartCoroutine(RefreshDisplay()); }, false, !Application.isEditor);
+            ActionButton(() => Localization.Get("display.window.size", VoyageSettings.WindowSize.x, VoyageSettings.WindowSize.y),
+                "Choose a window size", 0, ShowWindowSizes, false, !Application.isEditor);
             ActionButton("Back", "Save and return to settings", 0, () => { VoyageSettings.Save(); ShowSettings(); }, true);
+            SelectFirst();
+        }
+
+        public void ShowWindowSizes()
+        {
+            ShowPage("window-size", "DISPLAY", "Choose a window size");
+            foreach (var size in VoyageSettings.WindowSizes)
+            {
+                Vector2Int chosen = size;
+                ActionButton(size.x + " × " + size.y, "Use windowed mode", 0,
+                    () => { VoyageSettings.SetWindowSize(chosen.x, chosen.y); StartCoroutine(RefreshDisplay()); },
+                    false, !Application.isEditor);
+            }
+            ActionButton("Back", "Return to settings", 0, ShowDisplay);
             SelectFirst();
         }
 

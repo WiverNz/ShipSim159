@@ -9,13 +9,15 @@ namespace ShipSimulator.UI
         public static float Scale(Vector2 pixels, float preference) =>
             Mathf.Clamp(Mathf.Min(pixels.x / 1920f, pixels.y / 1080f), .8f, 2f) * preference;
 
-        public static Vector2 Apply(Canvas canvas)
+        public static Vector2 Apply(Canvas canvas, bool reserveHudSpace = false)
         {
             var pixels = canvas.pixelRect.size;
             if (pixels.x <= 0 || pixels.y <= 0) pixels = new Vector2(Screen.width, Screen.height);
             var scaler = canvas.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
-            scaler.scaleFactor = Scale(pixels, VoyageSettings.UiScale);
+            float factor = Scale(pixels, VoyageSettings.UiScale);
+            if (reserveHudSpace) factor = Mathf.Min(factor, pixels.x / 960f, pixels.y / 720f);
+            scaler.scaleFactor = factor;
             canvas.scaleFactor = scaler.scaleFactor;
             return pixels / scaler.scaleFactor;
         }

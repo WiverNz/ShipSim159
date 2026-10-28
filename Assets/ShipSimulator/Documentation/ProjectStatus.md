@@ -28,31 +28,41 @@ estimates against a real vessel.
 | Sound and graphics | Shared sound library with vessel profiles; water/wake/propeller wash, weather, day/night, sector lights, TAA and vegetation LODs |
 | Distribution | [v0.1.3](https://github.com/WiverNz/ShipSim159/releases/tag/v0.1.3) was published by the linked Actions run; the CI corrections described below follow that published build |
 
-## Configurable compact HUD, 2026-10-28
+## Adaptive HUD and display settings, 2026-10-28
 
-Settings now includes **HUD panels** with independent hidden/tab/pinned modes for ten
-control panels. Panel scale is separate from the global interface scale. The bottom bar
-uses existing vector icons with localized hover/focus captions; clicking the active icon
-collapses the drawer. Pinned map and simulation speed are enabled by default. Narrow
-screens use a shared scroll area, and unavailable vessel equipment is not invented.
-See [OperatorGuide.md](OperatorGuide.md#choosing-hud-panels) for operation.
+The engine telegraph and head-up map now have separate permanent areas at the lower left
+and right. The own-vessel marker and all seven engine commands remain visible across tool
+tabs and scrolling. Old hidden preferences cannot remove these essential controls. Other
+tools use the left drawer above the engines; the central view stays clear. Small windows
+cap HUD zoom, fit the map independently and wrap astern/stop and ahead controls into rows.
 
-Verified: 327/327 EditMode and 188/188 full PlayMode before the final layout/shortcut
-refinements; the final focused UI suite passes all 12 tests. The layout matrix covers
-four languages, five screen sizes and three paired global/panel scales (80/75%,
-100/85%, 150/115%), including pinned engines beside Help, with no clipped labels.
-The fleet shakedown and menu/save/load/equipment smoke checks pass on the final code.
-These are automated checks, not a claim about subjective handling comfort.
+Settings > Display offers resizable window presets and native borderless fullscreen.
+The chosen window size and mode persist across launches. Fresh installs start fullscreen;
+existing mode preferences and explicit Unity startup screen arguments are respected.
+Oversized windows fit the current monitor's working area. The fallback window is now
+1280x720 instead of a fixed 1024x768. See [OperatorGuide.md](OperatorGuide.md#window-size-and-fullscreen).
 
-![Configurable panels in the Russian settings page](../../../docs/screenshots/hud-panels-20261028-settings.png)
+Verified: 330/330 EditMode, 189/189 PlayMode, seven-selection fleet shakedown, and a Windows
+development player built with zero errors and warnings. The UI matrix covers four languages,
+eight resolutions (including 800x600 and 960x540), and three paired global/panel scales.
+Assertions check essential-panel visibility, on-screen bounds, no overlap, a visible own-ship
+marker, reachable scroll contents and unclipped text. The actual Windows player passed
+800x600, 1024x768, 1280x720, native 1920x1080 fullscreen and return to 800x600, including all
+six tool tabs and ahead/astern/stop button commands. A requested 1920x1080 window fitted to
+1888x968 on the test monitor, leaving room for the taskbar and frame. This is automated UI
+verification, not a claim about subjective handling or maritime validation.
 
-![Compact HUD in the final fleet shakedown](../../../docs/screenshots/hud-panels-20261028-voyage.png)
+![Actual Windows player at 800x600](../../../docs/screenshots/adaptive-hud-20261028-small.png)
 
-## Current screenshots
+![Actual Windows player in 1920x1080 borderless fullscreen](../../../docs/screenshots/adaptive-hud-20261028-fullscreen.png)
+
+![Window-size selection in Russian](../../../docs/screenshots/adaptive-hud-20261028-window-sizes.png)
+
+## Fleet screenshots (2026-10-27)
 
 These are actual Unity runtime captures from the 2026-10-27 verification, resized
-for documentation. They show the current HUD and authored models, including the
-tug and push unit. They are not concept art or evidence of physical-device handling.
+for documentation. They show the authored models, including the tug and push unit.
+Their HUD predates the adaptive layout shown above. They are not concept art or evidence of physical-device handling.
 Capture sources and export details are listed in the
 [screenshot inventory](../../../docs/screenshots/README.md).
 

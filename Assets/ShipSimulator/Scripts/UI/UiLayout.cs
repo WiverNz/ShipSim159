@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace ShipSimulator.UI
 {
-    // Both canvases use the same physical scale; small screens reflow instead of shrinking text.
+    // Shared scale preference; the voyage HUD can reserve room for its essential controls.
     public static class UiLayout
     {
         public static float Scale(Vector2 pixels, float preference) =>

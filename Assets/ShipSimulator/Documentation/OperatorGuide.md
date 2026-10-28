@@ -11,22 +11,42 @@ vessel it was sailed in.
 
 ## Choosing HUD panels
 
-Open **Settings > HUD panels** from Escape or the gear icon. Each row cycles through
-**Hidden**, **In tab** and **Pinned**. Engines, helm, cargo, deck machinery, anchors/mooring,
-camera, simulation speed, weather, passage objective and map have independent choices.
-Preferences apply immediately and persist between launches and vessel changes. Equipment
-controls appear only when the selected vessel implements that equipment.
+The engine telegraph stays at the lower left and the head-up mini-map stays at the
+lower right during a voyage, including in a small window. The yellow map marker is
+the current vessel position. Neither essential panel is inside a tab or scroll area;
+old hidden preferences cannot hide them. All seven telegraph commands, shaft RPM and
+engine load remain available. Astern/stop and ahead commands reflow into separate rows.
 
-The bottom icon bar opens helm, deck, camera, weather, map and help; hover or focus an icon
-for its caption. Clicking the active icon collapses its drawer. Pinned controls remain
-available across tabs. By default the map and simulation speed are pinned. Wide screens
-put pinned controls on the right; narrow screens share a scrolling drawer with the selected
-tab. Scroll to reach panels below the visible area. Hiding a panel never cancels its active
-commands or removes keyboard controls. Warnings remain visible independently of panel choices.
+Open **Settings > HUD panels** from Escape or the settings icon. Engines and Map are
+marked **Always visible**. Other rows cycle through **Hidden**, **In tab** and **Pinned**.
+Preferences persist between launches and vessel changes. Equipment controls appear only
+when the selected vessel implements that equipment.
 
-**Panel size** controls the panel scale from 75% to 115%, with an 85% default. The separate
-**Interface & camera > Interface scale** setting still scales the whole interface.
-**Restore defaults** on the panels page resets only panel visibility and size.
+The bottom icon bar opens helm, deck, camera, weather, navigation and help. Hover or focus
+an icon for its caption. Clicking the active icon collapses its optional drawer. Optional
+pinned tools share the left drawer above the engine telegraph; scroll to reach additional
+tools. M opens/closes the navigation tools without hiding the map. Hiding a tool does not
+cancel its active commands. Warnings remain independent of panel choices.
+
+**Panel size** controls the requested panel scale from 75% to 115%, with an 85% default.
+**Interface & camera > Interface scale** still controls the overall requested size. The
+voyage HUD caps the applied scale in small windows to keep essential controls on screen
+and the central view clear. The map is fitted independently; resizing never changes its
+navigation data or the vessel marker. **Restore defaults** resets only panel preferences.
+
+## Window size and fullscreen
+
+In the standalone player, open **Settings > Display**. The display button switches between
+a resizable window and borderless fullscreen at the current monitor's native resolution.
+**Window size** opens explicit choices from 800x600 to 3440x1440; selecting one enters
+windowed mode. Requested window size and fullscreen choice are saved across launches.
+Oversized window choices are fitted to the monitor's working area with room for borders.
+The chosen window size remains available when returning from fullscreen.
+
+Fresh installations start fullscreen. Existing fullscreen preferences are respected;
+without a saved window size the window fallback is 1280x720. Explicit Unity command-line
+screen arguments override the startup preference for that launch. Display changes are
+disabled inside the editor; use the standalone player to check OS window transitions.
 
 ## Volgo-Don cargo and ballast
 

@@ -126,3 +126,15 @@ and RMB motion events enter through Windows. This is synthetic OS input, not a
 physical mouse or trackpad handling assessment. Normal launches of
 `build/CameraReview/ShipSim159.exe` run the game interactively. See the
 [Part 3 review](../Assets/ShipSimulator/Documentation/UsabilityPart3Review.md).
+
+## Standalone adaptive HUD and window review
+
+Build with `ShipSimulator.Editor.LocalWindowsBuild.RunHudReview` using the pinned Unity
+editor. Run `build/HudReview/ShipSim159.exe --hud-window-probe --hud-window-output <folder>`
+with a fresh output folder. Without these flags this is an ordinary interactive player.
+The opt-in probe starts a passage without saving it, checks every tool tab at several
+real window sizes and native borderless fullscreen, invokes the engine command buttons,
+and records screenshots and actual sizes. It restores the three display preferences
+it temporarily changes, including on failure. Require exit code 0 and `HUD_WINDOW|PASS`.
+The monitor may constrain a requested window size; use the actual sizes in `results.txt`.
+This is an automated UI/window check, not a manual handling or performance assessment.

@@ -1,5 +1,43 @@
 # ShipSim159 Project Context
 
+## Adaptive essential HUD and standalone display choices, 2026-10-28
+
+User requested map/own-vessel marker and engines always visible in separate regions,
+especially in small windows, then added window-size/fullscreen settings. Supersedes the
+shared-scroll behaviour of the earlier compact HUD below. Root causes: HudLayout moved
+essentials into one scroll container below 1600 logical pixels; player defaults were
+1024x768 with resizableWindow=0; settings only toggled fullscreen, without dimensions.
+
+HudLayout keeps TelegraphBlock and MiniMap directly under the Canvas, at lower left/right,
+independent of tabs and legacy hidden preferences. Engine HudPanelFlow wraps astern/stop
+and ahead groups; all seven commands and RPM/load remain available. Optional tools share
+a left drawer above engines, without covering essentials or the centre. UiLayout.Apply
+can cap voyage HUD scale to reserve at least960x720 logical units; menus keep their existing
+scale/reflow. Essential settings rows are fixed Always visible; M toggles navigation tools.
+
+VoyageSettings adds saved WindowWidth/Height, presets800x600 through3440x1440, monitor-fit
+window bounds, and native FullScreenWindow. Fresh preference defaults fullscreen; legacy
+mode and explicit Unity screen CLI arguments respected. Toggle follows actual player mode
+(including Alt+Enter changes). Window fallback1280x720, ProjectSettings resizableWindow=1.
+Display/window-size pages translated in all4 catalogues. No voyage/physics/save schema change.
+
+EditMode330/330: TestResults/check-EditMode-20261028-200320-399.xml.
+Final PlayMode189/189: TestResults/check-PlayMode-20261028-201442-450.xml.
+Layout matrix4languages x8resolutions x3paired global/panel scales; no clipping, explicit
+essential bounds/no overlap/marker/centre/scroll assertions. Shakedown7 PASS:
+Logs/check-Shakedown-20261028-234318-742.log. LocalWindowsBuild.RunHudReview produced
+build/HudReview/ShipSim159.exe, Logs/hud-review-build.log and Logs/HudReview/build-report.txt,
+0errors/0warnings. Opt-in HudWindowProbe checked actual OS transitions and engine buttons:
+Logs/hud-window-player.log HUD_WINDOW|PASS, exit0; Logs/HudWindows/20261028/results.txt.
+Actual windows800x600,1024x768,1280x720; requested1920x1080 fitted1888x968 on this monitor;
+fullscreen1920x1080; return800x600. Probe restores its three display preference keys and
+never saves the voyage. New Tools/README entry documents invocation. No performance claim.
+
+ProjectStatus/OperatorGuide and screenshot inventory updated with actual player captures.
+Five build-generated renderer/cloud settings files restored to pre-build snapshots; intended
+ProjectSettings window changes retained. No commit/push/release publication. Development
+review binary is available for manual checking; existing release executables are unchanged.
+
 ## Configurable compact HUD, 2026-10-28
 
 User requested selectable, smaller weather/time/camera/equipment panels. Root cause:

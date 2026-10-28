@@ -40,3 +40,17 @@ does not establish temporal stability, manual handling comfort or target-GPU per
   `Logs/Shakedown/volgodon-507b-0-chase.png`, final seven-selection fleet shakedown.
 
 These captures show the configurable compact HUD added after the dated October 27 gallery.
+
+## Adaptive HUD and OS window transitions, 2026-10-28
+
+- `adaptive-hud-20261028-small.png`: unchanged actual Windows development-player capture,
+  `Logs/HudWindows/20261028/window-800x600.png`.
+- `adaptive-hud-20261028-fullscreen.png`: unchanged actual 1920x1080 borderless fullscreen
+  capture, `Logs/HudWindows/20261028/fullscreen.png`.
+- `adaptive-hud-20261028-window-sizes.png`: unchanged Russian settings-page capture,
+  `Logs/Localization/ru/100/window-sizes-1920x1080.png`, from the UI layout matrix.
+
+The earlier compact-HUD images above are historical. These latest captures show permanent
+engine/map areas. The player probe freezes vessel physics to inspect layout and commands;
+its screenshots are not manoeuvring evidence. Actual OS sizes are recorded in
+`Logs/HudWindows/20261028/results.txt`.

@@ -1,5 +1,39 @@
 # ShipSim159 Project Context
 
+## Release CI correction and current ProjectStatus, 2026-10-28
+
+User requested analysis/fixes for Actions run40547214885 and refreshed ProjectStatus.
+Read Documentation/ReleaseDiagnosticsReview.md. Original v0.1.3 run on08eea54 was
+successful and published, but Unity summary had3errors/46warnings. Repeated errors:
+immutable MCP package missing Editor/Tests/McpUnityServerBatchModeTests.cs.meta.
+Pin manifest/lock to c69c3c61a2de6492f4d247f94bb3452f3ad82d73, whose sole change from
+382a43a is that metadata. Do not edit Library or remove the working integration.
+Modernized seven deprecated unsorted object searches. Enabled convex pre-bake on13
+507B sections and triangle pre-bake on2 river banks, in assets AND their builders.
+Geometry verified unchanged. Release workflow now calls LocalWindowsBuild.RunRelease,
+uses manualExit, rejects nonzero reported errors even with Succeeded, and uploads
+Logs/Release/build-report.txt. Local development entry points remain available.
+
+EditMode325/325: TestResults/check-EditMode-20261027-193842-846.xml.
+PlayMode187/187: TestResults/check-PlayMode-20261027-193914-112.xml.
+Shakedown7/nine views PASS: Logs/check-Shakedown-20261027-194435-893.log.
+Menu/equipment/loading PASS: Logs/check-Menu-20261027-194543-489.log.
+Release fixture tests10/10. On Oct28 RunRelease built non-development Windows player
+with0errors/0warnings, Logs/ReleaseDiagnostics/release-build.log and
+Logs/Release/build-report.txt. bash release-smoke passed; built-player startup and
+voyage probe completed exit0 in Logs/ReleaseDiagnostics/player-startup.
+No remote Actions rerun or publication by agent; Linux-specific runner noise remains
+separate from verified local corrections. User committed implementation as ab60d21
+while task paused; final gallery and verification docs follow in working tree.
+
+ProjectStatus rewritten as current capabilities/fleet/equipment/usability/verification/
+limits overview; removed stale five-vessel counts, procedural Meteor/Luch claims and
+historical trials labelled current. Ten actual Oct27 captures exported and reviewed
+Oct28 in docs/screenshots/status-20261027-*.jpg with source inventory. Incomplete
+HUD diagnostic captures excluded; no fabricated imagery. Old images retained for
+other documents. Build-only generated render/cloud settings restored to HEAD.
+No agent commit/push/tag. Remaining usability Parts4-9 require user request.
+
 ## Usability Part 3 implemented, 2026-10-27
 
 Read `Assets/ShipSimulator/Documentation/UsabilityPart3Review.md`. This is the

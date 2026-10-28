@@ -1,6 +1,6 @@
 # ShipSim159 Project Status
 
-Updated 2026-10-27. ShipSim159 is a Unity river navigation prototype for Windows,
+Updated 2026-10-28. ShipSim159 is a Unity river navigation prototype for Windows,
 with six playable vessels and a seventh selection combining the Serpukhov tug
 with the passive MN-52 barge. This page describes the current implementation,
 not the September prototype. Historical milestone results remain in their reviews.
@@ -26,7 +26,7 @@ estimates against a real vessel.
 | Navigation | Heading-up channel map, depth zones, route, buoys, obstacle footprints, track, predicted path and waypoint |
 | Persistence | Start/pause menu, vessel/passage choice, one voyage save with atomic replacement and backup, persistent user settings |
 | Sound and graphics | Shared sound library with vessel profiles; water/wake/propeller wash, weather, day/night, sector lights, TAA and vegetation LODs |
-| Distribution | [v0.1.3](https://github.com/WiverNz/ShipSim159/releases/tag/v0.1.3) was published by the linked Actions run; the CI corrections described below are subsequent working-tree changes |
+| Distribution | [v0.1.3](https://github.com/WiverNz/ShipSim159/releases/tag/v0.1.3) was published by the linked Actions run; the CI corrections described below follow that published build |
 
 ## Current screenshots
 
@@ -50,10 +50,12 @@ improved hull/deck, working equipment and fitted contact sections.*
 | ![Serpukhov R-96 tug underway](../../../docs/screenshots/status-20261027-serpukhov-r96.jpg) | ![Serpukhov pushing the separate MN-52 barge](../../../docs/screenshots/status-20261027-serpukhov-mn52.jpg) |
 | Serpukhov: solo tug with estimated waterjet handling | Serpukhov + MN-52: independently simulated tug and passive barge |
 
-| Interface | Equipment |
+![Current seven-option vessel selection menu](../../../docs/screenshots/status-20261027-vessels.jpg)
+
+*All seven catalogue selections in the current menu.*
+
+| Language | Settings |
 |---|---|
-| ![Current seven-option vessel selection menu](../../../docs/screenshots/status-20261027-vessels.jpg) | ![Volgo-Don deck controls and open hatch](../../../docs/screenshots/status-20261027-deck.jpg) |
-| All seven catalogue selections | Loading and machinery controls are specific to supported vessels |
 | ![Russian language selection with four live language choices](../../../docs/screenshots/status-20261027-language.jpg) | ![Interface scale and independent camera settings](../../../docs/screenshots/status-20261027-settings.jpg) |
 | Live language selection | Persistent interface scale, orbit sensitivity and zoom sensitivity |
 
@@ -133,11 +135,16 @@ subjective comfort or physical trackpad behavior.
 
 ## Verification and release diagnostics
 
-The latest completed baseline before the CI correction was EditMode **304/304**,
-PlayMode **187/187**, seven-vessel/nine-view shakedown and menu/save-load smoke on
-2026-10-27. Paths and native input measurements are in the Part 3 review.
-The current CI-correction verification is recorded in
+Current local verification: EditMode **325/325**, PlayMode **187/187**,
+seven-selection/nine-view shakedown and menu/save-load smoke passed. The release
+Windows build completed on 2026-10-28 with **0 errors and 0 warnings**; package
+layout and built-player startup/voyage probes passed. The release-script fixture
+suite passed **10/10**. Exact paths and scope are in
 [the release diagnostics review](ReleaseDiagnosticsReview.md).
+
+The earlier Part 3 review retains its 304/304 and 187/187 baseline and native input
+measurements. A new GitHub Actions run has not been performed by the agent;
+local Windows results do not replay the Ubuntu cross-compilation environment.
 
 The linked [v0.1.3 Actions run](https://github.com/WiverNz/ShipSim159/actions/runs/40547214885)
 completed and published its package, but Unity's build summary contained **3 errors

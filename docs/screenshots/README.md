@@ -18,7 +18,6 @@ The full-resolution source PNGs are generated locally and ignored by Git.
 | `serpukhov-r96` | `Shakedown/serpukhov-r96-0-chase.png` | Fleet shakedown |
 | `serpukhov-mn52` | `Shakedown/serpukhov-mn52-0-chase.png` | Fleet shakedown |
 | `vessels` | `MenuScreenshots/menu-seven-commands.png` | PlayMode `VoyageMenuTests` |
-| `deck` | `MenuScreenshots/volgodon-machinery-ForwardOpen.png` | Menu/equipment smoke |
 | `language` | `Localization/ru/100/language-1920x1080.png` | PlayMode layout matrix |
 | `settings` | `Localization/en/100/settings-1920x1080.png` | PlayMode layout matrix |
 

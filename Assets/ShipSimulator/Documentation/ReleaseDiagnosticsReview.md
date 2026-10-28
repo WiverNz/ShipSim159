@@ -1,4 +1,4 @@
-# Release diagnostics correction, 2026-10-27
+# Release diagnostics correction, 2026-10-27 to 2026-10-28
 
 ## What the v0.1.3 run actually reported
 
@@ -57,6 +57,24 @@ failure policy and all 15 collision pre-bake settings. PlayMode **187/187** pass
 `TestResults/check-PlayMode-20261027-193914-112.xml`, including existing contact
 checks using the same geometry and unsorted component discovery paths.
 
+The fleet shakedown passed all seven selections and nine views each in
+`Logs/check-Shakedown-20261027-194435-893.log`. Menu/save-load, machinery and loading
+smoke passed in `Logs/check-Menu-20261027-194543-489.log`.
+
+On 2026-10-28, the workflow's exact `LocalWindowsBuild.RunRelease` method produced
+`build/StandaloneWindows64/ShipSim159.exe` with **0 errors and 0 warnings**,
+`BuildOptions.None` and all three scenes. Evidence:
+`Logs/ReleaseDiagnostics/release-build.log`, `Logs/Release/build-report.txt`.
+`bash scripts/release-smoke.sh --pkg-dir build/StandaloneWindows64` passed.
+The built Windows player then entered a voyage and completed its opt-in startup
+probe with exit 0 (`Logs/ReleaseDiagnostics/player-startup/`). This checks startup
+and camera updates, not manual play or physical input comfort.
+
+Ten current screenshots are included under `docs/screenshots/status-20261027-*.jpg`
+with a source inventory. They were exported from the successful October 27 runs
+and visually inspected on October 28. Incomplete diagnostic HUD captures were
+excluded from the public gallery. All links in ProjectStatus resolve locally.
+
 The Bash release-script regression suite passed **10/10**. It uses a fake Git
 executable in a temporary fixture; it does not commit, tag or push this repository.
 
@@ -70,8 +88,9 @@ project dependency metadata and do not justify changing credentials, disabling
 render features or hiding errors. The next remote run must confirm the Linux
 container result; a local Windows build is not a replay of that environment.
 
-No Actions rerun, commit, push, tag or new release is performed by this correction.
-The already published v0.1.3 artifact is unchanged. Changes are prepared locally
-for review and the next human-triggered release. The prototype's physical-device
+The agent did not rerun Actions, commit, push, tag or publish a release. The user
+committed the implementation as `ab60d21` during this task; final screenshots and
+verification documentation follow in the working tree. The already published
+v0.1.3 artifact was not replaced by the agent. The prototype's physical-device
 handling, target-GPU performance and integrated usability Part 9 acceptance remain
 separate from compilation and package checks.

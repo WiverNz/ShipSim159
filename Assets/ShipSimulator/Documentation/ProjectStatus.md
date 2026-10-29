@@ -28,6 +28,14 @@ estimates against a real vessel.
 | Sound and graphics | Shared sound library with vessel profiles; water/wake/propeller wash, weather, day/night, sector lights, TAA and vegetation LODs |
 | Distribution | [v0.1.3](https://github.com/WiverNz/ShipSim159/releases/tag/v0.1.3) was published by the linked Actions run; the CI corrections described below follow that published build |
 
+## Interactive map, 2026-10-29
+
+Part 4 adds 100-4000 m map range, wheel zoom, expanded panning, Follow ship,
+heading-up/north-up and a legend. Engines remain permanently accessible. The map
+uses scene fairways, waterlines, buoy positions and current mission goals with one
+projection. Display choices persist; restore/reset recentres the chart.
+See [the Part 4 review](UsabilityPart4Review.md) for tests, three-scene captures and limits.
+
 ## Volgo-Don forecastle wall, 2026-10-29
 
 Fixed reversed triangles beneath the forward mast in the source model and all three
@@ -160,7 +168,7 @@ and much of the terrain remain estimates, not a navigable survey or chart.
 | 1: interface/settings | Implemented: scaling, scroll/reflow, readable controls, labelled icons, independent saved preferences and input ownership. [Review](UsabilityPart1Review.md) |
 | 2: localization | Implemented: four languages, 440 shared keys, live refresh and preserved UI/voyage state. [Review](UsabilityPart2Review.md), [catalogue guide](Localization.md) |
 | 3: camera | Implemented and automatically verified: proportional/fractional zoom, lower orbit gain, real-time smoothing, consistent pivots, cursor lifecycle and save migration. Physical mouse/trackpad comfort assessment remains open. [Review](UsabilityPart3Review.md) |
-| 4: map interaction | Planned: expanded map, range/zoom/pan, follow/recenter and orientation preferences |
+| 4: map interaction | Complete: expanded map, bounded range/zoom/pan, follow/recenter, orientation and legend preferences, scenario routes and shorelines. [Review](UsabilityPart4Review.md) |
 | 5: obstacle/buoy physics | Planned: physical buoy response and complete collision/CCD audit; existing shore/quay and hull contacts are not proof that buoys are solid |
 | 6: grounded bow/water | Planned: reproduce and correct the reported 507B bow water gap |
 | 7: recovery | Planned: validated safe-position recovery with explicit progress preservation; current reset is not that feature |
@@ -228,7 +236,7 @@ included in the repository for GitHub readers. Reproduction commands are in
   combination. No general deck walking or player-facing barge detach controls.
 - **Gameplay:** no AI traffic, lock operation, autopilot, AIS/ECDIS or rescue tug
   service. A playable tug and coupled passive barge exist; tug-assisted recovery does
-  not. Safe-position recovery, physical buoys, map interaction and cargo identity
+  not. Safe-position recovery, physical buoys and cargo identity
   remain separate tasks in the usability plan.
 - **Environment and graphics:** approximate scenario geography, depths and moorings;
   Serpukhov is outside some older shared graphics upgrade commands. Water optics
@@ -241,7 +249,7 @@ included in the repository for GitHub readers. Reproduction commands are in
 - **Input:** keyboard/mouse polling, no rebinding or gamepad, legacy Unity UI and
   telegraph layout for at most two engines.
 
-Next implementation work is usability Part 4 when requested. Source acquisition,
+Next implementation work is usability Part 5 when requested. Source acquisition,
 calibration, real river data, scenario completion and performance validation remain
 longer-term work. Use the linked reviews to distinguish completed features from
 estimated behavior and outstanding acceptance.

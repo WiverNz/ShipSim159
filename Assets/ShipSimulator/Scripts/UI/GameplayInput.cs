@@ -23,7 +23,7 @@ namespace ShipSimulator.UI
         // Query directly: gameplay Update can precede the EventSystem's cached pointer update.
         public static bool PointerOverUi()
         {
-            if (VoyageMenu.IsOpen) return true;
+            if (VoyageMenu.IsOpen || MapInteraction.Dragging) return true;
             if (EventSystem.current == null || Mouse.current == null) return false;
             var pointer = new PointerEventData(EventSystem.current) { position = Mouse.current.position.ReadValue() };
             Hits.Clear();

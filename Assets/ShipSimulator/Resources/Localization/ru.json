@@ -1823,6 +1823,54 @@
     {
       "key": "display.use.window",
       "value": "Открыть в оконном режиме"
+    },
+    {
+      "key": "map.zoomIn",
+      "value": "Масштаб +"
+    },
+    {
+      "key": "map.zoomOut",
+      "value": "Масштаб -"
+    },
+    {
+      "key": "map.expand",
+      "value": "Развернуть"
+    },
+    {
+      "key": "map.collapse",
+      "value": "Свернуть"
+    },
+    {
+      "key": "map.orientation",
+      "value": "Ориентация"
+    },
+    {
+      "key": "map.northUp",
+      "value": "Север вверх"
+    },
+    {
+      "key": "map.headingUp",
+      "value": "Курс вверх"
+    },
+    {
+      "key": "map.follow",
+      "value": "К судну"
+    },
+    {
+      "key": "map.legend",
+      "value": "Легенда"
+    },
+    {
+      "key": "map.title",
+      "value": "КАРТА  |  Радиус {0:F0} м"
+    },
+    {
+      "key": "map.depth",
+      "value": "ГЛУБИНА <b>{0:F1} м</b>  |  ВПЕРЕДИ {1:F1} м\n<color=#8AA0AD>ОСАДКА</color> {2:F1} м  |  Оценка глубин"
+    },
+    {
+      "key": "map.legendText",
+      "value": "Бирюза: безопасно; жёлтый: мелко\nКрасный: опасно; фиолетовый: объект\nГолубой: прогноз; серый: след\nКруги: ½ / весь радиус; жёлтый: цель"
     }
   ]
 }

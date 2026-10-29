@@ -16,7 +16,9 @@ namespace ShipSimulator.UI
         {
             public Vector2 Left;
             public Vector2 Right;
+            public Vector2 Center;
             public Color32 Color;
+            public Color32 LeftColor, RightColor;
         }
 
         private readonly List<Section> sections = new List<Section>();
@@ -36,18 +38,17 @@ namespace ShipSimulator.UI
             for (int i = 0; i < sections.Count; i++)
             {
                 Section s = sections[i];
-                vh.AddVert(s.Left, s.Color, new Vector2(0f, 0f));
-                vh.AddVert(s.Right, s.Color, new Vector2(1f, 0f));
+                vh.AddVert(s.Left, s.LeftColor.a == 0 ? s.Color : s.LeftColor, new Vector2(0f, 0f));
+                vh.AddVert(s.Center, s.Color, new Vector2(.5f, 0f));
+                vh.AddVert(s.Right, s.RightColor.a == 0 ? s.Color : s.RightColor, new Vector2(1f, 0f));
             }
 
             for (int i = 0; i < sections.Count - 1; i++)
+            for (int strip = 0; strip < 2; strip++)
             {
-                int leftA = i * 2;
-                int rightA = i * 2 + 1;
-                int leftB = i * 2 + 2;
-                int rightB = i * 2 + 3;
-                vh.AddTriangle(leftA, rightA, rightB);
-                vh.AddTriangle(leftA, rightB, leftB);
+                int a = i * 3 + strip, b = a + 3;
+                vh.AddTriangle(a, a + 1, b + 1);
+                vh.AddTriangle(a, b + 1, b);
             }
         }
     }

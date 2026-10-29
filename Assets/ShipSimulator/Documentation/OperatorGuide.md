@@ -295,9 +295,17 @@ engine load. A split telegraph is shown as separate port (P) and starboard (S)
 orders.
 Depth changes from normal to warning or critical colors as clearance reduces.
 
-The minimap displays an approximate fairway, route, vessel heading, buoys,
-shallow side zones, and training waypoint. Press `M` to hide it. Press `F1` to
-emphasize the control shortcut strip.
+The map displays the scene's fairway, shorelines, actual buoys, obstacle footprints,
+vessel heading, track, prediction and current mission goal. Depths remain estimated.
+Use Zoom +/- or the wheel over the chart to select a 100-4000 m radius. Expand keeps
+the map to the right of the permanent engine controls. Left-drag the expanded chart
+to inspect another area; Follow ship returns to the vessel. North up / Heading up
+changes orientation; Legend explains colours and the half/full-range rings.
+Ship and goal markers outside the chart are clamped to its edge. MIN AHEAD stays ahead
+of the vessel when panned. Range, orientation, expanded mode and legend persist;
+panned positions do not. Loading/resetting a voyage recentres automatically.
+M opens navigation tools without hiding the map. F1 opens the shortcut help.
+See [Part 4 verification](UsabilityPart4Review.md).
 
 The time panel provides `1x`, `2x`, and `4x` buttons. Time scaling affects
 vessel physics, current response, mission timing, and visual simulation.
@@ -384,9 +392,8 @@ The HUD uses labelled icon tabs: Helm, Deck, Camera, Weather, Map, Help and Sett
 Deck is disabled on vessels without loading or deck machinery. Panels scroll vertically
 when space is limited. Use the visible scrollbar or mouse wheel; settings also scroll
 to keyboard-selected controls. Important engine orders and warnings retain text.
-At wide logical resolutions navigation stays in a separate right-hand scroll pane;
-at narrower sizes Map opens it in the control drawer. M toggles the side map on wide
-screens, or switches between Map and Helm on narrow screens. F1 toggles Help.
+The map and engine controls remain in separate permanent areas at every size.
+M opens navigation tools; it never hides the map. F1 toggles Help.
 
 Only left-click activates HUD commands. Wheel and right-button gestures that begin over
 UI belong to UI; camera orbit started in the world retains its gesture until release.

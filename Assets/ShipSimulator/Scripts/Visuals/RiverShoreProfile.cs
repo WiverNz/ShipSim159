@@ -46,6 +46,21 @@ namespace ShipSimulator.Visuals
             Shader.SetGlobalVector("_RiverShoreRange", new Vector4(startZ, lengthZ, size, 1));
         }
 
+        public void CopyChartEdges(List<Vector3> edges)
+        {
+            if (!IsReady) return;
+            const int count = 128;
+            for (int i = 0; i < count; i++)
+            {
+                int a = i * (samples.Length - 1) / count;
+                int b = (i + 1) * (samples.Length - 1) / count;
+                float za = startZ + lengthZ * a / (samples.Length - 1);
+                float zb = startZ + lengthZ * b / (samples.Length - 1);
+                edges.Add(new Vector3(samples[a].r, 0, za)); edges.Add(new Vector3(samples[b].r, 0, zb));
+                edges.Add(new Vector3(samples[a].g, 0, za)); edges.Add(new Vector3(samples[b].g, 0, zb));
+            }
+        }
+
         public float DistanceToBank(Vector3 position)
         {
             if (!IsReady || position.z < startZ || position.z > startZ + lengthZ) return -1;

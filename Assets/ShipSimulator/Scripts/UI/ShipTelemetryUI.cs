@@ -43,6 +43,29 @@ namespace ShipSimulator.UI
         private RectTransform miniMap;
         private RectTransform warningPanel;
         private RectTransform mapWorld;
+        private RectTransform mapViewport;
+        private Text mapTitle;
+        private MapChartData mapChart;
+        private RiverShoreProfile mapShoreProfile;
+        private bool mapShoresBuilt;
+        private readonly List<(Button Button, Text Text, string Key)> mapButtons = new();
+        private MapProjection mapProjection;
+        private bool mapFollowing = true;
+        private Vector3 mapCenter;
+        private int mapRestoreCount;
+        public bool MapFollowing => mapFollowing;
+        public MapProjection CurrentMapProjection => mapProjection;
+        public RectTransform MapViewport => mapViewport;
+        public void ZoomMap(float ticks) => VoyageSettings.SetMapRange(VoyageSettings.MapRange * Mathf.Exp(-Mathf.Clamp(ticks, -10, 10) * .2f));
+        public void RecenterMap() { mapFollowing = true; }
+        public void PanMap(Vector2 pixels)
+        {
+            if (!VoyageSettings.MapExpanded) return;
+            if (mapFollowing) mapCenter = mapProjection.Center;
+            mapCenter += mapProjection.Unproject(Vector2.zero) - mapProjection.Unproject(pixels);
+            mapFollowing = false;
+        }
+
         private RadarChannel radarChannel;
         private readonly List<RadarChannel.Section> radarSections =
             new List<RadarChannel.Section>();
@@ -81,8 +104,6 @@ namespace ShipSimulator.UI
         // Effective only before Start, which builds the HUD for the vessel it has then.
         public void SetShip(ShipPhysicsController value) => ship = value;
         private Vector3 objectivePosition = new Vector3(0f, 0f, 650f);
-        private const float MapPixelsPerMeter = 0.82f;
-        private const float RadarVesselOffsetY = -82f;
         private const int RadarTrackPointCount = 18;
         private const int RadarPredictionPointCount = 11;
         private float nextTrackSampleTime;
@@ -91,6 +112,7 @@ namespace ShipSimulator.UI
         {
             public RectTransform Rect;
             public Vector3 WorldPosition;
+            public Transform Target;
         }
 
         private sealed class MapLine
@@ -109,6 +131,13 @@ namespace ShipSimulator.UI
             "SLOW AHEAD", "HALF AHEAD", "FULL AHEAD"
         };
 
+        private T InScene<T>() where T : Component
+        {
+            foreach (var item in FindObjectsByType<T>())
+                if (item.gameObject.scene == gameObject.scene) return item;
+            return null;
+        }
+
         private void Start()
         {
             if (ship == null) return;
@@ -125,9 +154,9 @@ namespace ShipSimulator.UI
             weather = FindAnyObjectByType<WeatherController>();
             if (weather == null)
                 weather = gameObject.AddComponent<WeatherController>();
-            scenarioRoute = FindAnyObjectByType<FairwayRoute>();
-            scenarioBathymetry = FindAnyObjectByType<ScenarioBathymetry>();
-            scenario = FindAnyObjectByType<GorodetsScenarioController>();
+            scenarioRoute = InScene<FairwayRoute>();
+            scenarioBathymetry = InScene<ScenarioBathymetry>();
+            scenario = InScene<GorodetsScenarioController>();
             if (dayNight == null)
                 dayNight = gameObject.AddComponent<DayNightController>();
             GameObject navigation = GameObject.Find("Navigation");
@@ -225,6 +254,7 @@ namespace ShipSimulator.UI
                     followCamera.ViewIndex,
                     followCamera.ViewCount);
             headingTapeText.text = BuildHeadingTape(heading);
+            if (scenario != null) objectivePosition = scenario.NavigationTarget;
             float distance = Vector3.Distance(
                 new Vector3(ship.transform.position.x, 0f, ship.transform.position.z),
                 objectivePosition);
@@ -632,17 +662,25 @@ namespace ShipSimulator.UI
             miniMap = Panel("MiniMap",
                 new Vector2(1f, 1f), new Vector2(1f, 1f),
                 new Vector2(1f, 1f), new Vector2(-22f, -22f), new Vector2(420f, 464f));
-            Icon(miniMap, HudIcon.Compass, new Vector2(-178f, 203f), 20f, HudTheme.Accent);
-            Text radarTitle = Label(miniMap, "RIVER RADAR  ·  HEAD-UP  ·  200 m",
-                17, TextAnchor.UpperLeft, new Vector2(52f, 424f), new Vector2(-16f, -10f));
-            radarTitle.color = HudTheme.AccentSoft;
+
+            mapButtons.Clear();
+            mapTitle = Label(miniMap, string.Empty, 17, TextAnchor.MiddleLeft, Vector2.zero, Vector2.zero);
+            mapTitle.color = HudTheme.AccentSoft;
+            AddMapButton("map.zoomIn", () => ZoomMap(1));
+            AddMapButton("map.zoomOut", () => ZoomMap(-1));
+            AddMapButton("map.expand", () => { VoyageSettings.SetMapExpanded(!VoyageSettings.MapExpanded); RecenterMap(); });
+            AddMapButton("map.orientation", () => VoyageSettings.SetMapNorthUp(!VoyageSettings.MapNorthUp));
+            AddMapButton("map.follow", RecenterMap);
+            AddMapButton("map.legend", () => VoyageSettings.SetMapLegend(!VoyageSettings.MapLegend));
             RectTransform viewport = ImageRect(miniMap, "Viewport",
                 new Color(0.035f, 0.058f, 0.094f, 0.98f), // calm dark navy
                 new Vector2(0f, 36f), new Vector2(384f, 300f));
             Image viewportImage = viewport.GetComponent<Image>();
             viewportImage.sprite = HudTheme.Rounded(12);
             viewportImage.type = Image.Type.Sliced;
-            viewportImage.raycastTarget = false;
+            viewportImage.raycastTarget = true;
+            mapViewport = viewport;
+            viewport.gameObject.AddComponent<MapInteraction>().Initialise(this);
             viewport.gameObject.AddComponent<RectMask2D>();
             mapWorld = ImageRect(viewport, "MovingWorld", Color.clear, Vector2.zero,
                 new Vector2(382f, 332f));
@@ -660,34 +698,27 @@ namespace ShipSimulator.UI
             channelRect.offsetMin = Vector2.zero;
             channelRect.offsetMax = Vector2.zero;
 
-            for (int i = 0; i < 21; i++)
+            float length = scenarioRoute != null ? scenarioRoute.LengthM : 1100;
+            int sections = Mathf.Clamp(Mathf.CeilToInt(length / 20), 2, 256);
+            for (int i = 0; i < sections; i++)
             {
-                float startZ = -180f + i * 48f;
-                float endZ = startZ + 32f;
-                Vector3 routeStart = FairwayPoint(startZ, 0f);
-                Vector3 routeEnd = FairwayPoint(endZ, 0f);
-                if (i % 2 == 0)
-                    AddMapLine(string.Format(Localization.Culture, "FairwayRoute{0}", i), new Color(0.85f, 0.68f, 0.32f, 0.55f),
-                        routeStart, routeEnd, 2.4f);
-                AddMapLine(string.Format(Localization.Culture, "PortEdge{0}", i), new Color(0.84f, 0.28f, 0.22f, 0.75f),
-                    FairwayPoint(startZ, -1f), FairwayPoint(endZ, -1f), 3f);
-                AddMapLine(string.Format(Localization.Culture, "StarboardEdge{0}", i), new Color(0.26f, 0.70f, 0.36f, 0.75f),
-                    FairwayPoint(startZ, 1f), FairwayPoint(endZ, 1f), 3f);
+                float start = length * i / sections, end = length * (i + 1) / sections;
+                AddMapLine("FairwayRoute" + i, new Color(.85f, .68f, .32f, .55f), ChartPoint(start, 0), ChartPoint(end, 0), 2);
+                AddMapLine("PortEdge" + i, new Color(.75f, .88f, .8f, .75f), ChartPoint(start, -1), ChartPoint(end, -1), 2);
+                AddMapLine("StarboardEdge" + i, new Color(.84f, .28f, .22f, .75f), ChartPoint(start, 1), ChartPoint(end, 1), 2);
             }
-            float[] stations = { -55f, 45f, 145f, 240f, 330f, 415f, 495f, 570f, 640f, 705f };
-            for (int i = 0; i < stations.Length; i++)
+            // Builders use stable buoy root names, including the zaton's unlit marks.
+            foreach (Transform mark in FindObjectsByType<Transform>())
             {
-                float z = stations[i];
-                float centerX = FairwayModel.CenterX(z);
-                float nextX = FairwayModel.CenterX(z + 4f);
-                Vector2 tangent = new Vector2(nextX - centerX, 4f).normalized;
-                Vector2 normal = new Vector2(-tangent.y, tangent.x);
-                float width = FairwayModel.MarkedHalfWidth(z);
-                AddBuoy(string.Format(Localization.Culture, "LeftGreenBuoy{0}", i), new Color(0.32f, 0.82f, 0.45f),
-                    new Vector3(centerX + normal.x * width, 0f, z + normal.y * width));
-                AddBuoy(string.Format(Localization.Culture, "RightRedBuoy{0}", i), new Color(0.92f, 0.30f, 0.24f),
-                    new Vector3(centerX - normal.x * width, 0f, z - normal.y * width));
+                if (mark.gameObject.scene != gameObject.scene || !mark.name.Contains("Buoy") ||
+                    (mark.parent != null && mark.parent.name.Contains("Buoy")) || mark.GetComponentInChildren<Renderer>() == null) continue;
+                Color color = mark.name.Contains("Red") || mark.name.Contains("Right") ? new Color(.92f, .30f, .24f) : new Color(.75f, .88f, .8f);
+                AddMapContact(mark.name, color, mark.position, new Vector2(12, 12));
+                mapContacts[mapContacts.Count - 1].Target = mark;
             }
+            mapChart = Resources.Load<MapChartData>("Charts/" + gameObject.scene.name);
+            mapShoresBuilt = false; mapShoreProfile = null;
+            AddReadyMapShores();
             foreach (RadarObstacle obstacle in FindObjectsByType<RadarObstacle>())
             {
                 if (obstacle.gameObject.scene != gameObject.scene) continue;
@@ -707,7 +738,7 @@ namespace ShipSimulator.UI
             waypointRingImage.raycastTarget = false;
 
             mapVessel = ImageRect(viewport, "Vessel", HudTheme.Accent,
-                new Vector2(0f, RadarVesselOffsetY), new Vector2(40f, 40f));
+                Vector2.zero, new Vector2(40f, 40f));
             Image vesselGlow = mapVessel.GetComponent<Image>();
             vesselGlow.sprite = HudTheme.Soft(10);
             vesselGlow.color = new Color(0.26f, 0.78f, 0.95f, 0.30f);
@@ -724,7 +755,7 @@ namespace ShipSimulator.UI
 
             // Clean thin cyan heading line straight up from the ship (head-up).
             ImageRect(viewport, "HeadingLine", new Color(0.30f, 0.82f, 0.96f, 0.55f),
-                new Vector2(0f, RadarVesselOffsetY + 116f), new Vector2(2f, 232f))
+                new Vector2(0f, 116f), new Vector2(2f, 232f))
                 .GetComponent<Image>().raycastTarget = false;
 
             radarWarningRing = ImageRect(viewport, "WarningRing", HudTheme.Danger,
@@ -744,91 +775,156 @@ namespace ShipSimulator.UI
                 new Vector2(16f, 12f), new Vector2(-16f, -348f));
             depthRadarText.supportRichText = true;
             depthRadarText.lineSpacing = 1.05f;
+            RecenterMap();
+            mapRestoreCount = ship.RestoreCount;
+        }
+
+        private void AddReadyMapShores()
+        {
+            if (mapShoresBuilt) return;
+            if (mapChart == null)
+            {
+                // ShipWakeController may create its bank profile after the HUD's Start.
+                if (mapShoreProfile == null) mapShoreProfile = ship.GetComponent<RiverShoreProfile>();
+                if (mapShoreProfile == null || !mapShoreProfile.IsReady) return;
+            }
+            var shores = new List<Vector3>();
+            if (mapChart != null) shores.AddRange(mapChart.shoreSegments);
+            else mapShoreProfile.CopyChartEdges(shores);
+            for (int i = 0; i + 1 < shores.Count; i += 2)
+            {
+                AddMapLine("Shore" + i, new Color(.72f, .72f, .55f, .8f), shores[i], shores[i + 1], 2);
+                mapLines[mapLines.Count - 1].Rect.SetSiblingIndex(1);
+            }
+            mapShoresBuilt = true;
+        }
+
+        private void AddMapButton(string key, UnityEngine.Events.UnityAction action)
+        {
+            var rect = UiLayout.Rect(miniMap, key, 0, 0, 120, 30);
+            var image = rect.gameObject.AddComponent<Image>();
+            image.sprite = HudTheme.Rounded(6); image.type = Image.Type.Sliced;
+            image.color = HudTheme.ButtonIdle;
+            var button = rect.gameObject.AddComponent<Button>();
+            button.targetGraphic = image;
+            button.onClick.AddListener(action);
+            var text = Label(rect, string.Empty, 15, TextAnchor.MiddleCenter, new Vector2(2, 2), new Vector2(-2, -2));
+            text.raycastTarget = false;
+            mapButtons.Add((button, text, key));
+        }
+
+        private Vector3 ChartPoint(float distance, float side)
+        {
+            if (scenarioRoute == null) return FairwayPoint(distance - 220, side);
+            var query = scenarioRoute.QueryDistance(distance);
+            return query.Position + query.Right * (side < 0 ? -query.Sample.leftWidthM : side * query.Sample.rightWidthM);
         }
 
         private void UpdateMiniMap()
         {
             if (mapVessel == null || mapWorld == null) return;
-            float heading = ship.transform.eulerAngles.y * Mathf.Deg2Rad;
-            float sin = Mathf.Sin(heading);
-            float cos = Mathf.Cos(heading);
-            for (int i = 0; i < mapContacts.Count; i++)
+            AddReadyMapShores();
+            if (mapRestoreCount != ship.RestoreCount) { radarTrack.Clear(); RecenterMap(); mapRestoreCount = ship.RestoreCount; }
+            float width = miniMap.rect.width, height = miniMap.rect.height;
+            UiLayout.Place(mapTitle.rectTransform, 16, 6, width - 32, 26);
+            float buttonWidth = (width - 40) / 3;
+            for (int i = 0; i < mapButtons.Count; i++)
             {
-                MapContact contact = mapContacts[i];
-                Vector3 delta = contact.WorldPosition - ship.transform.position;
-                float localX = delta.x * cos - delta.z * sin;
-                float localZ = delta.x * sin + delta.z * cos;
-                contact.Rect.anchoredPosition = new Vector2(
-                    localX * MapPixelsPerMeter,
-                    localZ * MapPixelsPerMeter + RadarVesselOffsetY);
-                contact.Rect.gameObject.SetActive(
-                    Mathf.Abs(contact.Rect.anchoredPosition.x) < 195f &&
-                    contact.Rect.anchoredPosition.y > -170f &&
-                    contact.Rect.anchoredPosition.y < 170f);
+                var item = mapButtons[i];
+                UiLayout.Place((RectTransform)item.Button.transform, 16 + i % 3 * (buttonWidth + 4), 36 + i / 3 * 34, buttonWidth, 30);
+                string key = item.Key;
+                if (key == "map.expand" && VoyageSettings.MapExpanded) key = "map.collapse";
+                if (key == "map.orientation") key = VoyageSettings.MapNorthUp ? "map.northUp" : "map.headingUp";
+                item.Text.text = Localization.Get(key);
+                item.Button.interactable = item.Key != "map.zoomIn" || VoyageSettings.MapRange > 100;
+                if (item.Key == "map.zoomOut") item.Button.interactable = VoyageSettings.MapRange < 4000;
+                item.Button.GetComponent<Image>().color = item.Key == "map.follow" && mapFollowing || item.Key == "map.legend" && VoyageSettings.MapLegend
+                    ? HudTheme.ButtonActive : HudTheme.ButtonIdle;
             }
-            for (int i = 0; i < mapLines.Count; i++)
+            float footer = VoyageSettings.MapLegend ? 148 : 64;
+            // Keep the chart origin at its centre; every chart layer shares this projection.
+            mapViewport.anchorMin = mapViewport.anchorMax = mapViewport.pivot = new Vector2(.5f, .5f);
+            mapViewport.sizeDelta = new Vector2(width - 32, Mathf.Max(100, height - 108 - footer));
+            mapViewport.anchoredPosition = new Vector2(0, (footer - 108) * .5f);
+            UiLayout.Place(depthRadarText.rectTransform, 16, height - footer + 4, width - 32, footer - 8);
+            mapWorld.sizeDelta = mapViewport.sizeDelta;
+            float heading = VoyageSettings.MapNorthUp ? (mapChart != null ? mapChart.northHeading : 0) : ship.transform.eulerAngles.y;
+            if (mapFollowing) mapCenter = ship.transform.position;
+            Vector2 offset = mapFollowing && !VoyageSettings.MapNorthUp ? new Vector2(0, -mapViewport.rect.height * .18f) : Vector2.zero;
+            float scale = Mathf.Min(mapViewport.rect.width, mapViewport.rect.height) * .5f / VoyageSettings.MapRange;
+            mapProjection = new MapProjection(mapCenter, heading, scale, offset);
+            mapTitle.text = Localization.Get("map.title", VoyageSettings.MapRange);
+            foreach (var contact in mapContacts)
             {
-                MapLine line = mapLines[i];
-                Vector2 start = RadarPosition(line.WorldStart, sin, cos);
-                Vector2 end = RadarPosition(line.WorldEnd, sin, cos);
-                SetRadarLine(line.Rect, start, end);
+                if (contact.Target != null) contact.WorldPosition = contact.Target.position;
+                Vector2 point = mapProjection.Project(contact.WorldPosition);
+                bool waypoint = contact.Rect == mapWaypoint;
+                if (waypoint) point = mapProjection.Project(objectivePosition);
+                contact.Rect.anchoredPosition = waypoint ? ClampMapPoint(point, 18) : point;
+                contact.Rect.gameObject.SetActive(waypoint || mapViewport.rect.Contains(point));
             }
+            foreach (var line in mapLines)
+                SetRadarLine(line.Rect, mapProjection.Project(line.WorldStart), mapProjection.Project(line.WorldEnd));
             foreach (var contact in radarObstacles)
             {
                 bool visible = contact.Obstacle != null && contact.Obstacle.isActiveAndEnabled;
                 contact.Rect.gameObject.SetActive(visible);
                 if (!visible) continue;
-                contact.Obstacle.Project(ship.transform.position, ship.transform.eulerAngles.y,
-                    MapPixelsPerMeter, RadarVesselOffsetY,
-                    out Vector2 position, out Vector2 size, out float angle);
+                contact.Obstacle.Project(mapProjection.Center, heading, scale, offset.y, out var position, out var size, out var angle);
                 contact.Rect.anchoredPosition = position;
                 contact.Rect.sizeDelta = size;
-                contact.Rect.localRotation = Quaternion.Euler(0f, 0f, angle);
+                contact.Rect.localRotation = Quaternion.Euler(0, 0, angle);
             }
-            UpdateRadarChannel(sin, cos);
-            UpdateRadarTrack(sin, cos);
+            UpdateRadarChannel();
+            UpdateRadarTrack();
             UpdateRadarPrediction();
-            mapVessel.anchoredPosition = new Vector2(0f, RadarVesselOffsetY);
-            mapVessel.localRotation = Quaternion.identity;
+            Vector2 own = mapProjection.Project(ship.transform.position);
+            mapVessel.anchoredPosition = ClampMapPoint(own, 22);
+            mapVessel.localRotation = Quaternion.Euler(0, 0, mapProjection.IconAngle(ship.transform.eulerAngles.y));
+            mapVessel.SetAsLastSibling();
+            for (int i = 1; i <= 2; i++)
+            {
+                var ring = mapViewport.Find(i == 1 ? "Range100m" : "Range200m") as RectTransform;
+                ring.anchoredPosition = own;
+                ring.sizeDelta = Vector2.one * (VoyageSettings.MapRange * scale * i);
+            }
+            var headingLine = mapViewport.Find("HeadingLine") as RectTransform;
+            Vector3 ahead = ship.transform.position + Quaternion.Euler(0, ship.transform.eulerAngles.y, 0) * Vector3.forward * VoyageSettings.MapRange;
+            SetRadarLine(headingLine, own, mapProjection.Project(ahead));
+            radarWarningRing.sizeDelta = mapViewport.sizeDelta - Vector2.one * 6;
         }
 
-        // Rebuilds the filled channel ribbon each frame from fairway cross-sections
-        // around the ship, coloured by under-keel clearance.
-        private void UpdateRadarChannel(float sin, float cos)
+        private Vector2 ClampMapPoint(Vector2 point, float margin)
         {
-            if (radarChannel == null) return;
+            Vector2 half = mapViewport.rect.size * .5f - Vector2.one * margin;
+            float factor = Mathf.Max(1, Mathf.Abs(point.x) / half.x, Mathf.Abs(point.y) / half.y);
+            return point / factor;
+        }
+
+        private void UpdateRadarChannel()
+        {
             radarSections.Clear();
-            float shipZ = ship.transform.position.z;
-            float draft = ship.EffectiveDraftM;
-            radarMinAheadM = float.MaxValue;
-
-            for (float z = shipZ - 120f; z <= shipZ + 320f; z += 11f)
+            float length = scenarioRoute != null ? scenarioRoute.LengthM : 1100;
+            int count = Mathf.Clamp(Mathf.CeilToInt(length / 20), 2, 256);
+            for (int i = 0; i <= count; i++)
             {
-                Vector3 leftWorld = FairwayPoint(z, 1f);
-                Vector3 rightWorld = FairwayPoint(z, -1f);
-                Vector3 centerWorld = FairwayPoint(z, 0f);
-                float depth = scenarioBathymetry != null
-                    ? scenarioBathymetry.Sample(centerWorld).DepthM
-                    : FairwayModel.DepthAt(centerWorld);
-                float clearance = depth - draft;
-
-                Vector2 left = RadarPosition(leftWorld, sin, cos);
-                Vector2 right = RadarPosition(rightWorld, sin, cos);
-                radarSections.Add(new RadarChannel.Section
-                {
-                    Left = left,
-                    Right = right,
-                    Color = ChannelColor(clearance)
-                });
-
-                Vector2 center = RadarPosition(centerWorld, sin, cos);
-                if (center.y > RadarVesselOffsetY && center.y < 168f &&
-                    Mathf.Abs(center.x) < 150f)
-                    radarMinAheadM = Mathf.Min(radarMinAheadM, depth);
+                float distance = length * i / count;
+                Vector3 center = ChartPoint(distance, 0);
+                Vector3 left = ChartPoint(distance, -1), right = ChartPoint(distance, 1);
+                float Depth(Vector3 point) => scenarioBathymetry != null ? scenarioBathymetry.Sample(point).DepthM : FairwayModel.DepthAt(point);
+                radarSections.Add(new RadarChannel.Section { Left = mapProjection.Project(left), Right = mapProjection.Project(right),
+                    Center = mapProjection.Project(center), Color = ChannelColor(Depth(center) - ship.EffectiveDraftM),
+                    LeftColor = ChannelColor(Depth(left) - ship.EffectiveDraftM), RightColor = ChannelColor(Depth(right) - ship.EffectiveDraftM) });
             }
-
-            if (radarMinAheadM == float.MaxValue) radarMinAheadM = 0f;
             radarChannel.SetSections(radarSections);
+            // The safety readout stays ahead of the vessel when the player pans elsewhere.
+            radarMinAheadM = float.MaxValue;
+            for (int i = 1; i <= 20; i++)
+            {
+                Vector3 point = ship.transform.position + Quaternion.Euler(0, ship.transform.eulerAngles.y, 0) * Vector3.forward * (i * VoyageSettings.MapRange / 20);
+                float depth = scenarioBathymetry != null ? scenarioBathymetry.Sample(point).DepthM : FairwayModel.DepthAt(point);
+                radarMinAheadM = Mathf.Min(radarMinAheadM, depth);
+            }
         }
 
         private void UpdateWarnings(float speedMps, float underKeel, float currentSpeed)
@@ -921,8 +1017,8 @@ namespace ShipSimulator.UI
             RectTransform rect = ImageRect(mapWorld, name, color, Vector2.zero,
                 new Vector2(width, 1f));
             Image image = rect.GetComponent<Image>();
-            image.sprite = HudTheme.Soft(6);
-            image.type = Image.Type.Sliced;
+            image.sprite = null;
+            image.type = Image.Type.Simple;
             image.raycastTarget = false;
             rect.pivot = new Vector2(0.5f, 0.5f);
             mapLines.Add(new MapLine
@@ -946,13 +1042,9 @@ namespace ShipSimulator.UI
             return new Vector3(centerX - normal.x * width, 0f, z - normal.y * width);
         }
 
-        private Vector2 RadarPosition(Vector3 worldPosition, float sin, float cos)
+        private Vector2 RadarPosition(Vector3 worldPosition)
         {
-            Vector3 delta = worldPosition - ship.transform.position;
-            return new Vector2(
-                (delta.x * cos - delta.z * sin) * MapPixelsPerMeter,
-                (delta.x * sin + delta.z * cos) * MapPixelsPerMeter +
-                RadarVesselOffsetY);
+            return mapProjection.Project(worldPosition);
         }
 
         private static void SetRadarLine(RectTransform line, Vector2 start, Vector2 end)
@@ -962,9 +1054,7 @@ namespace ShipSimulator.UI
             line.sizeDelta = new Vector2(line.sizeDelta.x, delta.magnitude);
             line.localRotation = Quaternion.Euler(
                 0f, 0f, -Mathf.Atan2(delta.x, delta.y) * Mathf.Rad2Deg);
-            line.gameObject.SetActive(
-                line.anchoredPosition.x > -220f && line.anchoredPosition.x < 220f &&
-                line.anchoredPosition.y > -205f && line.anchoredPosition.y < 205f);
+            line.gameObject.SetActive(true);
         }
 
         private RectTransform[] BuildRadarSegments(
@@ -976,15 +1066,15 @@ namespace ShipSimulator.UI
                 segments[i] = ImageRect(parent, string.Format(Localization.Culture, "{0}{1}", prefix, i), color,
                     Vector2.zero, new Vector2(width, 1f));
                 Image image = segments[i].GetComponent<Image>();
-                image.sprite = HudTheme.Soft(6);
-                image.type = Image.Type.Sliced;
+                image.sprite = null;
+                image.type = Image.Type.Simple;
                 image.raycastTarget = false;
                 segments[i].gameObject.SetActive(false);
             }
             return segments;
         }
 
-        private void UpdateRadarTrack(float sin, float cos)
+        private void UpdateRadarTrack()
         {
             if (radarTrackSegments == null) return;
             if (Time.unscaledTime >= nextTrackSampleTime)
@@ -1006,8 +1096,8 @@ namespace ShipSimulator.UI
                 radarTrackSegments[i].gameObject.SetActive(visible);
                 if (visible)
                     SetRadarLine(radarTrackSegments[i],
-                        RadarPosition(radarTrack[i], sin, cos),
-                        RadarPosition(radarTrack[i + 1], sin, cos));
+                        RadarPosition(radarTrack[i]),
+                        RadarPosition(radarTrack[i + 1]));
             }
         }
 
@@ -1016,15 +1106,15 @@ namespace ShipSimulator.UI
             if (radarPredictionSegments == null) return;
             Vector3 localVelocity = ship.transform.InverseTransformDirection(
                 ship.Body.linearVelocity);
-            float speed = Mathf.Max(0f, localVelocity.z);
+            float speed = localVelocity.z;
             float sideSpeed = localVelocity.x;
             float yawRate = ship.Body.angularVelocity.y;
-            Vector2 previous = new Vector2(0f, RadarVesselOffsetY);
+            Vector2 previous = mapProjection.Project(ship.transform.position);
             float predictedHeading = 0f;
             Vector2 predictedMeters = Vector2.zero;
 
-            float stepSeconds = RadarPredictionStepSeconds(
-                new Vector2(speed, sideSpeed).magnitude, radarPredictionSegments.Length);
+            float stepSeconds = MapProjection.PredictionStep(
+                new Vector2(speed, sideSpeed).magnitude, radarPredictionSegments.Length, VoyageSettings.MapRange * .55f);
             for (int i = 0; i < radarPredictionSegments.Length; i++)
             {
                 predictedHeading += yawRate * stepSeconds;
@@ -1033,8 +1123,8 @@ namespace ShipSimulator.UI
                 Vector2 right = new Vector2(forward.y, -forward.x);
                 predictedMeters +=
                     (forward * speed + right * sideSpeed) * stepSeconds;
-                Vector2 next = predictedMeters * MapPixelsPerMeter +
-                    new Vector2(0f, RadarVesselOffsetY);
+                Vector3 world = ship.transform.position + Quaternion.Euler(0, ship.transform.eulerAngles.y, 0) * new Vector3(predictedMeters.x, 0, predictedMeters.y);
+                Vector2 next = mapProjection.Project(world);
                 SetRadarLine(radarPredictionSegments[i], previous, next);
                 radarPredictionSegments[i].gameObject.SetActive(i % 2 == 0);
                 previous = next;
@@ -1123,7 +1213,8 @@ namespace ShipSimulator.UI
                 }
             }
             radarTrack.Clear();
-            nextTrackSampleTime = Time.time;
+            nextTrackSampleTime = Time.unscaledTime;
+            RecenterMap();
         }
 
         private void TelegraphUp() => SetTelegraph(Mathf.Max(telegraphIndices[0], telegraphIndices[1]) + 1);
@@ -1165,16 +1256,8 @@ namespace ShipSimulator.UI
             return string.Format(Localization.Culture, "   <color={0}>{1} {2:F0}%</color>", color, mode, progress * 100f);
         }
 
-        // The predicted path is drawn at the fixed map scale, so a fixed time horizon leaves the radar as
-        // soon as the vessel is fast: 25 s at 18 m/s is 450 m against roughly 300 m of visible range. The
-        // horizon is bounded by distance instead, which leaves displacement ships at the full 25 s.
-        public static float RadarPredictionStepSeconds(float speedMps, int steps)
-        {
-            const float visibleRangeM = (150f - 8f - RadarVesselOffsetY) / MapPixelsPerMeter;
-            const float longestStep = 2.5f;
-            if (steps <= 0 || speedMps <= 0.1f) return longestStep;
-            return Mathf.Min(longestStep, visibleRangeM / (speedMps * steps));
-        }
+        public static float RadarPredictionStepSeconds(float speedMps, int steps) =>
+            MapProjection.PredictionStep(speedMps, steps, 300f * .55f);
 
         public static string FormatBowThrusterStatus(bool fitted, float output)
         {
@@ -1265,19 +1348,9 @@ namespace ShipSimulator.UI
         private void UpdateDepthRadar(float currentDepth)
         {
             if (depthRadarText == null) return;
-            float minimumAhead = radarMinAheadM > 0f
-                ? Mathf.Min(currentDepth, radarMinAheadM)
-                : currentDepth;
-            depthRadarText.text =
-                Localization.Get("text.depth.0.f1.m.4e8da492", currentDepth) +
-                Localization.Get("text.min.ahead.0.f1.m.f8aa9980", minimumAhead) +
-                Localization.Get("text.draft.0.f1.m.a8291744", ship.EffectiveDraftM) +
-                Localization.Get("text.safe.47ac5706") +
-                Localization.Get("text.shallow.danger.92e5726f") +
-                Localization.Get("text.route.craft.pier.d179a9fd") +
-                Localization.Get("text.heading.predicted.path.d0f1dc35") +
-                Localization.Get("text.red.mark.bf83aac7") +
-                Localization.Get("text.green.mark.8df5d50f");
+            float minimumAhead = Mathf.Min(currentDepth, radarMinAheadM);
+            depthRadarText.text = Localization.Get("map.depth", currentDepth, minimumAhead, ship.EffectiveDraftM) +
+                (VoyageSettings.MapLegend ? "\n" + Localization.Get("map.legendText") : "");
         }
 
         public static string FormatCameraStatus(string viewName, int viewIndex, int viewCount)
@@ -1310,11 +1383,11 @@ namespace ShipSimulator.UI
 
         private void RangeRing(Transform parent, string name, float diameter, Color color)
         {
-            RectTransform rect = ImageRect(parent, name, color,
-                new Vector2(0f, RadarVesselOffsetY), new Vector2(diameter, diameter));
-            Image image = rect.GetComponent<Image>();
-            image.sprite = HudTheme.Ring();
-            image.raycastTarget = false;
+            var ring = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(MapRangeRing)).GetComponent<MapRangeRing>();
+            ring.transform.SetParent(parent, false);
+            ring.rectTransform.anchorMin = ring.rectTransform.anchorMax = ring.rectTransform.pivot = new Vector2(.5f, .5f);
+            ring.rectTransform.sizeDelta = Vector2.one * diameter;
+            ring.color = color; ring.raycastTarget = false;
         }
 
         // A buoy is a soft glow behind a crisp coloured dot; both are world-anchored

@@ -33,6 +33,7 @@ namespace ShipSimulator.Editor
         public static void Build()
         {
             ScenarioGeometry geometry = ScenarioGeometry.Load(GeometryPath);
+            MapChartBuilder.Build();
             Material water = AssetDatabase.LoadAssetAtPath<Material>(Root + "/Materials/RiverWater.mat");
             if (water == null)
                 throw new System.InvalidOperationException(

@@ -241,6 +241,8 @@ namespace ShipSimulator.Editor
         // Water bodies that meet, such as the basin entrance and the Nara mouth, share edges that are
         // not banks. Measuring to them would raise a sill across every junction, so an edge counts only
         // when the water does not continue on its far side.
+        public bool IsShoreEdge(int shoreline, int edge) => BoundaryEdges()[shoreline][edge];
+
         private bool[][] BoundaryEdges()
         {
             if (boundaryEdges != null) return boundaryEdges;

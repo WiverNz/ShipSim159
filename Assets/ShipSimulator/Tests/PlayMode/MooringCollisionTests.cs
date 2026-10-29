@@ -50,8 +50,9 @@ namespace ShipSimulator.Tests
             {
                 RectTransform echo = world.Find("Obstacle " + obstacle.name) as RectTransform;
                 Assert.That(echo, Is.Not.Null, obstacle.name);
-                obstacle.Project(hud.Ship.transform.position, hud.Ship.transform.eulerAngles.y,
-                    0.82f, -82f, out Vector2 position, out Vector2 size, out float angle);
+                var projection = hud.CurrentMapProjection;
+                obstacle.Project(projection.Center, projection.Heading,
+                    projection.Scale, projection.Offset.y, out Vector2 position, out Vector2 size, out float angle);
                 Assert.That(Vector2.Distance(echo.anchoredPosition, position), Is.LessThan(1f));
                 Assert.That(Vector2.Distance(echo.sizeDelta, size), Is.LessThan(0.01f));
                 Assert.That(Mathf.Abs(Mathf.DeltaAngle(echo.localEulerAngles.z, angle)), Is.LessThan(0.1f));

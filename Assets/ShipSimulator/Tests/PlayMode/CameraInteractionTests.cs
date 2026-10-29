@@ -104,6 +104,55 @@ namespace ShipSimulator.Tests
             Assert.That(Cursor.lockState, Is.EqualTo(CursorLockMode.None));
         }
 
+        [UnityTest]
+        public IEnumerator RealMapWheelAndPanCannotAlsoMoveTheCamera()
+        {
+            float oldRange = VoyageSettings.MapRange;
+            bool oldExpanded = VoyageSettings.MapExpanded;
+            bool hadEvents = EventSystem.current != null;
+            cameraObject.tag = "MainCamera";
+            canvasObject = new GameObject("Interactive map input HUD");
+            var hud = canvasObject.AddComponent<ShipTelemetryUI>(); hud.SetShip(ship);
+            try
+            {
+                yield return null; yield return null;
+                if (!hadEvents) eventsObject = EventSystem.current.gameObject;
+                VoyageSettings.SetMapRange(300);
+                cameraObject.SendMessage("OnApplicationFocus", true); Tick(false);
+                Canvas.ForceUpdateCanvases();
+                Vector2 pointer = RectTransformUtility.WorldToScreenPoint(null, hud.MapViewport.position);
+                var state = new MouseState { position = pointer, scroll = Vector2.up };
+                InputSystem.QueueStateEvent(mouse, state); InputSystem.Update();
+                var before = follow.CaptureState();
+                cameraObject.SendMessage("LateUpdate"); Settle();
+                Assert.That(follow.CaptureState().distance, Is.EqualTo(before.distance).Within(.001f));
+                var interaction = hud.MapViewport.GetComponent<MapInteraction>();
+                float gain = EventSystem.current.currentInputModule is UnityEngine.InputSystem.UI.InputSystemUIInputModule module ? module.scrollDeltaPerTick : 1;
+                var data = new PointerEventData(EventSystem.current) { position = pointer, scrollDelta = Vector2.up * gain,
+                    button = PointerEventData.InputButton.Left, delta = new Vector2(30, 10) };
+                interaction.OnScroll(data);
+                Assert.That(VoyageSettings.MapRange, Is.EqualTo(300 * Mathf.Exp(-.2f)).Within(.01f));
+                Tick(false); Tick(true); Tick(true, new Vector2(100, 0));
+                Assert.That(follow.OwnsOrbitGesture, Is.True);
+                float range = VoyageSettings.MapRange;
+                interaction.OnScroll(data);
+                Assert.That(VoyageSettings.MapRange, Is.EqualTo(range), "A world orbit retains wheel ownership across UI.");
+                Tick(false);
+                VoyageSettings.SetMapExpanded(true); yield return null; yield return null;
+                interaction.OnBeginDrag(data); interaction.OnDrag(data);
+                Assert.That(MapInteraction.Dragging, Is.True);
+                Tick(true, new Vector2(100, 0));
+                Assert.That(follow.OwnsOrbitGesture, Is.False, "Dragging the map outside its bounds must still block camera input.");
+                interaction.SendMessage("OnApplicationFocus", false);
+                Assert.That(MapInteraction.Dragging, Is.False);
+                Tick(false);
+            }
+            finally
+            {
+                VoyageSettings.SetMapRange(oldRange); VoyageSettings.SetMapExpanded(oldExpanded);
+            }
+        }
+
         [TestCase("focus")] [TestCase("disable")] [TestCase("navigator")] [TestCase("target")]
         public void LifecycleReleasesCursorAndHeldButtonCannotReacquire(string change)
         {

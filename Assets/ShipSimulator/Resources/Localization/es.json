@@ -1823,6 +1823,54 @@
     {
       "key": "display.use.window",
       "value": "Usar modo de ventana"
+    },
+    {
+      "key": "map.zoomIn",
+      "value": "Zoom +"
+    },
+    {
+      "key": "map.zoomOut",
+      "value": "Zoom -"
+    },
+    {
+      "key": "map.expand",
+      "value": "Ampliar"
+    },
+    {
+      "key": "map.collapse",
+      "value": "Reducir"
+    },
+    {
+      "key": "map.orientation",
+      "value": "Orientación"
+    },
+    {
+      "key": "map.northUp",
+      "value": "Norte arriba"
+    },
+    {
+      "key": "map.headingUp",
+      "value": "Rumbo arriba"
+    },
+    {
+      "key": "map.follow",
+      "value": "Al buque"
+    },
+    {
+      "key": "map.legend",
+      "value": "Leyenda"
+    },
+    {
+      "key": "map.title",
+      "value": "MAPA  |  Radio {0:F0} m"
+    },
+    {
+      "key": "map.depth",
+      "value": "PROF. <b>{0:F1} m</b>  |  DELANTE {1:F1} m\n<color=#8AA0AD>CALADO</color> {2:F1} m  |  Profundidades estimadas"
+    },
+    {
+      "key": "map.legendText",
+      "value": "Turquesa: seguro; amarillo: bajo\nRojo: peligro; violeta: obstáculo\nAzul: predicción; gris: estela\nAnillos: ½ / radio total; amarillo: destino"
     }
   ]
 }

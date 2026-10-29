@@ -1823,6 +1823,54 @@
     {
       "key": "display.use.window",
       "value": "Use windowed mode"
+    },
+    {
+      "key": "map.zoomIn",
+      "value": "Zoom +"
+    },
+    {
+      "key": "map.zoomOut",
+      "value": "Zoom -"
+    },
+    {
+      "key": "map.expand",
+      "value": "Expand"
+    },
+    {
+      "key": "map.collapse",
+      "value": "Collapse"
+    },
+    {
+      "key": "map.orientation",
+      "value": "Orientation"
+    },
+    {
+      "key": "map.northUp",
+      "value": "North up"
+    },
+    {
+      "key": "map.headingUp",
+      "value": "Heading up"
+    },
+    {
+      "key": "map.follow",
+      "value": "Follow ship"
+    },
+    {
+      "key": "map.legend",
+      "value": "Legend"
+    },
+    {
+      "key": "map.title",
+      "value": "RIVER MAP  |  {0:F0} m radius"
+    },
+    {
+      "key": "map.depth",
+      "value": "DEPTH <b>{0:F1} m</b>  |  AHEAD {1:F1} m\n<color=#8AA0AD>DRAFT</color> {2:F1} m  |  Estimated depths"
+    },
+    {
+      "key": "map.legendText",
+      "value": "Teal: safe; amber: shallow; red: danger\nYellow: route / goal; violet: obstacle\nCyan: prediction; grey: track\nRings: half / full range; edges: off-screen marks"
     }
   ]
 }

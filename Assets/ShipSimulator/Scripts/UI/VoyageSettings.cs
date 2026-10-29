@@ -51,6 +51,19 @@ namespace ShipSimulator.UI
             SetPanelScale(.85f);
             Save();
         }
+        public static float MapRange => Read("MapRange", 300f, 100f, 4000f);
+        public static bool MapNorthUp => PlayerPrefs.GetInt(Prefix + "MapNorthUp", 0) == 1;
+        public static bool MapExpanded => PlayerPrefs.GetInt(Prefix + "MapExpanded", 0) == 1;
+        public static bool MapLegend => PlayerPrefs.GetInt(Prefix + "MapLegend", 0) == 1;
+        public static void SetMapRange(float value) { Write("MapRange", value, 300f, 100f, 4000f); Save(); }
+        public static void SetMapNorthUp(bool value) => SetMapFlag("MapNorthUp", value);
+        public static void SetMapExpanded(bool value) => SetMapFlag("MapExpanded", value);
+        public static void SetMapLegend(bool value) => SetMapFlag("MapLegend", value);
+        private static void SetMapFlag(string key, bool value)
+        {
+            PlayerPrefs.SetInt(Prefix + key, value ? 1 : 0);
+            Save(); Changed?.Invoke();
+        }
         public static float UiScale => Read("UiScale", 1f, .8f, 1.5f);
         public static float CameraSensitivity => Read("RotationSensitivity",
             Read("Sensitivity", 1f, .25f, 2f), .25f, 2f);

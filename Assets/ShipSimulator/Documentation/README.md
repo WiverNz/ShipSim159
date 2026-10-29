@@ -6,6 +6,8 @@ It is not a validated maritime training product.
 
 ## Documents
 
+- [Usability Part 4 review](UsabilityPart4Review.md): interactive map, shared projection, scenario geometry and verification.
+
 - [UsabilityPart1Review.md](UsabilityPart1Review.md): scalable interface, settings and verification.
 - [UsabilityImprovementPlan.md](UsabilityImprovementPlan.md): source audit and nine
   executable parts for interface, languages, camera, map, collisions, recovery and cargo.

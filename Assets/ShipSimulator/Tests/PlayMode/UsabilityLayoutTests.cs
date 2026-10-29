@@ -19,10 +19,13 @@ namespace ShipSimulator.Tests
         private float originalScale, originalPanelScale;
         private string originalLanguage;
         private VoyageMenu menu;
+        private bool mapExpanded, mapLegend;
 
         [UnityTearDown]
         public IEnumerator Cleanup()
         {
+            VoyageSettings.SetMapExpanded(mapExpanded);
+            VoyageSettings.SetMapLegend(mapLegend);
             VoyageSettings.SetLanguage(originalLanguage);
             VoyageSettings.SetUiScale(originalScale);
             VoyageSettings.SetPanelScale(originalPanelScale);
@@ -46,6 +49,8 @@ namespace ShipSimulator.Tests
         public IEnumerator CaptureLayouts()
         {
             layoutFailures.Clear();
+            mapExpanded = VoyageSettings.MapExpanded; mapLegend = VoyageSettings.MapLegend;
+            VoyageSettings.SetMapExpanded(false); VoyageSettings.SetMapLegend(false);
             original = SceneManager.GetActiveScene();
             originalScale = VoyageSettings.UiScale;
             originalPanelScale = VoyageSettings.PanelScale;
@@ -113,6 +118,9 @@ namespace ShipSimulator.Tests
                 yield return Capture(hud.GetComponent<Canvas>(), w, h, "weather");
                 hud.GetComponent<HudLayout>().Select(4);
                 yield return Capture(hud.GetComponent<Canvas>(), w, h, "map");
+                VoyageSettings.SetMapExpanded(true); VoyageSettings.SetMapLegend(true);
+                yield return Capture(hud.GetComponent<Canvas>(), w, h, "map-expanded");
+                VoyageSettings.SetMapExpanded(false); VoyageSettings.SetMapLegend(false);
                 hud.GetComponent<HudLayout>().Select(0);
                 menu.OpenPause();
             }

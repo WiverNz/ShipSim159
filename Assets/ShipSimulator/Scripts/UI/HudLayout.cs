@@ -137,6 +137,14 @@ namespace ShipSimulator.UI
             map.localScale = Vector3.one * mapScale;
             UiLayout.Place(map, size.x - 16 - 420 * mapScale, size.y - 68 - 464 * mapScale, 420, 464);
 
+            if (VoyageSettings.MapExpanded)
+            {
+                float width = size.x * .5f - 32;
+                float height = size.y - 300;
+                map.localScale = Vector3.one * scale;
+                UiLayout.Place(map, size.x - width - 16, 232, width / scale, height / scale);
+            }
+
             // Optional tools occupy the left rail above the permanent engine controls.
             float top = y + 120;
             float total = 8, drawerWidth = 0;

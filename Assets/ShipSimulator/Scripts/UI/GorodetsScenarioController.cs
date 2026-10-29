@@ -48,6 +48,9 @@ namespace ShipSimulator.UI
         public string Instruction => BuildInstruction();
         public float LocalSpeedLimitMps { get; private set; } = 3.333f;
         public ShipPhysicsController Ship => ship;
+        public Vector3 NavigationTarget => route == null ? Vector3.zero : route.QueryDistance(
+            phaseDistancesM != null && phaseDistancesM.Length >= 6
+                ? phaseDistancesM[Mathf.Clamp((int)Phase - 1, 0, 5)] : route.LengthM).Position;
 
         public void SetShip(ShipPhysicsController targetShip, GroundingController groundingController)
         {

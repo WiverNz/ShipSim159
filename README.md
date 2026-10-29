@@ -10,10 +10,11 @@
 The [usability improvement plan](Assets/ShipSimulator/Documentation/UsabilityImprovementPlan.md)
 defines nine separately executable parts for UI, languages, camera, map, collisions,
 grounded-bow water rendering, recovery and cargo. Part 1 adds scalable, scrollable UI and settings. Part 2 adds live language selection
-for English, Russian, German and Spanish under **Settings > Language**. Part 3 adds proportional zoom, smoother orbit and stable camera tracking. Parts 4-9 remain planned.
+for English, Russian, German and Spanish under **Settings > Language**. Part 3 adds proportional zoom, smoother orbit and stable camera tracking. Part 4 adds an interactive, scenario-aware map. Parts 5-9 remain planned.
 See the [Part 1 review](Assets/ShipSimulator/Documentation/UsabilityPart1Review.md) and
 [Part 2 review](Assets/ShipSimulator/Documentation/UsabilityPart2Review.md), plus the
-[Part 3 review](Assets/ShipSimulator/Documentation/UsabilityPart3Review.md), for changes and verification.
+[Part 3 review](Assets/ShipSimulator/Documentation/UsabilityPart3Review.md) and
+[Part 4 review](Assets/ShipSimulator/Documentation/UsabilityPart4Review.md), for changes and verification.
 
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator. It is
 built to carry several ship models, chosen in the start menu before a passage:
@@ -119,7 +120,10 @@ Serpukhov zaton is also available for compatible fast craft. Cargo vessels are e
 by its passage limits. Interface scale (80-150%) and independent rotation/zoom sensitivity are available under
 Settings > Interface & camera. Language selection is under Settings > Language. Last-safe-position recovery remains planned.
 The HUD groups helm, deck, camera, weather, map and help controls into labelled icon tabs.
-Overflowing panels scroll, and the map remains beside the controls when space allows.
+Overflowing panels scroll; the map and engine controls always have separate areas.
+The map supports wheel/button zoom (100-4000 m), expanded left-drag panning, Follow ship,
+heading-up/north-up and a legend. It uses scene routes, shorelines, buoy positions and
+mission goals. Display choices persist; voyage restore recentres the chart.
 
 The training scene is already configured as the first enabled scene in Build
 Settings.

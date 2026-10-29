@@ -1823,6 +1823,54 @@
     {
       "key": "display.use.window",
       "value": "Fenstermodus verwenden"
+    },
+    {
+      "key": "map.zoomIn",
+      "value": "Zoom +"
+    },
+    {
+      "key": "map.zoomOut",
+      "value": "Zoom -"
+    },
+    {
+      "key": "map.expand",
+      "value": "Vergrößern"
+    },
+    {
+      "key": "map.collapse",
+      "value": "Verkleinern"
+    },
+    {
+      "key": "map.orientation",
+      "value": "Ausrichtung"
+    },
+    {
+      "key": "map.northUp",
+      "value": "Nord oben"
+    },
+    {
+      "key": "map.headingUp",
+      "value": "Kurs oben"
+    },
+    {
+      "key": "map.follow",
+      "value": "Zum Schiff"
+    },
+    {
+      "key": "map.legend",
+      "value": "Legende"
+    },
+    {
+      "key": "map.title",
+      "value": "FLUSSKARTE  |  Radius {0:F0} m"
+    },
+    {
+      "key": "map.depth",
+      "value": "TIEFE <b>{0:F1} m</b>  |  VORAUS {1:F1} m\n<color=#8AA0AD>TIEFGANG</color> {2:F1} m  |  Geschätzte Tiefen"
+    },
+    {
+      "key": "map.legendText",
+      "value": "Türkis: sicher; gelb: flach; rot: Gefahr\nGelb: Route / Ziel; violett: Hindernis\nBlau: Prognose; grau: Spur\nRinge: halber / voller Radius"
     }
   ]
 }

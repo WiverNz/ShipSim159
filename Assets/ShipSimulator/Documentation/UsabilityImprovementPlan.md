@@ -2,7 +2,8 @@
 
 Status: Parts 1 and 2 complete on 2026-10-27; see the
 [Part 1 review](UsabilityPart1Review.md) and [Part 2 review](UsabilityPart2Review.md).
-Parts 3-9 are not implemented. The source audit below records the 2026-10-25 baseline.
+Part 3 is implemented with human handling assessment pending. Part 4 is complete;
+see [its review](UsabilityPart4Review.md). Parts 5-9 remain separate work. The source audit below records the 2026-10-25 baseline.
 This plan is independent of the completed Volgo-Don modelling Parts 1-17.
 Commands such as `сделай часть 1` refer to the numbered parts below in this workstream.
 Implement only the requested part, including its tests and documentation. Record its
@@ -122,17 +123,17 @@ tests do not replace manual assessment of camera feel.
 
 Dependencies: Parts 1-3.
 
-- [ ] Extend ShipTelemetryUI/RadarChannel using existing FairwayModel and bathymetry;
+- [x] Extend ShipTelemetryUI/RadarChannel using existing FairwayModel and bathymetry;
   keep one projection for channel, contacts, vessel, track, waypoint and prediction.
-- [ ] Add map expand/collapse, bounded range buttons and wheel zoom over the map,
+- [x] Add map expand/collapse, bounded range buttons and wheel zoom over the map,
   pan in expanded mode, follow/recenter, heading-up/north-up and a compact legend.
-- [ ] Recompute scale labels, range rings, projected obstacle sizes and prediction
+- [x] Recompute scale labels, range rings, projected obstacle sizes and prediction
   horizon from the current viewport/range. Maintain readable icons and vessel heading.
-- [ ] Route wheel/drag exclusively to the map when appropriate. Starting a camera
+- [x] Route wheel/drag exclusively to the map when appropriate. Starting a camera
   gesture outside UI must have a defined lifecycle when the pointer crosses UI.
-- [ ] Persist display preferences, not stale world positions from another vessel/scene.
+- [x] Persist display preferences, not stale world positions from another vessel/scene.
   Recenter appropriately on voyage load, recovery and vessel change.
-- [ ] Verify north/head-up transforms, range changes, shore/route alignment, waypoint
+- [x] Verify north/head-up transforms, range changes, shore/route alignment, waypoint
   direction, resize and return-to-vessel. Preserve estimated-depth warnings.
 
 Acceptance: the player can inspect the route and return to the ship without moving
@@ -297,7 +298,7 @@ compile success. Keep all changes in the working tree; no commit or push.
 | 1 | Complete | [Review and evidence](UsabilityPart1Review.md) |
 | 2 | Complete | [Review and evidence](UsabilityPart2Review.md) |
 | 3 | Implemented; human handling assessment pending | [Review and evidence](UsabilityPart3Review.md) |
-| 4 | Not started | Pending |
+| 4 | Complete | [Review and evidence](UsabilityPart4Review.md) |
 | 5 | Not started | Pending |
 | 6 | Not started | Pending |
 | 7 | Not started | Pending |

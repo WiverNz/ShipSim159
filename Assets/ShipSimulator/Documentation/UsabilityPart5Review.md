@@ -18,6 +18,9 @@ vessel policy now predicts contacts on the moving hull using Continuous Speculat
 small buoy bodies retain Continuous Dynamic. The same policy covers the passive
 barge. It also avoids relying on sweep CCD for the 507B's convex mesh hull.
 Unity documents the [CCD modes and their supported shapes](https://docs.unity.com/en-us/engine/6000.0/manual/physics-section/physics-overview/collision-section/collision-detection/continuous).
+A decorative quad lens initially produced an invalid concave-collider warning when
+parented under the new Rigidbody. Its unused collider is now disabled and removed
+before parenting; runtime creation is covered by the lighting regression test.
 The physical hull geometry, hydrostatics and force-driven vessel motion are unchanged.
 
 ## Implementation and estimates
@@ -106,14 +109,26 @@ recovery. A displaced buoy retains its original station and returns under its te
 - Three scene inventories verify unique ids, solid dynamic mark contacts, masses,
   collision modes and active layer pairs. Visual tests verify idempotent construction
   and disabled placeholders instead of asserting that all contacts are triggers.
-- Full EditMode: **344/344**, `TestResults/check-EditMode-20261029-174933-681.xml`.
+- Full EditMode: **344/344**, `TestResults/check-EditMode-20261029-222108-181.xml`.
 - Focused final integration: **23/23**, `TestResults/buoy-focused-final.xml`,
   including 63 solid-wall approaches (seven catalogue hulls, three directions and
   three steps) at each vessel's top speed, stopped motion and reverse separation.
-- Full PlayMode, fleet shakedown and visual beacon check: pending final runs.
+- Full PlayMode: **205/205**, `TestResults/check-PlayMode-20261029-175915-721.xml`, including existing quay, grounding, map, UI, camera, save and push-unit regressions.
+- Fleet shakedown: **7/7**, `Logs/check-Shakedown-20261029-222202-009.log`.
+- Day/night and near/distant beacon check: **PASS**, `Logs/check-Buoys-20261029-222409-654.log`.
 
 The 25 m/s exploratory cargo-hull stress run was outside configured vessel speeds
 and motivated the collision-policy investigation; it is not reported as an accepted
 matrix result. Acceptance above is limited to the declared vessel speeds and steps.
 
 No standalone player rebuild, commit or push is included. Part 6 remains separate.
+
+## Visual regression captures
+
+These final-runtime captures verify that the detailed mark and lantern remain
+attached and visible with the physical body. Contact response is verified by
+the matrix above, not inferred from these still images.
+
+| Day | Night, lit phase |
+|---|---|
+| ![Physical buoy by day](../../../docs/screenshots/buoy-part5-day.png) | ![Buoy lantern at night](../../../docs/screenshots/buoy-part5-night.png) |

@@ -2,8 +2,8 @@
 
 Status: Parts 1 and 2 complete on 2026-10-27; see the
 [Part 1 review](UsabilityPart1Review.md) and [Part 2 review](UsabilityPart2Review.md).
-Part 3 is implemented with human handling assessment pending. Part 4 is complete;
-see [its review](UsabilityPart4Review.md). Parts 5-9 remain separate work. The source audit below records the 2026-10-25 baseline.
+Part 3 is implemented with human handling assessment pending. Parts 4 and 5 are complete;
+see [Part 4](UsabilityPart4Review.md) and [Part 5](UsabilityPart5Review.md). Parts 6-9 remain separate work. The source audit below records the 2026-10-25 baseline.
 This plan is independent of the completed Volgo-Don modelling Parts 1-17.
 Commands such as `сделай часть 1` refer to the numbered parts below in this workstream.
 Implement only the requested part, including its tests and documentation. Record its
@@ -143,24 +143,24 @@ the camera accidentally; markers and depth remain consistent with simulation geo
 
 Dependencies: Parts 1-2 for status messages; independent of map implementation.
 
-- [ ] Reproduce red-buoy passage and inventory collider shape, trigger, layer matrix,
-  Rigidbody and CCD configuration for buoys, all five ships, banks, quays and moored
+- [x] Reproduce red-buoy passage and inventory collider shape, trigger, layer matrix,
+  Rigidbody and CCD configuration for buoys, all six ships and the passive barge, banks, quays and moored
   craft in all three scenes. Identify the owner of each physical contact response.
-- [ ] Separate buoy physics from BuoyVisualRig. Add a solid convex contact shape
+- [x] Separate buoy physics from BuoyVisualRig. Add a solid convex contact shape
   matching the visible float, Rigidbody mass/inertia, buoyancy, drag and a finite
   mooring-restoring force applied in FixedUpdate. Record estimated parameters in data.
-- [ ] Reuse suitable ground-tackle math where practical, without attaching a ship's
+- [x] Reuse suitable ground-tackle math where practical, without attaching a ship's
   tackle controller to each buoy. Use stable damping and bounded physical mooring loads;
   the buoy must yield under impact and cannot become an immovable stop for a cargo ship.
-- [ ] Make the visual follow the simulated body. Retain beacon behavior and update
+- [x] Make the visual follow the simulated body. Retain beacon behavior and update
   map positions from physical buoy positions. Remove conflicting Transform animation.
-- [ ] Update the canonical prefab/builders, including unlit marks; rebuilding scenes
+- [x] Update the canonical prefab/builders, including unlit marks; rebuilding scenes
   must retain collisions. Define reset/save behavior with stable buoy ids, preserving
   displaced buoy state on voyage continuation where necessary.
-- [ ] Test stationary, glancing, head-on and astern contacts, low/cruising/top vessel
+- [x] Test stationary, glancing, head-on and astern contacts, low/cruising/top vessel
   speeds, 1x/2x/4x and relevant fixed steps. Check penetration, momentum response,
   buoy return, mass-ratio stability, sustained contact and separation after reversing.
-- [ ] Preserve Part 16 grounding/bank ownership and verified 507B hull. Test quay and
+- [x] Preserve Part 16 grounding/bank ownership and verified 507B hull. Test quay and
   shore approaches without duplicate forces, energy explosions or artificial trapping.
 
 Acceptance: no solid obstacle tunnelling in the test matrix, no static-buoy blockade,
@@ -299,7 +299,7 @@ compile success. Keep all changes in the working tree; no commit or push.
 | 2 | Complete | [Review and evidence](UsabilityPart2Review.md) |
 | 3 | Implemented; human handling assessment pending | [Review and evidence](UsabilityPart3Review.md) |
 | 4 | Complete | [Review and evidence](UsabilityPart4Review.md) |
-| 5 | Not started | Pending |
+| 5 | Complete | [Review and evidence](UsabilityPart5Review.md) |
 | 6 | Not started | Pending |
 | 7 | Not started | Pending |
 | 8 | Not started | Pending |

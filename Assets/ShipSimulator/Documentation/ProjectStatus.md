@@ -10,6 +10,16 @@ Hydrodynamics, underwater geometry, depths, currents and equipment parameters
 include documented estimates. Passing automated tests does not validate those
 estimates against a real vessel.
 
+## Physical navigation buoys, 2026-10-29
+
+All 84 marks across the three scenarios now have dynamic solid contacts, estimated
+buoyancy/drag and finite mooring loads. They yield to a striking hull and their
+lanterns and map positions follow the body. Normal voyage saves preserve displacement
+and velocity, with backward-compatible restoration. Vessel contact detection now
+predicts encounters with small marks; hull geometry and grounding ownership are
+unchanged. See [Part 5 review](UsabilityPart5Review.md) for the collision matrix,
+scene audit, parameters and limitations.
+
 ## Current capabilities
 
 | Area | Implemented state |
@@ -169,7 +179,7 @@ and much of the terrain remain estimates, not a navigable survey or chart.
 | 2: localization | Implemented: four languages, 440 shared keys, live refresh and preserved UI/voyage state. [Review](UsabilityPart2Review.md), [catalogue guide](Localization.md) |
 | 3: camera | Implemented and automatically verified: proportional/fractional zoom, lower orbit gain, real-time smoothing, consistent pivots, cursor lifecycle and save migration. Physical mouse/trackpad comfort assessment remains open. [Review](UsabilityPart3Review.md) |
 | 4: map interaction | Complete: expanded map, bounded range/zoom/pan, follow/recenter, orientation and legend preferences, scenario routes and shorelines. [Review](UsabilityPart4Review.md) |
-| 5: obstacle/buoy physics | Planned: physical buoy response and complete collision/CCD audit; existing shore/quay and hull contacts are not proof that buoys are solid |
+| 5: obstacle/buoy physics | Complete: dynamic moored buoys, saved displacement and collision audit; [review and tests](UsabilityPart5Review.md) |
 | 6: grounded bow/water | Planned: reproduce and correct the reported 507B bow water gap |
 | 7: recovery | Planned: validated safe-position recovery with explicit progress preservation; current reset is not that feature |
 | 8: cargo identity | Planned: actual commodity inventory and corresponding sulphur, steel-channel and grain visuals |
@@ -236,7 +246,7 @@ included in the repository for GitHub readers. Reproduction commands are in
   combination. No general deck walking or player-facing barge detach controls.
 - **Gameplay:** no AI traffic, lock operation, autopilot, AIS/ECDIS or rescue tug
   service. A playable tug and coupled passive barge exist; tug-assisted recovery does
-  not. Safe-position recovery, physical buoys and cargo identity
+  not. Safe-position recovery and cargo identity
   remain separate tasks in the usability plan.
 - **Environment and graphics:** approximate scenario geography, depths and moorings;
   Serpukhov is outside some older shared graphics upgrade commands. Water optics
@@ -249,7 +259,7 @@ included in the repository for GitHub readers. Reproduction commands are in
 - **Input:** keyboard/mouse polling, no rebinding or gamepad, legacy Unity UI and
   telegraph layout for at most two engines.
 
-Next implementation work is usability Part 5 when requested. Source acquisition,
+Next implementation work is usability Part 6 when requested. Source acquisition,
 calibration, real river data, scenario completion and performance validation remain
 longer-term work. Use the linked reviews to distinguish completed features from
 estimated behavior and outstanding acceptance.

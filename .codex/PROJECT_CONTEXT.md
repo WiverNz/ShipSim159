@@ -1,5 +1,34 @@
 # ShipSim159 Project Context
 
+## Usability Part 5, 2026-10-29
+
+Completed physical buoy/contact work. See
+`Assets/ShipSimulator/Documentation/UsabilityPart5Review.md` for the audit,
+parameters, behavior, save/reset semantics, tests and declared limits.
+
+- `MooredBuoy` and `Resources/BuoyPhysics.json`: 650 kg dynamic marks, solid
+  float/tower contacts, damped heave/righting, field/legacy-zone drag and a bounded
+  4 kN horizontal tether. Visuals, lanterns and map markers follow the physical body.
+- `BuoyVisualRig` no longer forces triggers or animates an independent Transform.
+  Lens colliders are disabled before parenting under a dynamic body.
+- `HullCollisionDetection.Mode` selects Continuous Speculative on active/passive
+  hulls. Large sweep-CCD hulls missed early contact with small marks at coarse steps.
+  Buoys use Continuous Dynamic. Hull geometry, grounding exclusions, hydrodynamic
+  equations and push-unit coupling geometry are unchanged.
+- Canonical builders and `BuoyContactBuilder.Install` cover all three scenes
+  (20/42/22 marks), the navigation prefab and unlit marks.
+- Optional version-1 save `buoys` retain pose/velocity under stable navigation ids.
+  Legacy saves reset marks at the saved water level. R is still ship-only reset.
+  The bounded save-file limit is 1 MiB.
+- 864 buoy contacts and 63 wall approaches passed, plus return, environment,
+  sustained thrust/reverse, save and lighting regressions. CSVs: `Logs/BuoyPart5/`.
+
+Verification: EditMode 344/344 (`TestResults/check-EditMode-20261029-222108-181.xml`); PlayMode 205/205 (`TestResults/check-PlayMode-20261029-175915-721.xml`). Fleet 7/7 (`Logs/check-Shakedown-20261029-222202-009.log`); beacon visuals PASS (`Logs/check-Buoys-20261029-222409-654.log`).
+
+Core changes were already present in commit 2bb9a3b before final closeout.
+This continuation only completed verification and documentation. No agent commit,
+push or player build. Part 6 remains separate.
+
 ## Usability Part 4, 2026-10-29
 
 The old HUD used a fixed 0.82 pixel/metre projection, fixed range rings and prediction

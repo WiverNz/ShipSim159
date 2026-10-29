@@ -578,6 +578,7 @@ namespace ShipSimulator.Editor
                 new Vector3(1.1f, 0.8f, 1.1f), body);
             Primitive("Top Mark", PrimitiveType.Sphere, root, Vector3.up * 1.9f,
                 Vector3.one * 0.6f, top);
+            root.gameObject.AddComponent<ShipSimulator.Physics.MooredBuoy>().Initialize();
         }
 
         private static ShipPhysicsController CreateVessel(ScenarioGeometry geometry)

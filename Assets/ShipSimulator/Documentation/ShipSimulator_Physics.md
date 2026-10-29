@@ -341,3 +341,22 @@ restored state and plays no events for 0.3 s. Pitch is never scaled by simulatio
 - Bank suction model is estimated, not Lataire's formulation.
 - Not implemented (phase 7): ship-ship interaction and locks. Anchors and mooring lines exist for
   the 507B only, as a quasi-static prototype without line hydrodynamics or fender springs.
+
+## Navigation buoy contact
+
+`MooredBuoy` applies heave, righting, current-relative drag and a bounded horizontal
+mooring force in FixedUpdate. It has a 650 kg estimated Rigidbody and simple solid
+float/tower contacts. `HullCollisionDetection.Mode` selects speculative detection
+on active and passive vessel hulls to predict contact with small stationary marks;
+buoys use Continuous Dynamic. No vessel geometry or force model is replaced.
+Existing BathymetryContactSurface pair exclusions remain restricted to terrain
+already represented by the ship grounding model. Quays and moored craft stay solid.
+
+The buoy heave model is a damped linearization about the authored station plus
+scenario water-level offset, with bounded vertical acceleration. Drag samples the
+existing CurrentFieldProvider; active RiverCurrentZone volumes override it using
+the same averaged-zone convention as ships. The estimated elastic tether has
+slack and tension-only damping, capped at 4 kN. It is not the ship's full catenary
+model and does not model anchor relocation or chain breakage. Parameter values,
+contact audit, validation scope and save behavior are in the
+[Part 5 review](UsabilityPart5Review.md).

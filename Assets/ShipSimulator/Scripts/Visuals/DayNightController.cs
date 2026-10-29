@@ -123,6 +123,8 @@ namespace ShipSimulator.Visuals
                 BuoyVisualRig buoy = null;
                 if (isBuoy)
                 {
+                    if (marker.GetComponent<ShipSimulator.Physics.MooredBuoy>() == null)
+                        marker.gameObject.AddComponent<ShipSimulator.Physics.MooredBuoy>().Initialize();
                     buoy = marker.GetComponent<BuoyVisualRig>();
                     if (buoy == null) buoy = marker.gameObject.AddComponent<BuoyVisualRig>();
                     buoy.Build(marker.name.Contains("Right Red"));
@@ -146,11 +148,13 @@ namespace ShipSimulator.Visuals
 
                 GameObject lens = GameObject.CreatePrimitive(isBuoy ? PrimitiveType.Quad : PrimitiveType.Sphere);
                 lens.name = "Beacon Lens";
+                Collider collider = lens.GetComponent<Collider>();
+                // A quad's concave collider must never enter the buoy's dynamic body, even for one frame.
+                collider.enabled = false;
+                DestroyGenerated(collider);
                 lens.transform.SetParent(beacon.transform, false);
                 lens.transform.localScale = Vector3.one *
                     (isBuoy ? 0.32f : isLeadingMark ? 1.35f : 0.32f);
-                Collider collider = lens.GetComponent<Collider>();
-                DestroyGenerated(collider);
                 Material material = new Material(
                     isBuoy ? Resources.Load<Shader>("NavigationSectorLight") : Shader.Find("Universal Render Pipeline/Unlit"))
                 {

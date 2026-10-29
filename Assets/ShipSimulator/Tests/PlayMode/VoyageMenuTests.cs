@@ -198,6 +198,9 @@ namespace ShipSimulator.Tests
             menu.StartVoyage("GorodetsTrainingScene");
             menu.OpenPause();
             VoyageSave state = menu.CaptureSave();
+            Assert.That(state.buoys.Length, Is.GreaterThan(10));
+            state.buoys[0].position += new Vector3(3, 0.1f, 2);
+            state.buoys[0].velocity = new Vector3(0.2f, 0, -0.1f);
             state.position += new Vector3(3, 0, 12);
             state.velocity = new Vector3(0.1f, 0, 1.4f);
             state.angularVelocity = new Vector3(0, 0.01f, 0);
@@ -235,6 +238,10 @@ namespace ShipSimulator.Tests
             Assert.That(mission.Score, Is.EqualTo(76));
             Assert.That(mission.CaptureState().outsideSeconds, Is.EqualTo(20));
             Assert.That(Time.timeScale, Is.Zero);
+            var restoredBuoys = MooredBuoy.CaptureScene(ship.gameObject.scene);
+            Assert.That(restoredBuoys[0].id, Is.EqualTo(state.buoys[0].id));
+            Assert.That(Vector3.Distance(restoredBuoys[0].position, state.buoys[0].position), Is.LessThan(0.001f));
+            Assert.That(Vector3.Distance(restoredBuoys[0].velocity, state.buoys[0].velocity), Is.LessThan(0.0001f));
             menu.Resume();
             Assert.That(Time.timeScale, Is.EqualTo(2));
         }

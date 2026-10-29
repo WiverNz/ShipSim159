@@ -419,3 +419,14 @@ without reloading the scene, resetting controls or changing the save. The select
 is retained on the next launch. In Russian the path is Настройки > Язык.
 Long menu rows wrap and scroll; language changes preserve open control panels.
 See [Localization](Localization.md) for catalogue maintenance and display culture.
+
+## Contact with navigation buoys
+
+Buoys are physical floating marks. A hull strike displaces and tilts them; their
+estimated mooring force and water drag restore them towards their stations. They
+are not fixed posts. The map and lantern follow the displaced mark. Their state
+is included in the normal voyage save; older saves place them at their stations.
+Quays and laid-up craft remain solid obstacles. A lightly grounded ship may be
+backed away, but deep grounding can still prevent movement. R remains the existing
+startup-pose reset, not a validated safe-position recovery action.
+See [Part 5 verification and limitations](UsabilityPart5Review.md).

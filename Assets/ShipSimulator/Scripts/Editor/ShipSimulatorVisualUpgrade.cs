@@ -541,6 +541,7 @@ namespace ShipSimulator.Editor
             top.transform.localPosition = new Vector3(0f, 2f, 0f);
             top.transform.localScale = Vector3.one * 0.65f;
             top.GetComponent<Renderer>().sharedMaterial = topMaterial;
+            root.AddComponent<ShipSimulator.Physics.MooredBuoy>().Initialize();
             return root;
         }
 

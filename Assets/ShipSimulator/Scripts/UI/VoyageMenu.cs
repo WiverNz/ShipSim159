@@ -315,6 +315,7 @@ namespace ShipSimulator.UI
                 groundTackle = ship.GroundTackle?.CaptureState() ?? new GroundTackleSave(),
                 loading = ship.CaptureLoading(),
                 pushUnit = ship.GetComponent<PushUnit>()?.Capture(),
+                buoys = MooredBuoy.CaptureScene(ship.gameObject.scene),
                 bowThrusterCommand = ship.BowThrusterCommand, bowThrusterOutput = ship.BowThrusterOutput,
                 simulationScale = open ? resumeScale : Time.timeScale,
                 night = FindAnyObjectByType<DayNightController>()?.IsNight ?? false,
@@ -346,6 +347,7 @@ namespace ShipSimulator.UI
             FindAnyObjectByType<WeatherController>()?.Configure(save.windDirection, save.windSpeed, save.rain, save.fog);
             FindAnyObjectByType<DayNightController>()?.Apply(save.night);
             FindAnyObjectByType<ScenarioBathymetry>()?.SetWaterLevelOffset(save.waterLevel);
+            MooredBuoy.RestoreScene(ship.gameObject.scene, save.buoys, save.waterLevel);
             FindAnyObjectByType<CurrentFieldProvider>()?.SetDischargeMultiplier(save.discharge);
             FindAnyObjectByType<ShipFollowCamera>()?.RestoreState(save.camera);
             FindAnyObjectByType<ShipTelemetryUI>()?.RefreshAfterVoyageLoad();

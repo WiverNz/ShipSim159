@@ -1,0 +1,15 @@
+{
+  "massKg": 650,
+  "floatRadiusM": 0.85,
+  "floatCenterY": 0.12,
+  "heaveStiffnessNPerM": 18000,
+  "heaveDampingNsPerM": 5000,
+  "dragNPerMps": 450,
+  "dragNPerMpsSquared": 200,
+  "mooringSlackM": 0.5,
+  "mooringStiffnessNPerM": 800,
+  "mooringDampingNsPerM": 700,
+  "mooringMaxForceN": 4000,
+  "rightingAcceleration": 8,
+  "angularDamping": 4
+}

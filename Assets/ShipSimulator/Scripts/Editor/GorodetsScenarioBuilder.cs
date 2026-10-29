@@ -229,6 +229,7 @@ namespace ShipSimulator.Editor
                 new Vector3(1.3f, 0.9f, 1.3f), body);
             Primitive("Top Mark", PrimitiveType.Sphere, root, Vector3.up * 2.1f,
                 Vector3.one * 0.7f, top);
+            root.gameObject.AddComponent<ShipSimulator.Physics.MooredBuoy>().Initialize();
         }
 
         private static CurrentRegionData[] CreateCurrentRegions()

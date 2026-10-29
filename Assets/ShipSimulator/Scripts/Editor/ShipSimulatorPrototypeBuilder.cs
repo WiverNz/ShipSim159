@@ -103,6 +103,7 @@ namespace ShipSimulator.Editor
             Primitive("Float", PrimitiveType.Cylinder, root.transform, new Vector3(0f, 0.6f, 0f),
                 new Vector3(1.2f, 0.8f, 1.2f), color);
             Primitive("TopMark", PrimitiveType.Sphere, root.transform, new Vector3(0f, 2f, 0f), Vector3.one * 0.65f, white);
+            root.AddComponent<ShipSimulator.Physics.MooredBuoy>().Initialize();
             PrefabUtility.SaveAsPrefabAsset(root, path);
             Object.DestroyImmediate(root);
         }

@@ -44,7 +44,7 @@ namespace ShipSimulator.Physics
             Body.maxAngularVelocity = 1;
             Body.solverIterations = 24;
             Body.solverVelocityIterations = 12;
-            Body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            Body.collisionDetectionMode = HullCollisionDetection.Mode;
             Body.interpolation = RigidbodyInterpolation.Interpolate;
             currentField = FindAnyObjectByType<CurrentFieldProvider>();
             bathymetry = FindAnyObjectByType<ScenarioBathymetry>();

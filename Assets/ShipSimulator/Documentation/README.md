@@ -6,6 +6,8 @@ It is not a validated maritime training product.
 
 ## Documents
 
+- [Usability Part 5 review](UsabilityPart5Review.md): physical buoys, collision audit, saved mark motion and verification.
+
 - [Usability Part 4 review](UsabilityPart4Review.md): interactive map, shared projection, scenario geometry and verification.
 
 - [UsabilityPart1Review.md](UsabilityPart1Review.md): scalable interface, settings and verification.

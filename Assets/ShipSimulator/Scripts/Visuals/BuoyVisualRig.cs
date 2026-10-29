@@ -7,20 +7,14 @@ namespace ShipSimulator.Visuals
     {
         private readonly List<Object> owned = new List<Object>();
         private Transform floating;
-        private float phase;
         public Transform Floating => floating;
 
         public void Build(bool red)
         {
             if (floating != null) return;
             foreach (Renderer old in GetComponentsInChildren<Renderer>()) old.enabled = false;
-            // The placeholder primitives leave solid colliders where nothing is drawn any more, and a
-            // moored mark the size of a barrel then holds a loaded ship at full ahead. The shapes stay
-            // for anything that wants to detect a buoy; they no longer resolve contacts.
-            foreach (Collider mark in GetComponentsInChildren<Collider>()) mark.isTrigger = true;
             floating = new GameObject("Detailed buoy").transform;
             floating.SetParent(transform, false);
-            phase = Mathf.Repeat(transform.position.x * 0.37f + transform.position.z * 0.13f, 6.28f);
             Material paint = Material(red ? new Color(0.55f, 0.045f, 0.025f) : new Color(0.73f, 0.72f, 0.62f), 0.25f);
             Material iron = Material(new Color(0.07f, 0.085f, 0.075f), 0.4f);
             Material glass = Material(red ? new Color(0.18f, 0.025f, 0.015f) : new Color(0.025f, 0.12f, 0.07f), 0.75f);
@@ -128,13 +122,6 @@ namespace ShipSimulator.Visuals
             part.GetComponent<MeshFilter>().sharedMesh = mesh; part.GetComponent<MeshRenderer>().sharedMaterial = material;
         }
 
-        private void Update()
-        {
-            if (floating == null) return;
-            float time = Time.time;
-            floating.localPosition = Vector3.up * (Mathf.Sin(time * 1.35f + phase) * 0.035f + Mathf.Sin(time * 0.73f + phase) * 0.02f);
-            floating.localRotation = Quaternion.Euler(Mathf.Sin(time * 0.83f + phase) * 1.5f, 0, Mathf.Sin(time * 1.03f + phase) * 1.8f);
-        }
         private static void Release(Object item) { if (Application.isPlaying) Destroy(item); else DestroyImmediate(item); }
         private void OnDestroy() { foreach (Object item in owned) if (item != null) Release(item); }
     }

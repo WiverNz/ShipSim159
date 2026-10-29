@@ -80,21 +80,31 @@ namespace ShipSimulator.Tests
         }
 
         [UnityTest]
-        public IEnumerator DetailedBuoy_LeavesNothingSolidForAShipToHit()
+        public IEnumerator DetailedBuoy_HasDynamicContactsAndNoSolidPlaceholder()
         {
+            var navigation = Track(new GameObject("Navigation"));
             GameObject marker = Track(new GameObject("Right Red Buoy 01"));
+            marker.transform.SetParent(navigation.transform, false);
             GameObject placeholder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             placeholder.name = "Float";
             placeholder.transform.SetParent(marker.transform, false);
             Assert.That(marker.GetComponentsInChildren<Collider>().Length, Is.EqualTo(1));
 
+            marker.AddComponent<ShipSimulator.Physics.MooredBuoy>().Initialize();
             marker.AddComponent<BuoyVisualRig>().Build(true);
+            Track(new GameObject("Buoy day-night test")).AddComponent<DayNightController>().Apply(true);
             yield return null;
 
-            foreach (Collider mark in marker.GetComponentsInChildren<Collider>())
-                Assert.That(mark.isTrigger, Is.True,
-                    "A buoy is a mark, not an obstacle that holds a loaded ship at full ahead.");
+            Assert.That(placeholder.GetComponent<Collider>().enabled, Is.False);
+            foreach (Collider mark in marker.transform.Find("Buoy contact").GetComponents<Collider>())
+            {
+                Assert.That(mark.isTrigger, Is.False);
+                Assert.That(mark.attachedRigidbody.isKinematic, Is.False);
+            }
             Assert.That(marker.transform.Find("Detailed buoy"), Is.Not.Null);
+            Assert.That(marker.GetComponentInChildren<NavigationBeaconFlasher>(), Is.Not.Null);
+            Assert.That(marker.GetComponentsInChildren<MeshCollider>(), Is.Empty,
+                "A decorative lens must not leave a concave collider on the dynamic buoy.");
         }
 
         private GameObject Track(GameObject item)

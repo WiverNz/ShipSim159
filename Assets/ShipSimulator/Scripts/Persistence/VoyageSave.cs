@@ -40,6 +40,7 @@ namespace ShipSimulator.Persistence
         public GroundTackleSave groundTackle = new GroundTackleSave();
         public ShipSimulator.Physics.LoadingState loading;
         public PushUnitSave pushUnit;
+        public BuoySave[] buoys;
 
         public string VesselIdOrDefault =>
             string.IsNullOrEmpty(vesselId) ? ShipSimulator.Physics.VesselCatalogue.DefaultVesselId : vesselId;
@@ -49,6 +50,7 @@ namespace ShipSimulator.Persistence
 
         public void Validate()
         {
+            BuoySave.Validate(buoys);
             mechanisms?.Validate();
             pushUnit?.Validate();
             groundTackle?.Validate();
@@ -136,7 +138,7 @@ namespace ShipSimulator.Persistence
 
         public static VoyageSave Read(string path)
         {
-            if (new FileInfo(path).Length > 65536) throw new InvalidDataException("The save file is too large.");
+            if (new FileInfo(path).Length > 1048576) throw new InvalidDataException("The save file is too large.");
             VoyageSave save = JsonUtility.FromJson<VoyageSave>(File.ReadAllText(path));
             if (save == null) throw new InvalidDataException("The save is empty.");
             save.Validate();

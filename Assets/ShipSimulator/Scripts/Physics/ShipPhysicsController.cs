@@ -172,7 +172,7 @@ namespace ShipSimulator.Physics
             body.linearDamping = 0f;
             body.angularDamping = 0f;
             body.maxAngularVelocity = 1f;
-            body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            body.collisionDetectionMode = HullCollisionDetection.Mode;
             body.interpolation = RigidbodyInterpolation.Interpolate;
             body.solverIterations = 12;
             body.solverVelocityIterations = 4;

@@ -10,11 +10,12 @@
 The [usability improvement plan](Assets/ShipSimulator/Documentation/UsabilityImprovementPlan.md)
 defines nine separately executable parts for UI, languages, camera, map, collisions,
 grounded-bow water rendering, recovery and cargo. Part 1 adds scalable, scrollable UI and settings. Part 2 adds live language selection
-for English, Russian, German and Spanish under **Settings > Language**. Part 3 adds proportional zoom, smoother orbit and stable camera tracking. Part 4 adds an interactive, scenario-aware map. Parts 5-9 remain planned.
+for English, Russian, German and Spanish under **Settings > Language**. Part 3 adds proportional zoom, smoother orbit and stable camera tracking. Part 4 adds an interactive, scenario-aware map. Part 5 adds physical moored buoys and revised hull collision detection. Parts 6-9 remain planned.
 See the [Part 1 review](Assets/ShipSimulator/Documentation/UsabilityPart1Review.md) and
 [Part 2 review](Assets/ShipSimulator/Documentation/UsabilityPart2Review.md), plus the
 [Part 3 review](Assets/ShipSimulator/Documentation/UsabilityPart3Review.md) and
-[Part 4 review](Assets/ShipSimulator/Documentation/UsabilityPart4Review.md), for changes and verification.
+[Part 4 review](Assets/ShipSimulator/Documentation/UsabilityPart4Review.md) and
+[Part 5 review](Assets/ShipSimulator/Documentation/UsabilityPart5Review.md), for changes and verification.
 
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator. It is
 built to carry several ship models, chosen in the start menu before a passage:
@@ -209,6 +210,7 @@ The `Ship Simulator` Unity menu contains project automation commands:
 | `Upgrade Water And Landscape` | Update natural banks, vegetation and water reflections in both scenarios |
 | `Apply Realistic Water And Sky` | Update the cloud sky, ripple normals, water tuning and antialiasing in both scenarios |
 | `Arrange Navigation Buoys` | Rebuild the curved paired-buoy layout |
+| `Install Buoy Physics` | Migrate navigation marks in the three scenes and existing prefab without rebuilding scenery |
 | `Render Visual Preview` | Render project preview images |
 | `Play Training Scene` | Open and run the main scene |
 | `Stop Play Mode` | Stop the running scene |
@@ -286,9 +288,9 @@ for implementation details.
 - The simulation does not yet model hydrodynamic ship-ship interaction, lock operation,
   cavitation, fuel consumption, flooding, or autopilot. Anchors and mooring are implemented
   for the Volgo-Don with estimated parameters.
-- Detailed buoy visuals currently make their colliders triggers; physical buoy contact
-  is planned. R returns the ship to its startup pose; validated safe-position recovery
-  is not yet available.
+- Buoys have solid floating bodies with estimated mass, drag and bounded mooring loads;
+  their displaced state is saved with the passage. R returns the ship to its startup
+  pose; validated safe-position recovery is not yet available.
 - Open-hold cargo visuals currently use one nominal bulk material on the Volgo-Don;
   sulphur, steel channel sections and grain are planned.
 - Wake and propeller wash are visual effects only.

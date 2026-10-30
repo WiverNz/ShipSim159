@@ -10,12 +10,13 @@
 The [usability improvement plan](Assets/ShipSimulator/Documentation/UsabilityImprovementPlan.md)
 defines nine separately executable parts for UI, languages, camera, map, collisions,
 grounded-bow water rendering, recovery and cargo. Part 1 adds scalable, scrollable UI and settings. Part 2 adds live language selection
-for English, Russian, German and Spanish under **Settings > Language**. Part 3 adds proportional zoom, smoother orbit and stable camera tracking. Part 4 adds an interactive, scenario-aware map. Part 5 adds physical moored buoys and revised hull collision detection. Parts 6-9 remain planned.
+for English, Russian, German and Spanish under **Settings > Language**. Part 3 adds proportional zoom, smoother orbit and stable camera tracking. Part 4 adds an interactive, scenario-aware map. Part 5 adds physical moored buoys and revised hull collision detection. Part 6 verifies the repaired Volgo-Don bow in editor and Windows player. Parts 7-9 remain planned.
 See the [Part 1 review](Assets/ShipSimulator/Documentation/UsabilityPart1Review.md) and
 [Part 2 review](Assets/ShipSimulator/Documentation/UsabilityPart2Review.md), plus the
 [Part 3 review](Assets/ShipSimulator/Documentation/UsabilityPart3Review.md) and
 [Part 4 review](Assets/ShipSimulator/Documentation/UsabilityPart4Review.md) and
-[Part 5 review](Assets/ShipSimulator/Documentation/UsabilityPart5Review.md), for changes and verification.
+[Part 5 review](Assets/ShipSimulator/Documentation/UsabilityPart5Review.md) and
+[Part 6 review](Assets/ShipSimulator/Documentation/UsabilityPart6Review.md), for changes and verification.
 
 ShipSim159 is a Unity 6 URP prototype of a river navigation simulator. It is
 built to carry several ship models, chosen in the start menu before a passage:

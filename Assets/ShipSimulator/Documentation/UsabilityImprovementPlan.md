@@ -2,8 +2,8 @@
 
 Status: Parts 1 and 2 complete on 2026-10-27; see the
 [Part 1 review](UsabilityPart1Review.md) and [Part 2 review](UsabilityPart2Review.md).
-Part 3 is implemented with human handling assessment pending. Parts 4 and 5 are complete;
-see [Part 4](UsabilityPart4Review.md) and [Part 5](UsabilityPart5Review.md). Parts 6-9 remain separate work. The source audit below records the 2026-10-25 baseline.
+Part 3 is implemented with human handling assessment pending. Parts 4, 5 and 6 are complete;
+see [Part 4](UsabilityPart4Review.md), [Part 5](UsabilityPart5Review.md) and [Part 6](UsabilityPart6Review.md). Parts 7-9 remain separate work. The source audit below records the 2026-10-25 baseline.
 This plan is independent of the completed Volgo-Don modelling Parts 1-17.
 Commands such as `сделай часть 1` refer to the numbered parts below in this workstream.
 Implement only the requested part, including its tests and documentation. Record its
@@ -171,21 +171,25 @@ grounding may still immobilize the vessel physically; Part 7 supplies player rec
 
 Dependencies: Part 5 for the final contact baseline.
 
-- [ ] Reproduce the bow defect with exact pose, load, water level, grounding state,
+- [x] Reproduce the bow defect with exact pose, load, water level, grounding state,
   camera and screenshot. Compare loaded/light/trimmed hulls and open/closed hatches.
-- [ ] Inspect hull mesh/LOD seams, stencil footprint, depth, reflection clipping and
+- [x] Inspect hull mesh/LOD seams, stencil footprint, depth, reflection clipping and
   water passes. Identify whether the symptom is exterior water being cut away or
   interior water showing through. Document the demonstrated cause before editing.
-- [ ] Correct the owning mesh/integrator or water-mask implementation. If hull-wide
+- [x] Correct the owning mesh/integrator or water-mask implementation. If hull-wide
   exclusion is needed, derive it from the actual hull volume and use correct depth
   testing, not a larger rectangle that removes adjacent river water.
-- [ ] Keep collider/hydrostatic geometry unchanged unless separately justified.
+- [x] Keep collider/hydrostatic geometry unchanged unless separately justified.
   Preserve existing hold masking, reflections, wake and motion-vector rendering.
-- [ ] Render bow/side/above/waterline views, afloat and grounded, at low/high water,
+- [x] Render bow/side/above/waterline views, afloat and grounded, at low/high water,
   light/partial/full load, day/night, multiple LODs and both editor/player paths.
 
 Acceptance: no erroneous water gap outside the bow or water inside the hull in the
 reproduction matrix, and no newly hidden river surface. Attach before/after evidence.
+
+Evidence and scope: [Part 6 review](UsabilityPart6Review.md). The existing source
+repair is retained; the new editor/player matrix uses controlled grounding and
+depth offsets at a fixed rendered water datum.
 
 ## Part 7: recovery without losing the passage
 
@@ -300,7 +304,7 @@ compile success. Keep all changes in the working tree; no commit or push.
 | 3 | Implemented; human handling assessment pending | [Review and evidence](UsabilityPart3Review.md) |
 | 4 | Complete | [Review and evidence](UsabilityPart4Review.md) |
 | 5 | Complete | [Review and evidence](UsabilityPart5Review.md) |
-| 6 | Not started | Pending |
+| 6 | Complete | [Review and evidence](UsabilityPart6Review.md) |
 | 7 | Not started | Pending |
 | 8 | Not started | Pending |
 | 9 | Not started | Pending |

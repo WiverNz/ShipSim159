@@ -38,3 +38,11 @@ The existing standalone executable must be rebuilt to include the updated FBX.
 Full PlayMode: 189/189 passed in
 `check-PlayMode-20261029-001859-746.xml`. Fleet shakedown passed:
 `check-Shakedown-20261029-002529-578.log`. No standalone rebuild was performed.
+
+## Part 6 follow-up, 2026-10-30
+
+The previously pending standalone rebuild is now available at
+`build/BowReview/ShipSim159.exe`. See the
+[grounded bow review](../../../Assets/ShipSimulator/Documentation/UsabilityPart6Review.md)
+for editor/player loading, grounding, trim and LOD evidence. The source repair
+above is unchanged.

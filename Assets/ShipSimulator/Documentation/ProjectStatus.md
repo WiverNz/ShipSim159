@@ -1,6 +1,6 @@
 # ShipSim159 Project Status
 
-Updated 2026-10-29. ShipSim159 is a Unity river navigation prototype for Windows,
+Updated 2026-10-30. ShipSim159 is a Unity river navigation prototype for Windows,
 with six playable vessels and a seventh selection combining the Serpukhov tug
 with the passive MN-52 barge. This page describes the current implementation,
 not the September prototype. Historical milestone results remain in their reviews.
@@ -9,6 +9,15 @@ The simulator is **not validated for maritime training or real navigation**.
 Hydrodynamics, underwater geometry, depths, currents and equipment parameters
 include documented estimates. Passing automated tests does not validate those
 estimates against a real vessel.
+
+## Grounded bow rendering, 2026-10-30
+
+The existing Volgo-Don forecastle wall repair is now included in a fresh Windows
+review build. The shared editor/player diagnostic captures 168 views per run,
+covering three LODs, loading, trim, grounding, hatches and day/night. The reported
+mast-base gap did not recur in inspected views. Physics and water masking remain
+unchanged. See [Part 6 review](UsabilityPart6Review.md) for screenshots, reproduction
+commands and the controlled-depth fixture's limitations.
 
 ## Physical navigation buoys, 2026-10-29
 
@@ -259,7 +268,7 @@ included in the repository for GitHub readers. Reproduction commands are in
 - **Input:** keyboard/mouse polling, no rebinding or gamepad, legacy Unity UI and
   telegraph layout for at most two engines.
 
-Next implementation work is usability Part 6 when requested. Source acquisition,
+Next implementation work is usability Part 7 when requested. Source acquisition,
 calibration, real river data, scenario completion and performance validation remain
 longer-term work. Use the linked reviews to distinguish completed features from
 estimated behavior and outstanding acceptance.

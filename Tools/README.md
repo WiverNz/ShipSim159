@@ -138,3 +138,9 @@ and records screenshots and actual sizes. It restores the three display preferen
 it temporarily changes, including on failure. Require exit code 0 and `HUD_WINDOW|PASS`.
 The monitor may constrain a requested window size; use the actual sizes in `results.txt`.
 This is an automated UI/window check, not a manual handling or performance assessment.
+
+### Grounded bow review
+
+See [Usability Part 6](../Assets/ShipSimulator/Documentation/UsabilityPart6Review.md)
+for the shared editor/player capture matrix, `BowWaterReviewLauncher.Run`,
+`LocalWindowsBuild.RunBowReview` and the opt-in `--shipsim-bow-review` flag.

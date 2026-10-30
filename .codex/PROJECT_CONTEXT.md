@@ -1,5 +1,30 @@
 # ShipSim159 Project Context
 
+## Usability Part 6, 2026-10-30
+
+Closed grounded bow rendering verification. The earlier forecastle triangle-winding
+repair remains unchanged in source blend/export/three FBXs. No new hull mask,
+shader patch, collider or hydrodynamic changes. Review and screenshots:
+`Assets/ShipSimulator/Documentation/UsabilityPart6Review.md`.
+
+Added opt-in `BowWaterReview` shared runtime fixture and dedicated editor launcher;
+`LocalWindowsBuild.RunBowReview` writes `build/BowReview/ShipSim159.exe`.
+EditorFinal and PlayerFinal both PASS 168 captures, exit 0; 14 conditions across
+loading/grounding/trim/hatches/day-night, three LODs and four cameras. Logs under
+`Logs/BowWater/`; build succeeded with zero build errors/warnings. Representative
+views inspected without recurrence of the step gap. Compile passed and EditMode
+344/344 in `check-EditMode-20261029-225708-760.xml`. Full PlayMode
+205/205 passed in `check-PlayMode-20261030-052610-933.xml`, exit 0.
+Unity-generated serialization/build settings were restored after verification;
+only the diagnostic, build entry point, reviews and screenshots remain changed.
+
+Fixture limits: analytical estimated slope, constrained X/Z/yaw, force-stepped
+heave/pitch/roll; depth offsets +/-0.4 m retain rendered datum y=0. Pairwise matrix,
+not all combinations; PASS is capture/contact/error-log validation, not automated
+pixel detection. Still captures disable TAA. Normal gameplay never starts the
+fixture without the command-line flag. No new graphics resources required.
+Next requested implementation is usability Part 7 recovery, not modelling Part 7.
+
 ## Usability Part 5, 2026-10-29
 
 Completed physical buoy/contact work. See

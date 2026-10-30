@@ -12,6 +12,8 @@ namespace ShipSimulator.Editor
         [MenuItem("Ship Simulator/Build Local Windows Player")]
         public static void Run() => Build("build/StandaloneWindows64/ShipSim159.exe", "Logs/Part17");
 
+        public static void RunBowReview() => Build("build/BowReview/ShipSim159.exe", "Logs/BowWater/Build");
+
         public static void RunHudReview() => Build("build/HudReview/ShipSim159.exe", "Logs/HudReview");
 
         public static void RunCameraReview() => Build("build/CameraReview/ShipSim159.exe", "Logs/Camera");
